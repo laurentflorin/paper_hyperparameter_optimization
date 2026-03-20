@@ -137,7 +137,7 @@ def download_realtime_panel(
 ) -> tuple[Path, Path]:
     ensure_data_directories()
 
-    origins = list(forecast_origins or forecast_origin_dates())
+    origins = list(forecast_origin_dates() if forecast_origins is None else forecast_origins)
     vintage_dates = sorted({*origins, pd.Timestamp(actual_vintage)})
     tasks = [DownloadTask(spec.series_id, vintage_date) for spec in SERIES_SPECS for vintage_date in vintage_dates]
 
