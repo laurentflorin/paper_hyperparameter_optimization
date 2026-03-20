@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from io import StringIO
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 import pandas as pd
 import requests
@@ -134,28 +134,45 @@ def download_realtime_panel(
     forecast_origins: Iterable[pd.Timestamp] | None = None,
     actual_vintage: pd.Timestamp = PAPER_ACTUAL_VINTAGE,
     max_workers: int = 8,
+    progress_callback: Callable[[str], None] | None = None,
 ) -> tuple[Path, Path]:
     ensure_data_directories()
 
     origins = list(forecast_origin_dates() if forecast_origins is None else forecast_origins)
     vintage_dates = sorted({*origins, pd.Timestamp(actual_vintage)})
     tasks = [DownloadTask(spec.series_id, vintage_date) for spec in SERIES_SPECS for vintage_date in vintage_dates]
+    report = progress_callback or (lambda message: None)
+
+    report(
+        "Downloading real-time vintages "
+        f"for {len(SERIES_SPECS)} series across {len(vintage_dates)} vintages "
+        f"({len(tasks)} requests total)."
+    )
 
     frames: list[pd.DataFrame] = []
+    completed = 0
+    next_report = 0
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_map = {executor.submit(_download_task, task): task for task in tasks}
         for future in as_completed(future_map):
             frames.append(future.result())
+            completed += 1
+            progress_pct = int((completed / len(tasks)) * 100)
+            if completed == len(tasks) or progress_pct >= next_report:
+                report(f"Real-time vintage downloads: {completed}/{len(tasks)} completed ({progress_pct}%).")
+                next_report = progress_pct + 5
 
     realtime_panel = pd.concat(frames, ignore_index=True).sort_values(
         ["series_id", "vintage_date", "observation_date"]
     )
 
+    report(f"Downloading latest FRED series for backfilling and evaluation ({len(SERIES_SPECS)} series).")
     with requests.Session() as session:
         session.headers.update({"User-Agent": "paper-hyperparameter-optimization/1.0"})
         latest_frames = [download_latest_series(spec.series_id, session) for spec in SERIES_SPECS]
     latest_panel = pd.concat(latest_frames, ignore_index=True).sort_values(["series_id", "observation_date"])
 
+    report("Backfilling incomplete ALFRED histories for PCEC96 and FPIC1.")
     for series_id in ("PCEC96", "FPIC1"):
         latest_series = latest_panel[latest_panel["series_id"] == series_id]
         updated_vintages = []
@@ -165,7 +182,9 @@ def download_realtime_panel(
         realtime_panel = pd.concat([realtime_panel, *updated_vintages], ignore_index=True)
 
     realtime_panel = realtime_panel.sort_values(["series_id", "vintage_date", "observation_date"])
+    report(f"Writing real-time panel to {output_path}.")
     realtime_panel.to_csv(output_path, index=False, compression="gzip")
+    report(f"Writing latest panel to {latest_output_path}.")
     latest_panel.to_csv(latest_output_path, index=False, compression="gzip")
 
     metadata = {
@@ -179,7 +198,9 @@ def download_realtime_panel(
             for origin in origins
         ],
     }
+    report(f"Writing download metadata to {metadata_path}.")
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    report("Download pipeline finished.")
     return output_path, latest_output_path
 
 

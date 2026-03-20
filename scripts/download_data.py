@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 from pathlib import Path
 import sys
 
@@ -36,6 +37,16 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     origins = forecast_origin_dates(pd.Timestamp(args.start), pd.Timestamp(args.end))
+
+    def report(message: str) -> None:
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+        print(f"[{timestamp}] {message}", flush=True)
+
+    report(
+        "Starting data download "
+        f"for {len(origins)} forecast origins from {args.start} to {args.end} "
+        f"with actual vintage {args.actual_vintage}."
+    )
     download_realtime_panel(
         output_path=args.output_panel,
         latest_output_path=args.output_latest,
@@ -43,7 +54,9 @@ def main() -> int:
         forecast_origins=origins,
         actual_vintage=pd.Timestamp(args.actual_vintage),
         max_workers=args.max_workers,
+        progress_callback=report,
     )
+    report("All downloads completed successfully.")
     return 0
 
 
