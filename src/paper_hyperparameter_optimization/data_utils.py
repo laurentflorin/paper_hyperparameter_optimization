@@ -3,11 +3,11 @@ from __future__ import annotations
 import json
 from io import StringIO
 from pathlib import Path
+import subprocess
 import time
 from typing import Callable, Iterable
 
 import pandas as pd
-import requests
 
 from .config import (
     DOWNLOAD_METADATA_PATH,
@@ -28,12 +28,17 @@ from .config import (
 
 ALFRED_GRAPH_URL = "https://alfred.stlouisfed.org/graph/alfredgraph.csv"
 FRED_GRAPH_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv"
-REQUEST_TIMEOUT = (20, 120)
+STOOQ_SP500_MONTHLY_URL = "https://stooq.com/q/d/l/?s=%5Espx&i=m"
+REQUEST_TIMEOUT_SECONDS = 120
 MAX_REQUEST_ATTEMPTS = 4
 RETRY_BACKOFF_SECONDS = 2.0
-RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 ALFRED_CACHE_DIR = RAW_DATA_DIR / "alfred_realtime"
 FRED_CACHE_DIR = RAW_DATA_DIR / "fred_latest"
+
+
+class DataDownloadError(RuntimeError):
+    """Raised when a FRED/ALFRED download fails after retries."""
+
 
 def ensure_data_directories() -> None:
     RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -74,27 +79,9 @@ def _read_cached_frame(path: Path, date_columns: list[str]) -> pd.DataFrame:
     return frame
 
 
-def _read_csv_from_url(url: str, session: requests.Session) -> pd.DataFrame:
-    last_error: requests.RequestException | None = None
-    for attempt in range(1, MAX_REQUEST_ATTEMPTS + 1):
-        try:
-            response = session.get(url, timeout=REQUEST_TIMEOUT)
-            response.raise_for_status()
-            frame = pd.read_csv(StringIO(response.text))
-            break
-        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
-            last_error = exc
-        except requests.exceptions.HTTPError as exc:
-            last_error = exc
-            if exc.response is None or exc.response.status_code not in RETRYABLE_STATUS_CODES:
-                raise
-
-        if attempt == MAX_REQUEST_ATTEMPTS:
-            assert last_error is not None
-            raise last_error
-
-        time.sleep(_retry_delay_seconds(attempt))
-
+def _read_csv_from_url(url: str) -> pd.DataFrame:
+    text = _download_text_with_curl(url)
+    frame = pd.read_csv(StringIO(text))
     frame.columns = [str(column).strip() for column in frame.columns]
     frame = frame.rename(columns={frame.columns[0]: "observation_date", frame.columns[1]: "value"})
     frame["observation_date"] = pd.to_datetime(frame["observation_date"])
@@ -103,15 +90,64 @@ def _read_csv_from_url(url: str, session: requests.Session) -> pd.DataFrame:
     return frame
 
 
-def download_series_vintage(series_id: str, vintage_date: pd.Timestamp, session: requests.Session) -> pd.DataFrame:
-    frame = _read_csv_from_url(alfred_vintage_url(series_id, vintage_date), session)
+def _download_text_with_curl(url: str) -> str:
+    last_error: Exception | None = None
+    for attempt in range(1, MAX_REQUEST_ATTEMPTS + 1):
+        try:
+            completed = subprocess.run(
+                [
+                    "curl",
+                    "-L",
+                    "--silent",
+                    "--show-error",
+                    url,
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=REQUEST_TIMEOUT_SECONDS,
+            )
+            return completed.stdout
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+            last_error = exc
+
+        if attempt == MAX_REQUEST_ATTEMPTS:
+            assert last_error is not None
+            raise DataDownloadError(f"Failed to download {url}") from last_error
+
+        time.sleep(_retry_delay_seconds(attempt))
+
+    raise AssertionError("unreachable")
+
+
+def download_sp500_stooq_monthly() -> pd.DataFrame:
+    text = _download_text_with_curl(STOOQ_SP500_MONTHLY_URL)
+    frame = pd.read_csv(StringIO(text))
+    frame.columns = [str(column).strip() for column in frame.columns]
+    frame = frame.rename(columns={"Date": "observation_date", "Close": "value"})
+    frame["observation_date"] = pd.to_datetime(frame["observation_date"])
+    frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
+    frame = frame.dropna(subset=["value"]).sort_values("observation_date")
+    frame = frame.loc[frame["observation_date"] >= PAPER_ESTIMATION_START].copy()
+    return frame[["observation_date", "value"]]
+
+
+def download_series_vintage(series_id: str, vintage_date: pd.Timestamp) -> pd.DataFrame:
+    if series_id == "SP500":
+        frame = download_sp500_stooq_monthly()
+        frame = frame.loc[frame["observation_date"] <= pd.Timestamp(vintage_date)].copy()
+    else:
+        frame = _read_csv_from_url(alfred_vintage_url(series_id, vintage_date))
     frame["series_id"] = series_id
     frame["vintage_date"] = pd.Timestamp(vintage_date)
     return frame[["series_id", "vintage_date", "observation_date", "value"]]
 
 
-def download_latest_series(series_id: str, session: requests.Session) -> pd.DataFrame:
-    frame = _read_csv_from_url(fred_latest_url(series_id), session)
+def download_latest_series(series_id: str) -> pd.DataFrame:
+    if series_id == "SP500":
+        frame = download_sp500_stooq_monthly()
+    else:
+        frame = _read_csv_from_url(fred_latest_url(series_id))
     frame["series_id"] = series_id
     return frame[["series_id", "observation_date", "value"]]
 
@@ -119,7 +155,6 @@ def download_latest_series(series_id: str, session: requests.Session) -> pd.Data
 def _load_or_download_realtime_vintage(
     series_id: str,
     vintage_date: pd.Timestamp,
-    session: requests.Session,
     *,
     force: bool = False,
 ) -> tuple[pd.DataFrame, bool]:
@@ -127,14 +162,13 @@ def _load_or_download_realtime_vintage(
     if path.exists() and not force:
         return _read_cached_frame(path, ["vintage_date", "observation_date"]), True
 
-    frame = download_series_vintage(series_id, vintage_date, session)
+    frame = download_series_vintage(series_id, vintage_date)
     _write_cached_frame(frame, path)
     return frame, False
 
 
 def _load_or_download_latest_series(
     series_id: str,
-    session: requests.Session,
     *,
     force: bool = False,
 ) -> tuple[pd.DataFrame, bool]:
@@ -142,7 +176,7 @@ def _load_or_download_latest_series(
     if path.exists() and not force:
         return _read_cached_frame(path, ["observation_date"]), True
 
-    frame = download_latest_series(series_id, session)
+    frame = download_latest_series(series_id)
     _write_cached_frame(frame, path)
     return frame, False
 
@@ -228,40 +262,37 @@ def download_realtime_panel(
         series_frames: list[pd.DataFrame] = []
         ready = 0
         next_report = 0
-        with requests.Session() as session:
-            session.headers.update({"User-Agent": "paper-hyperparameter-optimization/1.0"})
-            for vintage_date in vintage_dates:
-                try:
-                    frame, from_cache = _load_or_download_realtime_vintage(
-                        spec.series_id,
-                        vintage_date,
-                        session,
-                        force=force,
-                    )
-                except requests.RequestException as exc:
-                    raise RuntimeError(
-                        "Failed to download "
-                        f"{spec.series_id} for vintage {vintage_date:%Y-%m-%d} "
-                        f"after {MAX_REQUEST_ATTEMPTS} attempts. "
-                        "Rerunning the command will resume from the cached vintages."
-                    ) from exc
+        for vintage_date in vintage_dates:
+            try:
+                frame, from_cache = _load_or_download_realtime_vintage(
+                    spec.series_id,
+                    vintage_date,
+                    force=force,
+                )
+            except DataDownloadError as exc:
+                raise RuntimeError(
+                    "Failed to download "
+                    f"{spec.series_id} for vintage {vintage_date:%Y-%m-%d} "
+                    f"after {MAX_REQUEST_ATTEMPTS} attempts. "
+                    "Rerunning the command will resume from the cached vintages."
+                ) from exc
 
-                series_frames.append(frame)
-                ready += 1
-                progress_pct = int((ready / len(vintage_dates)) * 100)
-                if ready == len(vintage_dates) or progress_pct >= next_report:
-                    source = "cached/downloaded"
-                    if from_cache:
-                        source = "cached"
-                    elif force:
-                        source = "redownloaded"
-                    else:
-                        source = "downloaded"
-                    report(
-                        f"Series {spec.series_id}: {ready}/{len(vintage_dates)} vintages ready "
-                        f"({progress_pct}%, latest {source}: {vintage_date:%Y-%m-%d})."
-                    )
-                    next_report = progress_pct + 10
+            series_frames.append(frame)
+            ready += 1
+            progress_pct = int((ready / len(vintage_dates)) * 100)
+            if ready == len(vintage_dates) or progress_pct >= next_report:
+                source = "cached/downloaded"
+                if from_cache:
+                    source = "cached"
+                elif force:
+                    source = "redownloaded"
+                else:
+                    source = "downloaded"
+                report(
+                    f"Series {spec.series_id}: {ready}/{len(vintage_dates)} vintages ready "
+                    f"({progress_pct}%, latest {source}: {vintage_date:%Y-%m-%d})."
+                )
+                next_report = progress_pct + 10
 
         frames.extend(series_frames)
 
@@ -271,19 +302,17 @@ def download_realtime_panel(
 
     report(f"Preparing latest FRED series for backfilling and evaluation ({len(SERIES_SPECS)} series).")
     latest_frames: list[pd.DataFrame] = []
-    with requests.Session() as session:
-        session.headers.update({"User-Agent": "paper-hyperparameter-optimization/1.0"})
-        for series_idx, spec in enumerate(SERIES_SPECS, start=1):
-            try:
-                frame, from_cache = _load_or_download_latest_series(spec.series_id, session, force=force)
-            except requests.RequestException as exc:
-                raise RuntimeError(
-                    f"Failed to download latest FRED series {spec.series_id} after {MAX_REQUEST_ATTEMPTS} attempts. "
-                    "Rerunning the command will resume from the cached files."
-                ) from exc
-            latest_frames.append(frame)
-            source = "cached" if from_cache else ("redownloaded" if force else "downloaded")
-            report(f"Latest series {series_idx}/{len(SERIES_SPECS)} {spec.series_id}: {source}.")
+    for series_idx, spec in enumerate(SERIES_SPECS, start=1):
+        try:
+            frame, from_cache = _load_or_download_latest_series(spec.series_id, force=force)
+        except DataDownloadError as exc:
+            raise RuntimeError(
+                f"Failed to download latest FRED series {spec.series_id} after {MAX_REQUEST_ATTEMPTS} attempts. "
+                "Rerunning the command will resume from the cached files."
+            ) from exc
+        latest_frames.append(frame)
+        source = "cached" if from_cache else ("redownloaded" if force else "downloaded")
+        report(f"Latest series {series_idx}/{len(SERIES_SPECS)} {spec.series_id}: {source}.")
     latest_panel = pd.concat(latest_frames, ignore_index=True).sort_values(["series_id", "observation_date"])
 
     report("Backfilling incomplete ALFRED histories for PCEC96 and FPIC1.")

@@ -27,6 +27,8 @@ It pulls:
 - one evaluation vintage for `2012-01-31`,
 - latest FRED series for backcasting incomplete `PCEC96` and `FPIC1` histories in the same spirit as the paper appendix.
 
+If the ALFRED `SP500` vintage endpoint is unavailable, the downloader falls back to Stooq monthly S&P 500 closes and truncates that non-revised history at each vintage date.
+
 ## Environment
 
 Create a Python environment with the dependencies in [requirements.txt](/workspaces/paper_hyperparameter_optimization/requirements.txt).

@@ -1,0 +1,105 @@
+{
+  "forecast_origin_start": "1997-07-31",
+  "forecast_origin_end": "1997-07-31",
+  "actual_vintage": "1997-07-31",
+  "n_forecast_origins": 1,
+  "force_refresh": true,
+  "realtime_cache_dir": "/workspaces/paper_hyperparameter_optimization/data/raw/alfred_realtime",
+  "latest_cache_dir": "/workspaces/paper_hyperparameter_optimization/data/raw/fred_latest",
+  "series": [
+    {
+      "series_id": "GDPC1",
+      "paper_code": "GDP",
+      "label": "Gross Domestic Product",
+      "frequency": "Q",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    },
+    {
+      "series_id": "FPIC1",
+      "paper_code": "INVFIX",
+      "label": "Fixed Investment",
+      "frequency": "Q",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    },
+    {
+      "series_id": "GCEC1",
+      "paper_code": "GOV",
+      "label": "Government Expenditures",
+      "frequency": "Q",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    },
+    {
+      "series_id": "UNRATE",
+      "paper_code": "UNR",
+      "label": "Unemployment Rate",
+      "frequency": "M",
+      "mbfvar_transform": 1,
+      "evaluation_transform": "level"
+    },
+    {
+      "series_id": "AWHI",
+      "paper_code": "HRS",
+      "label": "Hours Worked",
+      "frequency": "M",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    },
+    {
+      "series_id": "CPIAUCSL",
+      "paper_code": "CPI",
+      "label": "Consumer Price Index",
+      "frequency": "M",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    },
+    {
+      "series_id": "INDPRO",
+      "paper_code": "IP",
+      "label": "Industrial Production Index",
+      "frequency": "M",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    },
+    {
+      "series_id": "PCEC96",
+      "paper_code": "PCE",
+      "label": "Personal Consumption Expenditure",
+      "frequency": "M",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    },
+    {
+      "series_id": "FEDFUNDS",
+      "paper_code": "FF",
+      "label": "Federal Funds Rate",
+      "frequency": "M",
+      "mbfvar_transform": 1,
+      "evaluation_transform": "level"
+    },
+    {
+      "series_id": "GS10",
+      "paper_code": "TB",
+      "label": "Treasury Bond Yield",
+      "frequency": "M",
+      "mbfvar_transform": 1,
+      "evaluation_transform": "level"
+    },
+    {
+      "series_id": "SP500",
+      "paper_code": "SP500",
+      "label": "S&P 500",
+      "frequency": "M",
+      "mbfvar_transform": 0,
+      "evaluation_transform": "growth"
+    }
+  ],
+  "origin_groups": [
+    {
+      "forecast_origin": "1997-07-31",
+      "group": "+0 months"
+    }
+  ]
+}
