@@ -69,36 +69,6 @@ def make_data_in(quarterly: pd.DataFrame, monthly: pd.DataFrame):
     )
 
 
-def patch_mbfvar_missing_observation_handling() -> None:
-    import MBFVAR._estimation as mbfvar_estimation
-    import MBFVAR.mfbvar_funcs as mbfvar_funcs
-
-    if getattr(mbfvar_estimation, "_paper_hpo_missing_patch", False):
-        return
-
-    original_calc_yyact = mbfvar_funcs.calc_yyact
-    original_mdd = mbfvar_funcs.mdd_
-
-    def _valid_rows(yyact: np.ndarray, xxact: np.ndarray) -> np.ndarray:
-        return (~np.isnan(yyact).any(axis=1)) & (~np.isnan(xxact).any(axis=1))
-
-    def patched_calc_yyact(hyp, yy, spec):
-        yyact, yydum, xxact, xxdum = original_calc_yyact(hyp, yy, spec)
-        valid = _valid_rows(yyact, xxact)
-        return yyact[valid], yydum, xxact[valid], xxdum
-
-    def patched_mdd(hyp, yy, spec):
-        mdd_value, yyact, yydum, xxact, xxdum = original_mdd(hyp, yy, spec)
-        valid = _valid_rows(yyact, xxact)
-        return mdd_value, yyact[valid], yydum, xxact[valid], xxdum
-
-    mbfvar_funcs.calc_yyact = patched_calc_yyact
-    mbfvar_funcs.mdd_ = patched_mdd
-    mbfvar_estimation.calc_yyact = patched_calc_yyact
-    mbfvar_estimation.mdd_ = patched_mdd
-    mbfvar_estimation._paper_hpo_missing_patch = True
-
-
 def hyperparameter_record(origin_date: pd.Timestamp, strategy: str, hyperparameters: list[list[float]]) -> dict[str, Any]:
     base = {
         "forecast_origin": pd.Timestamp(origin_date).strftime("%Y-%m-%d"),
@@ -216,7 +186,6 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
 
         import MBFVAR
 
-        patch_mbfvar_missing_observation_handling()
         data_in = make_data_in(quarterly, monthly)
         optimizer_model = MBFVAR.MixedFrequencyBVAR(
             task["optimization_nsim"],
