@@ -30,7 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--start", type=str, default=PAPER_FORECAST_START.strftime("%Y-%m-%d"))
     parser.add_argument("--end", type=str, default=PAPER_FORECAST_END.strftime("%Y-%m-%d"))
     parser.add_argument("--actual-vintage", type=str, default=PAPER_ACTUAL_VINTAGE.strftime("%Y-%m-%d"))
-    parser.add_argument("--max-workers", type=int, default=8)
+    parser.add_argument("--max-workers", type=int, default=4)
     return parser
 
 

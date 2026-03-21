@@ -5,6 +5,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from io import StringIO
 from pathlib import Path
+import time
 from typing import Callable, Iterable
 
 import pandas as pd
@@ -29,7 +30,10 @@ from .config import (
 
 ALFRED_GRAPH_URL = "https://alfred.stlouisfed.org/graph/alfredgraph.csv"
 FRED_GRAPH_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv"
-REQUEST_TIMEOUT = 120
+REQUEST_TIMEOUT = (20, 120)
+MAX_REQUEST_ATTEMPTS = 4
+RETRY_BACKOFF_SECONDS = 2.0
+RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 
 
 @dataclass(frozen=True)
@@ -51,10 +55,31 @@ def fred_latest_url(series_id: str) -> str:
     return f"{FRED_GRAPH_URL}?id={series_id}"
 
 
+def _retry_delay_seconds(attempt: int) -> float:
+    return RETRY_BACKOFF_SECONDS * (2 ** (attempt - 1))
+
+
 def _read_csv_from_url(url: str, session: requests.Session) -> pd.DataFrame:
-    response = session.get(url, timeout=REQUEST_TIMEOUT)
-    response.raise_for_status()
-    frame = pd.read_csv(StringIO(response.text))
+    last_error: requests.RequestException | None = None
+    for attempt in range(1, MAX_REQUEST_ATTEMPTS + 1):
+        try:
+            response = session.get(url, timeout=REQUEST_TIMEOUT)
+            response.raise_for_status()
+            frame = pd.read_csv(StringIO(response.text))
+            break
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
+            last_error = exc
+        except requests.exceptions.HTTPError as exc:
+            last_error = exc
+            if exc.response is None or exc.response.status_code not in RETRYABLE_STATUS_CODES:
+                raise
+
+        if attempt == MAX_REQUEST_ATTEMPTS:
+            assert last_error is not None
+            raise last_error
+
+        time.sleep(_retry_delay_seconds(attempt))
+
     frame.columns = [str(column).strip() for column in frame.columns]
     frame = frame.rename(columns={frame.columns[0]: "observation_date", frame.columns[1]: "value"})
     frame["observation_date"] = pd.to_datetime(frame["observation_date"])
@@ -124,7 +149,14 @@ def backcast_from_latest(
 def _download_task(task: DownloadTask) -> pd.DataFrame:
     with requests.Session() as session:
         session.headers.update({"User-Agent": "paper-hyperparameter-optimization/1.0"})
-        return download_series_vintage(task.series_id, task.vintage_date, session)
+        try:
+            return download_series_vintage(task.series_id, task.vintage_date, session)
+        except requests.RequestException as exc:
+            raise RuntimeError(
+                "Failed to download "
+                f"{task.series_id} for vintage {task.vintage_date:%Y-%m-%d} "
+                f"after {MAX_REQUEST_ATTEMPTS} attempts."
+            ) from exc
 
 
 def download_realtime_panel(
@@ -133,7 +165,7 @@ def download_realtime_panel(
     metadata_path: Path = DOWNLOAD_METADATA_PATH,
     forecast_origins: Iterable[pd.Timestamp] | None = None,
     actual_vintage: pd.Timestamp = PAPER_ACTUAL_VINTAGE,
-    max_workers: int = 8,
+    max_workers: int = 4,
     progress_callback: Callable[[str], None] | None = None,
 ) -> tuple[Path, Path]:
     ensure_data_directories()
@@ -152,7 +184,7 @@ def download_realtime_panel(
     frames: list[pd.DataFrame] = []
     completed = 0
     next_report = 0
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+    with ThreadPoolExecutor(max_workers=max(1, max_workers)) as executor:
         future_map = {executor.submit(_download_task, task): task for task in tasks}
         for future in as_completed(future_map):
             frames.append(future.result())
