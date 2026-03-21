@@ -87,11 +87,25 @@ python scripts/run_mango_rmse.py \
   --optimization-nsim 1000 \
   --optimization-init-points 5 \
   --optimization-iterations 15 \
-  --optimization-horizon-quarters 4 \
   --optimization-variables GDP
 ```
 
-This uses Mango to minimize an internal rolling-holdout RMSE criterion through `MBFVAR.update_hyperparameters_mango_rmse`.
+By default this now runs four horizon-specific RMSE optimizations for `1`, `2`, `4`, and `8` quarters ahead, using `n_eval=3` rolling evaluation origins as a compromise between runtime and objective stability. Each run is written to its own subdirectory under `outputs/mango_rmse` such as `h1q` and `h8q`.
+
+This uses Mango to minimize an internal rolling-holdout RMSE criterion through `MBFVAR.update_hyperparameters_mango_rmse`, passing both the target evaluation horizon and `n_eval`.
+
+To run a single target horizon instead of the default batch:
+
+```bash
+python scripts/run_mango_rmse.py \
+  --output-dir outputs/mango_rmse_h4 \
+  --optimization-eval-horizons-quarters 4 \
+  --optimization-nsim 1000 \
+  --optimization-init-points 5 \
+  --optimization-iterations 15 \
+  --optimization-n-eval 3 \
+  --optimization-variables GDP
+```
 
 ### 5. Compare the three forecast sets
 
