@@ -35,6 +35,12 @@ def parse_csv_list(value: str | None, default: list[str]) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
 
+def parse_csv_int_list(value: str | None, default: list[int]) -> list[int]:
+    if not value:
+        return default
+    return [int(item.strip()) for item in value.split(",") if item.strip()]
+
+
 def compute_quarterly_metrics(level_frame: pd.DataFrame) -> pd.DataFrame:
     metrics = level_frame.copy()
     for column in metrics.columns:
@@ -117,6 +123,8 @@ def select_hyperparameters(
             njobs=args["optimization_njobs"],
             var_of_interest=optimization_vars,
             temp_agg=args["temp_agg"],
+            h_eval=args["optimization_eval_horizon_quarters"],
+            n_eval=args["optimization_n_eval"],
             save=False,
         )
     raise ValueError(f"Unsupported strategy: {strategy}")
@@ -229,6 +237,8 @@ def run_recursive_experiment(
     optimization_iterations: int = 15,
     optimization_njobs: int = 1,
     optimization_horizon_quarters: int = 4,
+    optimization_eval_horizon_quarters: int | None = None,
+    optimization_n_eval: int = 3,
     optimization_variables: list[str] | None = None,
     temp_agg: str = PAPER_TEMPORAL_AGGREGATION,
     n_workers: int = 1,
@@ -250,6 +260,8 @@ def run_recursive_experiment(
         "optimization_iterations": optimization_iterations,
         "optimization_njobs": optimization_njobs,
         "optimization_horizon_quarters": optimization_horizon_quarters,
+        "optimization_eval_horizon_quarters": optimization_eval_horizon_quarters,
+        "optimization_n_eval": optimization_n_eval,
         "optimization_variables": optimization_variables or ["GDP"],
         "temp_agg": temp_agg,
     }
@@ -311,6 +323,8 @@ def run_recursive_experiment(
         "optimization_iterations": optimization_iterations,
         "optimization_njobs": optimization_njobs,
         "optimization_horizon_quarters": optimization_horizon_quarters,
+        "optimization_eval_horizon_quarters": optimization_eval_horizon_quarters,
+        "optimization_n_eval": optimization_n_eval,
         "optimization_variables": optimization_variables or ["GDP"],
         "temp_agg": temp_agg,
         "n_workers": n_workers,
@@ -374,6 +388,8 @@ def run_from_namespace(strategy: str, namespace: argparse.Namespace) -> Path:
                 "optimization_iterations": namespace.optimization_iterations,
                 "optimization_njobs": namespace.optimization_njobs,
                 "optimization_horizon_quarters": namespace.optimization_horizon_quarters,
+                "optimization_eval_horizon_quarters": getattr(namespace, "optimization_eval_horizon_quarters", None),
+                "optimization_n_eval": getattr(namespace, "optimization_n_eval", 3),
                 "optimization_variables": parse_csv_list(namespace.optimization_variables, ["GDP"]),
             }
         )
