@@ -30,7 +30,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--start", type=str, default=PAPER_FORECAST_START.strftime("%Y-%m-%d"))
     parser.add_argument("--end", type=str, default=PAPER_FORECAST_END.strftime("%Y-%m-%d"))
     parser.add_argument("--actual-vintage", type=str, default=PAPER_ACTUAL_VINTAGE.strftime("%Y-%m-%d"))
-    parser.add_argument("--max-workers", type=int, default=4)
+    parser.add_argument("--max-workers", type=int, default=1)
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Redownload files even if a cached copy already exists.",
+    )
     return parser
 
 
@@ -55,6 +60,7 @@ def main() -> int:
         actual_vintage=pd.Timestamp(args.actual_vintage),
         max_workers=args.max_workers,
         progress_callback=report,
+        force=args.force,
     )
     report("All downloads completed successfully.")
     return 0
