@@ -413,13 +413,12 @@ def build_model_input_frames(panel: pd.DataFrame, vintage_date: pd.Timestamp) ->
     quarterly = _complete_window(quarterly)
     monthly = _complete_window(monthly)
 
-    # The MBFVAR regression step cannot tolerate partial-quarter rows because the
-    # unavailable current-quarter low-frequency values leak into lagged regressors.
-    complete_months = (len(monthly) // 3) * 3
-    if complete_months == 0:
+    # Keep all fully observed monthly rows, even within an incomplete quarter.
+    # The quarterly block only needs to be capped so it fits inside the monthly sample.
+    max_quarters = len(monthly) // 3
+    if max_quarters == 0:
         raise ValueError("Not enough monthly history is available after trimming the complete sample window.")
-    monthly = monthly.iloc[:complete_months].copy()
-    quarterly = quarterly.iloc[: complete_months // 3].copy()
+    quarterly = quarterly.iloc[: min(len(quarterly), max_quarters)].copy()
     return quarterly, monthly
 
 
