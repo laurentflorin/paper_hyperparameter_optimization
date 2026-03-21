@@ -368,21 +368,65 @@ def pivot_vintage_panel(panel: pd.DataFrame, vintage_date: pd.Timestamp) -> pd.D
     subset = panel.loc[panel["vintage_date"] == vintage_date, ["series_id", "observation_date", "value"]].copy()
     if subset.empty:
         raise FileNotFoundError(f"No data available for vintage {vintage_date:%Y-%m-%d}.")
+    monthly_ids = {spec.series_id for spec in SERIES_SPECS if spec.frequency == "M"}
+    quarterly_ids = {spec.series_id for spec in QUARTERLY_SERIES}
+    monthly_mask = subset["series_id"].isin(monthly_ids)
+    quarterly_mask = subset["series_id"].isin(quarterly_ids)
+
+    # FRED monthly/quarterly series and Stooq market data use different day-of-period
+    # conventions. Align them before pivoting so one calendar period maps to one row.
+    subset.loc[monthly_mask, "observation_date"] = (
+        subset.loc[monthly_mask, "observation_date"]
+        .dt.to_period("M")
+        .dt.to_timestamp(how="end")
+        .dt.normalize()
+    )
+    subset.loc[quarterly_mask, "observation_date"] = (
+        subset.loc[quarterly_mask, "observation_date"]
+        .dt.to_period("Q")
+        .dt.to_timestamp(how="end")
+        .dt.normalize()
+    )
     wide = subset.pivot(index="observation_date", columns="series_id", values="value").sort_index()
     rename_map = {series_id: SERIES_BY_ID[series_id].paper_code for series_id in wide.columns}
     wide = wide.rename(columns=rename_map)
     return wide
 
 
+def _complete_window(frame: pd.DataFrame) -> pd.DataFrame:
+    complete_rows = frame.notna().all(axis=1)
+    if not complete_rows.any():
+        raise ValueError("No fully observed sample window is available for the selected vintage.")
+    first_complete = complete_rows[complete_rows].index[0]
+    last_complete = complete_rows[complete_rows].index[-1]
+    window = frame.loc[first_complete:last_complete].copy()
+    if window.isna().any().any():
+        raise ValueError("The selected vintage contains internal gaps inside the complete sample window.")
+    return window
+
+
 def build_model_input_frames(panel: pd.DataFrame, vintage_date: pd.Timestamp) -> tuple[pd.DataFrame, pd.DataFrame]:
     wide = pivot_vintage_panel(panel, vintage_date)
     quarterly = wide[[spec.paper_code for spec in QUARTERLY_SERIES]].dropna(how="all")
     monthly = wide[[spec.paper_code for spec in SERIES_SPECS if spec.frequency == "M"]].dropna(how="all")
+
+    quarterly = _complete_window(quarterly)
+    monthly = _complete_window(monthly)
+
+    # The MBFVAR regression step cannot tolerate partial-quarter rows because the
+    # unavailable current-quarter low-frequency values leak into lagged regressors.
+    complete_months = (len(monthly) // 3) * 3
+    if complete_months == 0:
+        raise ValueError("Not enough monthly history is available after trimming the complete sample window.")
+    monthly = monthly.iloc[:complete_months].copy()
+    quarterly = quarterly.iloc[: complete_months // 3].copy()
     return quarterly, monthly
 
 
 def build_quarterly_evaluation_frame(panel: pd.DataFrame, vintage_date: pd.Timestamp) -> pd.DataFrame:
-    quarterly, monthly = build_model_input_frames(panel, vintage_date)
+    wide = pivot_vintage_panel(panel, vintage_date)
+    quarterly = wide[[spec.paper_code for spec in QUARTERLY_SERIES]].dropna(how="all")
+    monthly = wide[[spec.paper_code for spec in SERIES_SPECS if spec.frequency == "M"]].dropna(how="all")
     quarterly = quarterly.copy()
     quarterly.index = pd.PeriodIndex(quarterly.index, freq="Q")
 
