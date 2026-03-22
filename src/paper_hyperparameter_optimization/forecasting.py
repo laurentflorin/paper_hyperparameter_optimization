@@ -14,6 +14,7 @@ from .config import (
     MBFVAR_TRANSFORMS,
     MAX_FORECAST_HORIZON_MONTHS,
     MAX_FORECAST_HORIZON_QUARTERS,
+    MAX_IT_STABLE,
     PAPER_ACTUAL_VINTAGE,
     PAPER_HYPERPARAMETERS,
     PAPER_NBURN_PERC,
@@ -201,7 +202,12 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
             task["nlags"],
             task["thining"],
         )
-        model.fit(data_in, hyp=hyperparameters, temp_agg=task["temp_agg"])
+        model.fit(
+            data_in,
+            hyp=hyperparameters,
+            temp_agg=task["temp_agg"],
+            max_it_stable=task.get("max_it_stable", 1000),
+        )
         model.forecast(task["forecast_horizon_months"])
         model.aggregate(frequency="Q")
 
@@ -241,6 +247,7 @@ def run_recursive_experiment(
     optimization_n_eval: int = 3,
     optimization_variables: list[str] | None = None,
     temp_agg: str = PAPER_TEMPORAL_AGGREGATION,
+    max_it_stable: int = MAX_IT_STABLE,
     n_workers: int = 1,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -264,6 +271,7 @@ def run_recursive_experiment(
         "optimization_n_eval": optimization_n_eval,
         "optimization_variables": optimization_variables or ["GDP"],
         "temp_agg": temp_agg,
+        "max_it_stable": max_it_stable,
     }
 
     tasks = [{**task_template, "origin_date": origin.strftime("%Y-%m-%d")} for origin in origins]
@@ -327,6 +335,7 @@ def run_recursive_experiment(
         "optimization_n_eval": optimization_n_eval,
         "optimization_variables": optimization_variables or ["GDP"],
         "temp_agg": temp_agg,
+        "max_it_stable": max_it_stable,
         "n_workers": n_workers,
         "n_origins_requested": len(origins),
         "n_origins_completed": int(hyperparameters.shape[0]),
