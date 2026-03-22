@@ -4,8 +4,8 @@
   "actual_vintage": "2012-01-31",
   "n_forecast_origins": 151,
   "force_refresh": false,
-  "realtime_cache_dir": "/workspaces/paper_hyperparameter_optimization/data/raw/alfred_realtime",
-  "latest_cache_dir": "/workspaces/paper_hyperparameter_optimization/data/raw/fred_latest",
+  "realtime_cache_dir": "/var/home/laurent/Documents/Repositories/paper_hyperparameter_optimization/data/raw/alfred_realtime",
+  "latest_cache_dir": "/var/home/laurent/Documents/Repositories/paper_hyperparameter_optimization/data/raw/fred_latest",
   "series": [
     {
       "series_id": "GDPC1",
