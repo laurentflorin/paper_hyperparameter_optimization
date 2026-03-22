@@ -44,6 +44,20 @@ PAPER_NLAGS = [6]
 PAPER_HYPERPARAMETERS = [0.09, 4.30, 1.0, 2.70, 4.30]
 PAPER_TEMPORAL_AGGREGATION = "mean"
 
+# Explosive VAR handling
+# The paper hyperparameters (especially λ1=0.09) can produce explosive VAR draws
+# during MCMC sampling. The MBFVAR package attempts up to max_it_stable draws
+# to find non-explosive coefficients. If all attempts fail, it raises an error.
+#
+# The default max_it_stable=1000 may be insufficient for weak priors like λ1=0.09.
+# We increase this to 10000 to give more attempts at finding stable draws.
+#
+# Alternative solutions:
+# 1. Increase λ1 for stronger shrinkage (reduces explosive draws)
+# 2. Use MDD-optimized hyperparameters instead of fixed paper values
+# 3. Accept that some origins may fail with very weak priors
+MAX_IT_STABLE = 10_000  # Increased from default 1000
+
 DEFAULT_PARAM_SPACE_BOUNDS = {
     "lambda1_1": (0.001, 20.0),
     "lambda2_1": (0.01, 10.0),
