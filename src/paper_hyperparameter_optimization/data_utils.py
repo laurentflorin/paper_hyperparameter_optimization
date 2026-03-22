@@ -181,39 +181,41 @@ def _load_or_download_latest_series(
     return frame, False
 
 
-def backcast_from_latest(
+def backcast_from_reference(
     vintage_frame: pd.DataFrame,
-    latest_frame: pd.DataFrame,
+    reference_frame: pd.DataFrame,
     start_date: pd.Timestamp = PAPER_ESTIMATION_START,
 ) -> pd.DataFrame:
     vintage = vintage_frame.sort_values("observation_date").copy()
-    latest = latest_frame.sort_values("observation_date").copy()
+    reference = reference_frame.sort_values("observation_date").copy()
     if vintage.empty:
+        return vintage
+
+    vintage = vintage[vintage["observation_date"] >= start_date].copy()
+    reference = reference[reference["observation_date"] >= start_date].copy()
+    if vintage.empty or reference.empty:
         return vintage
 
     first_observation = vintage["observation_date"].min()
     if first_observation <= start_date:
-        return vintage[vintage["observation_date"] >= start_date].copy()
-
-    latest = latest[latest["observation_date"] >= start_date].copy()
-    if latest.empty:
         return vintage
 
-    latest_series = latest.set_index("observation_date")["value"]
     vintage_series = vintage.set_index("observation_date")["value"]
-    anchor_date = first_observation
+    reference_series = reference.set_index("observation_date")["value"]
+    overlapping_dates = vintage_series.index.intersection(reference_series.index)
+    if overlapping_dates.empty:
+        return vintage
 
-    if anchor_date not in latest_series.index:
-        return vintage[vintage["observation_date"] >= start_date].copy()
-
+    anchor_date = overlapping_dates.min()
     history = vintage_series.copy()
-    prior_dates = latest_series.index[latest_series.index < anchor_date]
+    prior_dates = reference_series.index[reference_series.index < anchor_date]
     current_value = history.loc[anchor_date]
 
     for date in reversed(prior_dates):
-        next_date = latest_series.index[latest_series.index.get_loc(date) + 1]
-        growth_ratio = latest_series.loc[next_date] / latest_series.loc[date]
+        next_date = reference_series.index[reference_series.index.get_loc(date) + 1]
+        growth_ratio = reference_series.loc[next_date] / reference_series.loc[date]
         if pd.isna(growth_ratio) or growth_ratio == 0:
+            history.loc[date] = current_value
             continue
         current_value = current_value / growth_ratio
         history.loc[date] = current_value
@@ -222,8 +224,43 @@ def backcast_from_latest(
     out = history.to_frame("value").reset_index().rename(columns={"index": "observation_date"})
     out["series_id"] = vintage["series_id"].iloc[0]
     out["vintage_date"] = vintage["vintage_date"].iloc[0]
-    out = out[out["observation_date"] >= start_date]
     return out[["series_id", "vintage_date", "observation_date", "value"]]
+
+
+def repair_short_history_vintages(
+    series_panel: pd.DataFrame,
+    latest_series_frame: pd.DataFrame | None = None,
+    start_date: pd.Timestamp = PAPER_ESTIMATION_START,
+) -> pd.DataFrame:
+    repaired_vintages: list[pd.DataFrame] = []
+    for _, vintage_frame in series_panel.groupby("vintage_date", sort=True):
+        vintage = vintage_frame.sort_values("observation_date").copy()
+        if vintage.empty:
+            repaired_vintages.append(vintage)
+            continue
+
+        first_observation = vintage["observation_date"].min()
+        if first_observation <= start_date:
+            repaired_vintages.append(vintage[vintage["observation_date"] >= start_date].copy())
+            continue
+
+        reference_frame = next(
+            (
+                prior
+                for prior in reversed(repaired_vintages)
+                if not prior.empty and prior["observation_date"].min() <= start_date
+            ),
+            None,
+        )
+        if reference_frame is None:
+            reference_frame = latest_series_frame
+        if reference_frame is None:
+            repaired_vintages.append(vintage[vintage["observation_date"] >= start_date].copy())
+            continue
+
+        repaired_vintages.append(backcast_from_reference(vintage, reference_frame, start_date=start_date))
+
+    return pd.concat(repaired_vintages, ignore_index=True)
 
 
 def download_realtime_panel(
@@ -317,12 +354,14 @@ def download_realtime_panel(
 
     report("Backfilling incomplete ALFRED histories for PCEC96 and FPIC1.")
     for series_id in ("PCEC96", "FPIC1"):
-        latest_series = latest_panel[latest_panel["series_id"] == series_id]
-        updated_vintages = []
-        for vintage_date, vintage_frame in realtime_panel[realtime_panel["series_id"] == series_id].groupby("vintage_date"):
-            updated_vintages.append(backcast_from_latest(vintage_frame, latest_series))
+        series_panel = realtime_panel[realtime_panel["series_id"] == series_id].copy()
+        latest_series = latest_panel[latest_panel["series_id"] == series_id].copy()
         realtime_panel = realtime_panel[realtime_panel["series_id"] != series_id]
-        realtime_panel = pd.concat([realtime_panel, *updated_vintages], ignore_index=True)
+        repaired_panel = repair_short_history_vintages(
+            series_panel=series_panel,
+            latest_series_frame=latest_series,
+        )
+        realtime_panel = pd.concat([realtime_panel, repaired_panel], ignore_index=True)
 
     realtime_panel = realtime_panel.sort_values(["series_id", "vintage_date", "observation_date"])
     report(f"Writing real-time panel to {output_path}.")
