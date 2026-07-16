@@ -24,15 +24,15 @@ OUTPUT_ROOT="${OUTPUT_ROOT:-$REPO_ROOT/outputs/euler}"
 cd "$REPO_ROOT"
 mkdir -p "$OUTPUT_ROOT"
 
-python scripts/download_data.py
+python download_data.py
 
-python scripts/run_paper_hyperparameters.py \
+python run_paper_hyperparameters.py \
   --output-dir "$OUTPUT_ROOT/paper_hyperparameters"
 
-python scripts/run_mango_mdd.py \
+python run_mango_mdd.py \
   --output-dir "$OUTPUT_ROOT/mango_mdd"
 
-python scripts/run_mango_rmse.py \
+python run_mango_rmse.py \
   --output-dir "$OUTPUT_ROOT/mango_rmse"
 
 python scripts/run_mango_rmse_random.py \
