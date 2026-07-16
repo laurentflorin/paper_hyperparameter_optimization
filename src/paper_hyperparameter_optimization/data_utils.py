@@ -22,6 +22,7 @@ from .config import (
     SERIES_BY_ID,
     forecast_origin_dates,
     origin_group,
+    resolve_project_path,
     serialise_series_specs,
 )
 
@@ -181,6 +182,33 @@ def _load_or_download_latest_series(
     return frame, False
 
 
+def _existing_download_outputs_match(
+    output_path: Path,
+    latest_output_path: Path,
+    metadata_path: Path,
+    origins: list[pd.Timestamp],
+    actual_vintage: pd.Timestamp,
+) -> bool:
+    if not output_path.exists() or not latest_output_path.exists() or not metadata_path.exists():
+        return False
+
+    try:
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+
+    expected_start = min(origins).strftime("%Y-%m-%d")
+    expected_end = max(origins).strftime("%Y-%m-%d")
+    expected_actual = pd.Timestamp(actual_vintage).strftime("%Y-%m-%d")
+    expected_count = len(origins)
+    return (
+        metadata.get("forecast_origin_start") == expected_start
+        and metadata.get("forecast_origin_end") == expected_end
+        and metadata.get("actual_vintage") == expected_actual
+        and metadata.get("n_forecast_origins") == expected_count
+    )
+
+
 def backcast_from_reference(
     vintage_frame: pd.DataFrame,
     reference_frame: pd.DataFrame,
@@ -273,6 +301,9 @@ def download_realtime_panel(
     progress_callback: Callable[[str], None] | None = None,
     force: bool = False,
 ) -> tuple[Path, Path]:
+    output_path = resolve_project_path(output_path)
+    latest_output_path = resolve_project_path(latest_output_path)
+    metadata_path = resolve_project_path(metadata_path)
     ensure_data_directories()
     if max_workers != 1:
         report = progress_callback or (lambda message: None)
@@ -282,6 +313,19 @@ def download_realtime_panel(
 
     origins = list(forecast_origin_dates() if forecast_origins is None else forecast_origins)
     vintage_dates = sorted({*origins, pd.Timestamp(actual_vintage)})
+
+    if not force and _existing_download_outputs_match(
+        output_path,
+        latest_output_path,
+        metadata_path,
+        origins,
+        pd.Timestamp(actual_vintage),
+    ):
+        report(
+            "Skipping download because the requested real-time panel, latest panel, "
+            "and metadata already exist for this date range."
+        )
+        return output_path, latest_output_path
 
     report(
         "Preparing resumable downloads "
@@ -364,6 +408,9 @@ def download_realtime_panel(
         realtime_panel = pd.concat([realtime_panel, repaired_panel], ignore_index=True)
 
     realtime_panel = realtime_panel.sort_values(["series_id", "vintage_date", "observation_date"])
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    latest_output_path.parent.mkdir(parents=True, exist_ok=True)
+    metadata_path.parent.mkdir(parents=True, exist_ok=True)
     report(f"Writing real-time panel to {output_path}.")
     realtime_panel.to_csv(output_path, index=False, compression="gzip")
     report(f"Writing latest panel to {latest_output_path}.")
@@ -390,6 +437,7 @@ def download_realtime_panel(
 
 
 def load_realtime_panel(path: Path = REALTIME_PANEL_PATH) -> pd.DataFrame:
+    path = resolve_project_path(path)
     frame = pd.read_csv(path, compression="gzip")
     frame["vintage_date"] = pd.to_datetime(frame["vintage_date"])
     frame["observation_date"] = pd.to_datetime(frame["observation_date"])
@@ -397,6 +445,7 @@ def load_realtime_panel(path: Path = REALTIME_PANEL_PATH) -> pd.DataFrame:
 
 
 def load_latest_panel(path: Path = LATEST_PANEL_PATH) -> pd.DataFrame:
+    path = resolve_project_path(path)
     frame = pd.read_csv(path, compression="gzip")
     frame["observation_date"] = pd.to_datetime(frame["observation_date"])
     return frame

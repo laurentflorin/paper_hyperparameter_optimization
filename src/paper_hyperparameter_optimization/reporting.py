@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from .config import resolve_project_path
+
 
 HEADLINE_VARIABLES = ["GDP", "CPI", "UNR", "FF"]
 MODEL_ORDER = ["paper", "mango_mdd", "mango_rmse", "mango_rmse_random"]
@@ -179,6 +181,11 @@ def create_comparison_report(
     experiment_dirs: dict[str, Path],
     output_dir: Path,
 ) -> Path:
+    experiment_dirs = {
+        model_name: resolve_project_path(directory)
+        for model_name, directory in experiment_dirs.items()
+    }
+    output_dir = resolve_project_path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     forecasts = load_forecast_panels(experiment_dirs)

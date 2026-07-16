@@ -29,6 +29,13 @@ REALTIME_PANEL_PATH = PROCESSED_DATA_DIR / "realtime_panel.csv.gz"
 LATEST_PANEL_PATH = PROCESSED_DATA_DIR / "latest_panel.csv.gz"
 DOWNLOAD_METADATA_PATH = PROCESSED_DATA_DIR / "download_metadata.json"
 
+
+def resolve_project_path(path: str | Path) -> Path:
+    candidate = Path(path).expanduser()
+    if candidate.is_absolute():
+        return candidate
+    return (PROJECT_ROOT / candidate).resolve()
+
 PAPER_FORECAST_START = pd.Timestamp("1997-07-31")
 PAPER_FORECAST_END = pd.Timestamp("2010-01-31")
 PAPER_ACTUAL_VINTAGE = pd.Timestamp("2012-01-31")

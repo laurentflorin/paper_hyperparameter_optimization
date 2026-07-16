@@ -38,11 +38,15 @@ Create a Python environment with the dependencies in [requirements.txt](/workspa
 
 ## Scripts
 
+All script path arguments are resolved relative to the repository root, so the commands below work even when launched from a different current working directory.
+
 ### 1. Download data
 
 ```bash
 python scripts/download_data.py
 ```
+
+If `data/processed/realtime_panel.csv.gz`, `data/processed/latest_panel.csv.gz`, and `data/processed/download_metadata.json` already match the requested date range and actual vintage, the script exits without downloading again unless `--force` is provided.
 
 This writes:
 

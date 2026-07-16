@@ -27,6 +27,7 @@ from .config import (
     SERIES_BY_CODE,
     forecast_origin_dates,
     origin_group,
+    resolve_project_path,
 )
 from .data_utils import build_model_input_frames, build_quarterly_evaluation_frame, load_realtime_panel
 
@@ -303,6 +304,8 @@ def run_recursive_experiment(
     temp_agg: str = PAPER_TEMPORAL_AGGREGATION,
     n_workers: int | None = None,
 ) -> Path:
+    output_dir = resolve_project_path(output_dir)
+    panel_path = resolve_project_path(panel_path)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     origins = forecast_origin_dates(start or forecast_origin_dates()[0], end or forecast_origin_dates()[-1])

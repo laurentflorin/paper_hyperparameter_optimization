@@ -8,6 +8,7 @@ import sys
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from paper_hyperparameter_optimization.config import resolve_project_path
 from paper_hyperparameter_optimization.forecasting import (
     MAX_FORECAST_HORIZON_QUARTERS,
     build_optimizer_parser,
@@ -78,6 +79,8 @@ def validate_eval_horizons(horizons: list[int], forecast_horizon_months: int) ->
 def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
+    args.panel_path = resolve_project_path(args.panel_path)
+    args.output_dir = resolve_project_path(args.output_dir)
 
     eval_horizons = validate_eval_horizons(
         parse_csv_int_list(args.optimization_eval_horizons_quarters, DEFAULT_RMSE_EVAL_HORIZONS),
