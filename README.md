@@ -6,7 +6,8 @@ This repository contains a reproducible Python workflow for:
 2. recreating the mixed-frequency BVAR forecasts with the paper hyperparameters,
 3. re-optimizing the hyperparameters with `update_hyperparameters_mango`,
 4. re-optimizing the hyperparameters with `update_hyperparameters_mango_rmse`,
-5. comparing the out-of-sample forecasts from the three approaches with paper-ready tables and figures.
+5. re-optimizing the hyperparameters with `update_hyperparameters_mango_rmse_random`,
+6. comparing the out-of-sample forecasts from the analysis runs with paper-ready tables and figures.
 
 The target paper is:
 
@@ -107,13 +108,36 @@ python scripts/run_mango_rmse.py \
   --optimization-variables GDP
 ```
 
-### 5. Compare the three forecast sets
+### 5. Re-optimize with `update_hyperparameters_mango_rmse_random`
+
+```bash
+python scripts/run_mango_rmse_random.py \
+  --output-dir outputs/mango_rmse_random \
+  --optimization-nsim 1000 \
+  --optimization-init-points 5 \
+  --optimization-iterations 15 \
+  --optimization-n-eval 3 \
+  --optimization-random-seed 123 \
+  --optimization-variables GDP
+```
+
+This mirrors the horizon-specific RMSE workflow but uses `MBFVAR.update_hyperparameters_mango_rmse_random`, which evaluates each hyperparameter proposal on a fixed random sample of valid forecast origins instead of the last `n_eval` rolling origins.
+
+By default this also runs four horizon-specific optimizations for `1`, `2`, `4`, and `8` quarters ahead, writing one subdirectory per target horizon under `outputs/mango_rmse_random`.
+
+Optional controls:
+
+- `--optimization-min-t` enforces a minimum lowest-frequency in-sample size for candidate evaluation origins.
+- `--optimization-random-seed` makes the sampled evaluation origins reproducible.
+
+### 6. Compare the forecast sets
 
 ```bash
 python scripts/compare_forecasts.py \
   --paper-dir outputs/paper_hyperparameters \
   --mango-mdd-dir outputs/mango_mdd \
   --mango-rmse-dir outputs/mango_rmse \
+  --mango-rmse-random-dir outputs/mango_rmse_random \
   --output-dir outputs/comparison
 ```
 
