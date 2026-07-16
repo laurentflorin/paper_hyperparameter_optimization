@@ -8,16 +8,18 @@ import pandas as pd
 
 
 HEADLINE_VARIABLES = ["GDP", "CPI", "UNR", "FF"]
-MODEL_ORDER = ["paper", "mango_mdd", "mango_rmse"]
+MODEL_ORDER = ["paper", "mango_mdd", "mango_rmse", "mango_rmse_random"]
 MODEL_LABELS = {
     "paper": "Paper Hyperparameters",
     "mango_mdd": "Mango MDD",
     "mango_rmse": "Mango RMSE",
+    "mango_rmse_random": "Mango RMSE Random",
 }
 MODEL_COLORS = {
     "paper": "#4c566a",
     "mango_mdd": "#c0392b",
     "mango_rmse": "#1f618d",
+    "mango_rmse_random": "#117864",
 }
 
 
@@ -72,6 +74,13 @@ def compute_hyperparameter_summary(hyperparameters: pd.DataFrame) -> pd.DataFram
     return summary
 
 
+def ordered_models(models: list[str] | pd.Series | np.ndarray) -> list[str]:
+    unique_models = list(dict.fromkeys(str(model) for model in models))
+    known_models = [model for model in MODEL_ORDER if model in unique_models]
+    unknown_models = sorted(model for model in unique_models if model not in MODEL_ORDER)
+    return known_models + unknown_models
+
+
 def save_table_variants(frame: pd.DataFrame, output_stem: Path, index: bool = False) -> None:
     frame.to_csv(output_stem.with_suffix(".csv"), index=index)
     output_stem.with_suffix(".tex").write_text(frame.to_latex(index=index, float_format="%.4f"), encoding="utf-8")
@@ -104,16 +113,18 @@ def plot_relative_rmse_by_group(relative_rmse: pd.DataFrame, output_dir: Path) -
                     linewidth=1.5,
                     label=MODEL_LABELS["paper"],
                 )
-            for model_name in ("mango_mdd", "mango_rmse"):
+            for model_name in ordered_models(var_frame["model"].tolist()):
+                if model_name == "paper":
+                    continue
                 model_frame = var_frame[var_frame["model"] == model_name]
                 if model_frame.empty:
                     continue
                 axis.plot(
                     model_frame["horizon_quarters"],
                     model_frame["relative_rmse_pct"],
-                    color=MODEL_COLORS[model_name],
+                    color=MODEL_COLORS.get(model_name, "#2c3e50"),
                     linewidth=2.0,
-                    label=MODEL_LABELS[model_name],
+                    label=MODEL_LABELS.get(model_name, model_name),
                 )
             axis.set_title(variable)
             axis.set_xlabel("Forecast Horizon (quarters)")
@@ -140,7 +151,9 @@ def plot_hyperparameter_paths(hyperparameters: pd.DataFrame, output_dir: Path) -
         }
     )
 
-    for model_name in ("mango_mdd", "mango_rmse"):
+    for model_name in ordered_models(hyperparameters["model"].tolist()):
+        if model_name == "paper":
+            continue
         model_frame = hyperparameters[hyperparameters["model"] == model_name].copy()
         if model_frame.empty:
             continue
@@ -148,10 +161,15 @@ def plot_hyperparameter_paths(hyperparameters: pd.DataFrame, output_dir: Path) -
         fig, axes = plt.subplots(2, 2, figsize=(10, 6), sharex=True)
         axes = axes.flatten()
         for axis, parameter in zip(axes, ["lambda1_1", "lambda2_1", "lambda4_1", "lambda5_1"]):
-            axis.plot(model_frame["forecast_origin"], model_frame[parameter], color=MODEL_COLORS[model_name], linewidth=1.8)
+            axis.plot(
+                model_frame["forecast_origin"],
+                model_frame[parameter],
+                color=MODEL_COLORS.get(model_name, "#2c3e50"),
+                linewidth=1.8,
+            )
             axis.set_title(parameter)
             axis.set_xlabel("Forecast origin")
-        fig.suptitle(f"Selected Hyperparameters Over Time: {MODEL_LABELS[model_name]}")
+        fig.suptitle(f"Selected Hyperparameters Over Time: {MODEL_LABELS.get(model_name, model_name)}")
         fig.tight_layout(rect=(0, 0, 1, 0.94))
         fig.savefig(output_dir / f"{model_name}_hyperparameter_paths.png", bbox_inches="tight")
         plt.close(fig)

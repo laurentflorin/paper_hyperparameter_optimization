@@ -127,6 +127,23 @@ def select_hyperparameters(
             n_eval=args["optimization_n_eval"],
             save=False,
         )
+    if strategy == "mango_rmse_random":
+        return model.update_hyperparameters_mango_rmse_random(
+            data_in,
+            param_space=param_space,
+            H=args["optimization_horizon_quarters"],
+            init_points=args["optimization_init_points"],
+            n_iter=args["optimization_iterations"],
+            nsim=args["optimization_nsim"],
+            njobs=args["optimization_njobs"],
+            var_of_interest=optimization_vars,
+            temp_agg=args["temp_agg"],
+            h_eval=args["optimization_eval_horizon_quarters"],
+            n_eval=args["optimization_n_eval"],
+            min_T=args["optimization_min_t"],
+            random_seed=args["optimization_random_seed"],
+            save=False,
+        )
     raise ValueError(f"Unsupported strategy: {strategy}")
 
 
@@ -239,6 +256,8 @@ def run_recursive_experiment(
     optimization_horizon_quarters: int = 4,
     optimization_eval_horizon_quarters: int | None = None,
     optimization_n_eval: int = 3,
+    optimization_min_t: int | None = None,
+    optimization_random_seed: int | None = None,
     optimization_variables: list[str] | None = None,
     temp_agg: str = PAPER_TEMPORAL_AGGREGATION,
     n_workers: int = 1,
@@ -262,6 +281,8 @@ def run_recursive_experiment(
         "optimization_horizon_quarters": optimization_horizon_quarters,
         "optimization_eval_horizon_quarters": optimization_eval_horizon_quarters,
         "optimization_n_eval": optimization_n_eval,
+        "optimization_min_t": optimization_min_t,
+        "optimization_random_seed": optimization_random_seed,
         "optimization_variables": optimization_variables or ["GDP"],
         "temp_agg": temp_agg,
     }
@@ -325,6 +346,8 @@ def run_recursive_experiment(
         "optimization_horizon_quarters": optimization_horizon_quarters,
         "optimization_eval_horizon_quarters": optimization_eval_horizon_quarters,
         "optimization_n_eval": optimization_n_eval,
+        "optimization_min_t": optimization_min_t,
+        "optimization_random_seed": optimization_random_seed,
         "optimization_variables": optimization_variables or ["GDP"],
         "temp_agg": temp_agg,
         "n_workers": n_workers,
@@ -390,6 +413,8 @@ def run_from_namespace(strategy: str, namespace: argparse.Namespace) -> Path:
                 "optimization_horizon_quarters": namespace.optimization_horizon_quarters,
                 "optimization_eval_horizon_quarters": getattr(namespace, "optimization_eval_horizon_quarters", None),
                 "optimization_n_eval": getattr(namespace, "optimization_n_eval", 3),
+                "optimization_min_t": getattr(namespace, "optimization_min_t", None),
+                "optimization_random_seed": getattr(namespace, "optimization_random_seed", None),
                 "optimization_variables": parse_csv_list(namespace.optimization_variables, ["GDP"]),
             }
         )
