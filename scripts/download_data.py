@@ -18,6 +18,7 @@ from paper_hyperparameter_optimization.config import (
     PAPER_FORECAST_START,
     REALTIME_PANEL_PATH,
     forecast_origin_dates,
+    resolve_project_path,
 )
 from paper_hyperparameter_optimization.data_utils import download_realtime_panel
 
@@ -41,6 +42,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
+    args.output_panel = resolve_project_path(args.output_panel)
+    args.output_latest = resolve_project_path(args.output_latest)
+    args.metadata_path = resolve_project_path(args.metadata_path)
     origins = forecast_origin_dates(pd.Timestamp(args.start), pd.Timestamp(args.end))
 
     def report(message: str) -> None:
