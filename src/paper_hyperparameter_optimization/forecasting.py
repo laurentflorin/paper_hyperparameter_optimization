@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
@@ -39,6 +41,45 @@ def parse_csv_int_list(value: str | None, default: list[int]) -> list[int]:
     if not value:
         return default
     return [int(item.strip()) for item in value.split(",") if item.strip()]
+
+
+def parse_positive_int(value: str | None) -> int | None:
+    if not value:
+        return None
+    match = re.search(r"\d+", value)
+    if not match:
+        return None
+    parsed = int(match.group())
+    return parsed if parsed > 0 else None
+
+
+def detect_slurm_parallel_slots() -> int | None:
+    for variable_name in ("SLURM_NTASKS", "SLURM_CPUS_ON_NODE", "SLURM_JOB_CPUS_PER_NODE", "SLURM_CPUS_PER_TASK"):
+        parsed = parse_positive_int(os.getenv(variable_name))
+        if parsed is not None:
+            return parsed
+    return None
+
+
+def resolve_parallel_settings(
+    n_origins: int,
+    requested_n_workers: int | None,
+    requested_optimization_njobs: int | None,
+) -> tuple[int, int]:
+    slurm_parallel_slots = detect_slurm_parallel_slots()
+    default_parallel_slots = slurm_parallel_slots or 1
+
+    n_workers = requested_n_workers if requested_n_workers and requested_n_workers > 0 else default_parallel_slots
+    n_workers = max(1, min(n_workers, n_origins))
+
+    if requested_optimization_njobs and requested_optimization_njobs > 0:
+        optimization_njobs = requested_optimization_njobs
+    elif slurm_parallel_slots:
+        optimization_njobs = max(1, slurm_parallel_slots // n_workers)
+    else:
+        optimization_njobs = 1
+
+    return n_workers, optimization_njobs
 
 
 def compute_quarterly_metrics(level_frame: pd.DataFrame) -> pd.DataFrame:
@@ -252,7 +293,7 @@ def run_recursive_experiment(
     optimization_nsim: int = 1000,
     optimization_init_points: int = 5,
     optimization_iterations: int = 15,
-    optimization_njobs: int = 1,
+    optimization_njobs: int | None = None,
     optimization_horizon_quarters: int = 4,
     optimization_eval_horizon_quarters: int | None = None,
     optimization_n_eval: int = 3,
@@ -260,11 +301,16 @@ def run_recursive_experiment(
     optimization_random_seed: int | None = None,
     optimization_variables: list[str] | None = None,
     temp_agg: str = PAPER_TEMPORAL_AGGREGATION,
-    n_workers: int = 1,
+    n_workers: int | None = None,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     origins = forecast_origin_dates(start or forecast_origin_dates()[0], end or forecast_origin_dates()[-1])
+    resolved_n_workers, resolved_optimization_njobs = resolve_parallel_settings(
+        len(origins),
+        requested_n_workers=n_workers,
+        requested_optimization_njobs=optimization_njobs,
+    )
     task_template = {
         "strategy": strategy,
         "panel_path": str(panel_path),
@@ -277,7 +323,7 @@ def run_recursive_experiment(
         "optimization_nsim": optimization_nsim,
         "optimization_init_points": optimization_init_points,
         "optimization_iterations": optimization_iterations,
-        "optimization_njobs": optimization_njobs,
+        "optimization_njobs": resolved_optimization_njobs,
         "optimization_horizon_quarters": optimization_horizon_quarters,
         "optimization_eval_horizon_quarters": optimization_eval_horizon_quarters,
         "optimization_n_eval": optimization_n_eval,
@@ -293,10 +339,10 @@ def run_recursive_experiment(
     hyper_rows: list[dict[str, Any]] = []
     errors: list[dict[str, str]] = []
 
-    if n_workers == 1:
+    if resolved_n_workers == 1:
         iterator = ((task["origin_date"], _run_origin_task(task)) for task in tasks)
     else:
-        executor = ProcessPoolExecutor(max_workers=n_workers)
+        executor = ProcessPoolExecutor(max_workers=resolved_n_workers)
         futures = {executor.submit(_run_origin_task, task): task for task in tasks}
 
         def _iterator():
@@ -342,7 +388,7 @@ def run_recursive_experiment(
         "optimization_nsim": optimization_nsim,
         "optimization_init_points": optimization_init_points,
         "optimization_iterations": optimization_iterations,
-        "optimization_njobs": optimization_njobs,
+        "optimization_njobs": resolved_optimization_njobs,
         "optimization_horizon_quarters": optimization_horizon_quarters,
         "optimization_eval_horizon_quarters": optimization_eval_horizon_quarters,
         "optimization_n_eval": optimization_n_eval,
@@ -350,7 +396,7 @@ def run_recursive_experiment(
         "optimization_random_seed": optimization_random_seed,
         "optimization_variables": optimization_variables or ["GDP"],
         "temp_agg": temp_agg,
-        "n_workers": n_workers,
+        "n_workers": resolved_n_workers,
         "n_origins_requested": len(origins),
         "n_origins_completed": int(hyperparameters.shape[0]),
     }
@@ -368,7 +414,12 @@ def build_common_parser(description: str) -> argparse.ArgumentParser:
     parser.add_argument("--nburn-perc", type=float, default=PAPER_NBURN_PERC)
     parser.add_argument("--forecast-horizon-months", type=int, default=MAX_FORECAST_HORIZON_MONTHS)
     parser.add_argument("--actual-vintage", type=str, default=PAPER_ACTUAL_VINTAGE.strftime("%Y-%m-%d"))
-    parser.add_argument("--n-workers", type=int, default=1)
+    parser.add_argument(
+        "--n-workers",
+        type=int,
+        default=None,
+        help="Forecast-origin worker count. Defaults to the full Slurm task allocation when available, otherwise 1.",
+    )
     return parser
 
 
@@ -377,7 +428,12 @@ def build_optimizer_parser(description: str) -> argparse.ArgumentParser:
     parser.add_argument("--optimization-nsim", type=int, default=1000)
     parser.add_argument("--optimization-init-points", type=int, default=5)
     parser.add_argument("--optimization-iterations", type=int, default=15)
-    parser.add_argument("--optimization-njobs", type=int, default=1)
+    parser.add_argument(
+        "--optimization-njobs",
+        type=int,
+        default=None,
+        help="Per-origin optimizer parallelism. Defaults to the remaining Slurm allocation after splitting across workers, otherwise 1.",
+    )
     parser.add_argument("--optimization-horizon-quarters", type=int, default=4)
     parser.add_argument("--optimization-variables", type=str, default="GDP")
     return parser

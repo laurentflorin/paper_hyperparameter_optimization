@@ -161,6 +161,30 @@ python scripts/run_mango_mdd.py \
 
 Use this carefully because each worker runs a full `MBFVAR` estimation and memory use can become substantial.
 
+When the scripts run inside a Slurm allocation, `--n-workers` now defaults to the full Slurm task allocation and `--optimization-njobs` defaults to the remaining per-origin share of that allocation. This lets a 48-core Euler job use all 48 cores without multiplying into `48 x 48` nested oversubscription. You can still override either flag manually.
+
+## Euler / Slurm
+
+Use [scripts/run_everything_euler.slurm](/home/runner/work/paper_hyperparameter_optimization/paper_hyperparameter_optimization/scripts/run_everything_euler.slurm) to run the full workflow on Euler:
+
+```bash
+sbatch scripts/run_everything_euler.slurm
+```
+
+The batch script:
+
+- requests `48` single-core Slurm tasks on one node,
+- loads the requested Euler module stack,
+- pins BLAS/OpenMP thread pools to `1` per Python worker to avoid oversubscription,
+- runs data download, paper hyperparameters, Mango MDD, Mango RMSE, Mango RMSE random, and the final comparison report in sequence,
+- writes outputs under `outputs/euler` by default.
+
+To write results somewhere else, override `OUTPUT_ROOT` at submission time:
+
+```bash
+OUTPUT_ROOT=/cluster/scratch/$USER/paper_hpo sbatch scripts/run_everything_euler.slurm
+```
+
 ## Output Files
 
 Each forecast script writes:
