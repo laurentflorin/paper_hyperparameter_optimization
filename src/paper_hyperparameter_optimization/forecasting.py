@@ -96,7 +96,10 @@ def make_param_space(bounds: dict[str, tuple[float, float]]) -> dict[str, Any]:
     from scipy.stats import uniform
 
     return {
-        key: uniform(loc=lower, scale=upper - lower)
+        # Mango reads scipy distribution parameters from dist.args.
+        # uniform(loc=..., scale=...) stores these in kwds, which Mango
+        # fails to unpack. Positional construction keeps args=(loc, scale).
+        key: uniform(lower, upper - lower)
         for key, (lower, upper) in bounds.items()
     }
 
