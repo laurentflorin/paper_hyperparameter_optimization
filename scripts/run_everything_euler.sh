@@ -26,8 +26,8 @@ mkdir -p "$OUTPUT_ROOT"
 
 python download_data.py
 
-python run_paper_hyperparameters.py \
-  --output-dir "$OUTPUT_ROOT/paper_hyperparameters"
+#python run_paper_hyperparameters.py \
+#  --output-dir "$OUTPUT_ROOT/paper_hyperparameters"
 
 python run_mango_mdd.py \
   --output-dir "$OUTPUT_ROOT/mango_mdd"
@@ -35,10 +35,10 @@ python run_mango_mdd.py \
 python run_mango_rmse.py \
   --output-dir "$OUTPUT_ROOT/mango_rmse"
 
-python scripts/run_mango_rmse_random.py \
+python run_mango_rmse_random.py \
   --output-dir "$OUTPUT_ROOT/mango_rmse_random"
 
-python scripts/compare_forecasts.py \
+python compare_forecasts.py \
   --paper-dir "$OUTPUT_ROOT/paper_hyperparameters" \
   --mango-mdd-dir "$OUTPUT_ROOT/mango_mdd" \
   --mango-rmse-dir "$OUTPUT_ROOT/mango_rmse" \

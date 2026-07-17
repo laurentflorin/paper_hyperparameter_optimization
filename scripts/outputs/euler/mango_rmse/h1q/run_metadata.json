@@ -1,0 +1,28 @@
+{
+  "strategy": "mango_rmse",
+  "panel_path": "/cluster/home/florinl/Repositories/paper_hyperparameter_optimization/data/processed/realtime_panel.csv.gz",
+  "actual_vintage": "2012-01-31",
+  "fit_nsim": 20000,
+  "nburn_perc": 0.5,
+  "nlags": [
+    6
+  ],
+  "thining": 1,
+  "forecast_horizon_months": 24,
+  "optimization_nsim": 1000,
+  "optimization_init_points": 5,
+  "optimization_iterations": 15,
+  "optimization_njobs": 1,
+  "optimization_horizon_quarters": 1,
+  "optimization_eval_horizon_quarters": 1,
+  "optimization_n_eval": 3,
+  "optimization_min_t": null,
+  "optimization_random_seed": null,
+  "optimization_variables": [
+    "GDP"
+  ],
+  "temp_agg": "mean",
+  "n_workers": 48,
+  "n_origins_requested": 151,
+  "n_origins_completed": 0
+}

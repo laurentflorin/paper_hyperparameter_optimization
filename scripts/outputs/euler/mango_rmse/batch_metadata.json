@@ -1,0 +1,28 @@
+{
+  "runs": [
+    {
+      "optimization_horizon_quarters": 1,
+      "optimization_eval_horizon_quarters": 1,
+      "optimization_n_eval": 3,
+      "output_dir": "/cluster/home/florinl/Repositories/paper_hyperparameter_optimization/scripts/outputs/euler/mango_rmse/h1q"
+    },
+    {
+      "optimization_horizon_quarters": 2,
+      "optimization_eval_horizon_quarters": 2,
+      "optimization_n_eval": 3,
+      "output_dir": "/cluster/home/florinl/Repositories/paper_hyperparameter_optimization/scripts/outputs/euler/mango_rmse/h2q"
+    },
+    {
+      "optimization_horizon_quarters": 4,
+      "optimization_eval_horizon_quarters": 4,
+      "optimization_n_eval": 3,
+      "output_dir": "/cluster/home/florinl/Repositories/paper_hyperparameter_optimization/scripts/outputs/euler/mango_rmse/h4q"
+    },
+    {
+      "optimization_horizon_quarters": 8,
+      "optimization_eval_horizon_quarters": 8,
+      "optimization_n_eval": 3,
+      "output_dir": "/cluster/home/florinl/Repositories/paper_hyperparameter_optimization/scripts/outputs/euler/mango_rmse/h8q"
+    }
+  ]
+}
