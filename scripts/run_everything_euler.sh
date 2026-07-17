@@ -26,8 +26,8 @@ mkdir -p "$OUTPUT_ROOT"
 
 python download_data.py
 
-python run_paper_hyperparameters.py \
-  --output-dir "$OUTPUT_ROOT/paper_hyperparameters"
+#python run_paper_hyperparameters.py \
+#  --output-dir "$OUTPUT_ROOT/paper_hyperparameters"
 
 python run_mango_mdd.py \
   --output-dir "$OUTPUT_ROOT/mango_mdd"
