@@ -28,20 +28,49 @@ MODEL_COLORS = {
 def load_forecast_panels(experiment_dirs: dict[str, Path]) -> pd.DataFrame:
     frames = []
     for model_name, directory in experiment_dirs.items():
-        frame = pd.read_csv(directory / "forecast_panel.csv")
-        frame["model"] = model_name
-        frames.append(frame)
+        if directory is None:
+            continue
+        directory = resolve_project_path(directory)
+        candidate_dirs = [directory]
+        if not (directory / "forecast_panel.csv").exists() and directory.exists():
+            candidate_dirs = [
+                path
+                for path in sorted(directory.iterdir())
+                if path.is_dir() and (path / "forecast_panel.csv").exists() and (path / "forecast_panel.csv").stat().st_size > 1
+            ]
+        if not candidate_dirs:
+            continue
+        for candidate_dir in candidate_dirs:
+            forecast_path = candidate_dir / "forecast_panel.csv"
+            if not forecast_path.exists() or forecast_path.stat().st_size <= 1:
+                continue
+            frame = pd.read_csv(forecast_path)
+            frame["model"] = model_name
+            frames.append(frame)
+    if not frames:
+        raise FileNotFoundError("No readable forecast_panel.csv files were found in the supplied experiment directories.")
     return pd.concat(frames, ignore_index=True)
 
 
 def load_hyperparameters(experiment_dirs: dict[str, Path]) -> pd.DataFrame:
     frames = []
     for model_name, directory in experiment_dirs.items():
-        hyper_path = directory / "selected_hyperparameters.csv"
-        if hyper_path.exists():
-            frame = pd.read_csv(hyper_path)
-            frame["model"] = model_name
-            frames.append(frame)
+        if directory is None:
+            continue
+        directory = resolve_project_path(directory)
+        candidate_dirs = [directory]
+        if not (directory / "selected_hyperparameters.csv").exists() and directory.exists():
+            candidate_dirs = [
+                path
+                for path in sorted(directory.iterdir())
+                if path.is_dir() and (path / "selected_hyperparameters.csv").exists() and (path / "selected_hyperparameters.csv").stat().st_size > 1
+            ]
+        for candidate_dir in candidate_dirs:
+            hyper_path = candidate_dir / "selected_hyperparameters.csv"
+            if hyper_path.exists() and hyper_path.stat().st_size > 1:
+                frame = pd.read_csv(hyper_path)
+                frame["model"] = model_name
+                frames.append(frame)
     if not frames:
         return pd.DataFrame()
     return pd.concat(frames, ignore_index=True)
@@ -85,8 +114,9 @@ def ordered_models(models: list[str] | pd.Series | np.ndarray) -> list[str]:
 
 def save_table_variants(frame: pd.DataFrame, output_stem: Path, index: bool = False) -> None:
     frame.to_csv(output_stem.with_suffix(".csv"), index=index)
-    output_stem.with_suffix(".tex").write_text(frame.to_latex(index=index, float_format="%.4f"), encoding="utf-8")
-    output_stem.with_suffix(".md").write_text(frame.to_markdown(index=index), encoding="utf-8")
+    latex_text = frame.to_string(index=index)
+    output_stem.with_suffix(".tex").write_text(latex_text, encoding="utf-8")
+    output_stem.with_suffix(".md").write_text(frame.to_string(index=index), encoding="utf-8")
 
 
 def plot_relative_rmse_by_group(relative_rmse: pd.DataFrame, output_dir: Path) -> None:
@@ -178,12 +208,13 @@ def plot_hyperparameter_paths(hyperparameters: pd.DataFrame, output_dir: Path) -
 
 
 def create_comparison_report(
-    experiment_dirs: dict[str, Path],
+    experiment_dirs: dict[str, Path | None],
     output_dir: Path,
 ) -> Path:
     experiment_dirs = {
         model_name: resolve_project_path(directory)
         for model_name, directory in experiment_dirs.items()
+        if directory is not None
     }
     output_dir = resolve_project_path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

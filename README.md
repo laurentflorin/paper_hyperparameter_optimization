@@ -92,12 +92,14 @@ python scripts/run_mango_rmse.py \
   --optimization-nsim 1000 \
   --optimization-init-points 5 \
   --optimization-iterations 15 \
-  --optimization-variables GDP
+  --optimization-variables GDP,INVFIX,GOV
 ```
 
 By default this now runs four horizon-specific RMSE optimizations for `1`, `2`, `4`, and `8` quarters ahead, using `n_eval=3` rolling evaluation origins as a compromise between runtime and objective stability. Each run is written to its own subdirectory under `outputs/mango_rmse` such as `h1q` and `h8q`.
 
 This uses Mango to minimize an internal rolling-holdout RMSE criterion through `MBFVAR.update_hyperparameters_mango_rmse`, passing both the target evaluation horizon and `n_eval`.
+
+The RMSE optimizers must currently use the full quarterly block `GDP,INVFIX,GOV`. Smaller quarterly subsets such as `GDP` alone trigger an upstream `MBFVAR` forecast dimension mismatch and degenerate to the fixed `1e10` penalty that shows up as the optimizer's best score.
 
 To run a single target horizon instead of the default batch:
 
@@ -109,7 +111,7 @@ python scripts/run_mango_rmse.py \
   --optimization-init-points 5 \
   --optimization-iterations 15 \
   --optimization-n-eval 3 \
-  --optimization-variables GDP
+  --optimization-variables GDP,INVFIX,GOV
 ```
 
 ### 5. Re-optimize with `update_hyperparameters_mango_rmse_random`
@@ -122,7 +124,7 @@ python scripts/run_mango_rmse_random.py \
   --optimization-iterations 15 \
   --optimization-n-eval 3 \
   --optimization-random-seed 123 \
-  --optimization-variables GDP
+  --optimization-variables GDP,INVFIX,GOV
 ```
 
 This mirrors the horizon-specific RMSE workflow but uses `MBFVAR.update_hyperparameters_mango_rmse_random`, which evaluates each hyperparameter proposal on a fixed random sample of valid forecast origins instead of the last `n_eval` rolling origins.

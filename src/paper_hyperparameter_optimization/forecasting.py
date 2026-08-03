@@ -23,6 +23,7 @@ from .config import (
     PAPER_NSIM,
     PAPER_TEMPORAL_AGGREGATION,
     PAPER_THINING,
+    QUARTERLY_SERIES,
     REALTIME_PANEL_PATH,
     SERIES_BY_CODE,
     forecast_origin_dates,
@@ -112,6 +113,35 @@ def make_data_in(quarterly: pd.DataFrame, monthly: pd.DataFrame):
         MBFVAR_TRANSFORMS,
         ["Q", "M"],
     )
+
+
+DEFAULT_MDD_OPTIMIZATION_VARIABLES = ["GDP"]
+RMSE_REQUIRED_OPTIMIZATION_VARIABLES = [spec.paper_code for spec in QUARTERLY_SERIES]
+
+
+def default_optimization_variables(strategy: str) -> list[str]:
+    if strategy in {"mango_rmse", "mango_rmse_random"}:
+        return RMSE_REQUIRED_OPTIMIZATION_VARIABLES.copy()
+    return DEFAULT_MDD_OPTIMIZATION_VARIABLES.copy()
+
+
+def resolve_optimization_variables(strategy: str, optimization_variables: list[str] | None) -> list[str]:
+    resolved = []
+    for variable in optimization_variables or default_optimization_variables(strategy):
+        if variable not in resolved:
+            resolved.append(variable)
+
+    if strategy in {"mango_rmse", "mango_rmse_random"}:
+        if set(resolved) != set(RMSE_REQUIRED_OPTIMIZATION_VARIABLES):
+            required = ",".join(RMSE_REQUIRED_OPTIMIZATION_VARIABLES)
+            raise ValueError(
+                "MBFVAR's RMSE hyperparameter objective currently requires the full quarterly variable block "
+                f"{required}. Smaller quarterly subsets trigger an upstream forecast dimension mismatch and collapse "
+                "the optimizer to the fixed 1e10 penalty."
+            )
+        return RMSE_REQUIRED_OPTIMIZATION_VARIABLES.copy()
+
+    return resolved
 
 
 def hyperparameter_record(origin_date: pd.Timestamp, strategy: str, hyperparameters: list[list[float]]) -> dict[str, Any]:
@@ -335,7 +365,7 @@ def run_recursive_experiment(
         "optimization_n_eval": optimization_n_eval,
         "optimization_min_t": optimization_min_t,
         "optimization_random_seed": optimization_random_seed,
-        "optimization_variables": optimization_variables or ["GDP"],
+        "optimization_variables": resolve_optimization_variables(strategy, optimization_variables),
         "temp_agg": temp_agg,
     }
 
@@ -400,7 +430,7 @@ def run_recursive_experiment(
         "optimization_n_eval": optimization_n_eval,
         "optimization_min_t": optimization_min_t,
         "optimization_random_seed": optimization_random_seed,
-        "optimization_variables": optimization_variables or ["GDP"],
+        "optimization_variables": resolve_optimization_variables(strategy, optimization_variables),
         "temp_agg": temp_agg,
         "n_workers": resolved_n_workers,
         "n_origins_requested": len(origins),
@@ -441,7 +471,16 @@ def build_optimizer_parser(description: str) -> argparse.ArgumentParser:
         help="Per-origin optimizer parallelism. Defaults to the remaining Slurm allocation after splitting across workers, otherwise 1.",
     )
     parser.add_argument("--optimization-horizon-quarters", type=int, default=4)
-    parser.add_argument("--optimization-variables", type=str, default="GDP")
+    parser.add_argument(
+        "--optimization-variables",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated variables passed to the MBFVAR hyperparameter objective. "
+            "Mango MDD defaults to GDP. Mango RMSE variants default to the full quarterly block GDP,INVFIX,GOV "
+            "and reject smaller subsets because the upstream MBFVAR forecast code fails on them."
+        ),
+    )
     return parser
 
 
@@ -477,7 +516,7 @@ def run_from_namespace(strategy: str, namespace: argparse.Namespace) -> Path:
                 "optimization_n_eval": getattr(namespace, "optimization_n_eval", 3),
                 "optimization_min_t": getattr(namespace, "optimization_min_t", None),
                 "optimization_random_seed": getattr(namespace, "optimization_random_seed", None),
-                "optimization_variables": parse_csv_list(namespace.optimization_variables, ["GDP"]),
+                "optimization_variables": parse_csv_list(namespace.optimization_variables, []),
             }
         )
     return run_recursive_experiment(**kwargs)

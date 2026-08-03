@@ -1,0 +1,529 @@
+     model     group variable  horizon_quarters     rmse  baseline_rmse  relative_rmse_pct
+mango_rmse +0 months      CPI                 1 0.588016       0.579474           1.474061
+mango_rmse +0 months      CPI                 2 0.630241       0.612092           2.965087
+mango_rmse +0 months      CPI                 3 0.631940       0.628459           0.553957
+mango_rmse +0 months      CPI                 4 0.639369       0.625132           2.277360
+mango_rmse +0 months      CPI                 5 0.671106       0.631041           6.349079
+mango_rmse +0 months      CPI                 6 0.680863       0.634680           7.276524
+mango_rmse +0 months      CPI                 7 0.698184       0.641615           8.816681
+mango_rmse +0 months      CPI                 8 0.655100       0.590476          10.944414
+mango_rmse +0 months       FF                 1 0.457387       0.404635          13.036949
+mango_rmse +0 months       FF                 2 0.915597       0.756327          21.058309
+mango_rmse +0 months       FF                 3 1.349169       1.145582          17.771448
+mango_rmse +0 months       FF                 4 1.748470       1.520779          14.972012
+mango_rmse +0 months       FF                 5 2.091126       1.841086          13.581094
+mango_rmse +0 months       FF                 6 2.398789       2.112626          13.545377
+mango_rmse +0 months       FF                 7 2.650818       2.333276          13.609277
+mango_rmse +0 months       FF                 8 3.181630       2.781046          14.404070
+mango_rmse +0 months      GDP                 1 1.070462       0.712143          50.315674
+mango_rmse +0 months      GDP                 2 0.820453       0.840322          -2.364462
+mango_rmse +0 months      GDP                 3 0.825662       0.878835          -6.050404
+mango_rmse +0 months      GDP                 4 0.807188       0.865271          -6.712751
+mango_rmse +0 months      GDP                 5 0.804429       0.847887          -5.125442
+mango_rmse +0 months      GDP                 6 0.794686       0.835527          -4.888102
+mango_rmse +0 months      GDP                 7 0.775852       0.801288          -3.174404
+mango_rmse +0 months      GDP                 8 0.701255       0.714824          -1.898210
+mango_rmse +0 months      GOV                 1 1.038245       0.815204          27.360225
+mango_rmse +0 months      GOV                 2 0.750651       0.752935          -0.303321
+mango_rmse +0 months      GOV                 3 0.746934       0.742633           0.579141
+mango_rmse +0 months      GOV                 4 0.749485       0.752952          -0.460498
+mango_rmse +0 months      GOV                 5 0.752895       0.762114          -1.209663
+mango_rmse +0 months      GOV                 6 0.745694       0.752885          -0.955116
+mango_rmse +0 months      GOV                 7 0.733642       0.756833          -3.064126
+mango_rmse +0 months      GOV                 8 0.835025       0.846192          -1.319678
+mango_rmse +0 months      HRS                 1 0.732237       0.596964          22.660226
+mango_rmse +0 months      HRS                 2 0.910465       0.904713           0.635812
+mango_rmse +0 months      HRS                 3 0.936124       1.003209          -6.687001
+mango_rmse +0 months      HRS                 4 0.930582       0.987561          -5.769668
+mango_rmse +0 months      HRS                 5 0.908645       0.938298          -3.160293
+mango_rmse +0 months      HRS                 6 0.881478       0.899312          -1.983083
+mango_rmse +0 months      HRS                 7 0.861020       0.864355          -0.385733
+mango_rmse +0 months      HRS                 8 1.053710       1.045436           0.791430
+mango_rmse +0 months   INVFIX                 1 2.578973       2.153452          19.759942
+mango_rmse +0 months   INVFIX                 2 2.750553       2.750799          -0.008941
+mango_rmse +0 months   INVFIX                 3 2.764385       2.873454          -3.795750
+mango_rmse +0 months   INVFIX                 4 2.707630       2.820291          -3.994646
+mango_rmse +0 months   INVFIX                 5 2.640852       2.710028          -2.552575
+mango_rmse +0 months   INVFIX                 6 2.560434       2.620467          -2.290944
+mango_rmse +0 months   INVFIX                 7 2.535741       2.546396          -0.418418
+mango_rmse +0 months   INVFIX                 8 2.973631       2.960108           0.456837
+mango_rmse +0 months       IP                 1 1.319398       1.155526          14.181644
+mango_rmse +0 months       IP                 2 1.640517       1.651391          -0.658519
+mango_rmse +0 months       IP                 3 1.640495       1.716412          -4.423003
+mango_rmse +0 months       IP                 4 1.616377       1.675021          -3.501124
+mango_rmse +0 months       IP                 5 1.586471       1.611972          -1.581975
+mango_rmse +0 months       IP                 6 1.576043       1.602913          -1.676315
+mango_rmse +0 months       IP                 7 1.558441       1.564947          -0.415729
+mango_rmse +0 months       IP                 8 1.797768       1.782838           0.837410
+mango_rmse +0 months      PCE                 1 0.628031       0.626571           0.233106
+mango_rmse +0 months      PCE                 2 0.722234       0.743608          -2.874407
+mango_rmse +0 months      PCE                 3 0.698526       0.729029          -4.184061
+mango_rmse +0 months      PCE                 4 0.684293       0.716435          -4.486453
+mango_rmse +0 months      PCE                 5 0.659737       0.678910          -2.824054
+mango_rmse +0 months      PCE                 6 0.659639       0.667159          -1.127080
+mango_rmse +0 months      PCE                 7 0.645185       0.647641          -0.379167
+mango_rmse +0 months      PCE                 8 0.632498       0.614444           2.938271
+mango_rmse +0 months    SP500                 1 7.620378       7.818827          -2.538083
+mango_rmse +0 months    SP500                 2 8.239723       8.304025          -0.774352
+mango_rmse +0 months    SP500                 3 8.188549       8.219404          -0.375392
+mango_rmse +0 months    SP500                 4 8.040289       8.127172          -1.069034
+mango_rmse +0 months    SP500                 5 8.060524       8.092601          -0.396371
+mango_rmse +0 months    SP500                 6 7.879435       7.961109          -1.025912
+mango_rmse +0 months    SP500                 7 8.042714       8.115188          -0.893060
+mango_rmse +0 months    SP500                 8 7.821792       7.981455          -2.000426
+mango_rmse +0 months       TB                 1 0.367877       0.377019          -2.424814
+mango_rmse +0 months       TB                 2 0.538785       0.565299          -4.690189
+mango_rmse +0 months       TB                 3 0.664269       0.707371          -6.093379
+mango_rmse +0 months       TB                 4 0.775741       0.809006          -4.111925
+mango_rmse +0 months       TB                 5 0.858154       0.868809          -1.226383
+mango_rmse +0 months       TB                 6 0.914778       0.896168           2.076595
+mango_rmse +0 months       TB                 7 0.964899       0.926724           4.119300
+mango_rmse +0 months       TB                 8 1.101156       1.077478           2.197481
+mango_rmse +0 months      UNR                 1 0.326294       0.271939          19.987628
+mango_rmse +0 months      UNR                 2 0.644488       0.566957          13.674833
+mango_rmse +0 months      UNR                 3 0.958882       0.897780           6.805941
+mango_rmse +0 months      UNR                 4 1.251564       1.212591           3.214024
+mango_rmse +0 months      UNR                 5 1.505839       1.476024           2.019958
+mango_rmse +0 months      UNR                 6 1.718562       1.692841           1.519408
+mango_rmse +0 months      UNR                 7 1.908824       1.881416           1.456754
+mango_rmse +0 months      UNR                 8 2.109882       2.071856           1.835400
+mango_rmse  +1 month      CPI                 1 0.425628       0.439566          -3.170875
+mango_rmse  +1 month      CPI                 2 0.642856       0.626195           2.660618
+mango_rmse  +1 month      CPI                 3 0.657234       0.642871           2.234278
+mango_rmse  +1 month      CPI                 4 0.648257       0.637612           1.669502
+mango_rmse  +1 month      CPI                 5 0.666240       0.631019           5.581757
+mango_rmse  +1 month      CPI                 6 0.670689       0.632862           5.977076
+mango_rmse  +1 month      CPI                 7 0.698566       0.636781           9.702716
+mango_rmse  +1 month      CPI                 8 0.695589       0.638720           8.903653
+mango_rmse  +1 month       FF                 1 0.370114       0.382677          -3.283052
+mango_rmse  +1 month       FF                 2 0.883103       0.777447          13.590150
+mango_rmse  +1 month       FF                 3 1.302275       1.121697          16.098691
+mango_rmse  +1 month       FF                 4 1.699216       1.458505          16.503948
+mango_rmse  +1 month       FF                 5 2.050945       1.769898          15.879242
+mango_rmse  +1 month       FF                 6 2.358309       2.044340          15.357931
+mango_rmse  +1 month       FF                 7 2.616166       2.271489          15.174079
+mango_rmse  +1 month       FF                 8 2.838928       2.456835          15.552234
+mango_rmse  +1 month      GDP                 1 0.669760       0.549545          21.875301
+mango_rmse  +1 month      GDP                 2 0.856176       0.828373           3.356290
+mango_rmse  +1 month      GDP                 3 0.840907       0.880949          -4.545308
+mango_rmse  +1 month      GDP                 4 0.823680       0.871748          -5.513982
+mango_rmse  +1 month      GDP                 5 0.809407       0.845537          -4.272950
+mango_rmse  +1 month      GDP                 6 0.808661       0.837269          -3.416884
+mango_rmse  +1 month      GDP                 7 0.800655       0.810342          -1.195433
+mango_rmse  +1 month      GDP                 8 0.803301       0.803422          -0.014982
+mango_rmse  +1 month      GOV                 1 0.827411       0.825672           0.210583
+mango_rmse  +1 month      GOV                 2 0.764234       0.777432          -1.697679
+mango_rmse  +1 month      GOV                 3 0.754979       0.747128           1.050810
+mango_rmse  +1 month      GOV                 4 0.749032       0.743229           0.780829
+mango_rmse  +1 month      GOV                 5 0.710066       0.709614           0.063794
+mango_rmse  +1 month      GOV                 6 0.763074       0.757414           0.747290
+mango_rmse  +1 month      GOV                 7 0.758372       0.759845          -0.193936
+mango_rmse  +1 month      GOV                 8 0.755586       0.751887           0.491995
+mango_rmse  +1 month      HRS                 1 0.562757       0.411091          36.893554
+mango_rmse  +1 month      HRS                 2 0.939515       0.836638          12.296584
+mango_rmse  +1 month      HRS                 3 0.964269       1.000242          -3.596468
+mango_rmse  +1 month      HRS                 4 0.953105       1.008457          -5.488731
+mango_rmse  +1 month      HRS                 5 0.927464       0.967411          -4.129193
+mango_rmse  +1 month      HRS                 6 0.907886       0.918929          -1.201805
+mango_rmse  +1 month      HRS                 7 0.895201       0.881462           1.558654
+mango_rmse  +1 month      HRS                 8 0.885865       0.868030           2.054598
+mango_rmse  +1 month   INVFIX                 1 2.009749       1.622623          23.858026
+mango_rmse  +1 month   INVFIX                 2 2.842941       2.680671           6.053323
+mango_rmse  +1 month   INVFIX                 3 2.836871       2.893027          -1.941064
+mango_rmse  +1 month   INVFIX                 4 2.760262       2.865643          -3.677424
+mango_rmse  +1 month   INVFIX                 5 2.673695       2.742539          -2.510245
+mango_rmse  +1 month   INVFIX                 6 2.630311       2.656369          -0.980981
+mango_rmse  +1 month   INVFIX                 7 2.612647       2.586719           1.002332
+mango_rmse  +1 month   INVFIX                 8 2.604706       2.585402           0.746632
+mango_rmse  +1 month       IP                 1 1.147622       1.028857          11.543386
+mango_rmse  +1 month       IP                 2 1.706245       1.562545           9.196525
+mango_rmse  +1 month       IP                 3 1.688779       1.729166          -2.335671
+mango_rmse  +1 month       IP                 4 1.652160       1.699950          -2.811258
+mango_rmse  +1 month       IP                 5 1.624576       1.654338          -1.799046
+mango_rmse  +1 month       IP                 6 1.598619       1.606054          -0.462920
+mango_rmse  +1 month       IP                 7 1.606171       1.595551           0.665601
+mango_rmse  +1 month       IP                 8 1.601173       1.573792           1.739840
+mango_rmse  +1 month      PCE                 1 0.516592       0.487479           5.972162
+mango_rmse  +1 month      PCE                 2 0.733106       0.729228           0.531776
+mango_rmse  +1 month      PCE                 3 0.713502       0.737832          -3.297594
+mango_rmse  +1 month      PCE                 4 0.696261       0.720724          -3.394241
+mango_rmse  +1 month      PCE                 5 0.660122       0.682655          -3.300807
+mango_rmse  +1 month      PCE                 6 0.638812       0.661620          -3.447323
+mango_rmse  +1 month      PCE                 7 0.643538       0.648836          -0.816479
+mango_rmse  +1 month      PCE                 8 0.647901       0.644661           0.502554
+mango_rmse  +1 month    SP500                 1 4.457476       4.869592          -8.463049
+mango_rmse  +1 month    SP500                 2 8.328428       8.459571          -1.550228
+mango_rmse  +1 month    SP500                 3 8.332647       8.291043           0.501798
+mango_rmse  +1 month    SP500                 4 8.199214       8.151251           0.588421
+mango_rmse  +1 month    SP500                 5 8.151299       8.150031           0.015554
+mango_rmse  +1 month    SP500                 6 7.966263       8.060965          -1.174822
+mango_rmse  +1 month    SP500                 7 7.894128       7.970203          -0.954491
+mango_rmse  +1 month    SP500                 8 8.167355       8.180299          -0.158240
+mango_rmse  +1 month       TB                 1 0.252900       0.268461          -5.796516
+mango_rmse  +1 month       TB                 2 0.530554       0.519229           2.181284
+mango_rmse  +1 month       TB                 3 0.674143       0.675797          -0.244751
+mango_rmse  +1 month       TB                 4 0.774835       0.753507           2.830521
+mango_rmse  +1 month       TB                 5 0.890361       0.856223           3.986943
+mango_rmse  +1 month       TB                 6 0.943564       0.897508           5.131569
+mango_rmse  +1 month       TB                 7 0.946970       0.864290           9.566254
+mango_rmse  +1 month       TB                 8 0.990357       0.918627           7.808370
+mango_rmse  +1 month      UNR                 1 0.234136       0.183305          27.730057
+mango_rmse  +1 month      UNR                 2 0.566230       0.484918          16.768120
+mango_rmse  +1 month      UNR                 3 0.889772       0.808511          10.050688
+mango_rmse  +1 month      UNR                 4 1.192083       1.132868           5.226995
+mango_rmse  +1 month      UNR                 5 1.457671       1.414561           3.047598
+mango_rmse  +1 month      UNR                 6 1.691515       1.655447           2.178694
+mango_rmse  +1 month      UNR                 7 1.896942       1.851846           2.435186
+mango_rmse  +1 month      UNR                 8 2.072406       2.020143           2.587113
+mango_rmse +2 months      CPI                 1 0.207709       0.198736           4.515028
+mango_rmse +2 months      CPI                 2 0.602173       0.605428          -0.537528
+mango_rmse +2 months      CPI                 3 0.636083       0.627256           1.407246
+mango_rmse +2 months      CPI                 4 0.656751       0.622432           5.513750
+mango_rmse +2 months      CPI                 5 0.669292       0.622858           7.454970
+mango_rmse +2 months      CPI                 6 0.689244       0.630433           9.328615
+mango_rmse +2 months      CPI                 7 0.718649       0.634410          13.278404
+mango_rmse +2 months      CPI                 8 0.723658       0.633540          14.224594
+mango_rmse +2 months       FF                 1 0.095968       0.099648          -3.692496
+mango_rmse +2 months       FF                 2 0.558142       0.538875           3.575500
+mango_rmse +2 months       FF                 3 1.044968       0.916034          14.075316
+mango_rmse +2 months       FF                 4 1.480577       1.283891          15.319533
+mango_rmse +2 months       FF                 5 1.879996       1.627999          15.478949
+mango_rmse +2 months       FF                 6 2.224151       1.925262          15.524571
+mango_rmse +2 months       FF                 7 2.511959       2.175918          15.443684
+mango_rmse +2 months       FF                 8 2.759103       2.381766          15.842740
+mango_rmse +2 months      GDP                 1 5.568000       0.653278         752.317522
+mango_rmse +2 months      GDP                 2 5.632458       0.749385         651.610265
+mango_rmse +2 months      GDP                 3 0.866325       0.872005          -0.651337
+mango_rmse +2 months      GDP                 4 0.842904       0.885669          -4.828607
+mango_rmse +2 months      GDP                 5 0.825087       0.862475          -4.334932
+mango_rmse +2 months      GDP                 6 0.818636       0.831152          -1.505928
+mango_rmse +2 months      GDP                 7 0.797198       0.817962          -2.538499
+mango_rmse +2 months      GDP                 8 0.805892       0.802702           0.397358
+mango_rmse +2 months      GOV                 1 4.761719       1.175000         305.252617
+mango_rmse +2 months      GOV                 2 4.823743       0.756711         537.461597
+mango_rmse +2 months      GOV                 3 0.757452       0.748951           1.135104
+mango_rmse +2 months      GOV                 4 0.760301       0.743844           2.212417
+mango_rmse +2 months      GOV                 5 0.714235       0.714828          -0.083068
+mango_rmse +2 months      GOV                 6 0.757473       0.761822          -0.570950
+mango_rmse +2 months      GOV                 7 0.766193       0.762013           0.548639
+mango_rmse +2 months      GOV                 8 0.747665       0.762180          -1.904307
+mango_rmse +2 months      HRS                 1 0.360383       0.323796          11.299274
+mango_rmse +2 months      HRS                 2 0.834801       0.695923          19.956022
+mango_rmse +2 months      HRS                 3 0.963760       0.953319           1.095321
+mango_rmse +2 months      HRS                 4 0.955510       1.012044          -5.586127
+mango_rmse +2 months      HRS                 5 0.935766       0.984569          -4.956801
+mango_rmse +2 months      HRS                 6 0.912195       0.934380          -2.374336
+mango_rmse +2 months      HRS                 7 0.891470       0.894847          -0.377351
+mango_rmse +2 months      HRS                 8 0.883117       0.869475           1.569096
+mango_rmse +2 months   INVFIX                 1 5.050285       1.331536         279.282558
+mango_rmse +2 months   INVFIX                 2 5.471579       2.386888         129.234794
+mango_rmse +2 months   INVFIX                 3 2.925033       2.833034           3.247361
+mango_rmse +2 months   INVFIX                 4 2.819321       2.885725          -2.301136
+mango_rmse +2 months   INVFIX                 5 2.739175       2.782538          -1.558394
+mango_rmse +2 months   INVFIX                 6 2.670143       2.694898          -0.918604
+mango_rmse +2 months   INVFIX                 7 2.629385       2.602325           1.039822
+mango_rmse +2 months   INVFIX                 8 2.652933       2.589419           2.452842
+mango_rmse +2 months       IP                 1 0.786542       0.737340           6.672963
+mango_rmse +2 months       IP                 2 1.589528       1.329101          19.594194
+mango_rmse +2 months       IP                 3 1.730965       1.706456           1.436295
+mango_rmse +2 months       IP                 4 1.700216       1.729258          -1.679493
+mango_rmse +2 months       IP                 5 1.662739       1.684016          -1.263461
+mango_rmse +2 months       IP                 6 1.628745       1.608392           1.265424
+mango_rmse +2 months       IP                 7 1.619653       1.598620           1.315679
+mango_rmse +2 months       IP                 8 1.597744       1.571027           1.700629
+mango_rmse +2 months      PCE                 1 0.378901       0.381533          -0.689755
+mango_rmse +2 months      PCE                 2 0.702390       0.675716           3.947465
+mango_rmse +2 months      PCE                 3 0.733067       0.747776          -1.966964
+mango_rmse +2 months      PCE                 4 0.705328       0.727020          -2.983696
+mango_rmse +2 months      PCE                 5 0.681465       0.695361          -1.998393
+mango_rmse +2 months      PCE                 6 0.658474       0.668030          -1.430394
+mango_rmse +2 months      PCE                 7 0.654682       0.650999           0.565790
+mango_rmse +2 months      PCE                 8 0.651788       0.644591           1.116650
+mango_rmse +2 months    SP500                 1 1.732291       1.996548         -13.235692
+mango_rmse +2 months    SP500                 2 8.328662       8.641688          -3.622273
+mango_rmse +2 months    SP500                 3 8.139717       8.351515          -2.536045
+mango_rmse +2 months    SP500                 4 8.066220       8.196766          -1.592662
+mango_rmse +2 months    SP500                 5 7.997783       8.139255          -1.738144
+mango_rmse +2 months    SP500                 6 8.130892       8.080917           0.618443
+mango_rmse +2 months    SP500                 7 7.815315       7.952405          -1.723880
+mango_rmse +2 months    SP500                 8 8.160017       8.165700          -0.069604
+mango_rmse +2 months       TB                 1 0.103611       0.086067          20.384389
+mango_rmse +2 months       TB                 2 0.396001       0.363401           8.970898
+mango_rmse +2 months       TB                 3 0.550539       0.546576           0.725219
+mango_rmse +2 months       TB                 4 0.657611       0.649776           1.205791
+mango_rmse +2 months       TB                 5 0.778193       0.765631           1.640632
+mango_rmse +2 months       TB                 6 0.829408       0.821595           0.951034
+mango_rmse +2 months       TB                 7 0.856291       0.821111           4.284381
+mango_rmse +2 months       TB                 8 0.931866       0.873616           6.667681
+mango_rmse +2 months      UNR                 1 0.092862       0.100520          -7.618921
+mango_rmse +2 months      UNR                 2 0.395807       0.358098          10.530274
+mango_rmse +2 months      UNR                 3 0.725790       0.654499          10.892430
+mango_rmse +2 months      UNR                 4 1.042111       0.984985           5.799616
+mango_rmse +2 months      UNR                 5 1.331626       1.289370           3.277204
+mango_rmse +2 months      UNR                 6 1.582988       1.550026           2.126583
+mango_rmse +2 months      UNR                 7 1.792101       1.757050           1.994879
+mango_rmse +2 months      UNR                 8 1.980056       1.941384           1.991948
+     paper +0 months      CPI                 1 0.579474       0.579474           0.000000
+     paper +0 months      CPI                 2 0.612092       0.612092           0.000000
+     paper +0 months      CPI                 3 0.628459       0.628459           0.000000
+     paper +0 months      CPI                 4 0.625132       0.625132           0.000000
+     paper +0 months      CPI                 5 0.631041       0.631041           0.000000
+     paper +0 months      CPI                 6 0.634680       0.634680           0.000000
+     paper +0 months      CPI                 7 0.641615       0.641615           0.000000
+     paper +0 months      CPI                 8 0.590476       0.590476           0.000000
+     paper +0 months       FF                 1 0.404635       0.404635           0.000000
+     paper +0 months       FF                 2 0.756327       0.756327           0.000000
+     paper +0 months       FF                 3 1.145582       1.145582           0.000000
+     paper +0 months       FF                 4 1.520779       1.520779           0.000000
+     paper +0 months       FF                 5 1.841086       1.841086           0.000000
+     paper +0 months       FF                 6 2.112626       2.112626           0.000000
+     paper +0 months       FF                 7 2.333276       2.333276           0.000000
+     paper +0 months       FF                 8 2.781046       2.781046           0.000000
+     paper +0 months      GDP                 1 0.712143       0.712143           0.000000
+     paper +0 months      GDP                 2 0.840322       0.840322           0.000000
+     paper +0 months      GDP                 3 0.878835       0.878835           0.000000
+     paper +0 months      GDP                 4 0.865271       0.865271           0.000000
+     paper +0 months      GDP                 5 0.847887       0.847887           0.000000
+     paper +0 months      GDP                 6 0.835527       0.835527           0.000000
+     paper +0 months      GDP                 7 0.801288       0.801288           0.000000
+     paper +0 months      GDP                 8 0.714824       0.714824           0.000000
+     paper +0 months      GOV                 1 0.815204       0.815204           0.000000
+     paper +0 months      GOV                 2 0.752935       0.752935           0.000000
+     paper +0 months      GOV                 3 0.742633       0.742633           0.000000
+     paper +0 months      GOV                 4 0.752952       0.752952           0.000000
+     paper +0 months      GOV                 5 0.762114       0.762114           0.000000
+     paper +0 months      GOV                 6 0.752885       0.752885           0.000000
+     paper +0 months      GOV                 7 0.756833       0.756833           0.000000
+     paper +0 months      GOV                 8 0.846192       0.846192           0.000000
+     paper +0 months      HRS                 1 0.596964       0.596964           0.000000
+     paper +0 months      HRS                 2 0.904713       0.904713           0.000000
+     paper +0 months      HRS                 3 1.003209       1.003209           0.000000
+     paper +0 months      HRS                 4 0.987561       0.987561           0.000000
+     paper +0 months      HRS                 5 0.938298       0.938298           0.000000
+     paper +0 months      HRS                 6 0.899312       0.899312           0.000000
+     paper +0 months      HRS                 7 0.864355       0.864355           0.000000
+     paper +0 months      HRS                 8 1.045436       1.045436           0.000000
+     paper +0 months   INVFIX                 1 2.153452       2.153452           0.000000
+     paper +0 months   INVFIX                 2 2.750799       2.750799           0.000000
+     paper +0 months   INVFIX                 3 2.873454       2.873454           0.000000
+     paper +0 months   INVFIX                 4 2.820291       2.820291           0.000000
+     paper +0 months   INVFIX                 5 2.710028       2.710028           0.000000
+     paper +0 months   INVFIX                 6 2.620467       2.620467           0.000000
+     paper +0 months   INVFIX                 7 2.546396       2.546396           0.000000
+     paper +0 months   INVFIX                 8 2.960108       2.960108           0.000000
+     paper +0 months       IP                 1 1.155526       1.155526           0.000000
+     paper +0 months       IP                 2 1.651391       1.651391           0.000000
+     paper +0 months       IP                 3 1.716412       1.716412           0.000000
+     paper +0 months       IP                 4 1.675021       1.675021           0.000000
+     paper +0 months       IP                 5 1.611972       1.611972           0.000000
+     paper +0 months       IP                 6 1.602913       1.602913           0.000000
+     paper +0 months       IP                 7 1.564947       1.564947           0.000000
+     paper +0 months       IP                 8 1.782838       1.782838           0.000000
+     paper +0 months      PCE                 1 0.626571       0.626571           0.000000
+     paper +0 months      PCE                 2 0.743608       0.743608           0.000000
+     paper +0 months      PCE                 3 0.729029       0.729029           0.000000
+     paper +0 months      PCE                 4 0.716435       0.716435           0.000000
+     paper +0 months      PCE                 5 0.678910       0.678910           0.000000
+     paper +0 months      PCE                 6 0.667159       0.667159           0.000000
+     paper +0 months      PCE                 7 0.647641       0.647641           0.000000
+     paper +0 months      PCE                 8 0.614444       0.614444           0.000000
+     paper +0 months    SP500                 1 7.818827       7.818827           0.000000
+     paper +0 months    SP500                 2 8.304025       8.304025           0.000000
+     paper +0 months    SP500                 3 8.219404       8.219404           0.000000
+     paper +0 months    SP500                 4 8.127172       8.127172           0.000000
+     paper +0 months    SP500                 5 8.092601       8.092601           0.000000
+     paper +0 months    SP500                 6 7.961109       7.961109           0.000000
+     paper +0 months    SP500                 7 8.115188       8.115188           0.000000
+     paper +0 months    SP500                 8 7.981455       7.981455           0.000000
+     paper +0 months       TB                 1 0.377019       0.377019           0.000000
+     paper +0 months       TB                 2 0.565299       0.565299           0.000000
+     paper +0 months       TB                 3 0.707371       0.707371           0.000000
+     paper +0 months       TB                 4 0.809006       0.809006           0.000000
+     paper +0 months       TB                 5 0.868809       0.868809           0.000000
+     paper +0 months       TB                 6 0.896168       0.896168           0.000000
+     paper +0 months       TB                 7 0.926724       0.926724           0.000000
+     paper +0 months       TB                 8 1.077478       1.077478           0.000000
+     paper +0 months      UNR                 1 0.271939       0.271939           0.000000
+     paper +0 months      UNR                 2 0.566957       0.566957           0.000000
+     paper +0 months      UNR                 3 0.897780       0.897780           0.000000
+     paper +0 months      UNR                 4 1.212591       1.212591           0.000000
+     paper +0 months      UNR                 5 1.476024       1.476024           0.000000
+     paper +0 months      UNR                 6 1.692841       1.692841           0.000000
+     paper +0 months      UNR                 7 1.881416       1.881416           0.000000
+     paper +0 months      UNR                 8 2.071856       2.071856           0.000000
+     paper  +1 month      CPI                 1 0.439566       0.439566           0.000000
+     paper  +1 month      CPI                 2 0.626195       0.626195           0.000000
+     paper  +1 month      CPI                 3 0.642871       0.642871           0.000000
+     paper  +1 month      CPI                 4 0.637612       0.637612           0.000000
+     paper  +1 month      CPI                 5 0.631019       0.631019           0.000000
+     paper  +1 month      CPI                 6 0.632862       0.632862           0.000000
+     paper  +1 month      CPI                 7 0.636781       0.636781           0.000000
+     paper  +1 month      CPI                 8 0.638720       0.638720           0.000000
+     paper  +1 month       FF                 1 0.382677       0.382677           0.000000
+     paper  +1 month       FF                 2 0.777447       0.777447           0.000000
+     paper  +1 month       FF                 3 1.121697       1.121697           0.000000
+     paper  +1 month       FF                 4 1.458505       1.458505           0.000000
+     paper  +1 month       FF                 5 1.769898       1.769898           0.000000
+     paper  +1 month       FF                 6 2.044340       2.044340           0.000000
+     paper  +1 month       FF                 7 2.271489       2.271489           0.000000
+     paper  +1 month       FF                 8 2.456835       2.456835           0.000000
+     paper  +1 month      GDP                 1 0.549545       0.549545           0.000000
+     paper  +1 month      GDP                 2 0.828373       0.828373           0.000000
+     paper  +1 month      GDP                 3 0.880949       0.880949           0.000000
+     paper  +1 month      GDP                 4 0.871748       0.871748           0.000000
+     paper  +1 month      GDP                 5 0.845537       0.845537           0.000000
+     paper  +1 month      GDP                 6 0.837269       0.837269           0.000000
+     paper  +1 month      GDP                 7 0.810342       0.810342           0.000000
+     paper  +1 month      GDP                 8 0.803422       0.803422           0.000000
+     paper  +1 month      GOV                 1 0.825672       0.825672           0.000000
+     paper  +1 month      GOV                 2 0.777432       0.777432           0.000000
+     paper  +1 month      GOV                 3 0.747128       0.747128           0.000000
+     paper  +1 month      GOV                 4 0.743229       0.743229           0.000000
+     paper  +1 month      GOV                 5 0.709614       0.709614           0.000000
+     paper  +1 month      GOV                 6 0.757414       0.757414           0.000000
+     paper  +1 month      GOV                 7 0.759845       0.759845           0.000000
+     paper  +1 month      GOV                 8 0.751887       0.751887           0.000000
+     paper  +1 month      HRS                 1 0.411091       0.411091           0.000000
+     paper  +1 month      HRS                 2 0.836638       0.836638           0.000000
+     paper  +1 month      HRS                 3 1.000242       1.000242           0.000000
+     paper  +1 month      HRS                 4 1.008457       1.008457           0.000000
+     paper  +1 month      HRS                 5 0.967411       0.967411           0.000000
+     paper  +1 month      HRS                 6 0.918929       0.918929           0.000000
+     paper  +1 month      HRS                 7 0.881462       0.881462           0.000000
+     paper  +1 month      HRS                 8 0.868030       0.868030           0.000000
+     paper  +1 month   INVFIX                 1 1.622623       1.622623           0.000000
+     paper  +1 month   INVFIX                 2 2.680671       2.680671           0.000000
+     paper  +1 month   INVFIX                 3 2.893027       2.893027           0.000000
+     paper  +1 month   INVFIX                 4 2.865643       2.865643           0.000000
+     paper  +1 month   INVFIX                 5 2.742539       2.742539           0.000000
+     paper  +1 month   INVFIX                 6 2.656369       2.656369           0.000000
+     paper  +1 month   INVFIX                 7 2.586719       2.586719           0.000000
+     paper  +1 month   INVFIX                 8 2.585402       2.585402           0.000000
+     paper  +1 month       IP                 1 1.028857       1.028857           0.000000
+     paper  +1 month       IP                 2 1.562545       1.562545           0.000000
+     paper  +1 month       IP                 3 1.729166       1.729166           0.000000
+     paper  +1 month       IP                 4 1.699950       1.699950           0.000000
+     paper  +1 month       IP                 5 1.654338       1.654338           0.000000
+     paper  +1 month       IP                 6 1.606054       1.606054           0.000000
+     paper  +1 month       IP                 7 1.595551       1.595551           0.000000
+     paper  +1 month       IP                 8 1.573792       1.573792           0.000000
+     paper  +1 month      PCE                 1 0.487479       0.487479           0.000000
+     paper  +1 month      PCE                 2 0.729228       0.729228           0.000000
+     paper  +1 month      PCE                 3 0.737832       0.737832           0.000000
+     paper  +1 month      PCE                 4 0.720724       0.720724           0.000000
+     paper  +1 month      PCE                 5 0.682655       0.682655           0.000000
+     paper  +1 month      PCE                 6 0.661620       0.661620           0.000000
+     paper  +1 month      PCE                 7 0.648836       0.648836           0.000000
+     paper  +1 month      PCE                 8 0.644661       0.644661           0.000000
+     paper  +1 month    SP500                 1 4.869592       4.869592           0.000000
+     paper  +1 month    SP500                 2 8.459571       8.459571           0.000000
+     paper  +1 month    SP500                 3 8.291043       8.291043           0.000000
+     paper  +1 month    SP500                 4 8.151251       8.151251           0.000000
+     paper  +1 month    SP500                 5 8.150031       8.150031           0.000000
+     paper  +1 month    SP500                 6 8.060965       8.060965           0.000000
+     paper  +1 month    SP500                 7 7.970203       7.970203           0.000000
+     paper  +1 month    SP500                 8 8.180299       8.180299           0.000000
+     paper  +1 month       TB                 1 0.268461       0.268461           0.000000
+     paper  +1 month       TB                 2 0.519229       0.519229           0.000000
+     paper  +1 month       TB                 3 0.675797       0.675797           0.000000
+     paper  +1 month       TB                 4 0.753507       0.753507           0.000000
+     paper  +1 month       TB                 5 0.856223       0.856223           0.000000
+     paper  +1 month       TB                 6 0.897508       0.897508           0.000000
+     paper  +1 month       TB                 7 0.864290       0.864290           0.000000
+     paper  +1 month       TB                 8 0.918627       0.918627           0.000000
+     paper  +1 month      UNR                 1 0.183305       0.183305           0.000000
+     paper  +1 month      UNR                 2 0.484918       0.484918           0.000000
+     paper  +1 month      UNR                 3 0.808511       0.808511           0.000000
+     paper  +1 month      UNR                 4 1.132868       1.132868           0.000000
+     paper  +1 month      UNR                 5 1.414561       1.414561           0.000000
+     paper  +1 month      UNR                 6 1.655447       1.655447           0.000000
+     paper  +1 month      UNR                 7 1.851846       1.851846           0.000000
+     paper  +1 month      UNR                 8 2.020143       2.020143           0.000000
+     paper +2 months      CPI                 1 0.198736       0.198736           0.000000
+     paper +2 months      CPI                 2 0.605428       0.605428           0.000000
+     paper +2 months      CPI                 3 0.627256       0.627256           0.000000
+     paper +2 months      CPI                 4 0.622432       0.622432           0.000000
+     paper +2 months      CPI                 5 0.622858       0.622858           0.000000
+     paper +2 months      CPI                 6 0.630433       0.630433           0.000000
+     paper +2 months      CPI                 7 0.634410       0.634410           0.000000
+     paper +2 months      CPI                 8 0.633540       0.633540           0.000000
+     paper +2 months       FF                 1 0.099648       0.099648           0.000000
+     paper +2 months       FF                 2 0.538875       0.538875           0.000000
+     paper +2 months       FF                 3 0.916034       0.916034           0.000000
+     paper +2 months       FF                 4 1.283891       1.283891           0.000000
+     paper +2 months       FF                 5 1.627999       1.627999           0.000000
+     paper +2 months       FF                 6 1.925262       1.925262           0.000000
+     paper +2 months       FF                 7 2.175918       2.175918           0.000000
+     paper +2 months       FF                 8 2.381766       2.381766           0.000000
+     paper +2 months      GDP                 1 0.653278       0.653278           0.000000
+     paper +2 months      GDP                 2 0.749385       0.749385           0.000000
+     paper +2 months      GDP                 3 0.872005       0.872005           0.000000
+     paper +2 months      GDP                 4 0.885669       0.885669           0.000000
+     paper +2 months      GDP                 5 0.862475       0.862475           0.000000
+     paper +2 months      GDP                 6 0.831152       0.831152           0.000000
+     paper +2 months      GDP                 7 0.817962       0.817962           0.000000
+     paper +2 months      GDP                 8 0.802702       0.802702           0.000000
+     paper +2 months      GOV                 1 1.175000       1.175000           0.000000
+     paper +2 months      GOV                 2 0.756711       0.756711           0.000000
+     paper +2 months      GOV                 3 0.748951       0.748951           0.000000
+     paper +2 months      GOV                 4 0.743844       0.743844           0.000000
+     paper +2 months      GOV                 5 0.714828       0.714828           0.000000
+     paper +2 months      GOV                 6 0.761822       0.761822           0.000000
+     paper +2 months      GOV                 7 0.762013       0.762013           0.000000
+     paper +2 months      GOV                 8 0.762180       0.762180           0.000000
+     paper +2 months      HRS                 1 0.323796       0.323796           0.000000
+     paper +2 months      HRS                 2 0.695923       0.695923           0.000000
+     paper +2 months      HRS                 3 0.953319       0.953319           0.000000
+     paper +2 months      HRS                 4 1.012044       1.012044           0.000000
+     paper +2 months      HRS                 5 0.984569       0.984569           0.000000
+     paper +2 months      HRS                 6 0.934380       0.934380           0.000000
+     paper +2 months      HRS                 7 0.894847       0.894847           0.000000
+     paper +2 months      HRS                 8 0.869475       0.869475           0.000000
+     paper +2 months   INVFIX                 1 1.331536       1.331536           0.000000
+     paper +2 months   INVFIX                 2 2.386888       2.386888           0.000000
+     paper +2 months   INVFIX                 3 2.833034       2.833034           0.000000
+     paper +2 months   INVFIX                 4 2.885725       2.885725           0.000000
+     paper +2 months   INVFIX                 5 2.782538       2.782538           0.000000
+     paper +2 months   INVFIX                 6 2.694898       2.694898           0.000000
+     paper +2 months   INVFIX                 7 2.602325       2.602325           0.000000
+     paper +2 months   INVFIX                 8 2.589419       2.589419           0.000000
+     paper +2 months       IP                 1 0.737340       0.737340           0.000000
+     paper +2 months       IP                 2 1.329101       1.329101           0.000000
+     paper +2 months       IP                 3 1.706456       1.706456           0.000000
+     paper +2 months       IP                 4 1.729258       1.729258           0.000000
+     paper +2 months       IP                 5 1.684016       1.684016           0.000000
+     paper +2 months       IP                 6 1.608392       1.608392           0.000000
+     paper +2 months       IP                 7 1.598620       1.598620           0.000000
+     paper +2 months       IP                 8 1.571027       1.571027           0.000000
+     paper +2 months      PCE                 1 0.381533       0.381533           0.000000
+     paper +2 months      PCE                 2 0.675716       0.675716           0.000000
+     paper +2 months      PCE                 3 0.747776       0.747776           0.000000
+     paper +2 months      PCE                 4 0.727020       0.727020           0.000000
+     paper +2 months      PCE                 5 0.695361       0.695361           0.000000
+     paper +2 months      PCE                 6 0.668030       0.668030           0.000000
+     paper +2 months      PCE                 7 0.650999       0.650999           0.000000
+     paper +2 months      PCE                 8 0.644591       0.644591           0.000000
+     paper +2 months    SP500                 1 1.996548       1.996548           0.000000
+     paper +2 months    SP500                 2 8.641688       8.641688           0.000000
+     paper +2 months    SP500                 3 8.351515       8.351515           0.000000
+     paper +2 months    SP500                 4 8.196766       8.196766           0.000000
+     paper +2 months    SP500                 5 8.139255       8.139255           0.000000
+     paper +2 months    SP500                 6 8.080917       8.080917           0.000000
+     paper +2 months    SP500                 7 7.952405       7.952405           0.000000
+     paper +2 months    SP500                 8 8.165700       8.165700           0.000000
+     paper +2 months       TB                 1 0.086067       0.086067           0.000000
+     paper +2 months       TB                 2 0.363401       0.363401           0.000000
+     paper +2 months       TB                 3 0.546576       0.546576           0.000000
+     paper +2 months       TB                 4 0.649776       0.649776           0.000000
+     paper +2 months       TB                 5 0.765631       0.765631           0.000000
+     paper +2 months       TB                 6 0.821595       0.821595           0.000000
+     paper +2 months       TB                 7 0.821111       0.821111           0.000000
+     paper +2 months       TB                 8 0.873616       0.873616           0.000000
+     paper +2 months      UNR                 1 0.100520       0.100520           0.000000
+     paper +2 months      UNR                 2 0.358098       0.358098           0.000000
+     paper +2 months      UNR                 3 0.654499       0.654499           0.000000
+     paper +2 months      UNR                 4 0.984985       0.984985           0.000000
+     paper +2 months      UNR                 5 1.289370       1.289370           0.000000
+     paper +2 months      UNR                 6 1.550026       1.550026           0.000000
+     paper +2 months      UNR                 7 1.757050       1.757050           0.000000
+     paper +2 months      UNR                 8 1.941384       1.941384           0.000000

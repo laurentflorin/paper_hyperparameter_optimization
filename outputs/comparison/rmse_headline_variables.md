@@ -1,0 +1,193 @@
+     model     group variable  horizon_quarters     rmse
+mango_rmse +0 months      CPI                 1 0.588016
+     paper +0 months      CPI                 1 0.579474
+mango_rmse +0 months      CPI                 2 0.630241
+     paper +0 months      CPI                 2 0.612092
+mango_rmse +0 months      CPI                 3 0.631940
+     paper +0 months      CPI                 3 0.628459
+mango_rmse +0 months      CPI                 4 0.639369
+     paper +0 months      CPI                 4 0.625132
+mango_rmse +0 months      CPI                 5 0.671106
+     paper +0 months      CPI                 5 0.631041
+mango_rmse +0 months      CPI                 6 0.680863
+     paper +0 months      CPI                 6 0.634680
+mango_rmse +0 months      CPI                 7 0.698184
+     paper +0 months      CPI                 7 0.641615
+mango_rmse +0 months      CPI                 8 0.655100
+     paper +0 months      CPI                 8 0.590476
+mango_rmse +0 months       FF                 1 0.457387
+     paper +0 months       FF                 1 0.404635
+mango_rmse +0 months       FF                 2 0.915597
+     paper +0 months       FF                 2 0.756327
+mango_rmse +0 months       FF                 3 1.349169
+     paper +0 months       FF                 3 1.145582
+mango_rmse +0 months       FF                 4 1.748470
+     paper +0 months       FF                 4 1.520779
+mango_rmse +0 months       FF                 5 2.091126
+     paper +0 months       FF                 5 1.841086
+mango_rmse +0 months       FF                 6 2.398789
+     paper +0 months       FF                 6 2.112626
+mango_rmse +0 months       FF                 7 2.650818
+     paper +0 months       FF                 7 2.333276
+mango_rmse +0 months       FF                 8 3.181630
+     paper +0 months       FF                 8 2.781046
+mango_rmse +0 months      GDP                 1 1.070462
+     paper +0 months      GDP                 1 0.712143
+mango_rmse +0 months      GDP                 2 0.820453
+     paper +0 months      GDP                 2 0.840322
+mango_rmse +0 months      GDP                 3 0.825662
+     paper +0 months      GDP                 3 0.878835
+mango_rmse +0 months      GDP                 4 0.807188
+     paper +0 months      GDP                 4 0.865271
+mango_rmse +0 months      GDP                 5 0.804429
+     paper +0 months      GDP                 5 0.847887
+mango_rmse +0 months      GDP                 6 0.794686
+     paper +0 months      GDP                 6 0.835527
+mango_rmse +0 months      GDP                 7 0.775852
+     paper +0 months      GDP                 7 0.801288
+mango_rmse +0 months      GDP                 8 0.701255
+     paper +0 months      GDP                 8 0.714824
+mango_rmse +0 months      UNR                 1 0.326294
+     paper +0 months      UNR                 1 0.271939
+mango_rmse +0 months      UNR                 2 0.644488
+     paper +0 months      UNR                 2 0.566957
+mango_rmse +0 months      UNR                 3 0.958882
+     paper +0 months      UNR                 3 0.897780
+mango_rmse +0 months      UNR                 4 1.251564
+     paper +0 months      UNR                 4 1.212591
+mango_rmse +0 months      UNR                 5 1.505839
+     paper +0 months      UNR                 5 1.476024
+mango_rmse +0 months      UNR                 6 1.718562
+     paper +0 months      UNR                 6 1.692841
+mango_rmse +0 months      UNR                 7 1.908824
+     paper +0 months      UNR                 7 1.881416
+mango_rmse +0 months      UNR                 8 2.109882
+     paper +0 months      UNR                 8 2.071856
+mango_rmse  +1 month      CPI                 1 0.425628
+     paper  +1 month      CPI                 1 0.439566
+mango_rmse  +1 month      CPI                 2 0.642856
+     paper  +1 month      CPI                 2 0.626195
+mango_rmse  +1 month      CPI                 3 0.657234
+     paper  +1 month      CPI                 3 0.642871
+mango_rmse  +1 month      CPI                 4 0.648257
+     paper  +1 month      CPI                 4 0.637612
+mango_rmse  +1 month      CPI                 5 0.666240
+     paper  +1 month      CPI                 5 0.631019
+mango_rmse  +1 month      CPI                 6 0.670689
+     paper  +1 month      CPI                 6 0.632862
+mango_rmse  +1 month      CPI                 7 0.698566
+     paper  +1 month      CPI                 7 0.636781
+mango_rmse  +1 month      CPI                 8 0.695589
+     paper  +1 month      CPI                 8 0.638720
+mango_rmse  +1 month       FF                 1 0.370114
+     paper  +1 month       FF                 1 0.382677
+mango_rmse  +1 month       FF                 2 0.883103
+     paper  +1 month       FF                 2 0.777447
+mango_rmse  +1 month       FF                 3 1.302275
+     paper  +1 month       FF                 3 1.121697
+mango_rmse  +1 month       FF                 4 1.699216
+     paper  +1 month       FF                 4 1.458505
+mango_rmse  +1 month       FF                 5 2.050945
+     paper  +1 month       FF                 5 1.769898
+mango_rmse  +1 month       FF                 6 2.358309
+     paper  +1 month       FF                 6 2.044340
+mango_rmse  +1 month       FF                 7 2.616166
+     paper  +1 month       FF                 7 2.271489
+mango_rmse  +1 month       FF                 8 2.838928
+     paper  +1 month       FF                 8 2.456835
+mango_rmse  +1 month      GDP                 1 0.669760
+     paper  +1 month      GDP                 1 0.549545
+mango_rmse  +1 month      GDP                 2 0.856176
+     paper  +1 month      GDP                 2 0.828373
+mango_rmse  +1 month      GDP                 3 0.840907
+     paper  +1 month      GDP                 3 0.880949
+mango_rmse  +1 month      GDP                 4 0.823680
+     paper  +1 month      GDP                 4 0.871748
+mango_rmse  +1 month      GDP                 5 0.809407
+     paper  +1 month      GDP                 5 0.845537
+mango_rmse  +1 month      GDP                 6 0.808661
+     paper  +1 month      GDP                 6 0.837269
+mango_rmse  +1 month      GDP                 7 0.800655
+     paper  +1 month      GDP                 7 0.810342
+mango_rmse  +1 month      GDP                 8 0.803301
+     paper  +1 month      GDP                 8 0.803422
+mango_rmse  +1 month      UNR                 1 0.234136
+     paper  +1 month      UNR                 1 0.183305
+mango_rmse  +1 month      UNR                 2 0.566230
+     paper  +1 month      UNR                 2 0.484918
+mango_rmse  +1 month      UNR                 3 0.889772
+     paper  +1 month      UNR                 3 0.808511
+mango_rmse  +1 month      UNR                 4 1.192083
+     paper  +1 month      UNR                 4 1.132868
+mango_rmse  +1 month      UNR                 5 1.457671
+     paper  +1 month      UNR                 5 1.414561
+mango_rmse  +1 month      UNR                 6 1.691515
+     paper  +1 month      UNR                 6 1.655447
+mango_rmse  +1 month      UNR                 7 1.896942
+     paper  +1 month      UNR                 7 1.851846
+mango_rmse  +1 month      UNR                 8 2.072406
+     paper  +1 month      UNR                 8 2.020143
+mango_rmse +2 months      CPI                 1 0.207709
+     paper +2 months      CPI                 1 0.198736
+mango_rmse +2 months      CPI                 2 0.602173
+     paper +2 months      CPI                 2 0.605428
+mango_rmse +2 months      CPI                 3 0.636083
+     paper +2 months      CPI                 3 0.627256
+mango_rmse +2 months      CPI                 4 0.656751
+     paper +2 months      CPI                 4 0.622432
+mango_rmse +2 months      CPI                 5 0.669292
+     paper +2 months      CPI                 5 0.622858
+mango_rmse +2 months      CPI                 6 0.689244
+     paper +2 months      CPI                 6 0.630433
+mango_rmse +2 months      CPI                 7 0.718649
+     paper +2 months      CPI                 7 0.634410
+mango_rmse +2 months      CPI                 8 0.723658
+     paper +2 months      CPI                 8 0.633540
+mango_rmse +2 months       FF                 1 0.095968
+     paper +2 months       FF                 1 0.099648
+mango_rmse +2 months       FF                 2 0.558142
+     paper +2 months       FF                 2 0.538875
+mango_rmse +2 months       FF                 3 1.044968
+     paper +2 months       FF                 3 0.916034
+mango_rmse +2 months       FF                 4 1.480577
+     paper +2 months       FF                 4 1.283891
+mango_rmse +2 months       FF                 5 1.879996
+     paper +2 months       FF                 5 1.627999
+mango_rmse +2 months       FF                 6 2.224151
+     paper +2 months       FF                 6 1.925262
+mango_rmse +2 months       FF                 7 2.511959
+     paper +2 months       FF                 7 2.175918
+mango_rmse +2 months       FF                 8 2.759103
+     paper +2 months       FF                 8 2.381766
+mango_rmse +2 months      GDP                 1 5.568000
+     paper +2 months      GDP                 1 0.653278
+mango_rmse +2 months      GDP                 2 5.632458
+     paper +2 months      GDP                 2 0.749385
+mango_rmse +2 months      GDP                 3 0.866325
+     paper +2 months      GDP                 3 0.872005
+mango_rmse +2 months      GDP                 4 0.842904
+     paper +2 months      GDP                 4 0.885669
+mango_rmse +2 months      GDP                 5 0.825087
+     paper +2 months      GDP                 5 0.862475
+mango_rmse +2 months      GDP                 6 0.818636
+     paper +2 months      GDP                 6 0.831152
+mango_rmse +2 months      GDP                 7 0.797198
+     paper +2 months      GDP                 7 0.817962
+mango_rmse +2 months      GDP                 8 0.805892
+     paper +2 months      GDP                 8 0.802702
+mango_rmse +2 months      UNR                 1 0.092862
+     paper +2 months      UNR                 1 0.100520
+mango_rmse +2 months      UNR                 2 0.395807
+     paper +2 months      UNR                 2 0.358098
+mango_rmse +2 months      UNR                 3 0.725790
+     paper +2 months      UNR                 3 0.654499
+mango_rmse +2 months      UNR                 4 1.042111
+     paper +2 months      UNR                 4 0.984985
+mango_rmse +2 months      UNR                 5 1.331626
+     paper +2 months      UNR                 5 1.289370
+mango_rmse +2 months      UNR                 6 1.582988
+     paper +2 months      UNR                 6 1.550026
+mango_rmse +2 months      UNR                 7 1.792101
+     paper +2 months      UNR                 7 1.757050
+mango_rmse +2 months      UNR                 8 1.980056
+     paper +2 months      UNR                 8 1.941384
