@@ -1,4 +1,4 @@
 forecast_origin,error
-2004-05-31,IndexError: index -1 is out of bounds for axis 0 with size 0
-2006-02-28,IndexError: index -1 is out of bounds for axis 0 with size 0
+2005-09-30,IndexError: index -1 is out of bounds for axis 0 with size 0
 2006-09-30,IndexError: index -1 is out of bounds for axis 0 with size 0
+2009-08-31,IndexError: index -1 is out of bounds for axis 0 with size 0
