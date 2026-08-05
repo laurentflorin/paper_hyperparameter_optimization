@@ -117,6 +117,7 @@ def make_data_in(quarterly: pd.DataFrame, monthly: pd.DataFrame):
 
 DEFAULT_MDD_OPTIMIZATION_VARIABLES = ["GDP"]
 RMSE_REQUIRED_OPTIMIZATION_VARIABLES = [spec.paper_code for spec in QUARTERLY_SERIES]
+ONE_TIME_OPTIMIZATION_STRATEGIES = {"mango_rmse", "mango_rmse_random"}
 
 
 def default_optimization_variables(strategy: str) -> list[str]:
@@ -142,6 +143,33 @@ def resolve_optimization_variables(strategy: str, optimization_variables: list[s
         return RMSE_REQUIRED_OPTIMIZATION_VARIABLES.copy()
 
     return resolved
+
+
+def optimize_once_per_experiment(strategy: str) -> bool:
+    return strategy in ONE_TIME_OPTIMIZATION_STRATEGIES
+
+
+def select_initial_hyperparameters(
+    strategy: str,
+    task_template: dict[str, Any],
+    origin_date: pd.Timestamp,
+) -> list[list[float]] | None:
+    if not optimize_once_per_experiment(strategy):
+        return None
+
+    panel = load_realtime_panel(Path(task_template["panel_path"]))
+    quarterly, monthly = build_model_input_frames(panel, origin_date)
+    data_in = make_data_in(quarterly, monthly)
+
+    import MBFVAR
+
+    optimizer_model = MBFVAR.MixedFrequencyBVAR(
+        task_template["optimization_nsim"],
+        task_template["nburn_perc"],
+        task_template["nlags"],
+        task_template["thining"],
+    )
+    return select_hyperparameters(strategy, optimizer_model, data_in, task_template)
 
 
 def hyperparameter_record(origin_date: pd.Timestamp, strategy: str, hyperparameters: list[list[float]]) -> dict[str, Any]:
@@ -279,13 +307,17 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
         import MBFVAR
 
         data_in = make_data_in(quarterly, monthly)
-        optimizer_model = MBFVAR.MixedFrequencyBVAR(
-            task["optimization_nsim"],
-            task["nburn_perc"],
-            task["nlags"],
-            task["thining"],
-        )
-        hyperparameters = select_hyperparameters(task["strategy"], optimizer_model, data_in, task)
+        fixed_hyperparameters = task.get("fixed_hyperparameters")
+        if fixed_hyperparameters is None:
+            optimizer_model = MBFVAR.MixedFrequencyBVAR(
+                task["optimization_nsim"],
+                task["nburn_perc"],
+                task["nlags"],
+                task["thining"],
+            )
+            hyperparameters = select_hyperparameters(task["strategy"], optimizer_model, data_in, task)
+        else:
+            hyperparameters = fixed_hyperparameters
 
         model = MBFVAR.MixedFrequencyBVAR(
             task["fit_nsim"],
@@ -369,7 +401,18 @@ def run_recursive_experiment(
         "temp_agg": temp_agg,
     }
 
-    tasks = [{**task_template, "origin_date": origin.strftime("%Y-%m-%d")} for origin in origins]
+    shared_hyperparameters = None
+    if origins:
+        shared_hyperparameters = select_initial_hyperparameters(strategy, task_template, origins[0])
+
+    tasks = [
+        {
+            **task_template,
+            "origin_date": origin.strftime("%Y-%m-%d"),
+            "fixed_hyperparameters": shared_hyperparameters,
+        }
+        for origin in origins
+    ]
 
     forecast_rows: list[dict[str, Any]] = []
     hyper_rows: list[dict[str, Any]] = []
@@ -431,6 +474,10 @@ def run_recursive_experiment(
         "optimization_min_t": optimization_min_t,
         "optimization_random_seed": optimization_random_seed,
         "optimization_variables": resolve_optimization_variables(strategy, optimization_variables),
+        "hyperparameters_selected_once": optimize_once_per_experiment(strategy),
+        "hyperparameter_selection_origin": (
+            origins[0].strftime("%Y-%m-%d") if origins and optimize_once_per_experiment(strategy) else None
+        ),
         "temp_agg": temp_agg,
         "n_workers": resolved_n_workers,
         "n_origins_requested": len(origins),

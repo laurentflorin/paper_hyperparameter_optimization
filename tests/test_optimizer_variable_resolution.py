@@ -1,11 +1,15 @@
 import sys
+import types
 from pathlib import Path
+
+import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from paper_hyperparameter_optimization import forecasting
 from paper_hyperparameter_optimization.forecasting import (
     DEFAULT_MDD_OPTIMIZATION_VARIABLES,
     RMSE_REQUIRED_OPTIMIZATION_VARIABLES,
@@ -28,3 +32,89 @@ def test_mango_rmse_rejects_quarterly_subset():
         assert "full quarterly variable block" in str(exc)
     else:  # pragma: no cover
         raise AssertionError("Expected RMSE optimizer variable validation to fail for GDP-only input.")
+
+
+def _run_recursive_experiment_with_stubbed_optimizer(monkeypatch, tmp_path: Path, strategy: str, optimization_variables: list[str]):
+    origins = [
+        pd.Timestamp("2000-01-31"),
+        pd.Timestamp("2000-02-29"),
+        pd.Timestamp("2000-03-31"),
+    ]
+    optimization_calls: list[str] = []
+
+    class FakeModel:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def fit(self, *args, **kwargs):
+            pass
+
+        def forecast(self, *args, **kwargs):
+            pass
+
+        def aggregate(self, *args, **kwargs):
+            pass
+
+    fake_mbfvar = types.ModuleType("MBFVAR")
+    fake_mbfvar.MixedFrequencyBVAR = FakeModel
+    monkeypatch.setitem(sys.modules, "MBFVAR", fake_mbfvar)
+
+    monkeypatch.setattr(forecasting, "forecast_origin_dates", lambda *args: origins)
+    monkeypatch.setattr(forecasting, "resolve_parallel_settings", lambda *args, **kwargs: (1, 1))
+    monkeypatch.setattr(forecasting, "load_realtime_panel", lambda path: object())
+    monkeypatch.setattr(forecasting, "build_quarterly_evaluation_frame", lambda panel, vintage: pd.DataFrame())
+    monkeypatch.setattr(forecasting, "build_model_input_frames", lambda panel, origin: (pd.DataFrame(), pd.DataFrame()))
+    monkeypatch.setattr(forecasting, "make_data_in", lambda quarterly, monthly: object())
+    monkeypatch.setattr(forecasting, "extract_forecasts", lambda *args, **kwargs: pd.DataFrame())
+
+    def fake_select_hyperparameters(strategy_name, model, data_in, args):
+        optimization_calls.append(args.get("origin_date", "initial"))
+        return [[1.0, 2.0, 1.0, 4.0, 5.0]]
+
+    monkeypatch.setattr(forecasting, "select_hyperparameters", fake_select_hyperparameters)
+
+    output_dir = forecasting.run_recursive_experiment(
+        strategy=strategy,
+        output_dir=tmp_path / strategy,
+        panel_path=tmp_path / "panel.csv",
+        start=origins[0],
+        end=origins[-1],
+        optimization_variables=optimization_variables,
+        n_workers=1,
+    )
+    return optimization_calls, output_dir
+
+
+def test_mango_rmse_optimizes_once_for_full_recursive_run(monkeypatch, tmp_path: Path):
+    optimization_calls, output_dir = _run_recursive_experiment_with_stubbed_optimizer(
+        monkeypatch,
+        tmp_path,
+        "mango_rmse",
+        RMSE_REQUIRED_OPTIMIZATION_VARIABLES,
+    )
+
+    assert optimization_calls == ["initial"]
+
+    selected_hyperparameters = pd.read_csv(output_dir / "selected_hyperparameters.csv")
+    assert len(selected_hyperparameters) == 3
+    assert (
+        selected_hyperparameters[["lambda1_1", "lambda2_1", "lambda3_1", "lambda4_1", "lambda5_1"]]
+        .drop_duplicates()
+        .shape[0]
+        == 1
+    )
+
+    metadata = pd.read_json(output_dir / "run_metadata.json", typ="series")
+    assert bool(metadata["hyperparameters_selected_once"])
+    assert metadata["hyperparameter_selection_origin"] == "2000-01-31"
+
+
+def test_mango_mdd_still_optimizes_per_origin(monkeypatch, tmp_path: Path):
+    optimization_calls, _ = _run_recursive_experiment_with_stubbed_optimizer(
+        monkeypatch,
+        tmp_path,
+        "mango_mdd",
+        DEFAULT_MDD_OPTIMIZATION_VARIABLES,
+    )
+
+    assert optimization_calls == ["2000-01-31", "2000-02-29", "2000-03-31"]
