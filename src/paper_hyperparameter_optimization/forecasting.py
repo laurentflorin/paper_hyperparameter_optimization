@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 from .config import (
+    DEFAULT_OPTIMIZATION_NSIM,
     DEFAULT_PARAM_SPACE_BOUNDS,
     MBFVAR_TRANSFORMS,
     MAX_FORECAST_HORIZON_MONTHS,
@@ -356,7 +357,7 @@ def run_recursive_experiment(
     thining: int = PAPER_THINING,
     forecast_horizon_months: int = MAX_FORECAST_HORIZON_MONTHS,
     actual_vintage: pd.Timestamp = PAPER_ACTUAL_VINTAGE,
-    optimization_nsim: int = 5000,
+    optimization_nsim: int = DEFAULT_OPTIMIZATION_NSIM,
     optimization_init_points: int = 5,
     optimization_iterations: int = 15,
     optimization_njobs: int | None = None,
@@ -510,7 +511,7 @@ def build_common_parser(description: str) -> argparse.ArgumentParser:
 
 def build_optimizer_parser(description: str) -> argparse.ArgumentParser:
     parser = build_common_parser(description)
-    parser.add_argument("--optimization-nsim", type=int, default=1000)
+    parser.add_argument("--optimization-nsim", type=int, default=DEFAULT_OPTIMIZATION_NSIM)
     parser.add_argument("--optimization-init-points", type=int, default=5)
     parser.add_argument("--optimization-iterations", type=int, default=15)
     parser.add_argument(

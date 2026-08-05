@@ -1,3 +1,4 @@
+import inspect
 import sys
 import types
 from pathlib import Path
@@ -10,6 +11,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from paper_hyperparameter_optimization import forecasting
+from paper_hyperparameter_optimization.config import DEFAULT_OPTIMIZATION_NSIM
 from paper_hyperparameter_optimization.forecasting import (
     DEFAULT_MDD_OPTIMIZATION_VARIABLES,
     RMSE_REQUIRED_OPTIMIZATION_VARIABLES,
@@ -19,6 +21,15 @@ from paper_hyperparameter_optimization.forecasting import (
 
 def test_mango_mdd_defaults_to_gdp():
     assert resolve_optimization_variables("mango_mdd", []) == DEFAULT_MDD_OPTIMIZATION_VARIABLES
+
+
+def test_optimization_nsim_default_is_single_sourced():
+    parser = forecasting.build_optimizer_parser("test")
+    args = parser.parse_args([])
+    parameter = inspect.signature(forecasting.run_recursive_experiment).parameters["optimization_nsim"]
+
+    assert args.optimization_nsim == DEFAULT_OPTIMIZATION_NSIM
+    assert parameter.default == DEFAULT_OPTIMIZATION_NSIM
 
 
 def test_mango_rmse_defaults_to_full_quarterly_block():
