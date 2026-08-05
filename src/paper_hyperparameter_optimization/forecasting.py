@@ -356,7 +356,7 @@ def run_recursive_experiment(
     thining: int = PAPER_THINING,
     forecast_horizon_months: int = MAX_FORECAST_HORIZON_MONTHS,
     actual_vintage: pd.Timestamp = PAPER_ACTUAL_VINTAGE,
-    optimization_nsim: int = 1000,
+    optimization_nsim: int = 5000,
     optimization_init_points: int = 5,
     optimization_iterations: int = 15,
     optimization_njobs: int | None = None,
