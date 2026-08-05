@@ -373,7 +373,10 @@ def run_recursive_experiment(
     panel_path = resolve_project_path(panel_path)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    origins = forecast_origin_dates(start or forecast_origin_dates()[0], end or forecast_origin_dates()[-1])
+    available_origins = forecast_origin_dates()
+    resolved_start = start if start is not None else available_origins[0]
+    resolved_end = end if end is not None else available_origins[-1]
+    origins = forecast_origin_dates(resolved_start, resolved_end)
     resolved_n_workers, resolved_optimization_njobs = resolve_parallel_settings(
         len(origins),
         requested_n_workers=n_workers,
@@ -401,8 +404,9 @@ def run_recursive_experiment(
         "temp_agg": temp_agg,
     }
 
+    has_origins = len(origins) > 0
     shared_hyperparameters = None
-    if origins:
+    if has_origins:
         shared_hyperparameters = select_initial_hyperparameters(strategy, task_template, origins[0])
 
     tasks = [
@@ -475,9 +479,7 @@ def run_recursive_experiment(
         "optimization_random_seed": optimization_random_seed,
         "optimization_variables": resolve_optimization_variables(strategy, optimization_variables),
         "hyperparameters_selected_once": optimize_once_per_experiment(strategy),
-        "hyperparameter_selection_origin": (
-            origins[0].strftime("%Y-%m-%d") if origins and optimize_once_per_experiment(strategy) else None
-        ),
+        "hyperparameter_selection_origin": (origins[0].strftime("%Y-%m-%d") if has_origins and optimize_once_per_experiment(strategy) else None),
         "temp_agg": temp_agg,
         "n_workers": resolved_n_workers,
         "n_origins_requested": len(origins),

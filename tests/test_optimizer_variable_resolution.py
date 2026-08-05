@@ -35,11 +35,13 @@ def test_mango_rmse_rejects_quarterly_subset():
 
 
 def _run_recursive_experiment_with_stubbed_optimizer(monkeypatch, tmp_path: Path, strategy: str, optimization_variables: list[str]):
-    origins = [
-        pd.Timestamp("2000-01-31"),
-        pd.Timestamp("2000-02-29"),
-        pd.Timestamp("2000-03-31"),
-    ]
+    origins = pd.DatetimeIndex(
+        [
+            pd.Timestamp("2000-01-31"),
+            pd.Timestamp("2000-02-29"),
+            pd.Timestamp("2000-03-31"),
+        ]
+    )
     optimization_calls: list[str] = []
 
     class FakeModel:
