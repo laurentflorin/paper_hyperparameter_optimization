@@ -24,5 +24,5 @@
   "temp_agg": "mean",
   "n_workers": 48,
   "n_origins_requested": 151,
-  "n_origins_completed": 0
+  "n_origins_completed": 151
 }
