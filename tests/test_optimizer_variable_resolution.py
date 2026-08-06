@@ -25,7 +25,7 @@ def test_mango_mdd_defaults_to_gdp():
 
 def test_optimization_nsim_default_is_single_sourced():
     parser = forecasting.build_optimizer_parser("test")
-    args = parser.parse_args([])
+    args = parser.parse_args(["--output-dir", "outputs/test"])
     parameter = inspect.signature(forecasting.run_recursive_experiment).parameters["optimization_nsim"]
 
     assert args.optimization_nsim == DEFAULT_OPTIMIZATION_NSIM
