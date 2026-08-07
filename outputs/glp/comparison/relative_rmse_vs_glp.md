@@ -1,0 +1,241 @@
+            model model_size variable  horizon_quarters optimization_horizon      rmse  n  baseline_rmse  relative_rmse_pct
+        mango_mdd      small     DEFL                 1                  NaN 20.277077 80      20.275300           0.008766
+        mango_mdd      small     DEFL                 2                  NaN 20.291242 80      20.277882           0.065881
+        mango_mdd      small     DEFL                 3                  NaN 20.312854 80      20.292708           0.099274
+        mango_mdd      small     DEFL                 4                  NaN 20.354752 80      20.324163           0.150507
+        mango_mdd      small     DEFL                 5                  NaN 20.425030 80      20.376183           0.239727
+        mango_mdd      small     DEFL                 6                  NaN 20.522406 80      20.451764           0.345410
+        mango_mdd      small     DEFL                 7                  NaN 20.640305 80      20.547343           0.452426
+        mango_mdd      small     DEFL                 8                  NaN 20.782529 80      20.661180           0.587329
+        mango_mdd      small      FFR                 1                  NaN  0.408198 80       0.382440           6.735298
+        mango_mdd      small      FFR                 2                  NaN  0.787405 80       0.741826           6.144223
+        mango_mdd      small      FFR                 3                  NaN  1.119352 80       1.060598           5.539726
+        mango_mdd      small      FFR                 4                  NaN  1.431163 80       1.349080           6.084340
+        mango_mdd      small      FFR                 5                  NaN  1.727668 80       1.617689           6.798515
+        mango_mdd      small      FFR                 6                  NaN  1.973247 80       1.862777           5.930402
+        mango_mdd      small      FFR                 7                  NaN  2.168022 80       2.072535           4.607278
+        mango_mdd      small      FFR                 8                  NaN  2.350693 80       2.258594           4.077720
+        mango_mdd      small      GDP                 1                  NaN 22.950766 80      22.925953           0.108231
+        mango_mdd      small      GDP                 2                  NaN 22.642053 80      22.602680           0.174194
+        mango_mdd      small      GDP                 3                  NaN 22.360400 80      22.287277           0.328089
+        mango_mdd      small      GDP                 4                  NaN 22.050716 80      21.951818           0.450524
+        mango_mdd      small      GDP                 5                  NaN 21.795810 80      21.639286           0.723330
+        mango_mdd      small      GDP                 6                  NaN 21.572902 80      21.361997           0.987289
+        mango_mdd      small      GDP                 7                  NaN 21.353276 80      21.097342           1.213113
+        mango_mdd      small      GDP                 8                  NaN 21.180234 80      20.845073           1.607869
+       mango_rmse      small     DEFL                 1                  h1q 20.340426 80      20.275300           0.321208
+       mango_rmse      small     DEFL                 1                  h2q 20.374561 80      20.275300           0.489569
+       mango_rmse      small     DEFL                 1                  h4q 20.355763 80      20.275300           0.396856
+       mango_rmse      small     DEFL                 1                  h8q 20.327407 80      20.275300           0.256999
+       mango_rmse      small     DEFL                 2                  h1q 20.409792 80      20.277882           0.650509
+       mango_rmse      small     DEFL                 2                  h2q 20.479905 80      20.277882           0.996272
+       mango_rmse      small     DEFL                 2                  h4q 20.443938 80      20.277882           0.818902
+       mango_rmse      small     DEFL                 2                  h8q 20.391175 80      20.277882           0.558698
+       mango_rmse      small     DEFL                 3                  h1q 20.484421 80      20.292708           0.944736
+       mango_rmse      small     DEFL                 3                  h2q 20.593735 80      20.292708           1.483423
+       mango_rmse      small     DEFL                 3                  h4q 20.544956 80      20.292708           1.243045
+       mango_rmse      small     DEFL                 3                  h8q 20.458965 80      20.292708           0.819291
+       mango_rmse      small     DEFL                 4                  h1q 20.569844 80      20.324163           1.208813
+       mango_rmse      small     DEFL                 4                  h2q 20.720496 80      20.324163           1.950058
+       mango_rmse      small     DEFL                 4                  h4q 20.663295 80      20.324163           1.668618
+       mango_rmse      small     DEFL                 4                  h8q 20.542261 80      20.324163           1.073099
+       mango_rmse      small     DEFL                 5                  h1q 20.677270 80      20.376183           1.477644
+       mango_rmse      small     DEFL                 5                  h2q 20.867083 80      20.376183           2.409185
+       mango_rmse      small     DEFL                 5                  h4q 20.805835 80      20.376183           2.108601
+       mango_rmse      small     DEFL                 5                  h8q 20.647869 80      20.376183           1.333351
+       mango_rmse      small     DEFL                 6                  h1q 20.804451 80      20.451764           1.724483
+       mango_rmse      small     DEFL                 6                  h2q 21.028009 80      20.451764           2.817581
+       mango_rmse      small     DEFL                 6                  h4q 20.968653 80      20.451764           2.527358
+       mango_rmse      small     DEFL                 6                  h8q 20.775857 80      20.451764           1.584669
+       mango_rmse      small     DEFL                 7                  h1q 20.944563 80      20.547343           1.933192
+       mango_rmse      small     DEFL                 7                  h2q 21.199877 80      20.547343           3.175757
+       mango_rmse      small     DEFL                 7                  h4q 21.146877 80      20.547343           2.917815
+       mango_rmse      small     DEFL                 7                  h8q 20.918536 80      20.547343           1.806523
+       mango_rmse      small     DEFL                 8                  h1q 21.102818 80      20.661180           2.137525
+       mango_rmse      small     DEFL                 8                  h2q 21.387885 80      20.661180           3.517247
+       mango_rmse      small     DEFL                 8                  h4q 21.344669 80      20.661180           3.308081
+       mango_rmse      small     DEFL                 8                  h8q 21.083415 80      20.661180           2.043614
+       mango_rmse      small      FFR                 1                  h1q  0.376723 80       0.382440          -1.494651
+       mango_rmse      small      FFR                 1                  h2q  0.353970 80       0.382440          -7.444107
+       mango_rmse      small      FFR                 1                  h4q  0.380482 80       0.382440          -0.511763
+       mango_rmse      small      FFR                 1                  h8q  0.414233 80       0.382440           8.313239
+       mango_rmse      small      FFR                 2                  h1q  0.731063 80       0.741826          -1.450839
+       mango_rmse      small      FFR                 2                  h2q  0.695406 80       0.741826          -6.257504
+       mango_rmse      small      FFR                 2                  h4q  0.744833 80       0.741826           0.405360
+       mango_rmse      small      FFR                 2                  h8q  0.798105 80       0.741826           7.586522
+       mango_rmse      small      FFR                 3                  h1q  1.062259 80       1.060598           0.156617
+       mango_rmse      small      FFR                 3                  h2q  1.032458 80       1.060598          -2.653184
+       mango_rmse      small      FFR                 3                  h4q  1.085698 80       1.060598           2.366640
+       mango_rmse      small      FFR                 3                  h8q  1.144364 80       1.060598           7.897981
+       mango_rmse      small      FFR                 4                  h1q  1.382370 80       1.349080           2.467545
+       mango_rmse      small      FFR                 4                  h2q  1.358555 80       1.349080           0.702295
+       mango_rmse      small      FFR                 4                  h4q  1.429148 80       1.349080           5.934971
+       mango_rmse      small      FFR                 4                  h8q  1.479313 80       1.349080           9.653419
+       mango_rmse      small      FFR                 5                  h1q  1.690232 80       1.617689           4.484405
+       mango_rmse      small      FFR                 5                  h2q  1.680468 80       1.617689           3.880801
+       mango_rmse      small      FFR                 5                  h4q  1.759518 80       1.617689           8.767410
+       mango_rmse      small      FFR                 5                  h8q  1.785851 80       1.617689          10.395225
+       mango_rmse      small      FFR                 6                  h1q  1.969437 80       1.862777           5.725898
+       mango_rmse      small      FFR                 6                  h2q  1.970279 80       1.862777           5.771092
+       mango_rmse      small      FFR                 6                  h4q  2.040727 80       1.862777           9.552969
+       mango_rmse      small      FFR                 6                  h8q  2.051717 80       1.862777          10.142952
+       mango_rmse      small      FFR                 7                  h1q  2.205642 80       2.072535           6.422447
+       mango_rmse      small      FFR                 7                  h2q  2.208824 80       2.072535           6.575980
+       mango_rmse      small      FFR                 7                  h4q  2.271116 80       2.072535           9.581567
+       mango_rmse      small      FFR                 7                  h8q  2.264160 80       2.072535           9.245937
+       mango_rmse      small      FFR                 8                  h1q  2.412565 80       2.258594           6.817125
+       mango_rmse      small      FFR                 8                  h2q  2.424927 80       2.258594           7.364479
+       mango_rmse      small      FFR                 8                  h4q  2.486601 80       2.258594          10.095122
+       mango_rmse      small      FFR                 8                  h8q  2.458086 80       2.258594           8.832611
+       mango_rmse      small      GDP                 1                  h1q 22.963698 80      22.925953           0.164639
+       mango_rmse      small      GDP                 1                  h2q 22.961953 80      22.925953           0.157027
+       mango_rmse      small      GDP                 1                  h4q 22.926176 80      22.925953           0.000975
+       mango_rmse      small      GDP                 1                  h8q 22.981380 80      22.925953           0.241765
+       mango_rmse      small      GDP                 2                  h1q 22.662011 80      22.602680           0.262494
+       mango_rmse      small      GDP                 2                  h2q 22.676613 80      22.602680           0.327096
+       mango_rmse      small      GDP                 2                  h4q 22.611491 80      22.602680           0.038981
+       mango_rmse      small      GDP                 2                  h8q 22.715024 80      22.602680           0.497039
+       mango_rmse      small      GDP                 3                  h1q 22.382780 80      22.287277           0.428508
+       mango_rmse      small      GDP                 3                  h2q 22.429280 80      22.287277           0.637148
+       mango_rmse      small      GDP                 3                  h4q 22.333503 80      22.287277           0.207407
+       mango_rmse      small      GDP                 3                  h8q 22.469888 80      22.287277           0.819349
+       mango_rmse      small      GDP                 4                  h1q 22.070628 80      21.951818           0.541235
+       mango_rmse      small      GDP                 4                  h2q 22.149566 80      21.951818           0.900828
+       mango_rmse      small      GDP                 4                  h4q 22.028263 80      21.951818           0.348243
+       mango_rmse      small      GDP                 4                  h8q 22.197065 80      21.951818           1.117209
+       mango_rmse      small      GDP                 5                  h1q 21.812491 80      21.639286           0.800419
+       mango_rmse      small      GDP                 5                  h2q 21.914022 80      21.639286           1.269613
+       mango_rmse      small      GDP                 5                  h4q 21.764423 80      21.639286           0.578284
+       mango_rmse      small      GDP                 5                  h8q 21.972988 80      21.639286           1.542111
+       mango_rmse      small      GDP                 6                  h1q 21.585551 80      21.361997           1.046500
+       mango_rmse      small      GDP                 6                  h2q 21.708245 80      21.361997           1.620858
+       mango_rmse      small      GDP                 6                  h4q 21.537712 80      21.361997           0.822556
+       mango_rmse      small      GDP                 6                  h8q 21.785986 80      21.361997           1.984780
+       mango_rmse      small      GDP                 7                  h1q 21.355111 80      21.097342           1.221809
+       mango_rmse      small      GDP                 7                  h2q 21.496662 80      21.097342           1.892754
+       mango_rmse      small      GDP                 7                  h4q 21.308361 80      21.097342           1.000217
+       mango_rmse      small      GDP                 7                  h8q 21.595475 80      21.097342           2.361118
+       mango_rmse      small      GDP                 8                  h1q 21.162104 80      20.845073           1.520894
+       mango_rmse      small      GDP                 8                  h2q 21.324885 80      20.845073           2.301802
+       mango_rmse      small      GDP                 8                  h4q 21.114638 80      20.845073           1.293181
+       mango_rmse      small      GDP                 8                  h8q 21.446534 80      20.845073           2.885387
+mango_rmse_random      small     DEFL                 1                  h1q 20.316909 80      20.275300           0.205221
+mango_rmse_random      small     DEFL                 1                  h2q 20.318553 80      20.275300           0.213330
+mango_rmse_random      small     DEFL                 1                  h4q 20.291780 80      20.275300           0.081281
+mango_rmse_random      small     DEFL                 1                  h8q 20.290411 80      20.275300           0.074529
+mango_rmse_random      small     DEFL                 2                  h1q 20.370386 80      20.277882           0.456181
+mango_rmse_random      small     DEFL                 2                  h2q 20.369741 80      20.277882           0.453001
+mango_rmse_random      small     DEFL                 2                  h4q 20.325828 80      20.277882           0.236445
+mango_rmse_random      small     DEFL                 2                  h8q 20.325588 80      20.277882           0.235259
+mango_rmse_random      small     DEFL                 3                  h1q 20.432074 80      20.292708           0.686775
+mango_rmse_random      small     DEFL                 3                  h2q 20.431789 80      20.292708           0.685371
+mango_rmse_random      small     DEFL                 3                  h4q 20.378631 80      20.292708           0.423416
+mango_rmse_random      small     DEFL                 3                  h8q 20.376914 80      20.292708           0.414957
+mango_rmse_random      small     DEFL                 4                  h1q 20.513524 80      20.324163           0.931704
+mango_rmse_random      small     DEFL                 4                  h2q 20.512940 80      20.324163           0.928829
+mango_rmse_random      small     DEFL                 4                  h4q 20.453069 80      20.324163           0.634251
+mango_rmse_random      small     DEFL                 4                  h8q 20.451606 80      20.324163           0.627052
+mango_rmse_random      small     DEFL                 5                  h1q 20.622609 80      20.376183           1.209384
+mango_rmse_random      small     DEFL                 5                  h2q 20.622227 80      20.376183           1.207511
+mango_rmse_random      small     DEFL                 5                  h4q 20.565331 80      20.376183           0.928280
+mango_rmse_random      small     DEFL                 5                  h8q 20.563685 80      20.376183           0.920203
+mango_rmse_random      small     DEFL                 6                  h1q 20.755802 80      20.451764           1.486610
+mango_rmse_random      small     DEFL                 6                  h2q 20.753864 80      20.451764           1.477135
+mango_rmse_random      small     DEFL                 6                  h4q 20.712810 80      20.451764           1.276399
+mango_rmse_random      small     DEFL                 6                  h8q 20.711504 80      20.451764           1.270014
+mango_rmse_random      small     DEFL                 7                  h1q 20.909194 80      20.547343           1.761058
+mango_rmse_random      small     DEFL                 7                  h2q 20.905746 80      20.547343           1.744278
+mango_rmse_random      small     DEFL                 7                  h4q 20.888853 80      20.547343           1.662062
+mango_rmse_random      small     DEFL                 7                  h8q 20.886544 80      20.547343           1.650825
+mango_rmse_random      small     DEFL                 8                  h1q 21.089266 80      20.661180           2.071931
+mango_rmse_random      small     DEFL                 8                  h2q 21.081625 80      20.661180           2.034952
+mango_rmse_random      small     DEFL                 8                  h4q 21.093930 80      20.661180           2.094505
+mango_rmse_random      small     DEFL                 8                  h8q 21.091691 80      20.661180           2.083671
+mango_rmse_random      small      FFR                 1                  h1q  0.417279 80       0.382440           9.109912
+mango_rmse_random      small      FFR                 1                  h2q  0.400200 80       0.382440           4.643971
+mango_rmse_random      small      FFR                 1                  h4q  0.414581 80       0.382440           8.404371
+mango_rmse_random      small      FFR                 1                  h8q  0.414448 80       0.382440           8.369456
+mango_rmse_random      small      FFR                 2                  h1q  0.769802 80       0.741826           3.771194
+mango_rmse_random      small      FFR                 2                  h2q  0.765480 80       0.741826           3.188549
+mango_rmse_random      small      FFR                 2                  h4q  0.802976 80       0.741826           8.243165
+mango_rmse_random      small      FFR                 2                  h8q  0.795603 80       0.741826           7.249249
+mango_rmse_random      small      FFR                 3                  h1q  1.105684 80       1.060598           4.251016
+mango_rmse_random      small      FFR                 3                  h2q  1.092921 80       1.060598           3.047672
+mango_rmse_random      small      FFR                 3                  h4q  1.134642 80       1.060598           6.981400
+mango_rmse_random      small      FFR                 3                  h8q  1.124205 80       1.060598           5.997301
+mango_rmse_random      small      FFR                 4                  h1q  1.424372 80       1.349080           5.580947
+mango_rmse_random      small      FFR                 4                  h2q  1.406420 80       1.349080           4.250241
+mango_rmse_random      small      FFR                 4                  h4q  1.448237 80       1.349080           7.349946
+mango_rmse_random      small      FFR                 4                  h8q  1.446352 80       1.349080           7.210236
+mango_rmse_random      small      FFR                 5                  h1q  1.705168 80       1.617689           5.407679
+mango_rmse_random      small      FFR                 5                  h2q  1.703197 80       1.617689           5.285804
+mango_rmse_random      small      FFR                 5                  h4q  1.756369 80       1.617689           8.572762
+mango_rmse_random      small      FFR                 5                  h8q  1.755471 80       1.617689           8.517216
+mango_rmse_random      small      FFR                 6                  h1q  1.947690 80       1.862777           4.558403
+mango_rmse_random      small      FFR                 6                  h2q  1.950151 80       1.862777           4.690550
+mango_rmse_random      small      FFR                 6                  h4q  2.014146 80       1.862777           8.125992
+mango_rmse_random      small      FFR                 6                  h8q  2.013639 80       1.862777           8.098794
+mango_rmse_random      small      FFR                 7                  h1q  2.157155 80       2.072535           4.082907
+mango_rmse_random      small      FFR                 7                  h2q  2.150553 80       2.072535           3.764394
+mango_rmse_random      small      FFR                 7                  h4q  2.220017 80       2.072535           7.116033
+mango_rmse_random      small      FFR                 7                  h8q  2.222940 80       2.072535           7.257074
+mango_rmse_random      small      FFR                 8                  h1q  2.345226 80       2.258594           3.835665
+mango_rmse_random      small      FFR                 8                  h2q  2.334321 80       2.258594           3.352872
+mango_rmse_random      small      FFR                 8                  h4q  2.414331 80       2.258594           6.895309
+mango_rmse_random      small      FFR                 8                  h8q  2.418699 80       2.258594           7.088721
+mango_rmse_random      small      GDP                 1                  h1q 22.948453 80      22.925953           0.098144
+mango_rmse_random      small      GDP                 1                  h2q 22.922276 80      22.925953          -0.016039
+mango_rmse_random      small      GDP                 1                  h4q 22.964985 80      22.925953           0.170252
+mango_rmse_random      small      GDP                 1                  h8q 22.962932 80      22.925953           0.161299
+mango_rmse_random      small      GDP                 2                  h1q 22.638057 80      22.602680           0.156514
+mango_rmse_random      small      GDP                 2                  h2q 22.593576 80      22.602680          -0.040280
+mango_rmse_random      small      GDP                 2                  h4q 22.666317 80      22.602680           0.281547
+mango_rmse_random      small      GDP                 2                  h8q 22.663024 80      22.602680           0.266976
+mango_rmse_random      small      GDP                 3                  h1q 22.335627 80      22.287277           0.216940
+mango_rmse_random      small      GDP                 3                  h2q 22.290290 80      22.287277           0.013516
+mango_rmse_random      small      GDP                 3                  h4q 22.396822 80      22.287277           0.491512
+mango_rmse_random      small      GDP                 3                  h8q 22.391895 80      22.287277           0.469404
+mango_rmse_random      small      GDP                 4                  h1q 22.005568 80      21.951818           0.244855
+mango_rmse_random      small      GDP                 4                  h2q 21.963563 80      21.951818           0.053506
+mango_rmse_random      small      GDP                 4                  h4q 22.098976 80      21.951818           0.670369
+mango_rmse_random      small      GDP                 4                  h8q 22.092611 80      21.951818           0.641376
+mango_rmse_random      small      GDP                 5                  h1q 21.721746 80      21.639286           0.381063
+mango_rmse_random      small      GDP                 5                  h2q 21.681085 80      21.639286           0.193160
+mango_rmse_random      small      GDP                 5                  h4q 21.864697 80      21.639286           1.041671
+mango_rmse_random      small      GDP                 5                  h8q 21.855745 80      21.639286           1.000302
+mango_rmse_random      small      GDP                 6                  h1q 21.454370 80      21.361997           0.432416
+mango_rmse_random      small      GDP                 6                  h2q 21.423824 80      21.361997           0.289424
+mango_rmse_random      small      GDP                 6                  h4q 21.673037 80      21.361997           1.456041
+mango_rmse_random      small      GDP                 6                  h8q 21.662407 80      21.361997           1.406283
+mango_rmse_random      small      GDP                 7                  h1q 21.190238 80      21.097342           0.440320
+mango_rmse_random      small      GDP                 7                  h2q 21.169617 80      21.097342           0.342582
+mango_rmse_random      small      GDP                 7                  h4q 21.490774 80      21.097342           1.864844
+mango_rmse_random      small      GDP                 7                  h8q 21.479886 80      21.097342           1.813234
+mango_rmse_random      small      GDP                 8                  h1q 20.984354 80      20.845073           0.668170
+mango_rmse_random      small      GDP                 8                  h2q 20.954127 80      20.845073           0.523166
+mango_rmse_random      small      GDP                 8                  h4q 21.350846 80      20.845073           2.426342
+mango_rmse_random      small      GDP                 8                  h8q 21.336824 80      20.845073           2.359078
+            paper      small     DEFL                 1                  NaN 20.275300 80      20.275300           0.000000
+            paper      small     DEFL                 2                  NaN 20.277882 80      20.277882           0.000000
+            paper      small     DEFL                 3                  NaN 20.292708 80      20.292708           0.000000
+            paper      small     DEFL                 4                  NaN 20.324163 80      20.324163           0.000000
+            paper      small     DEFL                 5                  NaN 20.376183 80      20.376183           0.000000
+            paper      small     DEFL                 6                  NaN 20.451764 80      20.451764           0.000000
+            paper      small     DEFL                 7                  NaN 20.547343 80      20.547343           0.000000
+            paper      small     DEFL                 8                  NaN 20.661180 80      20.661180           0.000000
+            paper      small      FFR                 1                  NaN  0.382440 80       0.382440           0.000000
+            paper      small      FFR                 2                  NaN  0.741826 80       0.741826           0.000000
+            paper      small      FFR                 3                  NaN  1.060598 80       1.060598           0.000000
+            paper      small      FFR                 4                  NaN  1.349080 80       1.349080           0.000000
+            paper      small      FFR                 5                  NaN  1.617689 80       1.617689           0.000000
+            paper      small      FFR                 6                  NaN  1.862777 80       1.862777           0.000000
+            paper      small      FFR                 7                  NaN  2.072535 80       2.072535           0.000000
+            paper      small      FFR                 8                  NaN  2.258594 80       2.258594           0.000000
+            paper      small      GDP                 1                  NaN 22.925953 80      22.925953           0.000000
+            paper      small      GDP                 2                  NaN 22.602680 80      22.602680           0.000000
+            paper      small      GDP                 3                  NaN 22.287277 80      22.287277           0.000000
+            paper      small      GDP                 4                  NaN 21.951818 80      21.951818           0.000000
+            paper      small      GDP                 5                  NaN 21.639286 80      21.639286           0.000000
+            paper      small      GDP                 6                  NaN 21.361997 80      21.361997           0.000000
+            paper      small      GDP                 7                  NaN 21.097342 80      21.097342           0.000000
+            paper      small      GDP                 8                  NaN 20.845073 80      20.845073           0.000000

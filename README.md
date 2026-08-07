@@ -154,9 +154,175 @@ This creates:
 - hyperparameter summary tables for the optimized models,
 - paper-style PNG figures for relative RMSE by group and hyperparameter paths.
 
+## GLP Workflow
+
+This repository also contains a separate quarterly BVAR workflow for Giannone, Lenza and Primiceri (2015) under `src/glp_hyperparameter_optimization` and `scripts/glp`. Those commands are independent of the Schorfheide-Song MF-VAR workflow above and write to `outputs/glp/...` by convention.
+
+### Choosing `small`, `medium`, or `large`
+
+All GLP scripts expose `--model-size small|medium|large`, but it affects two different layers:
+
+- `scripts/glp/download_glp_data.py` chooses which series are downloaded into the processed GLP panel and defaults to `large`.
+- The recursive forecast scripts choose which nested model is estimated from that panel and default to `medium`.
+
+The model sizes are nested:
+
+- `small`: `GDP, DEFL, FFR`
+- `medium`: `small` plus `CONS, INV, HOURS, WAGE`
+- `large`: `medium` plus `EMP, UNR, AHE, CPI, PPI, COMM, M1, M2, MBASE, TOTRES, NBRES, SP500, TB10, REER`
+
+Practical rule:
+
+- Download `large` once if you want to switch between model sizes later.
+- Download only `small` or `medium` only if you know you will stay at that size, because larger runs need the additional series to build a complete quarterly estimation window.
+
+### 1. Download GLP data
+
+Download the full GLP panel once and then reuse it for any of the three model sizes:
+
+```bash
+python scripts/glp/download_glp_data.py \
+  --model-size large
+```
+
+If you only want one smaller universe, change `--model-size` accordingly:
+
+```bash
+python scripts/glp/download_glp_data.py \
+  --model-size small
+```
+
+The downloader also supports:
+
+- `--start` / `--end` to change the recursive forecast-origin vintages that are cached,
+- `--actual-vintage` to change the fixed evaluation vintage,
+- `--output-panel`, `--output-latest`, and `--metadata-path` to redirect the processed outputs,
+- `--force` to redownload even when the processed files already match the requested setup.
+
+### 2. Common GLP run parameters
+
+All recursive GLP forecast scripts share these controls:
+
+- `--output-dir` is required and determines where `forecast_panel.csv`, `selected_hyperparameters.csv`, `failed_origins.csv`, and `run_metadata.json` are written.
+- `--model-size` selects the estimated model size for that run.
+- `--panel-path` points to the processed GLP real-time panel and defaults to `data/processed/glp_realtime_panel.csv.gz`.
+- `--start` / `--end` change the recursive forecast window. The defaults are `2000-03-31` through `2019-12-31`.
+- `--actual-vintage` changes the scoring vintage. The default is `2023-01-01`.
+- `--lags` changes the BVAR lag order. The default is `5`.
+- `--mcmc-draws`, `--mcmc-discard`, and `--mcmc-const` change the predictive-density simulation settings.
+- `--seed-base` sets a reproducible base RNG seed that is offset per forecast origin.
+- `--n-workers` controls process-level parallelism across forecast origins.
+
+The Mango-based scripts also expose:
+
+- `--optimization-init-points`, `--optimization-iterations`, and `--optimization-njobs` for the Bayesian-optimization budget.
+
+The RMSE-based GLP scripts additionally expose:
+
+- `--variables` for the objective variables, e.g. `GDP,DEFL`,
+- `--optimization-eval-horizons-quarters` for the target horizon batch, e.g. `1,2,4,8` or just `4`,
+- `--optimization-n-eval` for the number of evaluation origins inside the RMSE objective,
+- `--optimization-min-t` and `--optimization-random-seed` for the random-origin RMSE variant,
+- `--per-origin-selection` to re-select RMSE hyperparameters at every origin instead of once on the first origin.
+
+### Batch-run the GLP forecast scripts
+
+If you want one command that runs the four forecast scripts (`paper`, `mango_mdd`,
+`mango_rmse`, `mango_rmse_random`) with one shared flag surface, use:
+
+```bash
+python scripts/glp/run_glp_all.py \
+  --stages paper,mango_mdd,mango_rmse,mango_rmse_random,compare \
+  --output-root outputs/glp/all_medium \
+  --model-size medium \
+  --variables GDP,DEFL \
+  --optimization-eval-horizons-quarters 1,2,4,8 \
+  --optimization-n-eval 3 \
+  --optimization-random-seed 123 \
+  --optimization-init-points 5 \
+  --optimization-iterations 15 \
+  --optimization-njobs 4 \
+  --n-workers 4
+```
+
+Notes:
+
+- `--stages` defaults to `paper,mango_mdd,mango_rmse,mango_rmse_random`; add `compare` if you also want the comparison report.
+- `--output-root` becomes the base directory; the wrapper writes `paper/`, `mango_mdd/`, `mango_rmse/`, `mango_rmse_random/`, and optionally `comparison/` under it unless you override the per-stage directories with `--paper-dir`, `--mango-mdd-dir`, `--mango-rmse-dir`, `--mango-rmse-random-dir`, or `--comparison-dir`.
+- The wrapper also exposes the shared model-prior switches `--hyperpriors`, `--sur`, `--noc`, `--mnpsi`, `--mnalpha`, and `--vc` in case you want to override the defaults programmatically used by the individual scripts.
+
+### 3. Run the GLP paper strategy
+
+```bash
+python scripts/glp/run_glp_paper.py \
+  --output-dir outputs/glp/paper_medium \
+  --model-size medium
+```
+
+This is the hierarchical GLP predictive density: hyperparameters are selected by marginal likelihood and integrated out with a random-walk Metropolis step.
+
+### 4. Run the GLP Mango MDD strategy
+
+```bash
+python scripts/glp/run_glp_mango.py \
+  --output-dir outputs/glp/mango_mdd_medium \
+  --model-size medium \
+  --optimization-init-points 5 \
+  --optimization-iterations 15
+```
+
+Despite the shorter filename, `run_glp_mango.py` is the GLP MDD / posterior-optimization workflow.
+
+### 5. Run the GLP Mango RMSE strategy
+
+```bash
+python scripts/glp/run_glp_mango_rmse.py \
+  --output-dir outputs/glp/mango_rmse_medium \
+  --model-size medium \
+  --variables GDP,DEFL \
+  --optimization-eval-horizons-quarters 1,2,4,8 \
+  --optimization-n-eval 3
+```
+
+By default this writes one subdirectory per target horizon such as `h1q`, `h2q`, `h4q`, and `h8q` under the chosen output directory. To optimize only one horizon, pass a single value such as `--optimization-eval-horizons-quarters 4`.
+
+### 6. Run the GLP Mango RMSE-random strategy
+
+```bash
+python scripts/glp/run_glp_mango_rmse_random.py \
+  --output-dir outputs/glp/mango_rmse_random_medium \
+  --model-size medium \
+  --variables GDP,DEFL \
+  --optimization-eval-horizons-quarters 1,2,4,8 \
+  --optimization-n-eval 3 \
+  --optimization-random-seed 123
+```
+
+This mirrors the previous command but samples the RMSE evaluation origins at random from the valid pool.
+
+### 7. Compare the GLP forecast sets
+
+```bash
+python scripts/glp/compare_glp_forecasts.py \
+  --paper-dir outputs/glp/paper_medium \
+  --mango-mdd-dir outputs/glp/mango_mdd_medium \
+  --mango-rmse-dir outputs/glp/mango_rmse_medium \
+  --mango-rmse-random-dir outputs/glp/mango_rmse_random_medium \
+  --output-dir outputs/glp/comparison_medium
+```
+
+If you instead write the runs to the unsuffixed defaults `outputs/glp/paper`, `outputs/glp/mango_mdd`, `outputs/glp/mango_rmse`, and `outputs/glp/mango_rmse_random`, you can omit the directory flags and keep only `--output-dir`.
+
+If you keep size-suffixed directories such as `outputs/glp/paper_small` and
+`outputs/glp/mango_rmse_small`, the compare script now auto-discovers them from
+their `run_metadata.json` files under `outputs/glp`. If multiple model sizes are
+present, pass `--model-size small|medium|large` to disambiguate, or keep using
+the explicit `--paper-dir`, `--mango-mdd-dir`, `--mango-rmse-dir`, and
+`--mango-rmse-random-dir` flags.
+
 ## Parallelization
 
-The recursive forecast scripts support process-level parallelization across forecast origins:
+The recursive forecast scripts in both workflows support process-level parallelization across forecast origins:
 
 ```bash
 python scripts/run_mango_mdd.py \
@@ -171,10 +337,10 @@ When the scripts run inside a Slurm allocation, `--n-workers` now defaults to th
 
 ## Euler / Slurm
 
-Use [scripts/run_everything_euler.slurm](/home/runner/work/paper_hyperparameter_optimization/paper_hyperparameter_optimization/scripts/run_everything_euler.slurm) to run the full workflow on Euler:
+Use [scripts/run_everything_euler.sh](scripts/run_everything_euler.sh) to run the full Schorfheide-Song workflow on Euler:
 
 ```bash
-sbatch scripts/run_everything_euler.slurm
+sbatch scripts/run_everything_euler.sh
 ```
 
 The batch script:
@@ -184,6 +350,8 @@ The batch script:
 - pins BLAS/OpenMP thread pools to `1` per Python worker to avoid oversubscription,
 - runs data download, paper hyperparameters, Mango MDD, Mango RMSE, Mango RMSE random, and the final comparison report in sequence,
 - writes outputs under `outputs/euler` by default.
+
+There is no dedicated GLP Euler wrapper yet, so run the `scripts/glp/*.py` commands you need inside your own batch script and pass `--model-size`, output paths, and optimizer flags explicitly.
 
 To write results somewhere else, override `OUTPUT_ROOT` at submission time:
 

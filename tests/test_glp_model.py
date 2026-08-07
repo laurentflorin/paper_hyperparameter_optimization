@@ -20,9 +20,7 @@ def _synthetic_data(T: int = 90, n: int = 3, seed: int = 0) -> np.ndarray:
 
 
 def _bounds(ctx) -> tuple[np.ndarray, np.ndarray]:
-    lo = np.array([ctx.MIN["lambda"], ctx.MIN["theta"], ctx.MIN["miu"]])
-    hi = np.array([ctx.MAX["lambda"], ctx.MAX["theta"], ctx.MAX["miu"]])
-    return lo, hi
+    return gm._full_bounds(ctx)
 
 
 def test_context_shapes():
@@ -37,7 +35,8 @@ def test_context_shapes():
 
 def test_transform_round_trip():
     ctx = gm.prepare_glp_context(_synthetic_data(), lags=4)
-    natural = [0.35, 2.5, 0.8]
+    lo, hi = gm._full_bounds(ctx)
+    natural = np.sqrt(lo * hi)  # geometric midpoint, guaranteed strictly in-bounds
     recovered = gm.to_natural(gm.to_transformed(natural, ctx), ctx)
     np.testing.assert_allclose(recovered, natural, rtol=1e-6)
 
@@ -46,16 +45,19 @@ def test_mode_objective_is_consistent_between_workhorses():
     # logMLVAR_formin and logMLVAR_formcmc must agree on the log posterior at the mode.
     ctx = gm.prepare_glp_context(_synthetic_data(seed=1), lags=5)
     mode = gm.glp_find_mode(ctx)
-    from_formcmc = gm.glp_logposterior(ctx, mode["lambda"], mode["theta"], mode["miu"])
+    mode_vec = gm.hyper_to_natural_vector(mode, ctx)
+    from_formcmc = gm.glp_logposterior(ctx, mode_vec)
     assert mode["log_posterior"] == pytest.approx(from_formcmc, rel=1e-6, abs=1e-6)
     lo, hi = _bounds(ctx)
-    natural = np.array([mode["lambda"], mode["theta"], mode["miu"]])
-    assert np.all(natural > lo) and np.all(natural < hi)
+    assert np.all(mode_vec > lo) and np.all(mode_vec < hi)
 
 
 def test_forecast_shapes():
     ctx = gm.prepare_glp_context(_synthetic_data(), lags=4)
-    beta, sigma = gm.glp_mode_estimate(ctx, 0.2, 1.0, 1.0)
+    vec = gm.hyper_to_natural_vector(
+        {"lambda": 0.2, "theta": 1.0, "miu": 1.0, "psi": np.ravel(ctx.SS).tolist()}, ctx
+    )
+    beta, sigma = gm.glp_mode_estimate(ctx, vec)
     assert beta.shape == (ctx.k, ctx.n)
     assert sigma.shape == (ctx.n, ctx.n)
     point = gm.point_forecast(ctx.y, beta, [1, 2, 4, 8])
@@ -68,7 +70,7 @@ def test_forecast_shapes():
 def test_mango_mdd_returns_in_bounds():
     y = _synthetic_data(seed=2)
     best = gm.update_hyperparameters_mango(y, lags=4, init_points=2, n_iter=2, njobs=1)
-    assert set(best) == {"lambda", "theta", "miu"}
+    assert {"lambda", "theta", "miu"} <= set(best)
     for key, (lower, upper) in gm.GLP_PARAM_SPACE_BOUNDS.items():
         assert lower <= best[key] <= upper
 

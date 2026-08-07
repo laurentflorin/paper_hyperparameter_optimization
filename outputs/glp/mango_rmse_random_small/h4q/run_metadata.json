@@ -1,0 +1,31 @@
+{
+  "strategy": "mango_rmse_random",
+  "model_size": "small",
+  "panel_path": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/data/processed/glp_realtime_panel.csv.gz",
+  "actual_vintage": "2023-01-01",
+  "lags": 5,
+  "variables_of_interest": [
+    "GDP"
+  ],
+  "hyperpriors": 1,
+  "sur": 1,
+  "noc": 1,
+  "mnpsi": 0,
+  "mnalpha": 0,
+  "mcmc_draws": 2000,
+  "mcmc_discard": 1000,
+  "mcmc_const": 1.0,
+  "optimization_init_points": 5,
+  "optimization_iterations": 15,
+  "optimization_njobs": 4,
+  "optimization_horizon_quarters": 4,
+  "optimization_eval_horizon_quarters": 4,
+  "n_eval": 3,
+  "min_t": null,
+  "random_seed": null,
+  "hyperparameters_selected_once": false,
+  "hyperparameter_selection_origin": null,
+  "n_workers": 4,
+  "n_origins_requested": 80,
+  "n_origins_completed": 80
+}

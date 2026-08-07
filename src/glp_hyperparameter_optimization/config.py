@@ -111,10 +111,10 @@ MAX_FORECAST_HORIZON_QUARTERS = 8
 EVAL_HORIZONS_QUARTERS = [1, 2, 4, 8]
 
 # GLP prior / estimation switches (see covbayesvar.large_bvar.set_priors).
-GLP_SUR = 1          # sum-of-coefficients ("theta") prior on.
-GLP_NOC = 1          # dummy-initial-observation ("miu") prior on.
-GLP_MNPSI = 0        # keep psi fixed at the AR(1) residual variances.
-GLP_MNALPHA = 0      # keep the lag-decay exponent alpha fixed at 2.
+GLP_SUR = 1          # single-unit-root / dummy-initial-observation ("theta") prior on.
+GLP_NOC = 1          # sum-of-coefficients / no-cointegration ("miu") prior on.
+GLP_MNPSI = 1        # estimate psi (residual-variance scales) as in the paper.
+GLP_MNALPHA = 0      # keep the lag-decay exponent alpha fixed at 2 (paper's 1/s^2 decay).
 GLP_HYPERPRIORS = 1  # use Gamma hyperpriors (the GLP hierarchical prior).
 GLP_VC = 1.0e7       # prior variance of the intercept.
 

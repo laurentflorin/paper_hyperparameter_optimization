@@ -22,9 +22,11 @@ import argparse
 import json
 import os
 import re
+import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable, Iterator
 
 import numpy as np
 import pandas as pd
@@ -51,6 +53,7 @@ from .glp_model import (
     glp_find_mode,
     glp_fixed_hyperparameter_forecast_draws,
     glp_metropolis_forecast_draws,
+    hyper_to_natural_vector,
     prepare_glp_context,
     update_hyperparameters_mango,
     update_hyperparameters_mango_rmse,
@@ -118,6 +121,53 @@ def resolve_parallel_settings(
 
 
 # --------------------------------------------------------------------------- #
+# Progress reporting helpers.
+# --------------------------------------------------------------------------- #
+def _log_progress(message: str) -> None:
+    """Print a timestamped progress line to stderr, cooperating with an active
+    tqdm bar when one is present."""
+    stamped = f"[{datetime.now(timezone.utc):%Y-%m-%d %H:%M:%S UTC}] {message}"
+    try:
+        from tqdm.auto import tqdm
+
+        tqdm.write(stamped, file=sys.stderr)
+    except Exception:  # pragma: no cover - tqdm is a declared dependency
+        print(stamped, file=sys.stderr, flush=True)
+
+
+def _iter_with_progress(
+    iterator: Iterable[tuple[str, dict[str, Any]]],
+    *,
+    total: int,
+    desc: str,
+    enabled: bool,
+) -> Iterator[tuple[str, dict[str, Any]]]:
+    """Yield ``(origin_label, result)`` pairs while driving a tqdm progress bar
+    that tracks completed vs. failed origins. Degrades to a plain pass-through
+    when progress is disabled or tqdm is unavailable."""
+    if not enabled:
+        yield from iterator
+        return
+    try:
+        from tqdm.auto import tqdm
+    except Exception:  # pragma: no cover - tqdm is a declared dependency
+        yield from iterator
+        return
+
+    completed = 0
+    failed = 0
+    with tqdm(total=total, desc=desc, unit="origin") as bar:
+        for origin_label, result in iterator:
+            if result.get("error"):
+                failed += 1
+            else:
+                completed += 1
+            bar.set_postfix(ok=completed, failed=failed, refresh=False)
+            bar.update(1)
+            yield origin_label, result
+
+
+# --------------------------------------------------------------------------- #
 # Hyperparameter selection and predictive densities.
 # --------------------------------------------------------------------------- #
 def select_hyperparameters(strategy: str, y: np.ndarray, codes: list[str], task: dict[str, Any]) -> dict[str, float]:
@@ -126,7 +176,7 @@ def select_hyperparameters(strategy: str, y: np.ndarray, codes: list[str], task:
     if strategy == "paper":
         ctx = prepare_glp_context(y, lags, hyperpriors=task["hyperpriors"], **prior_kwargs)
         mode = glp_find_mode(ctx)
-        return {"lambda": mode["lambda"], "theta": mode["theta"], "miu": mode["miu"]}
+        return {"lambda": mode["lambda"], "theta": mode["theta"], "miu": mode["miu"], "psi": mode.get("psi")}
     if strategy == "mango_mdd":
         return update_hyperparameters_mango(
             y,
@@ -173,13 +223,14 @@ def select_hyperparameters(strategy: str, y: np.ndarray, codes: list[str], task:
     raise ValueError(f"Unsupported strategy: {strategy}")
 
 
-def predictive_draws(strategy: str, ctx, hyper: dict[str, float], task: dict[str, Any], seed: int | None) -> np.ndarray:
+def predictive_draws(strategy: str, ctx, hyper: dict[str, Any], task: dict[str, Any], seed: int | None) -> np.ndarray:
     """Return an ``(n_draws, H, n)`` array of simulated forecast levels."""
     horizon = MAX_FORECAST_HORIZON_QUARTERS
+    hyper_vector = hyper_to_natural_vector(hyper, ctx)
     if strategy == "paper":
         draws, _ = glp_metropolis_forecast_draws(
             ctx,
-            [hyper["lambda"], hyper["theta"], hyper["miu"]],
+            hyper_vector,
             max_horizon=horizon,
             n_draws=task["mcmc_draws"],
             n_discard=task["mcmc_discard"],
@@ -189,9 +240,7 @@ def predictive_draws(strategy: str, ctx, hyper: dict[str, float], task: dict[str
         return draws
     return glp_fixed_hyperparameter_forecast_draws(
         ctx,
-        hyper["lambda"],
-        hyper["theta"],
-        hyper["miu"],
+        hyper_vector,
         max_horizon=horizon,
         n_draws=task["mcmc_draws"],
         seed=seed,
@@ -266,6 +315,9 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
             "theta": float(hyper["theta"]),
             "miu": float(hyper["miu"]),
         }
+        psi_values = hyper.get("psi")
+        if psi_values is not None:
+            hyper_record["psi"] = json.dumps([float(v) for v in psi_values])
         return {"forecast_rows": rows, "hyperparameters": hyper_record, "error": None}
     except Exception as exc:  # pragma: no cover - per-origin failures are logged
         return {"forecast_rows": [], "hyperparameters": {}, "error": f"{type(exc).__name__}: {exc}"}
@@ -287,7 +339,7 @@ def run_glp_experiment(
     hyperpriors: int = 1,
     sur: int = 1,
     noc: int = 1,
-    mnpsi: int = 0,
+    mnpsi: int = 1,
     mnalpha: int = 0,
     vc: float = 1.0e7,
     mcmc_draws: int = DEFAULT_MCMC_DRAWS,
@@ -305,6 +357,7 @@ def run_glp_experiment(
     per_origin_selection: bool = False,
     seed_base: int | None = None,
     n_workers: int | None = None,
+    show_progress: bool = True,
 ) -> Path:
     output_dir = resolve_project_path(output_dir)
     panel_path = resolve_project_path(panel_path)
@@ -354,10 +407,19 @@ def run_glp_experiment(
     shared_hyperparameters: dict[str, float] | None = None
     selection_origin: str | None = None
     if len(origins) > 0 and strategy in ONE_TIME_OPTIMIZATION_STRATEGIES and not per_origin_selection:
+        if show_progress:
+            _log_progress(f"Selecting shared {strategy} hyperparameters on {origins[0]:%Y-%m-%d} ...")
         panel = load_glp_realtime_panel(panel_path)
         y0, codes0, _ = build_glp_estimation_matrix(panel, origins[0], size)
         shared_hyperparameters = select_hyperparameters(strategy, y0, codes0, task_template)
         selection_origin = pd.Timestamp(origins[0]).strftime("%Y-%m-%d")
+        if show_progress:
+            _log_progress(
+                "Selected shared hyperparameters: "
+                f"lambda={shared_hyperparameters['lambda']:.4g}, "
+                f"theta={shared_hyperparameters['theta']:.4g}, "
+                f"miu={shared_hyperparameters['miu']:.4g}."
+            )
 
     tasks = [
         {**task_template, "origin_date": origin.strftime("%Y-%m-%d"), "fixed_hyperparameters": shared_hyperparameters}
@@ -383,7 +445,16 @@ def run_glp_experiment(
 
         iterator = _iterator()
 
-    for origin_label, result in iterator:
+    if show_progress:
+        _log_progress(
+            f"Running {len(tasks)} forecast origins with {n_workers_resolved} worker(s) [GLP {strategy}/{size}]."
+        )
+
+    tracked_iterator = _iter_with_progress(
+        iterator, total=len(tasks), desc=f"GLP {strategy}/{size}", enabled=show_progress
+    )
+
+    for origin_label, result in tracked_iterator:
         if result["error"]:
             errors.append({"forecast_origin": origin_label, "error": result["error"]})
             continue
@@ -431,6 +502,12 @@ def run_glp_experiment(
         "n_origins_completed": int(hyperparameters.shape[0]),
     }
     (output_dir / "run_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+
+    if show_progress:
+        _log_progress(
+            f"Completed {len(hyper_rows)}/{len(origins)} origins "
+            f"({len(errors)} failed). Outputs written to {output_dir}."
+        )
     return output_dir
 
 
@@ -455,6 +532,11 @@ def build_common_parser(description: str) -> argparse.ArgumentParser:
         type=int,
         default=None,
         help="Forecast-origin worker count. Defaults to the Slurm allocation when available, otherwise 1.",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Disable the per-origin progress bar and progress logging.",
     )
     return parser
 
@@ -499,6 +581,7 @@ def run_from_namespace(strategy: str, namespace: argparse.Namespace) -> Path:
         "mcmc_const": namespace.mcmc_const,
         "seed_base": namespace.seed_base,
         "n_workers": namespace.n_workers,
+        "show_progress": not getattr(namespace, "quiet", False),
     }
     if hasattr(namespace, "optimization_init_points"):
         kwargs.update(

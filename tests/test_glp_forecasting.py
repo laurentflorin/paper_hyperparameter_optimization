@@ -67,5 +67,128 @@ def test_rmse_and_relative_tables():
     assert mdd_h1 == 100.0  # rmse 2.0 vs baseline 1.0
 
 
+def test_relative_rmse_works_when_only_rmse_models_have_optimization_horizon():
+    frame = pd.DataFrame(
+        [
+            {
+                "model": "paper",
+                "model_size": "small",
+                "variable": "GDP",
+                "horizon_quarters": 1,
+                "error": 1.0,
+            },
+            {
+                "model": "mango_rmse",
+                "model_size": "small",
+                "variable": "GDP",
+                "horizon_quarters": 1,
+                "optimization_horizon": "h1q",
+                "error": 2.0,
+            },
+            {
+                "model": "mango_rmse",
+                "model_size": "small",
+                "variable": "GDP",
+                "horizon_quarters": 1,
+                "optimization_horizon": "h2q",
+                "error": 3.0,
+            },
+        ]
+    )
+    rmse = R.compute_rmse_table(frame)
+    assert set(rmse["model"]) == {"paper", "mango_rmse"}
+
+    relative = R.compute_relative_rmse(rmse)
+    paper_row = relative[(relative.model == "paper") & (relative.horizon_quarters == 1)].iloc[0]
+    assert paper_row["baseline_rmse"] == 1.0
+    assert paper_row["relative_rmse_pct"] == 0.0
+
+    rmse_rows = relative[(relative.model == "mango_rmse") & (relative.horizon_quarters == 1)].sort_values(
+        "optimization_horizon"
+    )
+    assert list(rmse_rows["optimization_horizon"]) == ["h1q", "h2q"]
+    assert np.allclose(rmse_rows["baseline_rmse"], 1.0)
+    assert np.allclose(rmse_rows["relative_rmse_pct"], [100.0, 200.0])
+
+
+def test_hyperparameter_summary_keeps_optimization_horizons_separate():
+    hyper = pd.DataFrame(
+        [
+            {
+                "model": "paper",
+                "model_size": "small",
+                "forecast_origin": "2020-03-31",
+                "lambda": 0.5,
+                "theta": 1.0,
+                "miu": 2.0,
+            },
+            {
+                "model": "mango_rmse",
+                "model_size": "small",
+                "optimization_horizon": "h1q",
+                "forecast_origin": "2020-03-31",
+                "lambda": 1.0,
+                "theta": 2.0,
+                "miu": 3.0,
+            },
+            {
+                "model": "mango_rmse",
+                "model_size": "small",
+                "optimization_horizon": "h2q",
+                "forecast_origin": "2020-03-31",
+                "lambda": 4.0,
+                "theta": 5.0,
+                "miu": 6.0,
+            },
+        ]
+    )
+    summary = R.compute_hyperparameter_summary(hyper)
+    assert len(summary) == 3
+    paper_row = summary[summary.model == "paper"].iloc[0]
+    assert pd.isna(paper_row["optimization_horizon"])
+    rmse_rows = summary[summary.model == "mango_rmse"]
+    assert list(rmse_rows["optimization_horizon"]) == ["h1q", "h2q"]
+
+
+def test_plot_hyperparameter_paths_separates_optimization_horizons(tmp_path):
+    hyper = pd.DataFrame(
+        [
+            {
+                "model": "paper",
+                "model_size": "small",
+                "forecast_origin": "2020-03-31",
+                "lambda": 0.5,
+                "theta": 1.0,
+                "miu": 2.0,
+            },
+            {
+                "model": "mango_rmse",
+                "model_size": "small",
+                "optimization_horizon": "h1q",
+                "forecast_origin": "2020-03-31",
+                "lambda": 1.0,
+                "theta": 2.0,
+                "miu": 3.0,
+            },
+            {
+                "model": "mango_rmse",
+                "model_size": "small",
+                "optimization_horizon": "h2q",
+                "forecast_origin": "2020-03-31",
+                "lambda": 4.0,
+                "theta": 5.0,
+                "miu": 6.0,
+            },
+        ]
+    )
+    stale = tmp_path / "mango_rmse_hyperparameter_paths.png"
+    stale.write_text("stale", encoding="utf-8")
+    R.plot_hyperparameter_paths(hyper, tmp_path)
+    assert (tmp_path / "paper_hyperparameter_paths.png").exists()
+    assert (tmp_path / "mango_rmse_h1q_hyperparameter_paths.png").exists()
+    assert (tmp_path / "mango_rmse_h2q_hyperparameter_paths.png").exists()
+    assert not stale.exists()
+
+
 def test_ordered_models_puts_paper_first():
     assert R.ordered_models(["mango_rmse", "paper", "zzz"]) == ["paper", "mango_rmse", "zzz"]

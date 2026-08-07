@@ -1,0 +1,20 @@
+{
+  "runs": [
+    {
+      "horizon_quarters": 1,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/mango_rmse_random_small/h1q"
+    },
+    {
+      "horizon_quarters": 2,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/mango_rmse_random_small/h2q"
+    },
+    {
+      "horizon_quarters": 4,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/mango_rmse_random_small/h4q"
+    },
+    {
+      "horizon_quarters": 8,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/mango_rmse_random_small/h8q"
+    }
+  ]
+}

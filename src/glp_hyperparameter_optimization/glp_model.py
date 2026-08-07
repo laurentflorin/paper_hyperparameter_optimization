@@ -13,11 +13,13 @@ workhorses that *do* work:
   Mango MDD objective and for the full MCMC predictive densities).
 * ``bvarFcst``         -- recursive point forecasts.
 
-The optimized hyperparameters are GLP's three core quantities: ``lambda``
-(overall Minnesota tightness), ``theta`` (sum-of-coefficients tightness) and
-``miu`` (dummy-initial-observation tightness). ``psi`` (residual variances) and
-``alpha`` (lag decay) are held fixed (``MNpsi=0``, ``MNalpha=0``), matching the
-three-hyperparameter search of the paper.
+The optimized hyperparameters are the paper's full set: ``lambda`` (overall
+Minnesota tightness), ``theta`` (single-unit-root / dummy-initial-observation
+tightness), ``miu`` (sum-of-coefficients / no-cointegration tightness) and the
+``psi`` vector of residual-variance scales (the diagonal of the inverse-Wishart
+scale matrix). Only ``alpha`` (the Minnesota lag-decay exponent) is held fixed at
+2 (``MNalpha=0``), matching the paper's ``1/s^2`` lag decay; ``psi`` is estimated
+(``MNpsi=1``), exactly as in Giannone, Lenza and Primiceri (2015).
 """
 
 from __future__ import annotations
@@ -47,11 +49,31 @@ except AttributeError:  # pragma: no cover - older numpy
 warnings.filterwarnings("ignore", category=_ComplexWarning)
 
 
+class _NumpySafeFloat(float):
+    """``float`` subclass tolerant of size-1 numpy arrays (numpy-1.x semantics).
+
+    covbayesvar indexes shape-(1,) slices out of a column parameter vector and
+    calls ``float`` on them (e.g. ``float(lambda_)``); numpy>=2 rejects that.
+    Shadowing ``float`` with this subclass inside the covbayesvar namespace keeps
+    those conversions working while remaining a genuine ``float`` subtype, so the
+    module's ``isinstance(x, float)`` checks stay valid.
+    """
+
+    def __new__(cls, value: Any = 0.0):
+        if isinstance(value, np.ndarray) and value.size == 1:
+            value = value.reshape(-1)[0]
+        return super().__new__(cls, value)
+
+
 def _bvar():
     """Lazily import ``covbayesvar.large_bvar`` (keeps the module import cheap
     and multiprocessing-friendly)."""
     import covbayesvar.large_bvar as bvar
 
+    # numpy>=2 compatibility for the estimated-psi path (see _NumpySafeFloat).
+    if getattr(bvar, "_glp_float_patched", False) is not True:
+        bvar.float = _NumpySafeFloat  # type: ignore[attr-defined]
+        bvar._glp_float_patched = True  # type: ignore[attr-defined]
     return bvar
 
 
@@ -138,6 +160,17 @@ def prepare_glp_context(
     )
     pos = list(pos) if pos is not None else list(pos_default or [])
 
+    # covbayesvar's set_priors stores the psi hyperprior scale under the flat keys
+    # "alpha.PSI" / "beta.PSI", but logMLVAR_formin / logMLVAR_formcmc read
+    # priorcoef["alpha"]["PSI"] / priorcoef["beta"]["PSI"] when psi is estimated
+    # (MNpsi=1). Bridge the two so the inverse-Gamma psi hyperprior term evaluates
+    # instead of raising KeyError: 'alpha'.
+    if isinstance(priorcoef, dict):
+        if "alpha.PSI" in priorcoef and "alpha" not in priorcoef:
+            priorcoef["alpha"] = {"PSI": priorcoef["alpha.PSI"]}
+        if "beta.PSI" in priorcoef and "beta" not in priorcoef:
+            priorcoef["beta"] = {"PSI": priorcoef["beta.PSI"]}
+
     TT, n = y.shape
     k = n * lags + 1
 
@@ -195,26 +228,85 @@ def prepare_glp_context(
 
 
 # --------------------------------------------------------------------------- #
-# Hyperparameter <-> unconstrained transform ([lambda, theta, miu]).
+# Hyperparameter <-> unconstrained transform.
+#
+# The natural hyperparameter vector follows the covbayesvar / GLP ordering
+#     [lambda, psi_1, ..., psi_n, theta, miu]
+# where the psi block (n residual-variance scales) is present only when psi is
+# estimated (``MNpsi=1``, the paper's specification); alpha is always held fixed
+# at 2 (``MNalpha=0``). When psi is fixed (``MNpsi=0``) the vector collapses to
+# the three-element ``[lambda, theta, miu]`` so the older behaviour is preserved.
 # --------------------------------------------------------------------------- #
+def _psi_enabled(ctx: GLPContext) -> bool:
+    """Whether psi (the residual-variance scales) is an estimated hyperparameter."""
+    return int(ctx.mn.get("psi", 0)) == 1
+
+
+def _full_bounds(ctx: GLPContext) -> tuple[np.ndarray, np.ndarray]:
+    """Lower/upper bounds for the full natural hyperparameter vector."""
+    lo = [float(ctx.MIN["lambda"])]
+    hi = [float(ctx.MAX["lambda"])]
+    if _psi_enabled(ctx):
+        lo.extend(np.ravel(ctx.MIN["psi"]).astype(float).tolist())
+        hi.extend(np.ravel(ctx.MAX["psi"]).astype(float).tolist())
+    lo.extend([float(ctx.MIN["theta"]), float(ctx.MIN["miu"])])
+    hi.extend([float(ctx.MAX["theta"]), float(ctx.MAX["miu"])])
+    return np.asarray(lo, dtype=float), np.asarray(hi, dtype=float)
+
+
+# Backwards-compatible alias retained for callers that only need a bounds pair.
 def _bounds_from_context(ctx: GLPContext) -> tuple[np.ndarray, np.ndarray]:
-    lo = np.array([ctx.MIN["lambda"], ctx.MIN["theta"], ctx.MIN["miu"]], dtype=float)
-    hi = np.array([ctx.MAX["lambda"], ctx.MAX["theta"], ctx.MAX["miu"]], dtype=float)
-    return lo, hi
+    return _full_bounds(ctx)
 
 
 def to_transformed(natural: Sequence[float], ctx: GLPContext) -> np.ndarray:
-    """Map natural ``[lambda, theta, miu]`` to the unconstrained real line."""
-    lo, hi = _bounds_from_context(ctx)
-    nat = np.clip(np.asarray(natural, dtype=float), lo + 1e-12, hi - 1e-12)
+    """Map a natural hyperparameter vector to the unconstrained real line."""
+    lo, hi = _full_bounds(ctx)
+    nat = np.clip(np.asarray(natural, dtype=float).ravel(), lo + 1e-12, hi - 1e-12)
     return -np.log((hi - nat) / (nat - lo))
 
 
 def to_natural(transformed: Sequence[float], ctx: GLPContext) -> np.ndarray:
     """Inverse of :func:`to_transformed`."""
-    lo, hi = _bounds_from_context(ctx)
-    t = np.asarray(transformed, dtype=float)
+    lo, hi = _full_bounds(ctx)
+    t = np.asarray(transformed, dtype=float).ravel()
     return lo + (hi - lo) / (1.0 + np.exp(-t))
+
+
+def hyper_to_natural_vector(hyper: dict[str, Any], ctx: GLPContext) -> np.ndarray:
+    """Build the covbayesvar-ordered natural vector from a hyperparameter dict.
+
+    ``hyper`` must carry ``lambda``/``theta``/``miu``; the ``psi`` entry (a list of
+    ``n`` scales, or ``None``) is only consulted when psi is estimated and falls
+    back to the AR(1) residual variances otherwise.
+    """
+    vec = [float(hyper["lambda"])]
+    if _psi_enabled(ctx):
+        psi = hyper.get("psi")
+        psi = np.ravel(ctx.SS) if psi is None else np.ravel(np.asarray(psi, dtype=float))
+        vec.extend(psi.astype(float).tolist())
+    vec.extend([float(hyper["theta"]), float(hyper["miu"])])
+    return np.asarray(vec, dtype=float)
+
+
+def natural_vector_to_hyper(vector: Sequence[float], ctx: GLPContext) -> dict[str, Any]:
+    """Inverse of :func:`hyper_to_natural_vector` (``psi`` is ``None`` when fixed)."""
+    vec = np.asarray(vector, dtype=float).ravel()
+    hyper: dict[str, Any] = {"lambda": float(vec[0])}
+    idx = 1
+    if _psi_enabled(ctx):
+        hyper["psi"] = vec[idx : idx + ctx.n].astype(float).tolist()
+        idx += ctx.n
+    else:
+        hyper["psi"] = None
+    hyper["theta"] = float(vec[idx])
+    hyper["miu"] = float(vec[idx + 1])
+    return hyper
+
+
+def _clip_natural(vector: Sequence[float], ctx: GLPContext) -> np.ndarray:
+    """Clip a natural vector strictly inside the context bounds (a safe round-trip)."""
+    return to_natural(to_transformed(vector, ctx), ctx)
 
 
 # --------------------------------------------------------------------------- #
@@ -249,7 +341,9 @@ def _formin(ctx: GLPContext, transformed_par: np.ndarray):
 def _formcmc(ctx: GLPContext, natural_par: np.ndarray, draw: int):
     bvar = _bvar()
     return bvar.logMLVAR_formcmc(
-        np.asarray(natural_par, dtype=float).ravel(),
+        # logMLVAR_formcmc reads ``psi = par[1:n+1]`` without reshaping, so it needs
+        # a column vector for the psi block to stay (n, 1); ravel would break vstack.
+        np.asarray(natural_par, dtype=float).reshape(-1, 1),
         ctx.y,
         ctx.x,
         ctx.lags,
@@ -280,23 +374,24 @@ def glp_neg_logposterior_transformed(transformed_par: np.ndarray, ctx: GLPContex
     return float(np.ravel(value)[0])
 
 
-def glp_logposterior(ctx: GLPContext, lam: float, theta: float, miu: float) -> float:
-    """Log posterior (or pure log marginal likelihood when ``hyperpriors=0``)
-    at natural hyperparameters -- the Mango MDD objective."""
-    logml, _, _ = _formcmc(ctx, np.array([lam, theta, miu]), draw=0)
+def glp_logposterior(ctx: GLPContext, hyper_vector: Sequence[float]) -> float:
+    """Log posterior (or pure log marginal likelihood when ``hyperpriors=0``) at
+    the natural hyperparameter vector ``[lambda, psi, theta, miu]`` -- the Mango
+    MDD / posterior objective."""
+    logml, _, _ = _formcmc(ctx, np.asarray(hyper_vector, dtype=float), draw=0)
     return float(np.ravel(logml)[0])
 
 
-def glp_mode_estimate(ctx: GLPContext, lam: float, theta: float, miu: float) -> tuple[np.ndarray, np.ndarray]:
-    """Posterior-mode ``(betahat, sigmahat)`` for the given hyperparameters."""
-    transformed = to_transformed([lam, theta, miu], ctx)
+def glp_mode_estimate(ctx: GLPContext, hyper_vector: Sequence[float]) -> tuple[np.ndarray, np.ndarray]:
+    """Posterior-mode ``(betahat, sigmahat)`` for the given hyperparameter vector."""
+    transformed = to_transformed(hyper_vector, ctx)
     _, betahat, sigmahat = _formin(ctx, transformed)
     return np.asarray(betahat, dtype=float), np.asarray(sigmahat, dtype=float)
 
 
-def glp_draw(ctx: GLPContext, lam: float, theta: float, miu: float) -> tuple[np.ndarray, np.ndarray]:
+def glp_draw(ctx: GLPContext, hyper_vector: Sequence[float]) -> tuple[np.ndarray, np.ndarray]:
     """A single posterior draw of ``(beta, sigma)`` at the given hyperparameters."""
-    _, betadraw, drawsigma = _formcmc(ctx, np.array([lam, theta, miu]), draw=1)
+    _, betadraw, drawsigma = _formcmc(ctx, _clip_natural(hyper_vector, ctx), draw=1)
     return np.asarray(betadraw, dtype=float), np.asarray(drawsigma, dtype=float)
 
 
@@ -344,26 +439,36 @@ def glp_find_mode(
     method: str = "Nelder-Mead",
     maxiter: int = 2000,
 ) -> dict[str, Any]:
-    """Maximize the GLP (log) posterior over ``[lambda, theta, miu]`` and return
-    the mode hyperparameters together with the posterior-mode beta/sigma."""
+    """Maximize the GLP (log) posterior over the full hyperparameter vector
+    ``[lambda, psi, theta, miu]`` (psi included when estimated) and return the
+    mode hyperparameters together with the posterior-mode beta/sigma."""
     from scipy.optimize import minimize
 
     if start_natural is None:
-        start_natural = [0.2, 1.0, 1.0]
-    x0 = to_transformed(start_natural, ctx)
+        start = {"lambda": 0.2, "theta": 1.0, "miu": 1.0, "psi": np.ravel(ctx.SS).tolist()}
+        start_vec = hyper_to_natural_vector(start, ctx)
+    else:
+        start_vec = np.asarray(start_natural, dtype=float).ravel()
+    x0 = to_transformed(start_vec, ctx)
+    # Nelder-Mead needs headroom as the dimension grows with the psi block.
+    scaled_maxiter = max(int(maxiter), 200 * int(np.asarray(x0).size))
     result = minimize(
         glp_neg_logposterior_transformed,
         x0,
         args=(ctx,),
         method=method,
-        options={"maxiter": maxiter, "xatol": 1e-6, "fatol": 1e-8} if method == "Nelder-Mead" else {"maxiter": maxiter},
+        options={"maxiter": scaled_maxiter, "maxfev": scaled_maxiter, "xatol": 1e-6, "fatol": 1e-8}
+        if method == "Nelder-Mead"
+        else {"maxiter": scaled_maxiter},
     )
     natural = to_natural(result.x, ctx)
+    hyper = natural_vector_to_hyper(natural, ctx)
     _, betahat, sigmahat = _formin(ctx, result.x)
     return {
-        "lambda": float(natural[0]),
-        "theta": float(natural[1]),
-        "miu": float(natural[2]),
+        "lambda": hyper["lambda"],
+        "theta": hyper["theta"],
+        "miu": hyper["miu"],
+        "psi": hyper["psi"],
         "log_posterior": float(-result.fun),
         "betahat": np.asarray(betahat, dtype=float),
         "sigmahat": np.asarray(sigmahat, dtype=float),
@@ -399,7 +504,7 @@ def _proposal_covariance(ctx: GLPContext, mode_natural: np.ndarray) -> np.ndarra
     """Inverse observed-information at the mode, regularized to be PD."""
 
     def neg_logpost(nat: np.ndarray) -> float:
-        return -glp_logposterior(ctx, float(nat[0]), float(nat[1]), float(nat[2]))
+        return -glp_logposterior(ctx, nat)
 
     hess = _numerical_hessian(neg_logpost, mode_natural)
     try:
@@ -439,11 +544,11 @@ def glp_metropolis_forecast_draws(
         np.random.seed(int(seed) % (2**32 - 1))
 
     lo, hi = _bounds_from_context(ctx)
-    mode_natural = np.asarray(mode_natural, dtype=float)
+    mode_natural = np.asarray(mode_natural, dtype=float).ravel()
     cov = _proposal_covariance(ctx, mode_natural) * (const**2)
 
     current = mode_natural.copy()
-    current_lp = glp_logposterior(ctx, *current)
+    current_lp = glp_logposterior(ctx, current)
     kept_fc: list[np.ndarray] = []
     kept_hyper: list[np.ndarray] = []
 
@@ -453,12 +558,12 @@ def glp_metropolis_forecast_draws(
         if np.any(proposal <= lo) or np.any(proposal >= hi):
             accept = False
         else:
-            proposal_lp = glp_logposterior(ctx, *proposal)
+            proposal_lp = glp_logposterior(ctx, proposal)
             accept = np.log(rng.uniform()) < (proposal_lp - current_lp)
             if accept:
                 current, current_lp = proposal, proposal_lp
         if it >= n_discard:
-            beta, sigma = glp_draw(ctx, *current)
+            beta, sigma = glp_draw(ctx, current)
             kept_fc.append(simulate_forecast_path(ctx.y, beta, sigma, ctx.lags, max_horizon, rng))
             kept_hyper.append(current.copy())
 
@@ -467,9 +572,7 @@ def glp_metropolis_forecast_draws(
 
 def glp_fixed_hyperparameter_forecast_draws(
     ctx: GLPContext,
-    lam: float,
-    theta: float,
-    miu: float,
+    hyper_vector: Sequence[float],
     *,
     max_horizon: int,
     n_draws: int,
@@ -481,9 +584,10 @@ def glp_fixed_hyperparameter_forecast_draws(
     rng = np.random.default_rng(seed)
     if seed is not None:
         np.random.seed(int(seed) % (2**32 - 1))
+    vec = _clip_natural(hyper_vector, ctx)
     draws = np.empty((n_draws, max_horizon, ctx.n))
     for d in range(n_draws):
-        beta, sigma = glp_draw(ctx, lam, theta, miu)
+        beta, sigma = glp_draw(ctx, vec)
         draws[d] = simulate_forecast_path(ctx.y, beta, sigma, ctx.lags, max_horizon, rng)
     return draws
 
@@ -491,22 +595,46 @@ def glp_fixed_hyperparameter_forecast_draws(
 # --------------------------------------------------------------------------- #
 # Mango parameter space (positional scipy.uniform, avoiding the Mango kwds bug).
 # --------------------------------------------------------------------------- #
-def make_param_space(bounds: dict[str, tuple[float, float]] | None = None) -> dict[str, Any]:
+def make_param_space(
+    ctx: GLPContext | None = None,
+    bounds: dict[str, tuple[float, float]] | None = None,
+) -> dict[str, Any]:
+    """Mango search space over ``[lambda, psi_1..psi_n, theta, miu]``.
+
+    The psi dimensions (data-dependent bounds ``SS/100 .. SS*100``) are only added
+    when ``ctx`` is supplied and psi is estimated (``MNpsi=1``). scipy ``uniform``
+    distributions are built positionally to avoid the Mango keyword-args bug.
+    """
     from scipy.stats import uniform
 
     if bounds is None:
         bounds = GLP_PARAM_SPACE_BOUNDS
-    # Rename the reserved word 'lambda' to 'lam' for the objective signature.
-    renamed = {("lam" if key == "lambda" else key): value for key, value in bounds.items()}
-    return {key: uniform(lower, upper - lower) for key, (lower, upper) in renamed.items()}
+    space: dict[str, Any] = {}
+    lower, upper = bounds["lambda"]
+    space["lam"] = uniform(lower, upper - lower)
+    if ctx is not None and _psi_enabled(ctx):
+        psi_lo = np.ravel(ctx.MIN["psi"]).astype(float)
+        psi_hi = np.ravel(ctx.MAX["psi"]).astype(float)
+        for i in range(ctx.n):
+            space[f"psi_{i}"] = uniform(psi_lo[i], psi_hi[i] - psi_lo[i])
+    for key in ("theta", "miu"):
+        lower, upper = bounds[key]
+        space[key] = uniform(lower, upper - lower)
+    return space
 
 
-def _best_hyperparameters(best_params: dict[str, float]) -> dict[str, float]:
-    return {
-        "lambda": float(best_params["lam"]),
-        "theta": float(best_params["theta"]),
-        "miu": float(best_params["miu"]),
-    }
+def _params_to_natural(params: dict[str, float], ctx: GLPContext) -> np.ndarray:
+    """Assemble the covbayesvar-ordered natural vector from a Mango params dict."""
+    vec = [float(params["lam"])]
+    if _psi_enabled(ctx):
+        for i in range(ctx.n):
+            vec.append(float(params[f"psi_{i}"]))
+    vec.extend([float(params["theta"]), float(params["miu"])])
+    return np.asarray(vec, dtype=float)
+
+
+def _best_hyperparameters(best_params: dict[str, float], ctx: GLPContext) -> dict[str, Any]:
+    return natural_vector_to_hyper(_params_to_natural(best_params, ctx), ctx)
 
 
 # --------------------------------------------------------------------------- #
@@ -534,20 +662,20 @@ def update_hyperparameters_mango(
     """
     from mango import Tuner, scheduler
 
-    if param_space is None:
-        param_space = make_param_space()
     ctx = context if context is not None else prepare_glp_context(y, lags, hyperpriors=hyperpriors, **prior_kwargs)
+    if param_space is None:
+        param_space = make_param_space(ctx)
 
     @scheduler.parallel(n_jobs=njobs)
-    def objective(lam: float, theta: float, miu: float) -> float:
+    def objective(**params: float) -> float:
         try:
-            return glp_logposterior(ctx, float(lam), float(theta), float(miu))
+            return glp_logposterior(ctx, _params_to_natural(params, ctx))
         except Exception:  # pragma: no cover - a bad draw must not kill the run
             return -1.0e15
 
     conf = dict(num_iteration=n_iter, initial_random=init_points)
     results = Tuner(param_space, objective, conf).maximize()
-    return _best_hyperparameters(results["best_params"])
+    return _best_hyperparameters(results["best_params"], ctx)
 
 
 def _rmse_eval_origins(
@@ -607,15 +735,17 @@ def _rmse_objective(
     var_indices: Sequence[int],
     H: int,
     h_eval: int | None,
-) -> Callable[[float, float, float], float]:
+    ctx_ref: GLPContext,
+) -> Callable[..., float]:
     horizons = list(range(1, H + 1))
     var_indices = list(var_indices)
 
-    def calc_rmse(lam: float, theta: float, miu: float) -> float:
+    def calc_rmse(**params: float) -> float:
+        vec = _params_to_natural(params, ctx_ref)
         squared_errors: list[float] = []
         try:
             for ctx, actual in origins:
-                betahat, _ = glp_mode_estimate(ctx, float(lam), float(theta), float(miu))
+                betahat, _ = glp_mode_estimate(ctx, vec)
                 forecast = point_forecast(ctx.y, betahat, horizons)  # (H, n)
                 rows = [h_eval - 1] if h_eval is not None else list(range(H))
                 for row in rows:
@@ -658,20 +788,21 @@ def update_hyperparameters_mango_rmse(
     ``MBFVAR.update_hyperparameters_mango_rmse``)."""
     from mango import Tuner, scheduler
 
-    if param_space is None:
-        param_space = make_param_space()
     prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
     var_indices = _resolve_var_indices(model_codes, var_of_interest)
 
     y = np.asarray(y, dtype=float)
     ks = _rmse_eval_origins(y.shape[0], H, n_eval, random=False, min_t=min_t, random_seed=None)
     origins = _build_rmse_origins(y, lags, ks, H, prior_kwargs)
-    calc_rmse = _rmse_objective(origins, var_indices, H, h_eval)
+    ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
+    if param_space is None:
+        param_space = make_param_space(ctx_ref)
+    calc_rmse = _rmse_objective(origins, var_indices, H, h_eval, ctx_ref)
 
     parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
     conf = dict(num_iteration=n_iter, initial_random=init_points)
     results = Tuner(param_space, parallel_objective, conf).minimize()
-    return _best_hyperparameters(results["best_params"])
+    return _best_hyperparameters(results["best_params"], ctx_ref)
 
 
 def update_hyperparameters_mango_rmse_random(
@@ -697,20 +828,21 @@ def update_hyperparameters_mango_rmse_random(
     ``MBFVAR.update_hyperparameters_mango_rmse_random``)."""
     from mango import Tuner, scheduler
 
-    if param_space is None:
-        param_space = make_param_space()
     prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
     var_indices = _resolve_var_indices(model_codes, var_of_interest)
 
     y = np.asarray(y, dtype=float)
     ks = _rmse_eval_origins(y.shape[0], H, n_eval, random=True, min_t=min_t, random_seed=random_seed)
     origins = _build_rmse_origins(y, lags, ks, H, prior_kwargs)
-    calc_rmse = _rmse_objective(origins, var_indices, H, h_eval)
+    ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
+    if param_space is None:
+        param_space = make_param_space(ctx_ref)
+    calc_rmse = _rmse_objective(origins, var_indices, H, h_eval, ctx_ref)
 
     parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
     conf = dict(num_iteration=n_iter, initial_random=init_points)
     results = Tuner(param_space, parallel_objective, conf).minimize()
-    return _best_hyperparameters(results["best_params"])
+    return _best_hyperparameters(results["best_params"], ctx_ref)
 
 
 def _resolve_var_indices(model_codes: Sequence[str], var_of_interest: Sequence[str]) -> list[int]:
