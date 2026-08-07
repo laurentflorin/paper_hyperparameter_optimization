@@ -1,0 +1,179 @@
+{
+  "forecast_origin_start": "2000-03-31",
+  "forecast_origin_end": "2019-12-31",
+  "actual_vintage": "2023-01-01",
+  "n_forecast_origins": 80,
+  "series_ids": [
+    "GDPC1",
+    "GDPDEF",
+    "FEDFUNDS",
+    "PCECC96",
+    "GPDIC1",
+    "HOANBS",
+    "COMPRNFB",
+    "PAYEMS",
+    "UNRATE",
+    "AHETPI",
+    "CPIAUCSL",
+    "PPIFGS",
+    "PPIACO",
+    "M1SL",
+    "M2SL",
+    "BOGMBASE",
+    "TOTRESNS",
+    "NONBORRES",
+    "SPASTT01USM661N",
+    "GS10",
+    "TWEXMMTH"
+  ],
+  "series": [
+    {
+      "series_id": "GDPC1",
+      "code": "GDP",
+      "label": "Real Gross Domestic Product",
+      "frequency": "Q",
+      "transform": "log"
+    },
+    {
+      "series_id": "GDPDEF",
+      "code": "DEFL",
+      "label": "GDP Deflator",
+      "frequency": "Q",
+      "transform": "log"
+    },
+    {
+      "series_id": "FEDFUNDS",
+      "code": "FFR",
+      "label": "Federal Funds Rate",
+      "frequency": "M",
+      "transform": "lin"
+    },
+    {
+      "series_id": "PCECC96",
+      "code": "CONS",
+      "label": "Real Personal Consumption Expenditures",
+      "frequency": "Q",
+      "transform": "log"
+    },
+    {
+      "series_id": "GPDIC1",
+      "code": "INV",
+      "label": "Real Gross Private Domestic Investment",
+      "frequency": "Q",
+      "transform": "log"
+    },
+    {
+      "series_id": "HOANBS",
+      "code": "HOURS",
+      "label": "Nonfarm Business Sector: Hours Worked",
+      "frequency": "Q",
+      "transform": "log"
+    },
+    {
+      "series_id": "COMPRNFB",
+      "code": "WAGE",
+      "label": "Nonfarm Business Sector: Real Compensation per Hour",
+      "frequency": "Q",
+      "transform": "log"
+    },
+    {
+      "series_id": "PAYEMS",
+      "code": "EMP",
+      "label": "Total Nonfarm Employment",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "UNRATE",
+      "code": "UNR",
+      "label": "Unemployment Rate",
+      "frequency": "M",
+      "transform": "lin"
+    },
+    {
+      "series_id": "AHETPI",
+      "code": "AHE",
+      "label": "Average Hourly Earnings (Production Workers)",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "CPIAUCSL",
+      "code": "CPI",
+      "label": "Consumer Price Index (All Urban)",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "PPIFGS",
+      "code": "PPI",
+      "label": "Producer Price Index (Finished Goods)",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "PPIACO",
+      "code": "COMM",
+      "label": "Producer Price Index (All Commodities)",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "M1SL",
+      "code": "M1",
+      "label": "M1 Money Stock",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "M2SL",
+      "code": "M2",
+      "label": "M2 Money Stock",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "BOGMBASE",
+      "code": "MBASE",
+      "label": "Monetary Base",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "TOTRESNS",
+      "code": "TOTRES",
+      "label": "Total Reserves of Depository Institutions",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "NONBORRES",
+      "code": "NBRES",
+      "label": "Non-Borrowed Reserves",
+      "frequency": "M",
+      "transform": "lin"
+    },
+    {
+      "series_id": "SPASTT01USM661N",
+      "code": "SP500",
+      "label": "Financial Market: Share Prices for United States (proxy for S&P 500)",
+      "frequency": "M",
+      "transform": "log"
+    },
+    {
+      "series_id": "GS10",
+      "code": "TB10",
+      "label": "10-Year Treasury Bond Yield",
+      "frequency": "M",
+      "transform": "lin"
+    },
+    {
+      "series_id": "TWEXMMTH",
+      "code": "REER",
+      "label": "Trade-Weighted US Dollar Index (Major Currencies)",
+      "frequency": "M",
+      "transform": "log"
+    }
+  ],
+  "force_refresh": false
+}

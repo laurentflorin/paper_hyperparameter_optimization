@@ -12,4 +12,6 @@ fanchart
 bayesian-optimization
 arm-mango
 pybind11
+seaborn
+covbayesvar
 MBFVAR @ git+https://github.com/laurentflorin/MBFVAR.git
