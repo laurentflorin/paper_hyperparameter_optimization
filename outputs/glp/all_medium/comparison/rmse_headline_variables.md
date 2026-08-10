@@ -1,0 +1,241 @@
+            model model_size variable  horizon_quarters optimization_horizon      rmse  n
+        mango_mdd     medium     DEFL                 1                  NaN 20.283302 80
+       mango_rmse     medium     DEFL                 1                  h1q 20.264654 80
+       mango_rmse     medium     DEFL                 1                  h2q 20.153129 80
+       mango_rmse     medium     DEFL                 1                  h4q 20.270058 80
+       mango_rmse     medium     DEFL                 1                  h8q 20.273775 80
+mango_rmse_random     medium     DEFL                 1                  h1q 20.310667 80
+mango_rmse_random     medium     DEFL                 1                  h2q 20.310783 80
+mango_rmse_random     medium     DEFL                 1                  h4q 20.310398 80
+mango_rmse_random     medium     DEFL                 1                  h8q 20.317536 80
+            paper     medium     DEFL                 1                  NaN 20.272556 80
+        mango_mdd     medium     DEFL                 2                  NaN 20.291032 80
+       mango_rmse     medium     DEFL                 2                  h1q 20.255616 80
+       mango_rmse     medium     DEFL                 2                  h2q 20.040500 80
+       mango_rmse     medium     DEFL                 2                  h4q 20.262949 80
+       mango_rmse     medium     DEFL                 2                  h8q 20.267624 80
+mango_rmse_random     medium     DEFL                 2                  h1q 20.354204 80
+mango_rmse_random     medium     DEFL                 2                  h2q 20.350331 80
+mango_rmse_random     medium     DEFL                 2                  h4q 20.357512 80
+mango_rmse_random     medium     DEFL                 2                  h8q 20.379821 80
+            paper     medium     DEFL                 2                  NaN 20.269339 80
+        mango_mdd     medium     DEFL                 3                  NaN 20.311046 80
+       mango_rmse     medium     DEFL                 3                  h1q 20.258999 80
+       mango_rmse     medium     DEFL                 3                  h2q 19.950228 80
+       mango_rmse     medium     DEFL                 3                  h4q 20.265330 80
+       mango_rmse     medium     DEFL                 3                  h8q 20.260360 80
+mango_rmse_random     medium     DEFL                 3                  h1q 20.406957 80
+mango_rmse_random     medium     DEFL                 3                  h2q 20.396403 80
+mango_rmse_random     medium     DEFL                 3                  h4q 20.420782 80
+mango_rmse_random     medium     DEFL                 3                  h8q 20.464088 80
+            paper     medium     DEFL                 3                  NaN 20.272417 80
+        mango_mdd     medium     DEFL                 4                  NaN 20.351493 80
+       mango_rmse     medium     DEFL                 4                  h1q 20.274907 80
+       mango_rmse     medium     DEFL                 4                  h2q 19.880578 80
+       mango_rmse     medium     DEFL                 4                  h4q 20.280430 80
+       mango_rmse     medium     DEFL                 4                  h8q 20.259875 80
+mango_rmse_random     medium     DEFL                 4                  h1q 20.474216 80
+mango_rmse_random     medium     DEFL                 4                  h2q 20.455899 80
+mango_rmse_random     medium     DEFL                 4                  h4q 20.509118 80
+mango_rmse_random     medium     DEFL                 4                  h8q 20.576792 80
+            paper     medium     DEFL                 4                  NaN 20.289842 80
+        mango_mdd     medium     DEFL                 5                  NaN 20.412792 80
+       mango_rmse     medium     DEFL                 5                  h1q 20.302582 80
+       mango_rmse     medium     DEFL                 5                  h2q 19.834664 80
+       mango_rmse     medium     DEFL                 5                  h4q 20.309779 80
+       mango_rmse     medium     DEFL                 5                  h8q 20.271296 80
+mango_rmse_random     medium     DEFL                 5                  h1q 20.567761 80
+mango_rmse_random     medium     DEFL                 5                  h2q 20.531479 80
+mango_rmse_random     medium     DEFL                 5                  h4q 20.631844 80
+mango_rmse_random     medium     DEFL                 5                  h8q 20.728087 80
+            paper     medium     DEFL                 5                  NaN 20.324804 80
+        mango_mdd     medium     DEFL                 6                  NaN 20.502985 80
+       mango_rmse     medium     DEFL                 6                  h1q 20.347297 80
+       mango_rmse     medium     DEFL                 6                  h2q 19.811712 80
+       mango_rmse     medium     DEFL                 6                  h4q 20.354843 80
+       mango_rmse     medium     DEFL                 6                  h8q 20.302578 80
+mango_rmse_random     medium     DEFL                 6                  h1q 20.692033 80
+mango_rmse_random     medium     DEFL                 6                  h2q 20.633481 80
+mango_rmse_random     medium     DEFL                 6                  h4q 20.790529 80
+mango_rmse_random     medium     DEFL                 6                  h8q 20.921206 80
+            paper     medium     DEFL                 6                  NaN 20.382739 80
+        mango_mdd     medium     DEFL                 7                  NaN 20.618400 80
+       mango_rmse     medium     DEFL                 7                  h1q 20.406730 80
+       mango_rmse     medium     DEFL                 7                  h2q 19.814042 80
+       mango_rmse     medium     DEFL                 7                  h4q 20.416815 80
+       mango_rmse     medium     DEFL                 7                  h8q 20.348724 80
+mango_rmse_random     medium     DEFL                 7                  h1q 20.844686 80
+mango_rmse_random     medium     DEFL                 7                  h2q 20.758608 80
+mango_rmse_random     medium     DEFL                 7                  h4q 20.982514 80
+mango_rmse_random     medium     DEFL                 7                  h8q 21.147963 80
+            paper     medium     DEFL                 7                  NaN 20.461174 80
+        mango_mdd     medium     DEFL                 8                  NaN 20.757265 80
+       mango_rmse     medium     DEFL                 8                  h1q 20.479612 80
+       mango_rmse     medium     DEFL                 8                  h2q 19.833319 80
+       mango_rmse     medium     DEFL                 8                  h4q 20.495185 80
+       mango_rmse     medium     DEFL                 8                  h8q 20.412335 80
+mango_rmse_random     medium     DEFL                 8                  h1q 21.023386 80
+mango_rmse_random     medium     DEFL                 8                  h2q 20.908143 80
+mango_rmse_random     medium     DEFL                 8                  h4q 21.205152 80
+mango_rmse_random     medium     DEFL                 8                  h8q 21.407516 80
+            paper     medium     DEFL                 8                  NaN 20.559375 80
+        mango_mdd     medium      FFR                 1                  NaN  0.408117 80
+       mango_rmse     medium      FFR                 1                  h1q  0.417139 80
+       mango_rmse     medium      FFR                 1                  h2q  0.410206 80
+       mango_rmse     medium      FFR                 1                  h4q  0.371360 80
+       mango_rmse     medium      FFR                 1                  h8q  0.432650 80
+mango_rmse_random     medium      FFR                 1                  h1q  0.434712 80
+mango_rmse_random     medium      FFR                 1                  h2q  0.374969 80
+mango_rmse_random     medium      FFR                 1                  h4q  0.429948 80
+mango_rmse_random     medium      FFR                 1                  h8q  0.420003 80
+            paper     medium      FFR                 1                  NaN  0.386216 80
+        mango_mdd     medium      FFR                 2                  NaN  0.780718 80
+       mango_rmse     medium      FFR                 2                  h1q  0.789500 80
+       mango_rmse     medium      FFR                 2                  h2q  0.804237 80
+       mango_rmse     medium      FFR                 2                  h4q  0.696946 80
+       mango_rmse     medium      FFR                 2                  h8q  0.830991 80
+mango_rmse_random     medium      FFR                 2                  h1q  0.790628 80
+mango_rmse_random     medium      FFR                 2                  h2q  0.731269 80
+mango_rmse_random     medium      FFR                 2                  h4q  0.806512 80
+mango_rmse_random     medium      FFR                 2                  h8q  0.812432 80
+            paper     medium      FFR                 2                  NaN  0.736927 80
+        mango_mdd     medium      FFR                 3                  NaN  1.139112 80
+       mango_rmse     medium      FFR                 3                  h1q  1.159738 80
+       mango_rmse     medium      FFR                 3                  h2q  1.179036 80
+       mango_rmse     medium      FFR                 3                  h4q  1.022885 80
+       mango_rmse     medium      FFR                 3                  h8q  1.190703 80
+mango_rmse_random     medium      FFR                 3                  h1q  1.095350 80
+mango_rmse_random     medium      FFR                 3                  h2q  1.088426 80
+mango_rmse_random     medium      FFR                 3                  h4q  1.061639 80
+mango_rmse_random     medium      FFR                 3                  h8q  1.138495 80
+            paper     medium      FFR                 3                  NaN  1.052730 80
+        mango_mdd     medium      FFR                 4                  NaN  1.460763 80
+       mango_rmse     medium      FFR                 4                  h1q  1.497109 80
+       mango_rmse     medium      FFR                 4                  h2q  1.526017 80
+       mango_rmse     medium      FFR                 4                  h4q  1.320329 80
+       mango_rmse     medium      FFR                 4                  h8q  1.501738 80
+mango_rmse_random     medium      FFR                 4                  h1q  1.367499 80
+mango_rmse_random     medium      FFR                 4                  h2q  1.423827 80
+mango_rmse_random     medium      FFR                 4                  h4q  1.313689 80
+mango_rmse_random     medium      FFR                 4                  h8q  1.446925 80
+            paper     medium      FFR                 4                  NaN  1.326006 80
+        mango_mdd     medium      FFR                 5                  NaN  1.747342 80
+       mango_rmse     medium      FFR                 5                  h1q  1.791558 80
+       mango_rmse     medium      FFR                 5                  h2q  1.845993 80
+       mango_rmse     medium      FFR                 5                  h4q  1.590672 80
+       mango_rmse     medium      FFR                 5                  h8q  1.783722 80
+mango_rmse_random     medium      FFR                 5                  h1q  1.625538 80
+mango_rmse_random     medium      FFR                 5                  h2q  1.737663 80
+mango_rmse_random     medium      FFR                 5                  h4q  1.568939 80
+mango_rmse_random     medium      FFR                 5                  h8q  1.751943 80
+            paper     medium      FFR                 5                  NaN  1.568998 80
+        mango_mdd     medium      FFR                 6                  NaN  2.018181 80
+       mango_rmse     medium      FFR                 6                  h1q  2.059836 80
+       mango_rmse     medium      FFR                 6                  h2q  2.122876 80
+       mango_rmse     medium      FFR                 6                  h4q  1.838027 80
+       mango_rmse     medium      FFR                 6                  h8q  2.041426 80
+mango_rmse_random     medium      FFR                 6                  h1q  1.878439 80
+mango_rmse_random     medium      FFR                 6                  h2q  2.025328 80
+mango_rmse_random     medium      FFR                 6                  h4q  1.812723 80
+mango_rmse_random     medium      FFR                 6                  h8q  2.040663 80
+            paper     medium      FFR                 6                  NaN  1.804345 80
+        mango_mdd     medium      FFR                 7                  NaN  2.259438 80
+       mango_rmse     medium      FFR                 7                  h1q  2.288307 80
+       mango_rmse     medium      FFR                 7                  h2q  2.358672 80
+       mango_rmse     medium      FFR                 7                  h4q  2.065840 80
+       mango_rmse     medium      FFR                 7                  h8q  2.261277 80
+mango_rmse_random     medium      FFR                 7                  h1q  2.087208 80
+mango_rmse_random     medium      FFR                 7                  h2q  2.276468 80
+mango_rmse_random     medium      FFR                 7                  h4q  2.022642 80
+mango_rmse_random     medium      FFR                 7                  h8q  2.295843 80
+            paper     medium      FFR                 7                  NaN  2.012159 80
+        mango_mdd     medium      FFR                 8                  NaN  2.457210 80
+       mango_rmse     medium      FFR                 8                  h1q  2.479675 80
+       mango_rmse     medium      FFR                 8                  h2q  2.556658 80
+       mango_rmse     medium      FFR                 8                  h4q  2.260109 80
+       mango_rmse     medium      FFR                 8                  h8q  2.442078 80
+mango_rmse_random     medium      FFR                 8                  h1q  2.274673 80
+mango_rmse_random     medium      FFR                 8                  h2q  2.490902 80
+mango_rmse_random     medium      FFR                 8                  h4q  2.207663 80
+mango_rmse_random     medium      FFR                 8                  h8q  2.527695 80
+            paper     medium      FFR                 8                  NaN  2.191061 80
+        mango_mdd     medium      GDP                 1                  NaN 22.941547 80
+       mango_rmse     medium      GDP                 1                  h1q 22.836441 80
+       mango_rmse     medium      GDP                 1                  h2q 22.811886 80
+       mango_rmse     medium      GDP                 1                  h4q 22.885839 80
+       mango_rmse     medium      GDP                 1                  h8q 22.986803 80
+mango_rmse_random     medium      GDP                 1                  h1q 22.923586 80
+mango_rmse_random     medium      GDP                 1                  h2q 22.938134 80
+mango_rmse_random     medium      GDP                 1                  h4q 22.948620 80
+mango_rmse_random     medium      GDP                 1                  h8q 22.970241 80
+            paper     medium      GDP                 1                  NaN 22.963202 80
+        mango_mdd     medium      GDP                 2                  NaN 22.604671 80
+       mango_rmse     medium      GDP                 2                  h1q 22.458141 80
+       mango_rmse     medium      GDP                 2                  h2q 22.404963 80
+       mango_rmse     medium      GDP                 2                  h4q 22.514635 80
+       mango_rmse     medium      GDP                 2                  h8q 22.698706 80
+mango_rmse_random     medium      GDP                 2                  h1q 22.526125 80
+mango_rmse_random     medium      GDP                 2                  h2q 22.591379 80
+mango_rmse_random     medium      GDP                 2                  h4q 22.597434 80
+mango_rmse_random     medium      GDP                 2                  h8q 22.639127 80
+            paper     medium      GDP                 2                  NaN 22.649137 80
+        mango_mdd     medium      GDP                 3                  NaN 22.252109 80
+       mango_rmse     medium      GDP                 3                  h1q 22.097874 80
+       mango_rmse     medium      GDP                 3                  h2q 22.034133 80
+       mango_rmse     medium      GDP                 3                  h4q 22.137160 80
+       mango_rmse     medium      GDP                 3                  h8q 22.382280 80
+mango_rmse_random     medium      GDP                 3                  h1q 22.088229 80
+mango_rmse_random     medium      GDP                 3                  h2q 22.226425 80
+mango_rmse_random     medium      GDP                 3                  h4q 22.195060 80
+mango_rmse_random     medium      GDP                 3                  h8q 22.289018 80
+            paper     medium      GDP                 3                  NaN 22.327400 80
+        mango_mdd     medium      GDP                 4                  NaN 21.883387 80
+       mango_rmse     medium      GDP                 4                  h1q 21.726807 80
+       mango_rmse     medium      GDP                 4                  h2q 21.656429 80
+       mango_rmse     medium      GDP                 4                  h4q 21.725530 80
+       mango_rmse     medium      GDP                 4                  h8q 22.023301 80
+mango_rmse_random     medium      GDP                 4                  h1q 21.623506 80
+mango_rmse_random     medium      GDP                 4                  h2q 21.834024 80
+mango_rmse_random     medium      GDP                 4                  h4q 21.797078 80
+mango_rmse_random     medium      GDP                 4                  h8q 21.930532 80
+            paper     medium      GDP                 4                  NaN 21.972588 80
+        mango_mdd     medium      GDP                 5                  NaN 21.540739 80
+       mango_rmse     medium      GDP                 5                  h1q 21.367841 80
+       mango_rmse     medium      GDP                 5                  h2q 21.303416 80
+       mango_rmse     medium      GDP                 5                  h4q 21.323379 80
+       mango_rmse     medium      GDP                 5                  h8q 21.674310 80
+mango_rmse_random     medium      GDP                 5                  h1q 21.196923 80
+mango_rmse_random     medium      GDP                 5                  h2q 21.447756 80
+mango_rmse_random     medium      GDP                 5                  h4q 21.437335 80
+mango_rmse_random     medium      GDP                 5                  h8q 21.607619 80
+            paper     medium      GDP                 5                  NaN 21.629289 80
+        mango_mdd     medium      GDP                 6                  NaN 21.236599 80
+       mango_rmse     medium      GDP                 6                  h1q 21.041271 80
+       mango_rmse     medium      GDP                 6                  h2q 20.981157 80
+       mango_rmse     medium      GDP                 6                  h4q 20.961125 80
+       mango_rmse     medium      GDP                 6                  h8q 21.350597 80
+mango_rmse_random     medium      GDP                 6                  h1q 20.833430 80
+mango_rmse_random     medium      GDP                 6                  h2q 21.108033 80
+mango_rmse_random     medium      GDP                 6                  h4q 21.141293 80
+mango_rmse_random     medium      GDP                 6                  h8q 21.351599 80
+            paper     medium      GDP                 6                  NaN 21.326216 80
+        mango_mdd     medium      GDP                 7                  NaN 20.946594 80
+       mango_rmse     medium      GDP                 7                  h1q 20.722306 80
+       mango_rmse     medium      GDP                 7                  h2q 20.666901 80
+       mango_rmse     medium      GDP                 7                  h4q 20.593340 80
+       mango_rmse     medium      GDP                 7                  h8q 21.025856 80
+mango_rmse_random     medium      GDP                 7                  h1q 20.506898 80
+mango_rmse_random     medium      GDP                 7                  h2q 20.780861 80
+mango_rmse_random     medium      GDP                 7                  h4q 20.876797 80
+mango_rmse_random     medium      GDP                 7                  h8q 21.120069 80
+            paper     medium      GDP                 7                  NaN 21.030536 80
+        mango_mdd     medium      GDP                 8                  NaN 20.684449 80
+       mango_rmse     medium      GDP                 8                  h1q 20.418935 80
+       mango_rmse     medium      GDP                 8                  h2q 20.368160 80
+       mango_rmse     medium      GDP                 8                  h4q 20.246396 80
+       mango_rmse     medium      GDP                 8                  h8q 20.713373 80
+mango_rmse_random     medium      GDP                 8                  h1q 20.224174 80
+mango_rmse_random     medium      GDP                 8                  h2q 20.485387 80
+mango_rmse_random     medium      GDP                 8                  h4q 20.657557 80
+mango_rmse_random     medium      GDP                 8                  h8q 20.921360 80
+            paper     medium      GDP                 8                  NaN 20.745808 80
