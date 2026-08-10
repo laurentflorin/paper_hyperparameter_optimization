@@ -1,0 +1,561 @@
+            model model_size variable  horizon_quarters optimization_horizon      rmse  n  baseline_rmse  relative_rmse_pct
+        mango_mdd     medium     CONS                 1                  NaN 20.145884 80      20.168791          -0.113580
+        mango_mdd     medium     CONS                 2                  NaN 19.881046 80      19.920554          -0.198330
+        mango_mdd     medium     CONS                 3                  NaN 19.652887 80      19.710156          -0.290555
+        mango_mdd     medium     CONS                 4                  NaN 19.363521 80      19.427686          -0.330276
+        mango_mdd     medium     CONS                 5                  NaN 19.082048 80      19.147219          -0.340367
+        mango_mdd     medium     CONS                 6                  NaN 18.832041 80      18.898639          -0.352397
+        mango_mdd     medium     CONS                 7                  NaN 18.599739 80      18.665749          -0.353641
+        mango_mdd     medium     CONS                 8                  NaN 18.376322 80      18.433971          -0.312734
+        mango_mdd     medium     DEFL                 1                  NaN 20.283302 80      20.272556           0.053009
+        mango_mdd     medium     DEFL                 2                  NaN 20.291032 80      20.269339           0.107023
+        mango_mdd     medium     DEFL                 3                  NaN 20.311046 80      20.272417           0.190546
+        mango_mdd     medium     DEFL                 4                  NaN 20.351493 80      20.289842           0.303851
+        mango_mdd     medium     DEFL                 5                  NaN 20.412792 80      20.324804           0.432913
+        mango_mdd     medium     DEFL                 6                  NaN 20.502985 80      20.382739           0.589938
+        mango_mdd     medium     DEFL                 7                  NaN 20.618400 80      20.461174           0.768411
+        mango_mdd     medium     DEFL                 8                  NaN 20.757265 80      20.559375           0.962530
+        mango_mdd     medium      FFR                 1                  NaN  0.408117 80       0.386216           5.670516
+        mango_mdd     medium      FFR                 2                  NaN  0.780718 80       0.736927           5.942406
+        mango_mdd     medium      FFR                 3                  NaN  1.139112 80       1.052730           8.205505
+        mango_mdd     medium      FFR                 4                  NaN  1.460763 80       1.326006          10.162691
+        mango_mdd     medium      FFR                 5                  NaN  1.747342 80       1.568998          11.366719
+        mango_mdd     medium      FFR                 6                  NaN  2.018181 80       1.804345          11.851188
+        mango_mdd     medium      FFR                 7                  NaN  2.259438 80       2.012159          12.289232
+        mango_mdd     medium      FFR                 8                  NaN  2.457210 80       2.191061          12.147029
+        mango_mdd     medium      GDP                 1                  NaN 22.941547 80      22.963202          -0.094304
+        mango_mdd     medium      GDP                 2                  NaN 22.604671 80      22.649137          -0.196325
+        mango_mdd     medium      GDP                 3                  NaN 22.252109 80      22.327400          -0.337214
+        mango_mdd     medium      GDP                 4                  NaN 21.883387 80      21.972588          -0.405962
+        mango_mdd     medium      GDP                 5                  NaN 21.540739 80      21.629289          -0.409399
+        mango_mdd     medium      GDP                 6                  NaN 21.236599 80      21.326216          -0.420218
+        mango_mdd     medium      GDP                 7                  NaN 20.946594 80      21.030536          -0.399143
+        mango_mdd     medium      GDP                 8                  NaN 20.684449 80      20.745808          -0.295768
+        mango_mdd     medium    HOURS                 1                  NaN 11.564558 80      11.510165           0.472567
+        mango_mdd     medium    HOURS                 2                  NaN 11.984996 80      11.869842           0.970140
+        mango_mdd     medium    HOURS                 3                  NaN 12.636719 80      12.467042           1.361003
+        mango_mdd     medium    HOURS                 4                  NaN 13.205992 80      12.987099           1.685464
+        mango_mdd     medium    HOURS                 5                  NaN 13.766160 80      13.497833           1.987931
+        mango_mdd     medium    HOURS                 6                  NaN 14.326831 80      14.006826           2.284634
+        mango_mdd     medium    HOURS                 7                  NaN 14.819867 80      14.472666           2.399012
+        mango_mdd     medium    HOURS                 8                  NaN 15.253638 80      14.870198           2.578581
+        mango_mdd     medium      INV                 1                  NaN 25.222789 80      25.469170          -0.967370
+        mango_mdd     medium      INV                 2                  NaN 24.323677 80      24.868854          -2.192209
+        mango_mdd     medium      INV                 3                  NaN 23.510803 80      24.437588          -3.792456
+        mango_mdd     medium      INV                 4                  NaN 22.735934 80      23.977370          -5.177532
+        mango_mdd     medium      INV                 5                  NaN 22.153482 80      23.601581          -6.135600
+        mango_mdd     medium      INV                 6                  NaN 21.668368 80      23.324201          -7.099205
+        mango_mdd     medium      INV                 7                  NaN 21.182734 80      23.055957          -8.124679
+        mango_mdd     medium      INV                 8                  NaN 20.871119 80      22.800017          -8.460074
+        mango_mdd     medium     WAGE                 1                  NaN 13.894490 80      13.982751          -0.631216
+        mango_mdd     medium     WAGE                 2                  NaN 14.001654 80      14.183664          -1.283233
+        mango_mdd     medium     WAGE                 3                  NaN 14.145486 80      14.418733          -1.895082
+        mango_mdd     medium     WAGE                 4                  NaN 14.272861 80      14.640274          -2.509609
+        mango_mdd     medium     WAGE                 5                  NaN 14.447311 80      14.909667          -3.101047
+        mango_mdd     medium     WAGE                 6                  NaN 14.596779 80      15.143840          -3.612433
+        mango_mdd     medium     WAGE                 7                  NaN 14.766711 80      15.407759          -4.160553
+        mango_mdd     medium     WAGE                 8                  NaN 14.902938 80      15.642935          -4.730550
+       mango_rmse     medium     CONS                 1                  h1q 20.153833 80      20.168791          -0.074165
+       mango_rmse     medium     CONS                 1                  h2q 20.133549 80      20.168791          -0.174738
+       mango_rmse     medium     CONS                 1                  h4q 20.137341 80      20.168791          -0.155935
+       mango_rmse     medium     CONS                 1                  h8q 20.141436 80      20.168791          -0.135630
+       mango_rmse     medium     CONS                 2                  h1q 19.895480 80      19.920554          -0.125872
+       mango_rmse     medium     CONS                 2                  h2q 19.876284 80      19.920554          -0.222234
+       mango_rmse     medium     CONS                 2                  h4q 19.892491 80      19.920554          -0.140874
+       mango_rmse     medium     CONS                 2                  h8q 19.884747 80      19.920554          -0.179748
+       mango_rmse     medium     CONS                 3                  h1q 19.678574 80      19.710156          -0.160231
+       mango_rmse     medium     CONS                 3                  h2q 19.654064 80      19.710156          -0.284582
+       mango_rmse     medium     CONS                 3                  h4q 19.690264 80      19.710156          -0.100923
+       mango_rmse     medium     CONS                 3                  h8q 19.679255 80      19.710156          -0.156775
+       mango_rmse     medium     CONS                 4                  h1q 19.397358 80      19.427686          -0.156109
+       mango_rmse     medium     CONS                 4                  h2q 19.358433 80      19.427686          -0.356468
+       mango_rmse     medium     CONS                 4                  h4q 19.426439 80      19.427686          -0.006419
+       mango_rmse     medium     CONS                 4                  h8q 19.419321 80      19.427686          -0.043060
+       mango_rmse     medium     CONS                 5                  h1q 19.125682 80      19.147219          -0.112477
+       mango_rmse     medium     CONS                 5                  h2q 19.075106 80      19.147219          -0.376622
+       mango_rmse     medium     CONS                 5                  h4q 19.172068 80      19.147219           0.129782
+       mango_rmse     medium     CONS                 5                  h8q 19.173373 80      19.147219           0.136595
+       mango_rmse     medium     CONS                 6                  h1q 18.891993 80      18.898639          -0.035167
+       mango_rmse     medium     CONS                 6                  h2q 18.815860 80      18.898639          -0.438016
+       mango_rmse     medium     CONS                 6                  h4q 18.950409 80      18.898639           0.273932
+       mango_rmse     medium     CONS                 6                  h8q 18.949873 80      18.898639           0.271097
+       mango_rmse     medium     CONS                 7                  h1q 18.680699 80      18.665749           0.080095
+       mango_rmse     medium     CONS                 7                  h2q 18.577005 80      18.665749          -0.475437
+       mango_rmse     medium     CONS                 7                  h4q 18.745668 80      18.665749           0.428162
+       mango_rmse     medium     CONS                 7                  h8q 18.738927 80      18.665749           0.392045
+       mango_rmse     medium     CONS                 8                  h1q 18.477484 80      18.433971           0.236049
+       mango_rmse     medium     CONS                 8                  h2q 18.345413 80      18.433971          -0.480407
+       mango_rmse     medium     CONS                 8                  h4q 18.555357 80      18.433971           0.658488
+       mango_rmse     medium     CONS                 8                  h8q 18.533001 80      18.433971           0.537213
+       mango_rmse     medium     DEFL                 1                  h1q 20.337175 80      20.272556           0.318749
+       mango_rmse     medium     DEFL                 1                  h2q 20.353980 80      20.272556           0.401646
+       mango_rmse     medium     DEFL                 1                  h4q 20.355992 80      20.272556           0.411569
+       mango_rmse     medium     DEFL                 1                  h8q 20.387323 80      20.272556           0.566119
+       mango_rmse     medium     DEFL                 2                  h1q 20.398788 80      20.269339           0.638645
+       mango_rmse     medium     DEFL                 2                  h2q 20.431012 80      20.269339           0.797622
+       mango_rmse     medium     DEFL                 2                  h4q 20.436702 80      20.269339           0.825692
+       mango_rmse     medium     DEFL                 2                  h8q 20.498428 80      20.269339           1.130225
+       mango_rmse     medium     DEFL                 3                  h1q 20.465528 80      20.272417           0.952577
+       mango_rmse     medium     DEFL                 3                  h2q 20.510532 80      20.272417           1.174574
+       mango_rmse     medium     DEFL                 3                  h4q 20.522379 80      20.272417           1.233013
+       mango_rmse     medium     DEFL                 3                  h8q 20.615478 80      20.272417           1.692254
+       mango_rmse     medium     DEFL                 4                  h1q 20.540638 80      20.289842           1.236069
+       mango_rmse     medium     DEFL                 4                  h2q 20.592049 80      20.289842           1.489448
+       mango_rmse     medium     DEFL                 4                  h4q 20.611632 80      20.289842           1.585964
+       mango_rmse     medium     DEFL                 4                  h8q 20.743211 80      20.289842           2.234461
+       mango_rmse     medium     DEFL                 5                  h1q 20.630685 80      20.324804           1.504965
+       mango_rmse     medium     DEFL                 5                  h2q 20.687201 80      20.324804           1.783029
+       mango_rmse     medium     DEFL                 5                  h4q 20.713068 80      20.324804           1.910296
+       mango_rmse     medium     DEFL                 5                  h8q 20.881929 80      20.324804           2.741111
+       mango_rmse     medium     DEFL                 6                  h1q 20.744946 80      20.382739           1.777030
+       mango_rmse     medium     DEFL                 6                  h2q 20.797975 80      20.382739           2.037196
+       mango_rmse     medium     DEFL                 6                  h4q 20.830938 80      20.382739           2.198915
+       mango_rmse     medium     DEFL                 6                  h8q 21.036702 80      20.382739           3.208417
+       mango_rmse     medium     DEFL                 7                  h1q 20.876672 80      20.461174           2.030666
+       mango_rmse     medium     DEFL                 7                  h2q 20.922676 80      20.461174           2.255500
+       mango_rmse     medium     DEFL                 7                  h4q 20.961467 80      20.461174           2.445085
+       mango_rmse     medium     DEFL                 7                  h8q 21.201683 80      20.461174           3.619093
+       mango_rmse     medium     DEFL                 8                  h1q 21.021947 80      20.559375           2.249932
+       mango_rmse     medium     DEFL                 8                  h2q 21.056425 80      20.559375           2.417633
+       mango_rmse     medium     DEFL                 8                  h4q 21.106505 80      20.559375           2.661220
+       mango_rmse     medium     DEFL                 8                  h8q 21.378630 80      20.559375           3.984824
+       mango_rmse     medium      FFR                 1                  h1q  0.422322 80       0.386216           9.348496
+       mango_rmse     medium      FFR                 1                  h2q  0.410468 80       0.386216           6.279343
+       mango_rmse     medium      FFR                 1                  h4q  0.427332 80       0.386216          10.645761
+       mango_rmse     medium      FFR                 1                  h8q  0.437551 80       0.386216          13.291560
+       mango_rmse     medium      FFR                 2                  h1q  0.807510 80       0.736927           9.578014
+       mango_rmse     medium      FFR                 2                  h2q  0.815854 80       0.736927          10.710273
+       mango_rmse     medium      FFR                 2                  h4q  0.826154 80       0.736927          12.107965
+       mango_rmse     medium      FFR                 2                  h8q  0.839652 80       0.736927          13.939650
+       mango_rmse     medium      FFR                 3                  h1q  1.122307 80       1.052730           6.609145
+       mango_rmse     medium      FFR                 3                  h2q  1.180362 80       1.052730          12.123868
+       mango_rmse     medium      FFR                 3                  h4q  1.171016 80       1.052730          11.236035
+       mango_rmse     medium      FFR                 3                  h8q  1.164312 80       1.052730          10.599251
+       mango_rmse     medium      FFR                 4                  h1q  1.408170 80       1.326006           6.196391
+       mango_rmse     medium      FFR                 4                  h2q  1.505204 80       1.326006          13.514116
+       mango_rmse     medium      FFR                 4                  h4q  1.513300 80       1.326006          14.124709
+       mango_rmse     medium      FFR                 4                  h8q  1.480106 80       1.326006          11.621432
+       mango_rmse     medium      FFR                 5                  h1q  1.690940 80       1.568998           7.771937
+       mango_rmse     medium      FFR                 5                  h2q  1.805550 80       1.568998          15.076608
+       mango_rmse     medium      FFR                 5                  h4q  1.829791 80       1.568998          16.621579
+       mango_rmse     medium      FFR                 5                  h8q  1.794233 80       1.568998          14.355309
+       mango_rmse     medium      FFR                 6                  h1q  1.945429 80       1.804345           7.819171
+       mango_rmse     medium      FFR                 6                  h2q  2.079925 80       1.804345          15.273147
+       mango_rmse     medium      FFR                 6                  h4q  2.103645 80       1.804345          16.587741
+       mango_rmse     medium      FFR                 6                  h8q  2.074312 80       1.804345          14.962064
+       mango_rmse     medium      FFR                 7                  h1q  2.161593 80       2.012159           7.426540
+       mango_rmse     medium      FFR                 7                  h2q  2.308159 80       2.012159          14.710559
+       mango_rmse     medium      FFR                 7                  h4q  2.333634 80       2.012159          15.976634
+       mango_rmse     medium      FFR                 7                  h8q  2.321998 80       2.012159          15.398308
+       mango_rmse     medium      FFR                 8                  h1q  2.344171 80       2.191061           6.987925
+       mango_rmse     medium      FFR                 8                  h2q  2.498645 80       2.191061          14.038139
+       mango_rmse     medium      FFR                 8                  h4q  2.529020 80       2.191061          15.424455
+       mango_rmse     medium      FFR                 8                  h8q  2.536569 80       2.191061          15.768989
+       mango_rmse     medium      GDP                 1                  h1q 22.954917 80      22.963202          -0.036079
+       mango_rmse     medium      GDP                 1                  h2q 22.937878 80      22.963202          -0.110279
+       mango_rmse     medium      GDP                 1                  h4q 22.956743 80      22.963202          -0.028125
+       mango_rmse     medium      GDP                 1                  h8q 22.950865 80      22.963202          -0.053725
+       mango_rmse     medium      GDP                 2                  h1q 22.617305 80      22.649137          -0.140540
+       mango_rmse     medium      GDP                 2                  h2q 22.617682 80      22.649137          -0.138877
+       mango_rmse     medium      GDP                 2                  h4q 22.647228 80      22.649137          -0.008427
+       mango_rmse     medium      GDP                 2                  h8q 22.644070 80      22.649137          -0.022370
+       mango_rmse     medium      GDP                 3                  h1q 22.263323 80      22.327400          -0.286989
+       mango_rmse     medium      GDP                 3                  h2q 22.282395 80      22.327400          -0.201566
+       mango_rmse     medium      GDP                 3                  h4q 22.341941 80      22.327400           0.065126
+       mango_rmse     medium      GDP                 3                  h8q 22.344670 80      22.327400           0.077351
+       mango_rmse     medium      GDP                 4                  h1q 21.896039 80      21.972588          -0.348381
+       mango_rmse     medium      GDP                 4                  h2q 21.921692 80      21.972588          -0.231633
+       mango_rmse     medium      GDP                 4                  h4q 22.012872 80      21.972588           0.183337
+       mango_rmse     medium      GDP                 4                  h8q 22.029124 80      21.972588           0.257302
+       mango_rmse     medium      GDP                 5                  h1q 21.552654 80      21.629289          -0.354310
+       mango_rmse     medium      GDP                 5                  h2q 21.578975 80      21.629289          -0.232618
+       mango_rmse     medium      GDP                 5                  h4q 21.704051 80      21.629289           0.345653
+       mango_rmse     medium      GDP                 5                  h8q 21.743464 80      21.629289           0.527871
+       mango_rmse     medium      GDP                 6                  h1q 21.259850 80      21.326216          -0.311192
+       mango_rmse     medium      GDP                 6                  h2q 21.273784 80      21.326216          -0.245856
+       mango_rmse     medium      GDP                 6                  h4q 21.444019 80      21.326216           0.552387
+       mango_rmse     medium      GDP                 6                  h8q 21.486708 80      21.326216           0.752557
+       mango_rmse     medium      GDP                 7                  h1q 20.988926 80      21.030536          -0.197854
+       mango_rmse     medium      GDP                 7                  h2q 20.980095 80      21.030536          -0.239844
+       mango_rmse     medium      GDP                 7                  h4q 21.194421 80      21.030536           0.779274
+       mango_rmse     medium      GDP                 7                  h8q 21.236694 80      21.030536           0.980280
+       mango_rmse     medium      GDP                 8                  h1q 20.743684 80      20.745808          -0.010241
+       mango_rmse     medium      GDP                 8                  h2q 20.709274 80      20.745808          -0.176105
+       mango_rmse     medium      GDP                 8                  h4q 20.970557 80      20.745808           1.083349
+       mango_rmse     medium      GDP                 8                  h8q 21.001549 80      20.745808           1.232734
+       mango_rmse     medium    HOURS                 1                  h1q 11.555469 80      11.510165           0.393601
+       mango_rmse     medium    HOURS                 1                  h2q 11.608821 80      11.510165           0.857126
+       mango_rmse     medium    HOURS                 1                  h4q 11.585293 80      11.510165           0.652715
+       mango_rmse     medium    HOURS                 1                  h8q 11.582218 80      11.510165           0.625994
+       mango_rmse     medium    HOURS                 2                  h1q 11.986625 80      11.869842           0.983861
+       mango_rmse     medium    HOURS                 2                  h2q 12.062857 80      11.869842           1.626094
+       mango_rmse     medium    HOURS                 2                  h4q 12.022835 80      11.869842           1.288918
+       mango_rmse     medium    HOURS                 2                  h8q 11.988251 80      11.869842           0.997557
+       mango_rmse     medium    HOURS                 3                  h1q 12.653758 80      12.467042           1.497683
+       mango_rmse     medium    HOURS                 3                  h2q 12.735018 80      12.467042           2.149479
+       mango_rmse     medium    HOURS                 3                  h4q 12.677073 80      12.467042           1.684689
+       mango_rmse     medium    HOURS                 3                  h8q 12.599603 80      12.467042           1.063296
+       mango_rmse     medium    HOURS                 4                  h1q 13.249218 80      12.987099           2.018300
+       mango_rmse     medium    HOURS                 4                  h2q 13.331640 80      12.987099           2.652947
+       mango_rmse     medium    HOURS                 4                  h4q 13.249969 80      12.987099           2.024087
+       mango_rmse     medium    HOURS                 4                  h8q 13.137102 80      12.987099           1.155015
+       mango_rmse     medium    HOURS                 5                  h1q 13.842557 80      13.497833           2.553924
+       mango_rmse     medium    HOURS                 5                  h2q 13.920142 80      13.497833           3.128719
+       mango_rmse     medium    HOURS                 5                  h4q 13.808391 80      13.497833           2.300804
+       mango_rmse     medium    HOURS                 5                  h8q 13.664704 80      13.497833           1.236282
+       mango_rmse     medium    HOURS                 6                  h1q 14.413868 80      14.006826           2.906025
+       mango_rmse     medium    HOURS                 6                  h2q 14.488690 80      14.006826           3.440206
+       mango_rmse     medium    HOURS                 6                  h4q 14.349767 80      14.006826           2.448384
+       mango_rmse     medium    HOURS                 6                  h8q 14.180358 80      14.006826           1.238910
+       mango_rmse     medium    HOURS                 7                  h1q 14.928170 80      14.472666           3.147336
+       mango_rmse     medium    HOURS                 7                  h2q 15.006695 80      14.472666           3.689916
+       mango_rmse     medium    HOURS                 7                  h4q 14.837345 80      14.472666           2.519774
+       mango_rmse     medium    HOURS                 7                  h8q 14.657869 80      14.472666           1.279676
+       mango_rmse     medium    HOURS                 8                  h1q 15.374839 80      14.870198           3.393644
+       mango_rmse     medium    HOURS                 8                  h2q 15.460669 80      14.870198           3.970833
+       mango_rmse     medium    HOURS                 8                  h4q 15.268994 80      14.870198           2.681849
+       mango_rmse     medium    HOURS                 8                  h8q 15.083554 80      14.870198           1.434793
+       mango_rmse     medium      INV                 1                  h1q 25.135303 80      25.469170          -1.310867
+       mango_rmse     medium      INV                 1                  h2q 25.111478 80      25.469170          -1.404409
+       mango_rmse     medium      INV                 1                  h4q 25.266886 80      25.469170          -0.794230
+       mango_rmse     medium      INV                 1                  h8q 25.279359 80      25.469170          -0.745259
+       mango_rmse     medium      INV                 2                  h1q 24.054278 80      24.868854          -3.275486
+       mango_rmse     medium      INV                 2                  h2q 24.140444 80      24.868854          -2.929005
+       mango_rmse     medium      INV                 2                  h4q 24.296653 80      24.868854          -2.300877
+       mango_rmse     medium      INV                 2                  h8q 24.569217 80      24.868854          -1.204868
+       mango_rmse     medium      INV                 3                  h1q 23.100930 80      24.437588          -5.469682
+       mango_rmse     medium      INV                 3                  h2q 23.288032 80      24.437588          -4.704048
+       mango_rmse     medium      INV                 3                  h4q 23.562115 80      24.437588          -3.582486
+       mango_rmse     medium      INV                 3                  h8q 24.071933 80      24.437588          -1.496279
+       mango_rmse     medium      INV                 4                  h1q 22.231921 80      23.977370          -7.279571
+       mango_rmse     medium      INV                 4                  h2q 22.454881 80      23.977370          -6.349693
+       mango_rmse     medium      INV                 4                  h4q 22.855759 80      23.977370          -4.677792
+       mango_rmse     medium      INV                 4                  h8q 23.628536 80      23.977370          -1.454848
+       mango_rmse     medium      INV                 5                  h1q 21.603685 80      23.601581          -8.465094
+       mango_rmse     medium      INV                 5                  h2q 21.719913 80      23.601581          -7.972636
+       mango_rmse     medium      INV                 5                  h4q 22.225457 80      23.601581          -5.830642
+       mango_rmse     medium      INV                 5                  h8q 23.424821 80      23.601581          -0.748932
+       mango_rmse     medium      INV                 6                  h1q 21.121233 80      23.324201          -9.444989
+       mango_rmse     medium      INV                 6                  h2q 21.076055 80      23.324201          -9.638685
+       mango_rmse     medium      INV                 6                  h4q 21.744638 80      23.324201          -6.772207
+       mango_rmse     medium      INV                 6                  h8q 23.259486 80      23.324201          -0.277457
+       mango_rmse     medium      INV                 7                  h1q 20.655690 80      23.055957         -10.410615
+       mango_rmse     medium      INV                 7                  h2q 20.532896 80      23.055957         -10.943205
+       mango_rmse     medium      INV                 7                  h4q 21.312617 80      23.055957          -7.561343
+       mango_rmse     medium      INV                 7                  h8q 23.103775 80      23.055957           0.207401
+       mango_rmse     medium      INV                 8                  h1q 20.395451 80      22.800017         -10.546334
+       mango_rmse     medium      INV                 8                  h2q 20.073903 80      22.800017         -11.956631
+       mango_rmse     medium      INV                 8                  h4q 21.051809 80      22.800017          -7.667576
+       mango_rmse     medium      INV                 8                  h8q 23.030977 80      22.800017           1.012980
+       mango_rmse     medium     WAGE                 1                  h1q 13.875611 80      13.982751          -0.766234
+       mango_rmse     medium     WAGE                 1                  h2q 13.854397 80      13.982751          -0.917948
+       mango_rmse     medium     WAGE                 1                  h4q 13.871519 80      13.982751          -0.795499
+       mango_rmse     medium     WAGE                 1                  h8q 13.897952 80      13.982751          -0.606454
+       mango_rmse     medium     WAGE                 2                  h1q 13.956336 80      14.183664          -1.602744
+       mango_rmse     medium     WAGE                 2                  h2q 13.913001 80      14.183664          -1.908271
+       mango_rmse     medium     WAGE                 2                  h4q 13.944156 80      14.183664          -1.688618
+       mango_rmse     medium     WAGE                 2                  h8q 14.002363 80      14.183664          -1.278238
+       mango_rmse     medium     WAGE                 3                  h1q 14.071736 80      14.418733          -2.406573
+       mango_rmse     medium     WAGE                 3                  h2q 14.014788 80      14.418733          -2.801532
+       mango_rmse     medium     WAGE                 3                  h4q 14.047467 80      14.418733          -2.574884
+       mango_rmse     medium     WAGE                 3                  h8q 14.138772 80      14.418733          -1.941646
+       mango_rmse     medium     WAGE                 4                  h1q 14.176612 80      14.640274          -3.167032
+       mango_rmse     medium     WAGE                 4                  h2q 14.109291 80      14.640274          -3.626865
+       mango_rmse     medium     WAGE                 4                  h4q 14.145004 80      14.640274          -3.382932
+       mango_rmse     medium     WAGE                 4                  h8q 14.264263 80      14.640274          -2.568335
+       mango_rmse     medium     WAGE                 5                  h1q 14.328932 80      14.909667          -3.895023
+       mango_rmse     medium     WAGE                 5                  h2q 14.246653 80      14.909667          -4.446871
+       mango_rmse     medium     WAGE                 5                  h4q 14.280518 80      14.909667          -4.219739
+       mango_rmse     medium     WAGE                 5                  h8q 14.437713 80      14.909667          -3.165420
+       mango_rmse     medium     WAGE                 6                  h1q 14.448304 80      15.143840          -4.592858
+       mango_rmse     medium     WAGE                 6                  h2q 14.351684 80      15.143840          -5.230877
+       mango_rmse     medium     WAGE                 6                  h4q 14.395002 80      15.143840          -4.944831
+       mango_rmse     medium     WAGE                 6                  h8q 14.577394 80      15.143840          -3.740438
+       mango_rmse     medium     WAGE                 7                  h1q 14.594255 80      15.407759          -5.279830
+       mango_rmse     medium     WAGE                 7                  h2q 14.484542 80      15.407759          -5.991894
+       mango_rmse     medium     WAGE                 7                  h4q 14.531443 80      15.407759          -5.687493
+       mango_rmse     medium     WAGE                 7                  h8q 14.749682 80      15.407759          -4.271073
+       mango_rmse     medium     WAGE                 8                  h1q 14.711765 80      15.642935          -5.952659
+       mango_rmse     medium     WAGE                 8                  h2q 14.590954 80      15.642935          -6.724960
+       mango_rmse     medium     WAGE                 8                  h4q 14.638194 80      15.642935          -6.422972
+       mango_rmse     medium     WAGE                 8                  h8q 14.886323 80      15.642935          -4.836769
+mango_rmse_random     medium     CONS                 1                  h1q 20.100602 80      20.168791          -0.338092
+mango_rmse_random     medium     CONS                 1                  h2q 20.104318 80      20.168791          -0.319668
+mango_rmse_random     medium     CONS                 1                  h4q 20.161880 80      20.168791          -0.034269
+mango_rmse_random     medium     CONS                 1                  h8q 20.203020 80      20.168791           0.169713
+mango_rmse_random     medium     CONS                 2                  h1q 19.826529 80      19.920554          -0.472002
+mango_rmse_random     medium     CONS                 2                  h2q 19.814740 80      19.920554          -0.531182
+mango_rmse_random     medium     CONS                 2                  h4q 19.913413 80      19.920554          -0.035847
+mango_rmse_random     medium     CONS                 2                  h8q 20.010280 80      19.920554           0.450420
+mango_rmse_random     medium     CONS                 3                  h1q 19.602383 80      19.710156          -0.546786
+mango_rmse_random     medium     CONS                 3                  h2q 19.584710 80      19.710156          -0.636452
+mango_rmse_random     medium     CONS                 3                  h4q 19.722967 80      19.710156           0.064998
+mango_rmse_random     medium     CONS                 3                  h8q 19.858260 80      19.710156           0.751409
+mango_rmse_random     medium     CONS                 4                  h1q 19.311569 80      19.427686          -0.597686
+mango_rmse_random     medium     CONS                 4                  h2q 19.282985 80      19.427686          -0.744817
+mango_rmse_random     medium     CONS                 4                  h4q 19.460991 80      19.427686           0.171428
+mango_rmse_random     medium     CONS                 4                  h8q 19.634855 80      19.427686           1.066360
+mango_rmse_random     medium     CONS                 5                  h1q 19.034693 80      19.147219          -0.587687
+mango_rmse_random     medium     CONS                 5                  h2q 18.997475 80      19.147219          -0.782066
+mango_rmse_random     medium     CONS                 5                  h4q 19.207095 80      19.147219           0.312717
+mango_rmse_random     medium     CONS                 5                  h8q 19.417495 80      19.147219           1.411568
+mango_rmse_random     medium     CONS                 6                  h1q 18.787965 80      18.898639          -0.585619
+mango_rmse_random     medium     CONS                 6                  h2q 18.734991 80      18.898639          -0.865927
+mango_rmse_random     medium     CONS                 6                  h4q 18.980674 80      18.898639           0.434080
+mango_rmse_random     medium     CONS                 6                  h8q 19.229102 80      18.898639           1.748609
+mango_rmse_random     medium     CONS                 7                  h1q 18.565438 80      18.665749          -0.537403
+mango_rmse_random     medium     CONS                 7                  h2q 18.487120 80      18.665749          -0.956986
+mango_rmse_random     medium     CONS                 7                  h4q 18.771836 80      18.665749           0.568355
+mango_rmse_random     medium     CONS                 7                  h8q 19.050676 80      18.665749           2.062213
+mango_rmse_random     medium     CONS                 8                  h1q 18.336951 80      18.433971          -0.526313
+mango_rmse_random     medium     CONS                 8                  h2q 18.247219 80      18.433971          -1.013087
+mango_rmse_random     medium     CONS                 8                  h4q 18.568945 80      18.433971           0.732204
+mango_rmse_random     medium     CONS                 8                  h8q 18.865357 80      18.433971           2.340170
+mango_rmse_random     medium     DEFL                 1                  h1q 20.335147 80      20.272556           0.308748
+mango_rmse_random     medium     DEFL                 1                  h2q 20.323046 80      20.272556           0.249056
+mango_rmse_random     medium     DEFL                 1                  h4q 20.356925 80      20.272556           0.416173
+mango_rmse_random     medium     DEFL                 1                  h8q 20.393110 80      20.272556           0.594664
+mango_rmse_random     medium     DEFL                 2                  h1q 20.399788 80      20.269339           0.643577
+mango_rmse_random     medium     DEFL                 2                  h2q 20.375274 80      20.269339           0.522633
+mango_rmse_random     medium     DEFL                 2                  h4q 20.443256 80      20.269339           0.858027
+mango_rmse_random     medium     DEFL                 2                  h8q 20.517603 80      20.269339           1.224822
+mango_rmse_random     medium     DEFL                 3                  h1q 20.480128 80      20.272417           1.024599
+mango_rmse_random     medium     DEFL                 3                  h2q 20.442756 80      20.272417           0.840247
+mango_rmse_random     medium     DEFL                 3                  h4q 20.541028 80      20.272417           1.325008
+mango_rmse_random     medium     DEFL                 3                  h8q 20.652321 80      20.272417           1.873992
+mango_rmse_random     medium     DEFL                 4                  h1q 20.573718 80      20.289842           1.399102
+mango_rmse_random     medium     DEFL                 4                  h2q 20.527354 80      20.289842           1.170595
+mango_rmse_random     medium     DEFL                 4                  h4q 20.655024 80      20.289842           1.799826
+mango_rmse_random     medium     DEFL                 4                  h8q 20.801687 80      20.289842           2.522666
+mango_rmse_random     medium     DEFL                 5                  h1q 20.691208 80      20.324804           1.802744
+mango_rmse_random     medium     DEFL                 5                  h2q 20.630984 80      20.324804           1.506438
+mango_rmse_random     medium     DEFL                 5                  h4q 20.784508 80      20.324804           2.261791
+mango_rmse_random     medium     DEFL                 5                  h8q 20.968117 80      20.324804           3.165163
+mango_rmse_random     medium     DEFL                 6                  h1q 20.830777 80      20.382739           2.198122
+mango_rmse_random     medium     DEFL                 6                  h2q 20.759465 80      20.382739           1.848261
+mango_rmse_random     medium     DEFL                 6                  h4q 20.938072 80      20.382739           2.724524
+mango_rmse_random     medium     DEFL                 6                  h8q 21.154598 80      20.382739           3.786827
+mango_rmse_random     medium     DEFL                 7                  h1q 20.990431 80      20.461174           2.586642
+mango_rmse_random     medium     DEFL                 7                  h2q 20.907367 80      20.461174           2.180683
+mango_rmse_random     medium     DEFL                 7                  h4q 21.111533 80      20.461174           3.178503
+mango_rmse_random     medium     DEFL                 7                  h8q 21.356911 80      20.461174           4.377740
+mango_rmse_random     medium     DEFL                 8                  h1q 21.170663 80      20.559375           2.973282
+mango_rmse_random     medium     DEFL                 8                  h2q 21.073169 80      20.559375           2.499073
+mango_rmse_random     medium     DEFL                 8                  h4q 21.300003 80      20.559375           3.602386
+mango_rmse_random     medium     DEFL                 8                  h8q 21.576852 80      20.559375           4.948970
+mango_rmse_random     medium      FFR                 1                  h1q  0.421927 80       0.386216           9.246235
+mango_rmse_random     medium      FFR                 1                  h2q  0.389642 80       0.386216           0.886910
+mango_rmse_random     medium      FFR                 1                  h4q  0.425707 80       0.386216          10.224925
+mango_rmse_random     medium      FFR                 1                  h8q  0.431330 80       0.386216          11.680804
+mango_rmse_random     medium      FFR                 2                  h1q  0.810511 80       0.736927           9.985287
+mango_rmse_random     medium      FFR                 2                  h2q  0.783858 80       0.736927           6.368494
+mango_rmse_random     medium      FFR                 2                  h4q  0.808262 80       0.736927           9.680091
+mango_rmse_random     medium      FFR                 2                  h8q  0.821224 80       0.736927          11.439013
+mango_rmse_random     medium      FFR                 3                  h1q  1.162703 80       1.052730          10.446454
+mango_rmse_random     medium      FFR                 3                  h2q  1.147910 80       1.052730           9.041167
+mango_rmse_random     medium      FFR                 3                  h4q  1.148891 80       1.052730           9.134400
+mango_rmse_random     medium      FFR                 3                  h8q  1.146445 80       1.052730           8.902062
+mango_rmse_random     medium      FFR                 4                  h1q  1.493872 80       1.326006          12.659557
+mango_rmse_random     medium      FFR                 4                  h2q  1.474241 80       1.326006          11.179078
+mango_rmse_random     medium      FFR                 4                  h4q  1.447562 80       1.326006           9.167121
+mango_rmse_random     medium      FFR                 4                  h8q  1.435866 80       1.326006           8.285051
+mango_rmse_random     medium      FFR                 5                  h1q  1.818437 80       1.568998          15.897929
+mango_rmse_random     medium      FFR                 5                  h2q  1.765289 80       1.568998          12.510541
+mango_rmse_random     medium      FFR                 5                  h4q  1.730611 80       1.568998          10.300349
+mango_rmse_random     medium      FFR                 5                  h8q  1.685839 80       1.568998           7.446823
+mango_rmse_random     medium      FFR                 6                  h1q  2.089071 80       1.804345          15.780057
+mango_rmse_random     medium      FFR                 6                  h2q  2.022856 80       1.804345          12.110300
+mango_rmse_random     medium      FFR                 6                  h4q  1.970380 80       1.804345           9.201981
+mango_rmse_random     medium      FFR                 6                  h8q  1.925447 80       1.804345           6.711715
+mango_rmse_random     medium      FFR                 7                  h1q  2.309631 80       2.012159          14.783720
+mango_rmse_random     medium      FFR                 7                  h2q  2.225302 80       2.012159          10.592761
+mango_rmse_random     medium      FFR                 7                  h4q  2.166015 80       2.012159           7.646281
+mango_rmse_random     medium      FFR                 7                  h8q  2.144288 80       2.012159           6.566500
+mango_rmse_random     medium      FFR                 8                  h1q  2.484448 80       2.191061          13.390193
+mango_rmse_random     medium      FFR                 8                  h2q  2.399904 80       2.191061           9.531608
+mango_rmse_random     medium      FFR                 8                  h4q  2.337126 80       2.191061           6.666395
+mango_rmse_random     medium      FFR                 8                  h8q  2.348856 80       2.191061           7.201786
+mango_rmse_random     medium      GDP                 1                  h1q 22.929963 80      22.963202          -0.144749
+mango_rmse_random     medium      GDP                 1                  h2q 22.919632 80      22.963202          -0.189736
+mango_rmse_random     medium      GDP                 1                  h4q 22.982037 80      22.963202           0.082023
+mango_rmse_random     medium      GDP                 1                  h8q 23.020689 80      22.963202           0.250345
+mango_rmse_random     medium      GDP                 2                  h1q 22.604135 80      22.649137          -0.198689
+mango_rmse_random     medium      GDP                 2                  h2q 22.581045 80      22.649137          -0.300637
+mango_rmse_random     medium      GDP                 2                  h4q 22.687274 80      22.649137           0.168384
+mango_rmse_random     medium      GDP                 2                  h8q 22.784486 80      22.649137           0.597591
+mango_rmse_random     medium      GDP                 3                  h1q 22.287705 80      22.327400          -0.177783
+mango_rmse_random     medium      GDP                 3                  h2q 22.266620 80      22.327400          -0.272221
+mango_rmse_random     medium      GDP                 3                  h4q 22.396388 80      22.327400           0.308985
+mango_rmse_random     medium      GDP                 3                  h8q 22.550720 80      22.327400           1.000206
+mango_rmse_random     medium      GDP                 4                  h1q 21.948867 80      21.972588          -0.107955
+mango_rmse_random     medium      GDP                 4                  h2q 21.916943 80      21.972588          -0.253245
+mango_rmse_random     medium      GDP                 4                  h4q 22.078503 80      21.972588           0.482034
+mango_rmse_random     medium      GDP                 4                  h8q 22.286577 80      21.972588           1.429005
+mango_rmse_random     medium      GDP                 5                  h1q 21.634264 80      21.629289           0.023003
+mango_rmse_random     medium      GDP                 5                  h2q 21.591672 80      21.629289          -0.173916
+mango_rmse_random     medium      GDP                 5                  h4q 21.777141 80      21.629289           0.683574
+mango_rmse_random     medium      GDP                 5                  h8q 22.036405 80      21.629289           1.882247
+mango_rmse_random     medium      GDP                 6                  h1q 21.362626 80      21.326216           0.170731
+mango_rmse_random     medium      GDP                 6                  h2q 21.301904 80      21.326216          -0.113998
+mango_rmse_random     medium      GDP                 6                  h4q 21.514730 80      21.326216           0.883958
+mango_rmse_random     medium      GDP                 6                  h8q 21.822819 80      21.326216           2.328605
+mango_rmse_random     medium      GDP                 7                  h1q 21.113519 80      21.030536           0.394583
+mango_rmse_random     medium      GDP                 7                  h2q 21.024582 80      21.030536          -0.028312
+mango_rmse_random     medium      GDP                 7                  h4q 21.269440 80      21.030536           1.135985
+mango_rmse_random     medium      GDP                 7                  h8q 21.615687 80      21.030536           2.782389
+mango_rmse_random     medium      GDP                 8                  h1q 20.875481 80      20.745808           0.625058
+mango_rmse_random     medium      GDP                 8                  h2q 20.773320 80      20.745808           0.132614
+mango_rmse_random     medium      GDP                 8                  h4q 21.045244 80      20.745808           1.443356
+mango_rmse_random     medium      GDP                 8                  h8q 21.417111 80      20.745808           3.235847
+mango_rmse_random     medium    HOURS                 1                  h1q 11.605718 80      11.510165           0.830164
+mango_rmse_random     medium    HOURS                 1                  h2q 11.627874 80      11.510165           1.022655
+mango_rmse_random     medium    HOURS                 1                  h4q 11.570230 80      11.510165           0.521848
+mango_rmse_random     medium    HOURS                 1                  h8q 11.545361 80      11.510165           0.305782
+mango_rmse_random     medium    HOURS                 2                  h1q 12.033102 80      11.869842           1.375412
+mango_rmse_random     medium    HOURS                 2                  h2q 12.079465 80      11.869842           1.766010
+mango_rmse_random     medium    HOURS                 2                  h4q 11.965592 80      11.869842           0.806661
+mango_rmse_random     medium    HOURS                 2                  h8q 11.899014 80      11.869842           0.245762
+mango_rmse_random     medium    HOURS                 3                  h1q 12.665086 80      12.467042           1.588539
+mango_rmse_random     medium    HOURS                 3                  h2q 12.727360 80      12.467042           2.088048
+mango_rmse_random     medium    HOURS                 3                  h4q 12.565757 80      12.467042           0.791812
+mango_rmse_random     medium    HOURS                 3                  h8q 12.466340 80      12.467042          -0.005625
+mango_rmse_random     medium    HOURS                 4                  h1q 13.202268 80      12.987099           1.656793
+mango_rmse_random     medium    HOURS                 4                  h2q 13.271012 80      12.987099           2.186117
+mango_rmse_random     medium    HOURS                 4                  h4q 13.086879 80      12.987099           0.768300
+mango_rmse_random     medium    HOURS                 4                  h8q 12.925366 80      12.987099          -0.475344
+mango_rmse_random     medium    HOURS                 5                  h1q 13.713303 80      13.497833           1.596329
+mango_rmse_random     medium    HOURS                 5                  h2q 13.795991 80      13.497833           2.208935
+mango_rmse_random     medium    HOURS                 5                  h4q 13.596657 80      13.497833           0.732151
+mango_rmse_random     medium    HOURS                 5                  h8q 13.365680 80      13.497833          -0.979065
+mango_rmse_random     medium    HOURS                 6                  h1q 14.188503 80      14.006826           1.297059
+mango_rmse_random     medium    HOURS                 6                  h2q 14.289005 80      14.006826           2.014577
+mango_rmse_random     medium    HOURS                 6                  h4q 14.087211 80      14.006826           0.573896
+mango_rmse_random     medium    HOURS                 6                  h8q 13.817797 80      14.006826          -1.349555
+mango_rmse_random     medium    HOURS                 7                  h1q 14.626761 80      14.472666           1.064732
+mango_rmse_random     medium    HOURS                 7                  h2q 14.711847 80      14.472666           1.652636
+mango_rmse_random     medium    HOURS                 7                  h4q 14.533596 80      14.472666           0.421002
+mango_rmse_random     medium    HOURS                 7                  h8q 14.234594 80      14.472666          -1.644980
+mango_rmse_random     medium    HOURS                 8                  h1q 14.987773 80      14.870198           0.790679
+mango_rmse_random     medium    HOURS                 8                  h2q 15.072241 80      14.870198           1.358711
+mango_rmse_random     medium    HOURS                 8                  h4q 14.910703 80      14.870198           0.272393
+mango_rmse_random     medium    HOURS                 8                  h8q 14.583847 80      14.870198          -1.925671
+mango_rmse_random     medium      INV                 1                  h1q 25.329733 80      25.469170          -0.547471
+mango_rmse_random     medium      INV                 1                  h2q 25.191856 80      25.469170          -1.088821
+mango_rmse_random     medium      INV                 1                  h4q 25.476581 80      25.469170           0.029097
+mango_rmse_random     medium      INV                 1                  h8q 25.649178 80      25.469170           0.706768
+mango_rmse_random     medium      INV                 2                  h1q 24.527125 80      24.868854          -1.374124
+mango_rmse_random     medium      INV                 2                  h2q 24.359532 80      24.868854          -2.048034
+mango_rmse_random     medium      INV                 2                  h4q 24.913872 80      24.868854           0.181022
+mango_rmse_random     medium      INV                 2                  h8q 25.266809 80      24.868854           1.600213
+mango_rmse_random     medium      INV                 3                  h1q 23.960925 80      24.437588          -1.950531
+mango_rmse_random     medium      INV                 3                  h2q 23.808750 80      24.437588          -2.573240
+mango_rmse_random     medium      INV                 3                  h4q 24.465647 80      24.437588           0.114819
+mango_rmse_random     medium      INV                 3                  h8q 25.070884 80      24.437588           2.591486
+mango_rmse_random     medium      INV                 4                  h1q 23.453991 80      23.977370          -2.182806
+mango_rmse_random     medium      INV                 4                  h2q 23.212310 80      23.977370          -3.190761
+mango_rmse_random     medium      INV                 4                  h4q 23.991975 80      23.977370           0.060911
+mango_rmse_random     medium      INV                 4                  h8q 24.838525 80      23.977370           3.591531
+mango_rmse_random     medium      INV                 5                  h1q 23.038914 80      23.601581          -2.384022
+mango_rmse_random     medium      INV                 5                  h2q 22.745166 80      23.601581          -3.628635
+mango_rmse_random     medium      INV                 5                  h4q 23.634187 80      23.601581           0.138154
+mango_rmse_random     medium      INV                 5                  h8q 24.655942 80      23.601581           4.467331
+mango_rmse_random     medium      INV                 6                  h1q 22.683636 80      23.324201          -2.746351
+mango_rmse_random     medium      INV                 6                  h2q 22.343645 80      23.324201          -4.204029
+mango_rmse_random     medium      INV                 6                  h4q 23.366206 80      23.324201           0.180093
+mango_rmse_random     medium      INV                 6                  h8q 24.539703 80      23.324201           5.211335
+mango_rmse_random     medium      INV                 7                  h1q 22.426426 80      23.055957          -2.730446
+mango_rmse_random     medium      INV                 7                  h2q 21.969414 80      23.055957          -4.712633
+mango_rmse_random     medium      INV                 7                  h4q 23.098574 80      23.055957           0.184844
+mango_rmse_random     medium      INV                 7                  h8q 24.403102 80      23.055957           5.842938
+mango_rmse_random     medium      INV                 8                  h1q 22.287935 80      22.800017          -2.245973
+mango_rmse_random     medium      INV                 8                  h2q 21.743665 80      22.800017          -4.633121
+mango_rmse_random     medium      INV                 8                  h4q 22.920268 80      22.800017           0.527416
+mango_rmse_random     medium      INV                 8                  h8q 24.310263 80      22.800017           6.623881
+mango_rmse_random     medium     WAGE                 1                  h1q 13.908280 80      13.982751          -0.532593
+mango_rmse_random     medium     WAGE                 1                  h2q 13.930768 80      13.982751          -0.371769
+mango_rmse_random     medium     WAGE                 1                  h4q 13.925320 80      13.982751          -0.410731
+mango_rmse_random     medium     WAGE                 1                  h8q 13.921220 80      13.982751          -0.440053
+mango_rmse_random     medium     WAGE                 2                  h1q 14.034097 80      14.183664          -1.054500
+mango_rmse_random     medium     WAGE                 2                  h2q 14.066940 80      14.183664          -0.822947
+mango_rmse_random     medium     WAGE                 2                  h4q 14.064801 80      14.183664          -0.838025
+mango_rmse_random     medium     WAGE                 2                  h8q 14.046663 80      14.183664          -0.965904
+mango_rmse_random     medium     WAGE                 3                  h1q 14.185717 80      14.418733          -1.616065
+mango_rmse_random     medium     WAGE                 3                  h2q 14.233340 80      14.418733          -1.285780
+mango_rmse_random     medium     WAGE                 3                  h4q 14.235305 80      14.418733          -1.272149
+mango_rmse_random     medium     WAGE                 3                  h8q 14.207178 80      14.418733          -1.467222
+mango_rmse_random     medium     WAGE                 4                  h1q 14.330339 80      14.640274          -2.117002
+mango_rmse_random     medium     WAGE                 4                  h2q 14.389059 80      14.640274          -1.715919
+mango_rmse_random     medium     WAGE                 4                  h4q 14.394141 80      14.640274          -1.681205
+mango_rmse_random     medium     WAGE                 4                  h8q 14.358878 80      14.640274          -1.922070
+mango_rmse_random     medium     WAGE                 5                  h1q 14.529224 80      14.909667          -2.551654
+mango_rmse_random     medium     WAGE                 5                  h2q 14.596703 80      14.909667          -2.099068
+mango_rmse_random     medium     WAGE                 5                  h4q 14.607034 80      14.909667          -2.029774
+mango_rmse_random     medium     WAGE                 5                  h8q 14.563551 80      14.909667          -2.321423
+mango_rmse_random     medium     WAGE                 6                  h1q 14.688366 80      15.143840          -3.007646
+mango_rmse_random     medium     WAGE                 6                  h2q 14.774019 80      15.143840          -2.442056
+mango_rmse_random     medium     WAGE                 6                  h4q 14.791444 80      15.143840          -2.326988
+mango_rmse_random     medium     WAGE                 6                  h8q 14.743404 80      15.143840          -2.644216
+mango_rmse_random     medium     WAGE                 7                  h1q 14.878776 80      15.407759          -3.433224
+mango_rmse_random     medium     WAGE                 7                  h2q 14.974366 80      15.407759          -2.812821
+mango_rmse_random     medium     WAGE                 7                  h4q 15.001914 80      15.407759          -2.634028
+mango_rmse_random     medium     WAGE                 7                  h8q 14.952471 80      15.407759          -2.954922
+mango_rmse_random     medium     WAGE                 8                  h1q 15.039145 80      15.642935          -3.859826
+mango_rmse_random     medium     WAGE                 8                  h2q 15.155044 80      15.642935          -3.118922
+mango_rmse_random     medium     WAGE                 8                  h4q 15.185189 80      15.642935          -2.926214
+mango_rmse_random     medium     WAGE                 8                  h8q 15.130503 80      15.642935          -3.275803
+            paper     medium     CONS                 1                  NaN 20.168791 80      20.168791           0.000000
+            paper     medium     CONS                 2                  NaN 19.920554 80      19.920554           0.000000
+            paper     medium     CONS                 3                  NaN 19.710156 80      19.710156           0.000000
+            paper     medium     CONS                 4                  NaN 19.427686 80      19.427686           0.000000
+            paper     medium     CONS                 5                  NaN 19.147219 80      19.147219           0.000000
+            paper     medium     CONS                 6                  NaN 18.898639 80      18.898639           0.000000
+            paper     medium     CONS                 7                  NaN 18.665749 80      18.665749           0.000000
+            paper     medium     CONS                 8                  NaN 18.433971 80      18.433971           0.000000
+            paper     medium     DEFL                 1                  NaN 20.272556 80      20.272556           0.000000
+            paper     medium     DEFL                 2                  NaN 20.269339 80      20.269339           0.000000
+            paper     medium     DEFL                 3                  NaN 20.272417 80      20.272417           0.000000
+            paper     medium     DEFL                 4                  NaN 20.289842 80      20.289842           0.000000
+            paper     medium     DEFL                 5                  NaN 20.324804 80      20.324804           0.000000
+            paper     medium     DEFL                 6                  NaN 20.382739 80      20.382739           0.000000
+            paper     medium     DEFL                 7                  NaN 20.461174 80      20.461174           0.000000
+            paper     medium     DEFL                 8                  NaN 20.559375 80      20.559375           0.000000
+            paper     medium      FFR                 1                  NaN  0.386216 80       0.386216           0.000000
+            paper     medium      FFR                 2                  NaN  0.736927 80       0.736927           0.000000
+            paper     medium      FFR                 3                  NaN  1.052730 80       1.052730           0.000000
+            paper     medium      FFR                 4                  NaN  1.326006 80       1.326006           0.000000
+            paper     medium      FFR                 5                  NaN  1.568998 80       1.568998           0.000000
+            paper     medium      FFR                 6                  NaN  1.804345 80       1.804345           0.000000
+            paper     medium      FFR                 7                  NaN  2.012159 80       2.012159           0.000000
+            paper     medium      FFR                 8                  NaN  2.191061 80       2.191061           0.000000
+            paper     medium      GDP                 1                  NaN 22.963202 80      22.963202           0.000000
+            paper     medium      GDP                 2                  NaN 22.649137 80      22.649137           0.000000
+            paper     medium      GDP                 3                  NaN 22.327400 80      22.327400           0.000000
+            paper     medium      GDP                 4                  NaN 21.972588 80      21.972588           0.000000
+            paper     medium      GDP                 5                  NaN 21.629289 80      21.629289           0.000000
+            paper     medium      GDP                 6                  NaN 21.326216 80      21.326216           0.000000
+            paper     medium      GDP                 7                  NaN 21.030536 80      21.030536           0.000000
+            paper     medium      GDP                 8                  NaN 20.745808 80      20.745808           0.000000
+            paper     medium    HOURS                 1                  NaN 11.510165 80      11.510165           0.000000
+            paper     medium    HOURS                 2                  NaN 11.869842 80      11.869842           0.000000
+            paper     medium    HOURS                 3                  NaN 12.467042 80      12.467042           0.000000
+            paper     medium    HOURS                 4                  NaN 12.987099 80      12.987099           0.000000
+            paper     medium    HOURS                 5                  NaN 13.497833 80      13.497833           0.000000
+            paper     medium    HOURS                 6                  NaN 14.006826 80      14.006826           0.000000
+            paper     medium    HOURS                 7                  NaN 14.472666 80      14.472666           0.000000
+            paper     medium    HOURS                 8                  NaN 14.870198 80      14.870198           0.000000
+            paper     medium      INV                 1                  NaN 25.469170 80      25.469170           0.000000
+            paper     medium      INV                 2                  NaN 24.868854 80      24.868854           0.000000
+            paper     medium      INV                 3                  NaN 24.437588 80      24.437588           0.000000
+            paper     medium      INV                 4                  NaN 23.977370 80      23.977370           0.000000
+            paper     medium      INV                 5                  NaN 23.601581 80      23.601581           0.000000
+            paper     medium      INV                 6                  NaN 23.324201 80      23.324201           0.000000
+            paper     medium      INV                 7                  NaN 23.055957 80      23.055957           0.000000
+            paper     medium      INV                 8                  NaN 22.800017 80      22.800017           0.000000
+            paper     medium     WAGE                 1                  NaN 13.982751 80      13.982751           0.000000
+            paper     medium     WAGE                 2                  NaN 14.183664 80      14.183664           0.000000
+            paper     medium     WAGE                 3                  NaN 14.418733 80      14.418733           0.000000
+            paper     medium     WAGE                 4                  NaN 14.640274 80      14.640274           0.000000
+            paper     medium     WAGE                 5                  NaN 14.909667 80      14.909667           0.000000
+            paper     medium     WAGE                 6                  NaN 15.143840 80      15.143840           0.000000
+            paper     medium     WAGE                 7                  NaN 15.407759 80      15.407759           0.000000
+            paper     medium     WAGE                 8                  NaN 15.642935 80      15.642935           0.000000
