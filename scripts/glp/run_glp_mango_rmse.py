@@ -25,6 +25,7 @@ from glp_hyperparameter_optimization.forecasting import (
 
 DEFAULT_EVAL_HORIZONS = [1, 2, 4, 8]
 DEFAULT_N_EVAL = 3
+DEFAULT_N_OBJ_DRAWS = 200
 
 
 def build_parser():
@@ -39,6 +40,9 @@ def build_parser():
     )
     parser.add_argument("--optimization-n-eval", type=int, default=DEFAULT_N_EVAL,
                         help="Number of rolling evaluation origins used inside the RMSE objective.")
+    parser.add_argument("--optimization-n-obj-draws", type=int, default=DEFAULT_N_OBJ_DRAWS,
+                        help="Posterior beta draws averaged into the predictive-mean RMSE objective "
+                             "(<=1 uses the deterministic posterior-mode point forecast).")
     return parser
 
 

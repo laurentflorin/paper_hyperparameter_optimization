@@ -35,3 +35,9 @@ def test_resolve_stage_output_dir_uses_root_or_override(tmp_path: Path):
     assert run_all.resolve_stage_output_dir(output_root, None, "paper") == output_root / "paper"
     custom = tmp_path / "custom" / "paper_run"
     assert run_all.resolve_stage_output_dir(output_root, custom, "paper") == custom
+
+
+def test_build_parser_accepts_optimization_n_obj_draws():
+    parser = run_all.build_parser()
+    args = parser.parse_args(["--optimization-n-obj-draws", "48"])
+    assert args.optimization_n_obj_draws == 48

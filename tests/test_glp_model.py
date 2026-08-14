@@ -90,6 +90,82 @@ def test_mango_rmse_variants_return_in_bounds():
             assert lower <= best[key] <= upper
 
 
+def _rmse_setup(seed: int, *, lags: int = 4, H: int = 4, n_eval: int = 2):
+    y = _synthetic_data(seed=seed)
+    codes = ["GDP", "DEFL", "FFR"]
+    prior_kwargs = {"hyperpriors": gm.GLP_HYPERPRIORS}
+    var_indices = gm._resolve_var_indices(codes, ["GDP"])
+    ks = gm._rmse_eval_origins(y.shape[0], H, n_eval=n_eval, random=False, min_t=None, random_seed=None)
+    origins = gm._build_rmse_origins(y, lags, ks, H, prior_kwargs)
+    ctx_ref = gm.prepare_glp_context(y, lags, **prior_kwargs)
+    params = {
+        "lam": 0.2,
+        "theta": 1.0,
+        "miu": 1.0,
+        **{f"psi_{i}": float(v) for i, v in enumerate(np.ravel(ctx_ref.SS))},
+    }
+    return origins, ctx_ref, var_indices, params
+
+
+def test_rmse_objective_single_draw_matches_posterior_mode():
+    # With n_obj_draws <= 1 the objective must reproduce the deterministic
+    # posterior-mode RMSE exactly (the pre-change behaviour).
+    H, h_eval = 4, 4
+    origins, ctx_ref, var_indices, params = _rmse_setup(seed=5, H=H)
+
+    vec = gm._params_to_natural(params, ctx_ref)
+    horizons = list(range(1, H + 1))
+    squared = []
+    for ctx, actual in origins:
+        betahat, _ = gm.glp_mode_estimate(ctx, vec)
+        forecast = gm.point_forecast(ctx.y, betahat, horizons)
+        for vi in var_indices:
+            squared.append(float(forecast[h_eval - 1, vi] - actual[h_eval - 1, vi]) ** 2)
+    reference_rmse = float(np.sqrt(np.mean(squared)))
+
+    mode_objective = gm._rmse_objective(origins, var_indices, H, h_eval, ctx_ref, n_obj_draws=1)
+    assert mode_objective(**params) == pytest.approx(reference_rmse, rel=1e-9, abs=1e-9)
+
+
+def test_rmse_objective_predictive_mean_is_finite_and_deterministic():
+    # With n_obj_draws > 1 the objective averages over posterior beta draws; it
+    # must return a finite score and be deterministic across repeated evaluations
+    # so the Mango surrogate is not fed noise.
+    H, h_eval = 4, 4
+    origins, ctx_ref, var_indices, params = _rmse_setup(seed=6, H=H)
+
+    draws_objective = gm._rmse_objective(origins, var_indices, H, h_eval, ctx_ref, n_obj_draws=8, seed_base=123)
+    first = draws_objective(**params)
+    assert np.isfinite(first) and 0.0 < first < 1.0e10
+    assert draws_objective(**params) == first
+
+
+def test_rmse_objective_draws_do_not_disturb_global_rng():
+    # The seeded draw block saves/restores the global RNG so an intervening
+    # objective evaluation does not change the caller's random stream.
+    H, h_eval = 4, 4
+    origins, ctx_ref, var_indices, params = _rmse_setup(seed=8, H=H)
+    draws_objective = gm._rmse_objective(origins, var_indices, H, h_eval, ctx_ref, n_obj_draws=4, seed_base=1)
+
+    np.random.seed(2024)
+    expected = np.random.random(5)
+    np.random.seed(2024)
+    draws_objective(**params)
+    after = np.random.random(5)
+    np.testing.assert_array_equal(expected, after)
+
+
+def test_mango_rmse_predictive_mean_returns_in_bounds():
+    y = _synthetic_data(seed=7)
+    codes = ["GDP", "DEFL", "FFR"]
+    best = gm.update_hyperparameters_mango_rmse(
+        y, lags=4, model_codes=codes, var_of_interest=["GDP"], H=4, h_eval=4, n_eval=2,
+        n_obj_draws=4, init_points=2, n_iter=2,
+    )
+    for key, (lower, upper) in gm.GLP_PARAM_SPACE_BOUNDS.items():
+        assert lower <= best[key] <= upper
+
+
 def test_rmse_eval_origins_rolling_and_random():
     rolling = gm._rmse_eval_origins(100, H=4, n_eval=3, random=False, min_t=40, random_seed=None)
     assert rolling == [0, 1, 2]

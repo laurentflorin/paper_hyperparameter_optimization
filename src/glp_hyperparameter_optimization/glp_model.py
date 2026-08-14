@@ -736,17 +736,53 @@ def _rmse_objective(
     H: int,
     h_eval: int | None,
     ctx_ref: GLPContext,
+    *,
+    n_obj_draws: int = 1,
+    seed_base: int = 0,
 ) -> Callable[..., float]:
+    """Build the (Mango-minimized) RMSE objective for one set of evaluation origins.
+
+    When ``n_obj_draws <= 1`` each origin is scored with the deterministic
+    posterior-**mode** point forecast (the original behaviour). When
+    ``n_obj_draws > 1`` the origin forecast is the Bayesian **predictive mean**:
+    ``bvarFcst`` averaged over ``n_obj_draws`` posterior draws of beta. This
+    matches how the recursive forecasts are aggregated in
+    ``forecasting._forecast_rows`` (mean over draws). Only beta is drawn -- the
+    mean-zero Gaussian shocks are *not* simulated because, for a point RMSE, they
+    contribute only Monte Carlo variance and average out to ``bvarFcst(beta)``.
+
+    The per-origin draws are seeded deterministically (``seed_base + origin``) so
+    the objective returns the same value for the same hyperparameters across
+    Mango candidate evaluations (a noisy objective would corrupt the GP
+    surrogate). The global RNG state is saved and restored around the seeded
+    block so Mango's own random sampling stream is left untouched.
+    """
     horizons = list(range(1, H + 1))
     var_indices = list(var_indices)
+    use_draws = n_obj_draws > 1
+
+    def _origin_forecast(ctx: GLPContext, vec: np.ndarray, origin_index: int) -> np.ndarray:
+        if not use_draws:
+            betahat, _ = glp_mode_estimate(ctx, vec)
+            return point_forecast(ctx.y, betahat, horizons)  # (H, n)
+        rng_state = np.random.get_state()
+        try:
+            np.random.seed((int(seed_base) + int(origin_index)) % (2**32 - 1))
+            total: np.ndarray | None = None
+            for _ in range(n_obj_draws):
+                beta, _ = glp_draw(ctx, vec)
+                forecast = point_forecast(ctx.y, beta, horizons)  # (H, n)
+                total = forecast if total is None else total + forecast
+        finally:
+            np.random.set_state(rng_state)
+        return total / float(n_obj_draws)  # type: ignore[operator]
 
     def calc_rmse(**params: float) -> float:
         vec = _params_to_natural(params, ctx_ref)
         squared_errors: list[float] = []
         try:
-            for ctx, actual in origins:
-                betahat, _ = glp_mode_estimate(ctx, vec)
-                forecast = point_forecast(ctx.y, betahat, horizons)  # (H, n)
+            for origin_index, (ctx, actual) in enumerate(origins):
+                forecast = _origin_forecast(ctx, vec, origin_index)  # (H, n)
                 rows = [h_eval - 1] if h_eval is not None else list(range(H))
                 for row in rows:
                     if row >= actual.shape[0] or row >= forecast.shape[0]:
@@ -780,12 +816,18 @@ def update_hyperparameters_mango_rmse(
     h_eval: int | None = None,
     n_eval: int = 1,
     min_t: int | None = None,
+    n_obj_draws: int = 200,
     hyperpriors: int = GLP_HYPERPRIORS,
     **prior_kwargs: Any,
 ) -> dict[str, float]:
     """Select ``[lambda, theta, miu]`` by MINIMIZING the rolling out-of-sample
     RMSE for ``var_of_interest`` at horizon ``h_eval`` (analogue of
-    ``MBFVAR.update_hyperparameters_mango_rmse``)."""
+    ``MBFVAR.update_hyperparameters_mango_rmse``).
+
+    The objective scores the Bayesian predictive-mean forecast -- ``bvarFcst``
+    averaged over ``n_obj_draws`` posterior draws of beta -- to match how the
+    recursive forecasts are aggregated. Set ``n_obj_draws <= 1`` to fall back to
+    the deterministic posterior-mode point forecast."""
     from mango import Tuner, scheduler
 
     prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
@@ -797,7 +839,9 @@ def update_hyperparameters_mango_rmse(
     ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
     if param_space is None:
         param_space = make_param_space(ctx_ref)
-    calc_rmse = _rmse_objective(origins, var_indices, H, h_eval, ctx_ref)
+    calc_rmse = _rmse_objective(
+        origins, var_indices, H, h_eval, ctx_ref, n_obj_draws=n_obj_draws, seed_base=0
+    )
 
     parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
     conf = dict(num_iteration=n_iter, initial_random=init_points)
@@ -820,12 +864,17 @@ def update_hyperparameters_mango_rmse_random(
     n_eval: int = 1,
     min_t: int | None = None,
     random_seed: int | None = None,
+    n_obj_draws: int = 200,
     hyperpriors: int = GLP_HYPERPRIORS,
     **prior_kwargs: Any,
 ) -> dict[str, float]:
     """Like :func:`update_hyperparameters_mango_rmse` but the ``n_eval`` origins
     are drawn at random from the valid pool (analogue of
-    ``MBFVAR.update_hyperparameters_mango_rmse_random``)."""
+    ``MBFVAR.update_hyperparameters_mango_rmse_random``).
+
+    As in the rolling variant, the objective scores the predictive-mean forecast
+    over ``n_obj_draws`` posterior draws of beta (``n_obj_draws <= 1`` restores
+    the deterministic posterior-mode forecast)."""
     from mango import Tuner, scheduler
 
     prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
@@ -837,7 +886,10 @@ def update_hyperparameters_mango_rmse_random(
     ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
     if param_space is None:
         param_space = make_param_space(ctx_ref)
-    calc_rmse = _rmse_objective(origins, var_indices, H, h_eval, ctx_ref)
+    calc_rmse = _rmse_objective(
+        origins, var_indices, H, h_eval, ctx_ref,
+        n_obj_draws=n_obj_draws, seed_base=int(random_seed) if random_seed is not None else 0,
+    )
 
     parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
     conf = dict(num_iteration=n_iter, initial_random=init_points)

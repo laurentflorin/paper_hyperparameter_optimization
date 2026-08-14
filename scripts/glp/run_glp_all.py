@@ -162,6 +162,15 @@ def build_parser() -> argparse.ArgumentParser:
         default=3,
         help="Number of rolling/random evaluation origins used inside the RMSE objectives.",
     )
+    parser.add_argument(
+        "--optimization-n-obj-draws",
+        type=int,
+        default=200,
+        help=(
+            "Posterior beta draws averaged into the predictive-mean RMSE objective "
+            "(<=1 uses the deterministic posterior-mode point forecast)."
+        ),
+    )
     parser.add_argument("--optimization-min-t", type=int, default=None)
     parser.add_argument("--optimization-random-seed", type=int, default=None)
     parser.add_argument(
@@ -199,6 +208,7 @@ def common_run_kwargs(args: argparse.Namespace) -> dict[str, object]:
         "n_iter": args.optimization_iterations,
         "optimization_njobs": args.optimization_njobs,
         "n_eval": args.optimization_n_eval,
+        "n_obj_draws": args.optimization_n_obj_draws,
         "min_t": args.optimization_min_t,
         "random_seed": args.optimization_random_seed,
         "variables": parse_csv_list(args.variables, []),
