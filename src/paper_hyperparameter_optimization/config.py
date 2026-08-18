@@ -53,6 +53,7 @@ VALID_SELECTION_SCHEDULES = ("first_origin", "per_origin")
 # A recorded master seed makes serial and origin-parallel runs repeatable. The
 # workflow derives independent child streams for folds, Mango candidates,
 # objective simulations, and final forecasts from this value.
+DEFAULT_RANDOM_SEED = 20150101
 
 PAPER_NSIM = 20_000
 PAPER_NBURN_PERC = 0.5

@@ -288,7 +288,12 @@ def make_data_in(quarterly: pd.DataFrame, monthly: pd.DataFrame):
 FAIR_OPTIMIZATION_VARIABLES = [spec.paper_code for spec in QUARTERLY_SERIES]
 DEFAULT_MDD_OPTIMIZATION_VARIABLES = FAIR_OPTIMIZATION_VARIABLES.copy()
 RMSE_REQUIRED_OPTIMIZATION_VARIABLES = FAIR_OPTIMIZATION_VARIABLES.copy()
+# The complete quarterly model block that the audited MBFVAR revision requires to
+# construct a dimensionally valid mixed-frequency state forecast. A reduced block
+# cannot be forecast safely, so this set is always used to build the forecast state.
+RMSE_REQUIRED_FORECAST_VARIABLES = FAIR_OPTIMIZATION_VARIABLES.copy()
 OPTIMIZED_STRATEGIES = {"mango_mdd", "mango_rmse", "mango_rmse_random"}
+RMSE_STRATEGIES = {"mango_rmse", "mango_rmse_random"}
 
 
 def default_optimization_variables(strategy: str) -> list[str]:
@@ -297,26 +302,110 @@ def default_optimization_variables(strategy: str) -> list[str]:
     return []
 
 
-def resolve_optimization_variables(strategy: str, optimization_variables: list[str] | None) -> list[str]:
+def _dedupe_preserving_order(variables: list[str]) -> list[str]:
     resolved: list[str] = []
-    for variable in optimization_variables or default_optimization_variables(strategy):
+    for variable in variables:
         if variable not in resolved:
             resolved.append(variable)
+    return resolved
+
+
+def resolve_forecast_objective_variables(
+    strategy: str,
+    *,
+    optimization_variables: list[str] | None = None,
+    forecast_variables: list[str] | None = None,
+    objective_variables: list[str] | None = None,
+) -> tuple[list[str], list[str]]:
+    """Resolve the forecast-state block and the objective (loss) subset.
+
+    Two distinct concepts are returned:
+
+    * ``forecast_variables`` -- the complete set required to construct a
+      dimensionally valid mixed-frequency state forecast. For the RMSE objective
+      the audited MBFVAR revision cannot forecast a reduced block, so this is
+      always the full quarterly block ``GDP,INVFIX,GOV``.
+    * ``objective_variables`` -- the subset whose forecast errors enter the
+      optimization objective. It may contain only ``GDP`` or any valid subset of
+      ``forecast_variables``.
+
+    Backward compatibility: the legacy single ``optimization_variables`` argument
+    maps to the objective subset while the forecast block is expanded to the full
+    quarterly block when dimensionally required. Passing ``optimization_variables``
+    together with either explicit argument is rejected.
+    """
+    legacy_supplied = bool(optimization_variables)
+    explicit_supplied = forecast_variables is not None or objective_variables is not None
+    if legacy_supplied and explicit_supplied:
+        raise ValueError(
+            "Pass either the legacy optimization_variables argument or the explicit "
+            "forecast_variables/objective_variables pair, not both."
+        )
 
     valid_quarterly = set(FAIR_OPTIMIZATION_VARIABLES)
+
+    if strategy not in OPTIMIZED_STRATEGIES:
+        # Non-optimized strategies (e.g. "paper") do not tune on a variable set.
+        resolved = _dedupe_preserving_order(optimization_variables or objective_variables or [])
+        return resolved, resolved
+
+    if strategy in RMSE_STRATEGIES:
+        # Forecast state must span the full quarterly block.
+        if forecast_variables is not None:
+            resolved_forecast = _dedupe_preserving_order(forecast_variables)
+            if set(resolved_forecast) != valid_quarterly:
+                required = ",".join(RMSE_REQUIRED_FORECAST_VARIABLES)
+                raise ValueError(
+                    "The repository RMSE objective requires the full quarterly forecast "
+                    f"block {required} because the audited MBFVAR revision cannot forecast "
+                    "a reduced block safely."
+                )
+            resolved_forecast = RMSE_REQUIRED_FORECAST_VARIABLES.copy()
+        else:
+            resolved_forecast = RMSE_REQUIRED_FORECAST_VARIABLES.copy()
+
+        # Objective subset defaults to the legacy argument, else the full block.
+        if objective_variables is not None:
+            resolved_objective = _dedupe_preserving_order(objective_variables)
+        elif legacy_supplied:
+            resolved_objective = _dedupe_preserving_order(optimization_variables)
+        else:
+            resolved_objective = resolved_forecast.copy()
+
+        if not resolved_objective:
+            raise ValueError("At least one objective variable is required.")
+        non_subset = [v for v in resolved_objective if v not in set(resolved_forecast)]
+        if non_subset:
+            raise ValueError(
+                "objective_variables must be a subset of the forecast block "
+                f"{resolved_forecast}; invalid entries: {non_subset}."
+            )
+        return resolved_forecast, resolved_objective
+
+    # Marginal-data-density strategy: var_of_interest reduces the fitted system,
+    # so the forecast block and objective subset coincide.
+    resolved = _dedupe_preserving_order(
+        forecast_variables
+        if forecast_variables is not None
+        else objective_variables
+        if objective_variables is not None
+        else optimization_variables
+        or default_optimization_variables(strategy)
+    )
     invalid = [variable for variable in resolved if variable not in valid_quarterly]
     if invalid:
         raise ValueError(f"Optimization variables must belong to the quarterly block: {invalid}.")
+    if not resolved:
+        raise ValueError("At least one objective variable is required.")
+    return resolved, resolved
 
-    if strategy in {"mango_rmse", "mango_rmse_random"}:
-        if set(resolved) != valid_quarterly:
-            required = ",".join(FAIR_OPTIMIZATION_VARIABLES)
-            raise ValueError(
-                "The repository RMSE objective requires the full quarterly model block "
-                f"{required} because the audited MBFVAR revision cannot forecast a reduced block safely."
-            )
-        return FAIR_OPTIMIZATION_VARIABLES.copy()
-    return resolved
+
+def resolve_optimization_variables(strategy: str, optimization_variables: list[str] | None) -> list[str]:
+    """Backward-compatible helper returning the objective (loss) variable subset."""
+    _, objective = resolve_forecast_objective_variables(
+        strategy, optimization_variables=optimization_variables
+    )
+    return objective
 
 
 def validate_selection_schedule(selection_schedule: str) -> str:
@@ -369,9 +458,9 @@ def hyperparameter_record(
         "group": origin_group(pd.Timestamp(origin_date)),
         "strategy": strategy,
     }
-    if hyperparameters:
     if information_set:
         base.update(information_set)
+    if hyperparameters:
         values = hyperparameters[0]
         base.update(
             {
@@ -423,7 +512,8 @@ def build_rmse_validation_folds(
     horizon_quarters: int,
     h_eval: int | None,
     n_eval: int,
-    variables: list[str],
+    forecast_variables: list[str],
+    objective_variables: list[str],
     nlags: list[int],
     selection: str,
     min_train_quarters: int | None,
@@ -442,17 +532,40 @@ def build_rmse_validation_folds(
     if selection not in {"rolling", "random"}:
         raise ValueError(f"Unknown validation-origin selection: {selection}.")
 
+    non_subset = [v for v in objective_variables if v not in set(forecast_variables)]
+    if non_subset:
+        raise ValueError(
+            "objective_variables must be a subset of forecast_variables; "
+            f"invalid entries: {non_subset}."
+        )
+
     frequencies = list(data_in.frequencies)
     if frequencies != ["Q", "M"] or int(data_in.freq_ratio_list[-1]) != 3:
         raise NotImplementedError("The repository RMSE objective currently supports Q/M models only.")
 
     quarterly = data_in.input_data_Q.copy()
     monthly = list(data_in.input_data)[-1].copy()
-    missing_variables = [variable for variable in variables if variable not in quarterly]
+    missing_variables = [
+        variable
+        for variable in forecast_variables
+        if variable not in quarterly
+    ]
     if missing_variables:
-        raise ValueError(f"Objective variables are missing from the quarterly data: {missing_variables}.")
+        raise ValueError(
+            f"Forecast variables are missing from the quarterly data: {missing_variables}."
+        )
+    missing_objective = [
+        variable for variable in objective_variables if variable not in quarterly
+    ]
+    if missing_objective:
+        raise ValueError(
+            f"Objective variables are missing from the quarterly data: {missing_objective}."
+        )
 
-    derived_minimum = derive_minimum_training_quarters(nlags, len(variables))
+    # The fitted mixed-frequency system spans the full forecast block, so the
+    # minimum training length is derived from that dimension rather than the
+    # (possibly smaller) objective subset.
+    derived_minimum = derive_minimum_training_quarters(nlags, len(forecast_variables))
     if min_train_quarters is None:
         effective_minimum = derived_minimum
     else:
@@ -468,10 +581,12 @@ def build_rmse_validation_folds(
     for cut in range(effective_minimum, maximum_cut + 1):
         train_quarterly = quarterly.iloc[:cut].copy()
         holdout = quarterly.iloc[cut : cut + horizon_quarters].copy()
-        if len(holdout) != horizon_quarters or holdout[variables].isna().any().any():
+        # Only the objective subset must be observed in the holdout, since the
+        # forecast block is predicted rather than read from the holdout.
+        if len(holdout) != horizon_quarters or holdout[objective_variables].isna().any().any():
             continue
         invalid_growth = False
-        for variable in variables:
+        for variable in objective_variables:
             if SERIES_BY_CODE[variable].evaluation_transform == "growth":
                 values = pd.concat(
                     [train_quarterly[variable].iloc[-1:], holdout[variable]]
@@ -551,7 +666,8 @@ def _rmse_candidate_score(
     *,
     model_class,
     folds: list[dict[str, Any]],
-    variables: list[str],
+    forecast_variables: list[str],
+    objective_variables: list[str],
     horizon_quarters: int,
     h_eval: int | None,
     nsim: int,
@@ -562,7 +678,9 @@ def _rmse_candidate_score(
     objective_seed: int | None,
 ) -> float:
     hyperparameters = _candidate_hyperparameters(params)
-    errors_by_variable: dict[str, list[float]] = {variable: [] for variable in variables}
+    errors_by_variable: dict[str, list[float]] = {
+        variable: [] for variable in objective_variables
+    }
     evaluated_horizons = (
         [h_eval] if h_eval is not None else list(range(1, horizon_quarters + 1))
     )
@@ -572,10 +690,12 @@ def _rmse_candidate_score(
         fold_model = model_class(nsim, nburn_perc, nlags, thining)
         seed = stable_child_seed(objective_seed, "rmse_fold", fold_index)
         with deterministic_rng_context(seed):
+            # The forecast state is always built from the full forecast block so a
+            # reduced objective subset never collapses the mixed-frequency system.
             fold_model.fit(
                 fold_data,
                 hyp=hyperparameters,
-                var_of_interest=variables,
+                var_of_interest=forecast_variables,
                 temp_agg=temp_agg,
                 check_explosive=False,
             )
@@ -597,7 +717,8 @@ def _rmse_candidate_score(
                 raise ValueError(
                     f"Validation forecast is missing target {target} at horizon {horizon}."
                 )
-            for variable in variables:
+            # Only the objective subset contributes to the loss.
+            for variable in objective_variables:
                 prediction = float(predicted_metrics.at[target, variable])
                 actual = float(actual_metrics.at[target, variable])
                 if not np.isfinite(prediction) or not np.isfinite(actual):
@@ -657,14 +778,18 @@ def _run_local_mango_optimizer(
 ) -> list[list[float]]:
     from mango import Tuner
 
-    variables = args["optimization_variables"]
+    # objective_variables drive the loss; forecast_variables build the state.
+    objective_variables = args.get("objective_variables") or args["optimization_variables"]
+    forecast_variables = args.get("forecast_variables") or objective_variables
+    variables = objective_variables
     diagnostics: dict[str, Any] = {
         "objective": (
             "equal_variable_weight_rmse_of_evaluation_metric"
             if strategy in {"mango_rmse", "mango_rmse_random"}
             else "negative_mean_log_marginal_data_density"
         ),
-        "objective_variables": variables,
+        "forecast_variables": forecast_variables,
+        "objective_variables": objective_variables,
         "variable_weights": {variable: 1.0 / len(variables) for variable in variables},
         "valid_evaluations": 0,
         "penalized_evaluations": 0,
@@ -683,7 +808,8 @@ def _run_local_mango_optimizer(
             horizon_quarters=args["optimization_horizon_quarters"],
             h_eval=args["optimization_eval_horizon_quarters"],
             n_eval=args["optimization_n_eval"],
-            variables=variables,
+            forecast_variables=forecast_variables,
+            objective_variables=objective_variables,
             nlags=args["nlags"],
             selection="random" if strategy == "mango_rmse_random" else "rolling",
             min_train_quarters=args["optimization_min_t"],
@@ -703,7 +829,8 @@ def _run_local_mango_optimizer(
                     params,
                     model_class=model.__class__,
                     folds=folds,
-                    variables=variables,
+                    forecast_variables=forecast_variables,
+                    objective_variables=objective_variables,
                     horizon_quarters=args["optimization_horizon_quarters"],
                     h_eval=args["optimization_eval_horizon_quarters"],
                     nsim=args["optimization_nsim"],
@@ -998,12 +1125,21 @@ def run_recursive_experiment(
     optimization_min_t: int | None = None,
     optimization_random_seed: int | None = None,
     optimization_variables: list[str] | None = None,
+    forecast_variables: list[str] | None = None,
+    objective_variables: list[str] | None = None,
     temp_agg: str = PAPER_TEMPORAL_AGGREGATION,
     n_workers: int | None = None,
 ) -> Path:
     output_dir = resolve_project_path(output_dir)
     panel_path = resolve_project_path(panel_path)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    resolved_forecast_variables, resolved_objective_variables = resolve_forecast_objective_variables(
+        strategy,
+        optimization_variables=optimization_variables,
+        forecast_variables=forecast_variables,
+        objective_variables=objective_variables,
+    )
 
     available_origins = forecast_origin_dates()
     resolved_start = start if start is not None else available_origins[0]
@@ -1032,7 +1168,9 @@ def run_recursive_experiment(
         "optimization_n_eval": optimization_n_eval,
         "optimization_min_t": optimization_min_t,
         "optimization_random_seed": optimization_random_seed,
-        "optimization_variables": resolve_optimization_variables(strategy, optimization_variables),
+        "optimization_variables": resolved_objective_variables,
+        "forecast_variables": resolved_forecast_variables,
+        "objective_variables": resolved_objective_variables,
         "temp_agg": temp_agg,
     }
 
@@ -1109,7 +1247,9 @@ def run_recursive_experiment(
         "optimization_n_eval": optimization_n_eval,
         "optimization_min_t": optimization_min_t,
         "optimization_random_seed": optimization_random_seed,
-        "optimization_variables": resolve_optimization_variables(strategy, optimization_variables),
+        "optimization_variables": resolved_objective_variables,
+        "forecast_variables": resolved_forecast_variables,
+        "objective_variables": resolved_objective_variables,
         "hyperparameters_selected_once": optimize_once_per_experiment(strategy),
         "hyperparameter_selection_origin": (origins[0].strftime("%Y-%m-%d") if has_origins and optimize_once_per_experiment(strategy) else None),
         "temp_agg": temp_agg,
@@ -1157,9 +1297,28 @@ def build_optimizer_parser(description: str) -> argparse.ArgumentParser:
         type=str,
         default=None,
         help=(
-            "Comma-separated variables passed to the MBFVAR hyperparameter objective. "
-            "Mango MDD defaults to GDP. Mango RMSE variants default to the full quarterly block GDP,INVFIX,GOV "
-            "and reject smaller subsets because the upstream MBFVAR forecast code fails on them."
+            "Legacy comma-separated objective subset for the MBFVAR hyperparameter objective. "
+            "Mango MDD defaults to GDP. For Mango RMSE variants this maps to the objective "
+            "(loss) subset while the forecast state always uses the full quarterly block "
+            "GDP,INVFIX,GOV. Mutually exclusive with --forecast-variables/--objective-variables."
+        ),
+    )
+    parser.add_argument(
+        "--forecast-variables",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated block used to build the mixed-frequency forecast state. "
+            "For Mango RMSE variants this must be the full quarterly block GDP,INVFIX,GOV."
+        ),
+    )
+    parser.add_argument(
+        "--objective-variables",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated subset of the forecast block whose forecast errors enter the "
+            "optimization objective. May be a single target such as GDP."
         ),
     )
     return parser
@@ -1198,6 +1357,8 @@ def run_from_namespace(strategy: str, namespace: argparse.Namespace) -> Path:
                 "optimization_min_t": getattr(namespace, "optimization_min_t", None),
                 "optimization_random_seed": getattr(namespace, "optimization_random_seed", None),
                 "optimization_variables": parse_csv_list(namespace.optimization_variables, []),
+                "forecast_variables": parse_csv_list(getattr(namespace, "forecast_variables", None), []) or None,
+                "objective_variables": parse_csv_list(getattr(namespace, "objective_variables", None), []) or None,
             }
         )
     return run_recursive_experiment(**kwargs)

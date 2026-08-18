@@ -36,13 +36,15 @@ def test_mango_rmse_defaults_to_full_quarterly_block():
     assert resolve_optimization_variables("mango_rmse", []) == RMSE_REQUIRED_OPTIMIZATION_VARIABLES
 
 
-def test_mango_rmse_rejects_quarterly_subset():
-    try:
-        resolve_optimization_variables("mango_rmse", ["GDP"])
-    except ValueError as exc:
-        assert "full quarterly variable block" in str(exc)
-    else:  # pragma: no cover
-        raise AssertionError("Expected RMSE optimizer variable validation to fail for GDP-only input.")
+def test_mango_rmse_legacy_subset_maps_to_objective_only():
+    # The legacy single argument now maps to the objective (loss) subset while the
+    # forecast state still spans the full quarterly block.
+    forecast_variables, objective_variables = forecasting.resolve_forecast_objective_variables(
+        "mango_rmse", optimization_variables=["GDP"]
+    )
+    assert forecast_variables == RMSE_REQUIRED_OPTIMIZATION_VARIABLES
+    assert objective_variables == ["GDP"]
+    assert resolve_optimization_variables("mango_rmse", ["GDP"]) == ["GDP"]
 
 
 def _run_recursive_experiment_with_stubbed_optimizer(monkeypatch, tmp_path: Path, strategy: str, optimization_variables: list[str]):
