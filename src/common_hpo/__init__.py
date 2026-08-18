@@ -6,6 +6,7 @@ shared by all targets assigned to that cell.
 """
 
 from .selection_scope import SelectionPlan, TargetCell, TargetKey, build_selection_plan
+from .schedules import ScheduleError, SelectionEvent, SelectionSchedule
 from .losses import (
     BenchmarkForecaster,
     CellDiagnostic,
@@ -40,6 +41,9 @@ __all__ = [
     "TargetCell",
     "SelectionPlan",
     "build_selection_plan",
+    "ScheduleError",
+    "SelectionEvent",
+    "SelectionSchedule",
     "BenchmarkForecaster",
     "CellDiagnostic",
     "DuplicateErrorRecord",
