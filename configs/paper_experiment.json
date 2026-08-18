@@ -1,0 +1,228 @@
+{
+  "$schema": "./paper_experiment.schema.json",
+
+  "study": {
+    "name": "paper_experiment",
+    "version": "1",
+    "description": "Scope-study comparison of native vs. forecast-loss hyperparameter selection in Bayesian VARs",
+    "output_root": "${OUTPUT_ROOT:-outputs/scope_study}",
+    "log_dir": "${LOG_DIR:-outputs/scope_study/logs}",
+    "seed_base": 20150101
+  },
+
+  "families": [
+    {
+      "family": "glp",
+      "enabled": true,
+      "runner": "scripts/glp/run_glp_scope_grid.py",
+      "panel_path": "${GLP_PANEL:-data/processed/glp_realtime_panel.csv.gz}",
+      "scope_dir_pattern": "scope-{scope_hyphen}",
+      "requires": ["covbayesvar"],
+      "sizes": ["small", "medium"],
+      "scopes": ["pooled", "horizon", "variable", "variable_horizon"],
+      "target_variables": null,
+      "target_horizons": [1, 2, 4, 8],
+      "outer_origins": {
+        "start": "2000-03-31",
+        "end": "2019-12-31"
+      },
+      "execution": {
+        "execution_mode": "parallel",
+        "worker_count": "${GLP_WORKERS:-2}"
+      },
+      "variants": [
+        {
+          "name": "forecast_loss_reduced",
+          "label": "Forecast-loss, psi fixed (primary)",
+          "enabled": true,
+          "optimize_psi": false,
+          "fixed_psi_source": "context_ss",
+          "loss_metric": "rmse",
+          "loss_scaling": "none",
+          "benchmark": "no_change",
+          "inner_validation": {
+            "window": "expanding",
+            "n_origins": 20,
+            "stride": 2,
+            "origin_selection": "most_recent"
+          },
+          "selection_schedule": "once",
+          "optimizer_budget": {
+            "init_points": 24,
+            "iterations": 72,
+            "posterior_draws": 25,
+            "optimizer_seed": "${SEED_BASE:-20150101}"
+          }
+        },
+        {
+          "name": "forecast_loss_full_psi",
+          "label": "Forecast-loss, psi optimized (robustness)",
+          "enabled": true,
+          "optimize_psi": true,
+          "fixed_psi_source": null,
+          "loss_metric": "rmse",
+          "loss_scaling": "none",
+          "benchmark": "no_change",
+          "inner_validation": {
+            "window": "expanding",
+            "n_origins": 20,
+            "stride": 2,
+            "origin_selection": "most_recent"
+          },
+          "selection_schedule": "once",
+          "optimizer_budget": {
+            "init_points": 24,
+            "iterations": 72,
+            "posterior_draws": 25,
+            "optimizer_seed": "${SEED_BASE:-20150101}"
+          }
+        },
+        {
+          "name": "forecast_loss_reduced_every4",
+          "label": "Forecast-loss, psi fixed, re-select every 4 origins",
+          "enabled": false,
+          "optimize_psi": false,
+          "fixed_psi_source": "context_ss",
+          "loss_metric": "rmse",
+          "loss_scaling": "none",
+          "benchmark": "no_change",
+          "inner_validation": {
+            "window": "expanding",
+            "n_origins": 20,
+            "stride": 2,
+            "origin_selection": "most_recent"
+          },
+          "selection_schedule": "4",
+          "optimizer_budget": {
+            "init_points": 24,
+            "iterations": 72,
+            "posterior_draws": 25,
+            "optimizer_seed": "${SEED_BASE:-20150101}"
+          }
+        }
+      ]
+    },
+    {
+      "family": "mfvar",
+      "enabled": true,
+      "runner": "scripts/mfvar/run_mfvar_scope_grid.py",
+      "panel_path": "${MFVAR_PANEL:-data/processed/realtime_panel.csv.gz}",
+      "scope_dir_pattern": "scope_{scope}",
+      "requires": ["MBFVAR"],
+      "sizes": [null],
+      "scopes": ["pooled", "horizon", "variable", "variable_horizon"],
+      "forecast_variables": ["GDP", "INVFIX", "GOV", "UNR", "HRS", "CPI", "IP", "PCE", "FF", "TB", "SP500"],
+      "target_variables": ["GDP", "INVFIX", "GOV", "UNR", "HRS", "CPI", "IP", "PCE", "FF", "TB", "SP500"],
+      "target_horizons": [1, 2, 4, 8],
+      "outer_origins": {
+        "n_origins": null,
+        "start": null,
+        "end": null
+      },
+      "execution": {
+        "worker_count": 1
+      },
+      "variants": [
+        {
+          "name": "forecast_loss",
+          "label": "Forecast-loss selection",
+          "enabled": true,
+          "loss_metric": "rmse",
+          "loss_scaling": "none",
+          "inner_validation": {
+            "window": "expanding",
+            "n_origins": 20,
+            "stride": 2,
+            "origin_selection": "most_recent"
+          },
+          "selection_schedule": "once",
+          "optimizer_budget": {
+            "optimization_horizon_quarters": "1,4",
+            "optimization_eval_horizon_quarters": "1,4",
+            "optimization_n_eval": 20
+          },
+          "base_seed": "${SEED_BASE:-20150101}"
+        }
+      ]
+    },
+    {
+      "family": "ridge",
+      "enabled": true,
+      "runner": "scripts/regularized_var/run_ridge_scope_grid.py",
+      "panel_path": "${RIDGE_PANEL:-data/processed/realtime_panel.csv.gz}",
+      "scope_dir_pattern": "scope_{scope}",
+      "requires": [],
+      "sizes": [null],
+      "forecast_methods": ["iterated", "direct"],
+      "scopes": ["pooled", "horizon", "variable", "variable_horizon"],
+      "target_variables": ["GDP", "INVFIX", "GOV", "UNR", "HRS", "CPI", "IP", "PCE", "FF", "TB", "SP500"],
+      "target_horizons": [1, 2, 4, 8],
+      "outer_origins": {
+        "n_origins": 80,
+        "stride": 1,
+        "origin_selection": "recent"
+      },
+      "execution": {
+        "n_workers": "${RIDGE_WORKERS:-1}"
+      },
+      "variants": [
+        {
+          "name": "forecast_loss",
+          "label": "Forecast-loss, grid search",
+          "enabled": true,
+          "preprocessing": "none",
+          "grid": {
+            "lambdas": [0.0001, 0.001, 0.01, 0.1, 0.5, 1.0, 5.0],
+            "lag_orders": [1, 2, 3, 4, 5],
+            "alphas": [0.0],
+            "kappas": [1.0]
+          },
+          "loss_metric": "rmse",
+          "loss_scaling": "target_std",
+          "inner_validation": {
+            "window": "expanding",
+            "n_origins": 20,
+            "stride": 1,
+            "origin_selection": "recent"
+          },
+          "selection_schedule": "once",
+          "benchmarks": ["no_change", "var_aic", "ar_univariate"],
+          "base_seed": "${SEED_BASE:-20150101}"
+        },
+        {
+          "name": "forecast_loss_every4",
+          "label": "Forecast-loss, re-select every 4 origins",
+          "enabled": false,
+          "preprocessing": "none",
+          "grid": {
+            "lambdas": [0.0001, 0.001, 0.01, 0.1, 0.5, 1.0, 5.0],
+            "lag_orders": [1, 2, 3, 4, 5],
+            "alphas": [0.0],
+            "kappas": [1.0]
+          },
+          "loss_metric": "rmse",
+          "loss_scaling": "target_std",
+          "inner_validation": {
+            "window": "expanding",
+            "n_origins": 20,
+            "stride": 1,
+            "origin_selection": "recent"
+          },
+          "selection_schedule": "4",
+          "benchmarks": ["no_change", "var_aic"],
+          "base_seed": "${SEED_BASE:-20150101}"
+        }
+      ]
+    }
+  ],
+
+  "seeds": [20150101],
+
+  "parallelism": {
+    "max_concurrent_jobs": "${MAX_JOBS:-1}",
+    "max_nested_workers": "${MAX_NESTED:-1}"
+  },
+
+  "min_train_length": 30,
+  "outer_min_train_length": 30
+}

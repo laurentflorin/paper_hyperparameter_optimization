@@ -1,0 +1,181 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ScopeStudyExperiment",
+  "description": "Declarative configuration for a scope-study hyperparameter-selection experiment.",
+  "type": "object",
+  "required": ["study", "families", "seeds", "parallelism"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "study": {
+      "type": "object",
+      "required": ["name", "version", "output_root", "seed_base"],
+      "additionalProperties": false,
+      "properties": {
+        "name":        { "type": "string", "minLength": 1 },
+        "version":     { "type": "string" },
+        "description": { "type": "string" },
+        "output_root": { "type": "string", "description": "May contain ${VAR:-default} placeholders." },
+        "log_dir":     { "type": "string" },
+        "seed_base":   { "type": "integer" }
+      }
+    },
+    "families": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/family" }
+    },
+    "seeds":  { "type": "array", "items": { "type": "integer" }, "minItems": 1 },
+    "parallelism": {
+      "type": "object",
+      "required": ["max_concurrent_jobs", "max_nested_workers"],
+      "properties": {
+        "max_concurrent_jobs":  { "type": ["integer", "string"], "description": "May be ${VAR:-N}." },
+        "max_nested_workers":   { "type": ["integer", "string"] }
+      }
+    },
+    "min_train_length":       { "type": "integer", "minimum": 1 },
+    "outer_min_train_length": { "type": "integer", "minimum": 1 }
+  },
+  "definitions": {
+    "env_int_or_string": { "type": ["integer", "string"] },
+    "nullable_string":   { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+    "string_array":      { "type": "array", "items": { "type": "string" } },
+    "int_array":         { "type": "array", "items": { "type": "integer" } },
+
+    "inner_validation": {
+      "type": "object",
+      "required": ["window", "n_origins"],
+      "properties": {
+        "window":           { "type": "string", "enum": ["expanding", "rolling"] },
+        "n_origins":        { "type": "integer", "minimum": 1 },
+        "stride":           { "type": "integer", "minimum": 1 },
+        "origin_selection": { "type": "string", "enum": ["most_recent", "recent", "evenly_spaced", "random"] },
+        "random_seed":      { "type": ["integer", "null"] },
+        "rolling_window_length": { "type": ["integer", "null"] }
+      }
+    },
+
+    "glp_optimizer_budget": {
+      "type": "object",
+      "required": ["init_points", "iterations", "posterior_draws"],
+      "properties": {
+        "init_points":     { "type": "integer", "minimum": 1 },
+        "iterations":      { "type": "integer", "minimum": 1 },
+        "posterior_draws": { "type": "integer", "minimum": 1 },
+        "optimizer_seed":  { "type": ["integer", "string"] }
+      }
+    },
+
+    "mfvar_optimizer_budget": {
+      "type": "object",
+      "properties": {
+        "optimization_horizon_quarters":      { "type": "string" },
+        "optimization_eval_horizon_quarters": { "type": "string" },
+        "optimization_n_eval":                { "type": "integer", "minimum": 1 }
+      }
+    },
+
+    "ridge_grid": {
+      "type": "object",
+      "required": ["lambdas", "lag_orders"],
+      "properties": {
+        "lambdas":    { "type": "array", "items": { "type": "number" }, "minItems": 1 },
+        "lag_orders": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "minItems": 1 },
+        "alphas":     { "type": "array", "items": { "type": "number" } },
+        "kappas":     { "type": "array", "items": { "type": "number" } }
+      }
+    },
+
+    "glp_variant": {
+      "type": "object",
+      "required": ["name", "optimize_psi", "loss_metric", "inner_validation", "selection_schedule", "optimizer_budget"],
+      "properties": {
+        "name":              { "type": "string" },
+        "label":             { "type": "string" },
+        "enabled":           { "type": "boolean" },
+        "optimize_psi":      { "type": "boolean" },
+        "fixed_psi_source":  { "type": ["string", "null"] },
+        "loss_metric":       { "type": "string", "enum": ["rmse", "mse", "mae"] },
+        "loss_scaling":      { "type": "string", "enum": ["none", "benchmark_rmse"] },
+        "benchmark":         { "type": ["string", "null"] },
+        "inner_validation":  { "$ref": "#/definitions/inner_validation" },
+        "selection_schedule": { "type": "string" },
+        "optimizer_budget":  { "$ref": "#/definitions/glp_optimizer_budget" }
+      }
+    },
+
+    "mfvar_variant": {
+      "type": "object",
+      "required": ["name", "loss_metric", "inner_validation", "selection_schedule"],
+      "properties": {
+        "name":               { "type": "string" },
+        "label":              { "type": "string" },
+        "enabled":            { "type": "boolean" },
+        "loss_metric":        { "type": "string", "enum": ["rmse", "mse", "mae"] },
+        "loss_scaling":       { "type": "string", "enum": ["none", "benchmark_rmse"] },
+        "inner_validation":   { "$ref": "#/definitions/inner_validation" },
+        "selection_schedule": { "type": "string" },
+        "optimizer_budget":   { "$ref": "#/definitions/mfvar_optimizer_budget" },
+        "base_seed":          { "type": ["integer", "string"] }
+      }
+    },
+
+    "ridge_variant": {
+      "type": "object",
+      "required": ["name", "grid", "loss_metric", "inner_validation", "selection_schedule"],
+      "properties": {
+        "name":               { "type": "string" },
+        "label":              { "type": "string" },
+        "enabled":            { "type": "boolean" },
+        "preprocessing":      { "type": "string", "enum": ["none", "standardize"] },
+        "grid":               { "$ref": "#/definitions/ridge_grid" },
+        "loss_metric":        { "type": "string", "enum": ["rmse", "mse", "mae"] },
+        "loss_scaling":       { "type": "string", "enum": ["none", "target_std"] },
+        "inner_validation":   { "$ref": "#/definitions/inner_validation" },
+        "selection_schedule": { "type": "string" },
+        "benchmarks":         { "$ref": "#/definitions/string_array" },
+        "base_seed":          { "type": ["integer", "string"] }
+      }
+    },
+
+    "outer_origins_dated": {
+      "type": "object",
+      "properties": {
+        "start": { "type": ["string", "null"] },
+        "end":   { "type": ["string", "null"] }
+      }
+    },
+
+    "outer_origins_counted": {
+      "type": "object",
+      "properties": {
+        "n_origins":       { "type": ["integer", "null"] },
+        "stride":          { "type": ["integer", "null"] },
+        "origin_selection": { "type": ["string", "null"] }
+      }
+    },
+
+    "family": {
+      "type": "object",
+      "required": ["family", "enabled", "runner", "panel_path", "scopes", "target_horizons", "variants"],
+      "properties": {
+        "family":             { "type": "string", "enum": ["glp", "mfvar", "ridge"] },
+        "enabled":            { "type": "boolean" },
+        "runner":             { "type": "string" },
+        "panel_path":         { "type": "string" },
+        "scope_dir_pattern":  { "type": "string" },
+        "requires":           { "$ref": "#/definitions/string_array" },
+        "sizes":              { "type": "array", "items": { "type": ["string", "null"] } },
+        "forecast_methods":   { "$ref": "#/definitions/string_array" },
+        "scopes":             { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "target_variables":   { "oneOf": [{ "$ref": "#/definitions/string_array" }, { "type": "null" }] },
+        "target_horizons":    { "$ref": "#/definitions/int_array" },
+        "forecast_variables": { "$ref": "#/definitions/string_array" },
+        "outer_origins":      { "type": "object" },
+        "execution":          { "type": "object" },
+        "variants":           { "type": "array", "minItems": 1 }
+      }
+    }
+  }
+}
