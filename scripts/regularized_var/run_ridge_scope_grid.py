@@ -176,6 +176,8 @@ def build_study_config(
 
     if args.preprocessing not in ("none", "standardize"):
         raise ScopeGridConfigError("--preprocessing must be 'none' or 'standardize'.")
+    if args.forecast_method not in ("iterated", "direct"):
+        raise ScopeGridConfigError("--forecast-method must be 'iterated' or 'direct'.")
 
     schedule = build_selection_schedule(args.selection_frequency)
     grid_spec = build_grid_spec(args)
@@ -216,6 +218,7 @@ def build_study_config(
         selection_schedule=schedule,
         loss_config=loss_config,
         preprocessing=args.preprocessing,
+        forecast_method=args.forecast_method,
         horizon_row_offset=int(args.horizon_row_offset),
         benchmark_lag_orders=_parse_int_list(args.benchmark_lag_orders, label="benchmark-lag-orders")
         or (1, 2, 4),
@@ -336,6 +339,7 @@ def build_manifest(config: ScopeGridConfig) -> dict[str, Any]:
         "selection_scopes": list(config.selection_scopes),
         "benchmarks": list(config.benchmarks),
         "preprocessing": config.experiment.preprocessing,
+        "forecast_method": config.experiment.forecast_method,
         "grid_spec": config.experiment.grid_spec.to_dict(),
         "grid_size": grid_size(config.experiment.grid_spec),
         "selection_schedule": config.experiment.selection_schedule.to_dict(),
@@ -365,6 +369,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--target-horizons", type=str, default="1,2,4,8")
     parser.add_argument("--selection-scopes", type=str, required=True)
     parser.add_argument("--preprocessing", choices=("none", "standardize"), default="standardize")
+    parser.add_argument("--forecast-method", choices=("iterated", "direct"), default="iterated")
     parser.add_argument("--horizon-row-offset", type=int, default=1)
     # grid
     parser.add_argument("--grid-lambdas", type=str, default=None)

@@ -50,6 +50,7 @@ from common_hpo import (
 )
 
 from .data import PanelData, Standardizer
+from .direct import direct_forecast, fit_direct_ridge_var
 from .estimators import fit_ridge_var
 from .forecasting import iterated_forecast
 from .tuning import (
@@ -93,6 +94,7 @@ FORECAST_PANEL_COLUMNS = (
     "target_quarter",
     "horizon_quarters",
     "variable",
+    "forecast_method",
     "actual_level",
     "actual_metric",
     "mean_level",
@@ -126,6 +128,7 @@ class RidgeExperimentConfig:
     selection_schedule: SelectionSchedule
     loss_config: LossConfig
     preprocessing: str = "standardize"
+    forecast_method: str = "iterated"
     horizon_row_offset: int = 1
     tie_tolerance: float = DEFAULT_TIE_TOLERANCE
     benchmark_lag_orders: tuple[int, ...] = (1, 2, 4)
@@ -134,6 +137,8 @@ class RidgeExperimentConfig:
     def __post_init__(self) -> None:
         if self.preprocessing not in ("none", "standardize"):
             raise ValueError("preprocessing must be 'none' or 'standardize'.")
+        if self.forecast_method not in ("iterated", "direct"):
+            raise ValueError("forecast_method must be 'iterated' or 'direct'.")
         if int(self.horizon_row_offset) < 1:
             raise ValueError("horizon_row_offset must be a positive integer.")
         object.__setattr__(self, "target_variables", tuple(self.target_variables))
@@ -161,6 +166,7 @@ class RidgeExperimentConfig:
             "selection_schedule": self.selection_schedule.to_dict(),
             "loss_config": self.loss_config.to_dict(),
             "preprocessing": self.preprocessing,
+            "forecast_method": self.forecast_method,
             "horizon_row_offset": int(self.horizon_row_offset),
             "tie_tolerance": self.tie_tolerance,
             "benchmark_lag_orders": list(self.benchmark_lag_orders),
@@ -173,6 +179,7 @@ def default_experiment_config(
     target_horizons: Sequence[int],
     *,
     preprocessing: str = "standardize",
+    forecast_method: str = "iterated",
     outer_n_origins: int = 8,
     inner_n_origins: int = 4,
     min_train_length: int = 40,
@@ -208,6 +215,7 @@ def default_experiment_config(
         selection_schedule=selection_schedule or SelectionSchedule.once(),
         loss_config=LossConfig(aggregation=loss_metric, scale=scale),
         preprocessing=preprocessing,
+        forecast_method=forecast_method,
     )
 
 
@@ -279,6 +287,69 @@ def _forecast_ridge(
     return {int(h): fc[int(h) - 1] for h in horizons}
 
 
+def _forecast_direct(
+    block: np.ndarray,
+    *,
+    p: int,
+    lam: float,
+    alpha: float,
+    kappa: float,
+    standardize: bool,
+    horizons: Sequence[int],
+    variable_names: Sequence[str],
+) -> dict[int, np.ndarray] | None:
+    """Fit an independent direct model per horizon and return raw-scale forecasts.
+
+    Each horizon gets its own coefficient system (a structural requirement of
+    direct forecasting) but the caller supplies a single hyperparameter vector.
+    Standardization is fit fold-locally on ``block`` and forecasts are mapped
+    back to the evaluation scale. Returns ``None`` when any requested horizon is
+    infeasible for the block or produces non-finite forecasts.
+    """
+
+    std = Standardizer.fit(block, enabled=standardize)
+    z = std.transform(block)
+    out: dict[int, np.ndarray] = {}
+    for horizon in horizons:
+        h = int(horizon)
+        if block.shape[0] < p + h:
+            return None
+        result = fit_direct_ridge_var(
+            z, p, h, lam=lam, alpha=alpha, kappa=kappa, variable_names=variable_names
+        )
+        fc_z = direct_forecast(result, z[-p:])
+        fc = std.inverse_transform(fc_z)
+        if not np.all(np.isfinite(fc)):
+            return None
+        out[h] = fc
+    return out
+
+
+def _forecast_cell(
+    method: str,
+    block: np.ndarray,
+    *,
+    p: int,
+    lam: float,
+    alpha: float,
+    kappa: float,
+    standardize: bool,
+    horizons: Sequence[int],
+    variable_names: Sequence[str],
+) -> dict[int, np.ndarray] | None:
+    """Dispatch to the iterated or direct forecaster by ``method``."""
+
+    if method == "direct":
+        return _forecast_direct(
+            block, p=p, lam=lam, alpha=alpha, kappa=kappa,
+            standardize=standardize, horizons=horizons, variable_names=variable_names,
+        )
+    return _forecast_ridge(
+        block, p=p, lam=lam, alpha=alpha, kappa=kappa,
+        standardize=standardize, horizons=horizons, variable_names=variable_names,
+    )
+
+
 def _no_change_forecast(
     block: np.ndarray, horizons: Sequence[int]
 ) -> dict[int, np.ndarray]:
@@ -326,12 +397,15 @@ def select_for_cell(
     outer_info_cutoff: int,
     horizon_offsets: Mapping[int, int],
     tie_tolerance: float = DEFAULT_TIE_TOLERANCE,
+    forecast_method: str = "iterated",
 ) -> RidgeSelection:
     """Select the best ridge candidate for one cell by nested validation.
 
     Inner-validation splits are built with an information cutoff at the outer
     origin, so no outer target can leak into selection. Standardization is fit
-    fold-locally inside :func:`_forecast_ridge`.
+    fold-locally inside the forecaster. Selection uses the same forecasting
+    architecture (``forecast_method``) that will generate the outer forecasts,
+    so hyperparameters are chosen for the architecture actually deployed.
     """
 
     splits = build_validation_splits(
@@ -349,7 +423,8 @@ def select_for_cell(
         feasible = True
         for split in splits:
             block = panel.values[split.train_start : split.train_end + 1]
-            forecasts = _forecast_ridge(
+            forecasts = _forecast_cell(
+                forecast_method,
                 block,
                 p=candidate.p,
                 lam=candidate.lam,
@@ -401,6 +476,7 @@ def _forecast_row(
     variable: str,
     forecast: float,
     realization: float,
+    forecast_method: str = "iterated",
 ) -> dict[str, object]:
     return {
         "strategy": strategy,
@@ -409,6 +485,7 @@ def _forecast_row(
         "target_quarter": target_label,
         "horizon_quarters": int(horizon),
         "variable": variable,
+        "forecast_method": forecast_method,
         "actual_level": float("nan"),
         "actual_metric": float(realization),
         "mean_level": float("nan"),
@@ -471,6 +548,7 @@ def run_scope_experiment(
                         outer_info_cutoff=split.origin,
                         horizon_offsets=offsets,
                         tie_tolerance=config.tie_tolerance,
+                        forecast_method=config.forecast_method,
                     )
                 except Exception as exc:  # noqa: BLE001 - record and continue
                     failed.append(
@@ -501,7 +579,8 @@ def run_scope_experiment(
                 continue
             group = cell.group_name or "all"
             candidate = selection.candidate
-            forecasts = _forecast_ridge(
+            forecasts = _forecast_cell(
+                config.forecast_method,
                 block,
                 p=candidate.p,
                 lam=candidate.lam,
@@ -536,6 +615,7 @@ def run_scope_experiment(
                             variable=var,
                             forecast=float(forecasts[int(horizon)][j]),
                             realization=float(panel.values[target_row, j]),
+                            forecast_method=config.forecast_method,
                         )
                     )
 

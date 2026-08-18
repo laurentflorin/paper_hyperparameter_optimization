@@ -26,6 +26,12 @@ from .estimators import (
     fit_ridge_var,
 )
 from .forecasting import iterated_forecast
+from .direct import (
+    DirectRidgeResult,
+    build_direct_design,
+    direct_forecast,
+    fit_direct_ridge_var,
+)
 from .data import PanelData, Standardizer, load_panel_csv
 from .tuning import (
     DEFAULT_TIE_TOLERANCE,
@@ -64,6 +70,11 @@ __all__ = [
     "build_penalty_weights",
     "fit_ridge_var",
     "iterated_forecast",
+    # direct multistep
+    "DirectRidgeResult",
+    "build_direct_design",
+    "fit_direct_ridge_var",
+    "direct_forecast",
     # data
     "PanelData",
     "Standardizer",
