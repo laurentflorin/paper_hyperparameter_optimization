@@ -98,11 +98,38 @@ def resolve_project_path(path: str | Path) -> Path:
 GLP_SAMPLE_START = pd.Timestamp("1959-01-01")
 GLP_SAMPLE_END = pd.Timestamp("2008-12-31")
 
+# A real-time recursive run uses an expanding endpoint, so ``GLP_SAMPLE_END``
+# is the endpoint of the original GLP replication sample only. The starting
+# quarter, by contrast, is fixed within each model definition. The large model
+# cannot start in 1959 because several of its explicitly versioned series are
+# unavailable then; 1973Q1 is the first common quarter in the reviewed panel
+# and is fixed rather than rediscovered at every vintage.
+GLP_MODEL_SAMPLE_START: dict[str, pd.Timestamp] = {
+    "small": GLP_SAMPLE_START,
+    "medium": GLP_SAMPLE_START,
+    "large": pd.Timestamp("1973-01-01"),
+}
+
 # Recursive real-time out-of-sample forecast origins (quarter-end vintage dates).
 # The default window sits inside the span with reliable real-time ALFRED
 # coverage; override with --start/--end on the scripts.
 GLP_FORECAST_START = pd.Timestamp("2000-03-31")
 GLP_FORECAST_END = pd.Timestamp("2019-12-31")
+# Quarterly vintages are expected to contain a complete information set
+# through the preceding quarter. In this convention horizon one is a nowcast
+# of the nominal origin's calendar quarter.
+GLP_EXPECTED_DATA_LAG_QUARTERS = 1
+
+# ``PPIFGS`` (the reviewed PPI definition in the versioned large model) ends in
+# 2015. Keep that scientific definition and explicitly cap its evaluation
+# rather than silently carrying a stale complete-case endpoint into later
+# nominal origins. A future continuing replacement must be introduced as a
+# separately versioned model definition after scientific review.
+GLP_MODEL_FORECAST_END: dict[str, pd.Timestamp] = {
+    "small": GLP_FORECAST_END,
+    "medium": GLP_FORECAST_END,
+    "large": pd.Timestamp("2016-03-31"),
+}
 # Fixed later vintage used to score the recursive forecasts.
 GLP_ACTUAL_VINTAGE = pd.Timestamp("2023-01-01")
 

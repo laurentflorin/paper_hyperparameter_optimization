@@ -33,6 +33,26 @@ STOOQ_SP500_MONTHLY_URL = "https://stooq.com/q/d/l/?s=%5Espx&i=m"
 REQUEST_TIMEOUT_SECONDS = 120
 MAX_REQUEST_ATTEMPTS = 4
 RETRY_BACKOFF_SECONDS = 2.0
+
+
+class DataIntegrityError(RuntimeError):
+    """Raised when a vintage or synthesized history is not point-in-time safe."""
+
+
+BACKFILL_PROVENANCE_DEFAULTS: dict[str, object] = {
+    "is_synthesized": False,
+    "backfill_reference_vintage": pd.NaT,
+    "backfill_anchor_date": pd.NaT,
+    "backfill_method": pd.NA,
+}
+
+
+def _with_backfill_provenance(frame: pd.DataFrame) -> pd.DataFrame:
+    out = frame.copy()
+    for column, default in BACKFILL_PROVENANCE_DEFAULTS.items():
+        if column not in out:
+            out[column] = default
+    return out
 ALFRED_CACHE_DIR = RAW_DATA_DIR / "alfred_realtime"
 FRED_CACHE_DIR = RAW_DATA_DIR / "fred_latest"
 
@@ -214,10 +234,27 @@ def backcast_from_reference(
     reference_frame: pd.DataFrame,
     start_date: pd.Timestamp = PAPER_ESTIMATION_START,
 ) -> pd.DataFrame:
-    vintage = vintage_frame.sort_values("observation_date").copy()
-    reference = reference_frame.sort_values("observation_date").copy()
+    vintage = _with_backfill_provenance(vintage_frame).sort_values("observation_date").copy()
+    reference = _with_backfill_provenance(reference_frame).sort_values("observation_date").copy()
     if vintage.empty:
         return vintage
+    if "vintage_date" not in vintage or vintage["vintage_date"].dropna().nunique() != 1:
+        raise DataIntegrityError("A backfill target must have exactly one known vintage date.")
+    if "vintage_date" not in reference or reference["vintage_date"].dropna().nunique() != 1:
+        raise DataIntegrityError("A backfill reference must have exactly one known vintage date.")
+
+    target_vintage = pd.Timestamp(vintage["vintage_date"].dropna().iloc[0])
+    reference_vintage = pd.Timestamp(reference["vintage_date"].dropna().iloc[0])
+    if reference_vintage > target_vintage:
+        raise DataIntegrityError(
+            "Backfill reference vintage is later than its target vintage: "
+            f"{reference_vintage:%Y-%m-%d} > {target_vintage:%Y-%m-%d}."
+        )
+    future_reference_rows = reference["observation_date"] > reference_vintage
+    if future_reference_rows.any():
+        raise DataIntegrityError(
+            "Backfill reference contains observations dated after its recorded vintage."
+        )
 
     vintage = vintage[vintage["observation_date"] >= start_date].copy()
     reference = reference[reference["observation_date"] >= start_date].copy()
@@ -252,7 +289,15 @@ def backcast_from_reference(
     out = history.to_frame("value").reset_index().rename(columns={"index": "observation_date"})
     out["series_id"] = vintage["series_id"].iloc[0]
     out["vintage_date"] = vintage["vintage_date"].iloc[0]
-    return out[["series_id", "vintage_date", "observation_date", "value"]]
+    synthesized = ~out["observation_date"].isin(vintage_series.index)
+    out["is_synthesized"] = synthesized
+    out["backfill_reference_vintage"] = pd.NaT
+    out["backfill_anchor_date"] = pd.NaT
+    out["backfill_method"] = pd.NA
+    out.loc[synthesized, "backfill_reference_vintage"] = reference_vintage
+    out.loc[synthesized, "backfill_anchor_date"] = anchor_date
+    out.loc[synthesized, "backfill_method"] = "anchored_growth_backcast"
+    return out[["series_id", "vintage_date", "observation_date", "value", *BACKFILL_PROVENANCE_DEFAULTS]]
 
 
 def repair_short_history_vintages(
@@ -260,9 +305,12 @@ def repair_short_history_vintages(
     latest_series_frame: pd.DataFrame | None = None,
     start_date: pd.Timestamp = PAPER_ESTIMATION_START,
 ) -> pd.DataFrame:
+    if series_panel.empty:
+        return _with_backfill_provenance(series_panel)
+
     repaired_vintages: list[pd.DataFrame] = []
     for _, vintage_frame in series_panel.groupby("vintage_date", sort=True):
-        vintage = vintage_frame.sort_values("observation_date").copy()
+        vintage = _with_backfill_provenance(vintage_frame).sort_values("observation_date").copy()
         if vintage.empty:
             repaired_vintages.append(vintage)
             continue
@@ -283,8 +331,18 @@ def repair_short_history_vintages(
         if reference_frame is None:
             reference_frame = latest_series_frame
         if reference_frame is None:
-            repaired_vintages.append(vintage[vintage["observation_date"] >= start_date].copy())
-            continue
+            target_vintage = pd.Timestamp(vintage["vintage_date"].iloc[0])
+            raise DataIntegrityError(
+                "Cannot repair a short historical vintage without a dated reference "
+                f"available by {target_vintage:%Y-%m-%d}."
+            )
+
+        if "vintage_date" not in reference_frame:
+            target_vintage = pd.Timestamp(vintage["vintage_date"].iloc[0])
+            raise DataIntegrityError(
+                "The latest/current FRED frame is not a valid historical backfill "
+                f"reference for target vintage {target_vintage:%Y-%m-%d}; provide a dated earlier vintage."
+            )
 
         repaired_vintages.append(backcast_from_reference(vintage, reference_frame, start_date=start_date))
 
@@ -399,12 +457,8 @@ def download_realtime_panel(
     report("Backfilling incomplete ALFRED histories for PCEC96 and FPIC1.")
     for series_id in ("PCEC96", "FPIC1"):
         series_panel = realtime_panel[realtime_panel["series_id"] == series_id].copy()
-        latest_series = latest_panel[latest_panel["series_id"] == series_id].copy()
         realtime_panel = realtime_panel[realtime_panel["series_id"] != series_id]
-        repaired_panel = repair_short_history_vintages(
-            series_panel=series_panel,
-            latest_series_frame=latest_series,
-        )
+        repaired_panel = repair_short_history_vintages(series_panel=series_panel)
         realtime_panel = pd.concat([realtime_panel, repaired_panel], ignore_index=True)
 
     realtime_panel = realtime_panel.sort_values(["series_id", "vintage_date", "observation_date"])
@@ -438,6 +492,11 @@ def download_realtime_panel(
 
 def load_realtime_panel(path: Path = REALTIME_PANEL_PATH) -> pd.DataFrame:
     path = resolve_project_path(path)
+    for column in ("backfill_reference_vintage", "backfill_anchor_date"):
+        if column in frame:
+            frame[column] = pd.to_datetime(frame[column])
+    if "is_synthesized" in frame:
+        frame["is_synthesized"] = frame["is_synthesized"].fillna(False).astype(bool)
     frame = pd.read_csv(path, compression="gzip")
     frame["vintage_date"] = pd.to_datetime(frame["vintage_date"])
     frame["observation_date"] = pd.to_datetime(frame["observation_date"])
@@ -481,15 +540,34 @@ def pivot_vintage_panel(panel: pd.DataFrame, vintage_date: pd.Timestamp) -> pd.D
     return wide
 
 
-def _complete_window(frame: pd.DataFrame) -> pd.DataFrame:
+def _ragged_window(frame: pd.DataFrame, *, frequency_label: str) -> pd.DataFrame:
+    frame = frame.dropna(how="all").sort_index()
+    if frame.empty:
+        raise ValueError(f"No {frequency_label} observations are available for the selected vintage.")
+
     complete_rows = frame.notna().all(axis=1)
     if not complete_rows.any():
-        raise ValueError("No fully observed sample window is available for the selected vintage.")
+        raise ValueError(
+            f"No fully observed starting row is available in the {frequency_label} block."
+        )
     first_complete = complete_rows[complete_rows].index[0]
-    last_complete = complete_rows[complete_rows].index[-1]
-    window = frame.loc[first_complete:last_complete].copy()
-    if window.isna().any().any():
-        raise ValueError("The selected vintage contains internal gaps inside the complete sample window.")
+    window = frame.loc[first_complete:].copy()
+
+    # MBFVAR supports a ragged edge, but only trailing missing observations are
+    # admissible. A missing value followed by another release is an internal
+    # data gap and must not be hidden by trimming the sample backward.
+    for column in window:
+        observed = window[column].notna()
+        if not observed.any():
+            raise ValueError(f"{frequency_label} series {column} has no observations in the sample window.")
+        last_observed = observed[observed].index[-1]
+        if window.loc[:last_observed, column].isna().any():
+            missing_dates = window.loc[:last_observed].index[window.loc[:last_observed, column].isna()]
+            raise ValueError(
+                f"{frequency_label} series {column} has an internal gap at {missing_dates[0]}."
+            )
+
+    window.attrs["last_released_period"] = window.dropna(how="all").index[-1]
     return window
 
 
@@ -497,16 +575,46 @@ def build_model_input_frames(panel: pd.DataFrame, vintage_date: pd.Timestamp) ->
     wide = pivot_vintage_panel(panel, vintage_date)
     quarterly = wide[[spec.paper_code for spec in QUARTERLY_SERIES]].dropna(how="all")
     monthly = wide[[spec.paper_code for spec in SERIES_SPECS if spec.frequency == "M"]].dropna(how="all")
+    quarterly = quarterly.loc[quarterly.index >= PAPER_ESTIMATION_START]
+    monthly = monthly.loc[monthly.index >= PAPER_ESTIMATION_START]
 
-    quarterly = _complete_window(quarterly)
-    monthly = _complete_window(monthly)
+    quarterly = _ragged_window(quarterly, frequency_label="quarterly")
+    monthly = _ragged_window(monthly, frequency_label="monthly")
 
-    # Keep all fully observed monthly rows, even within an incomplete quarter.
-    # The quarterly block only needs to be capped so it fits inside the monthly sample.
-    max_quarters = len(monthly) // 3
-    if max_quarters == 0:
-        raise ValueError("Not enough monthly history is available after trimming the complete sample window.")
-    quarterly = quarterly.iloc[: min(len(quarterly), max_quarters)].copy()
+    monthly_last_released = pd.Timestamp(monthly.attrs["last_released_period"])
+
+    # Both blocks must begin at the same calendar quarter. If the first fully
+    # observed monthly row is not a quarter's first month, advance to the next
+    # quarter instead of misaligning the low-frequency repetitions by row count.
+    monthly_start = pd.Timestamp(monthly.index[0])
+    if monthly_start.month not in (1, 4, 7, 10):
+        monthly_start_quarter = monthly_start.to_period("Q") + 1
+    else:
+        monthly_start_quarter = monthly_start.to_period("Q")
+    quarterly_start_quarter = pd.Timestamp(quarterly.index[0]).to_period("Q")
+    first_quarter = max(monthly_start_quarter, quarterly_start_quarter)
+
+    quarterly = quarterly.loc[pd.PeriodIndex(quarterly.index, freq="Q") >= first_quarter].copy()
+    if quarterly.empty:
+        raise ValueError("No quarterly history remains after calendar-aligning the model blocks.")
+
+    start_month = first_quarter.asfreq("M", how="start")
+    quarterly_last_month = pd.Timestamp(quarterly.index[-1]).to_period("Q").asfreq("M", how="end")
+    calendar_end_month = max(
+        monthly_last_released.to_period("M"),
+        quarterly_last_month,
+    )
+    monthly_index = pd.period_range(
+        start=start_month,
+        end=calendar_end_month,
+        freq="M",
+    ).to_timestamp(how="end").normalize()
+    monthly = monthly.reindex(monthly_index)
+    if len(monthly) < 3:
+        raise ValueError("Not enough monthly history is available after calendar alignment.")
+
+    quarterly.attrs["first_estimation_quarter"] = str(first_quarter)
+    monthly.attrs["last_released_month"] = monthly_last_released
     return quarterly, monthly
 
 
@@ -518,7 +626,10 @@ def build_quarterly_evaluation_frame(panel: pd.DataFrame, vintage_date: pd.Times
     quarterly.index = pd.PeriodIndex(quarterly.index, freq="Q")
 
     monthly = monthly.copy()
-    monthly = monthly.groupby(pd.PeriodIndex(monthly.index, freq="Q")).mean()
+    monthly_groups = monthly.groupby(pd.PeriodIndex(monthly.index, freq="Q"))
+    monthly_counts = monthly_groups.count()
+    monthly = monthly_groups.mean()
+    monthly = monthly.where(monthly_counts.eq(3))
 
     combined = quarterly.join(monthly, how="outer").sort_index()
     combined.index.name = "quarter"

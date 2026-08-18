@@ -1,0 +1,11 @@
+--- scripts/glp/compare_glp_forecasts.py
++++ scripts/glp/compare_glp_forecasts.py
+@@ -120,5 +120,7 @@
+         resolved = _existing(explicit)
+         if resolved is None:
+             raise FileNotFoundError(f"Provided directory for strategy {strategy!r} does not exist: {explicit}")
++        discover_run_directories(resolved)
+         return resolved
+-    return _discover_strategy_dir(root_dir, strategy, model_size)
++    discovered = _discover_strategy_dir(root_dir, strategy, model_size)
++    return discovered

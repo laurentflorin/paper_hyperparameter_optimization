@@ -241,3 +241,8 @@ def create_comparison_report(
     plot_hyperparameter_paths(hyperparameters, output_dir)
 
     return output_dir
+
+
+# The strict implementation supersedes the legacy definitions above. Keeping
+# this import at the module boundary preserves existing import paths.
+from ._strict_reporting import *  # noqa: E402,F401,F403

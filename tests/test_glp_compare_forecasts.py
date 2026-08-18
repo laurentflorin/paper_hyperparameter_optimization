@@ -17,6 +17,7 @@ def _write_metadata(directory: Path, *, strategy: str, model_size: str) -> None:
     (directory / "run_metadata.json").write_text(
         json.dumps({"strategy": strategy, "model_size": model_size}), encoding="utf-8"
     )
+    (directory / "forecast_panel.csv").write_text("x\n1\n", encoding="utf-8")
 
 
 def test_discover_strategy_dir_finds_direct_and_horizon_layouts(tmp_path: Path):

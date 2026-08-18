@@ -1,0 +1,17 @@
+numpy
+scipy
+pandas
+matplotlib
+requests
+joblib
+openpyxl
+xlsxwriter
+tqdm
+plotly
+fanchart
+bayesian-optimization
+arm-mango
+pybind11
+seaborn
+covbayesvar
+MBFVAR @ git+https://github.com/laurentflorin/MBFVAR.git@5b06f93272cd6ebf370fbf2aac3b3573c7830493

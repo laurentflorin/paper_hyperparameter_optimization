@@ -7,6 +7,7 @@ import sys
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from forecast_comparison import discover_run_directories
 from paper_hyperparameter_optimization.config import resolve_project_path
 from paper_hyperparameter_optimization.reporting import create_comparison_report
 
@@ -18,32 +19,28 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--mango-rmse-dir", type=Path, default=Path("outputs/mango_rmse"))
     parser.add_argument("--mango-rmse-random-dir", type=Path, default=Path("outputs/mango_rmse_random"))
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/comparison"))
+    parser.add_argument(
+        "--minimum-common-coverage",
+        type=float,
+        default=0.8,
+        help="Warn when pairwise valid-key coverage is below this fraction.",
+    )
+    parser.add_argument(
+        "--allow-legacy-metadata",
+        action="store_true",
+        help="Allow missing legacy provenance fields; known incompatibilities still fail.",
+    )
     return parser
 
 
-def resolve_experiment_dir(path: Path | None, fallback_name: str) -> Path | None:
+def resolve_experiment_dir(path: Path | None, fallback_name: str | None = None) -> Path | None:
+    """Resolve exactly the requested path and reject missing or partial runs."""
     if path is None:
         return None
-
-    candidates = [resolve_project_path(path)]
-    fallback = resolve_project_path(Path("scripts/outputs/euler") / fallback_name)
-    if fallback not in candidates:
-        candidates.append(fallback)
-
-    for candidate in candidates:
-        if not candidate.exists():
-            continue
-        if (candidate / "forecast_panel.csv").exists() and (candidate / "forecast_panel.csv").stat().st_size > 1:
-            return candidate
-        child_candidates = [
-            child
-            for child in sorted(candidate.iterdir())
-            if child.is_dir() and (child / "forecast_panel.csv").exists() and (child / "forecast_panel.csv").stat().st_size > 1
-        ]
-        if child_candidates:
-            return candidate
-
-    return None
+    _ = fallback_name
+    resolved = resolve_project_path(path)
+    discover_run_directories(resolved)
+    return resolved
 
 
 def main() -> int:
@@ -60,7 +57,14 @@ def main() -> int:
     }
     if mango_rmse_random_dir is not None:
         experiment_dirs["mango_rmse_random"] = mango_rmse_random_dir
-    create_comparison_report(experiment_dirs, args.output_dir)
+    create_comparison_report(
+        experiment_dirs,
+        args.output_dir,
+        minimum_common_coverage=args.minimum_common_coverage,
+        allow_legacy_metadata=args.allow_legacy_metadata,
+    )
+    resolved_inputs = ", ".join(str(path) for path in experiment_dirs.values())
+    print(f"Comparison inputs: {resolved_inputs}")
     return 0
 
 

@@ -11,6 +11,7 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from forecast_comparison import discover_run_directories
 from glp_hyperparameter_optimization.config import resolve_project_path
 from glp_hyperparameter_optimization.reporting import create_glp_comparison_report
 
@@ -41,6 +42,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--mango-rmse-dir", type=Path, default=None)
     parser.add_argument("--mango-rmse-random-dir", type=Path, default=None)
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/glp/comparison"))
+    parser.add_argument(
+        "--minimum-common-coverage",
+        type=float,
+        default=0.8,
+        help="Warn when pairwise valid-key coverage is below this fraction.",
+    )
+    parser.add_argument(
+        "--allow-legacy-metadata",
+        action="store_true",
+        help="Allow missing legacy provenance fields; known incompatibilities still fail.",
+    )
     return parser
 
 
@@ -137,6 +149,57 @@ def main() -> int:
             "Pass --model-size or the explicit --paper-dir / --mango-*-dir flags."
         )
     create_glp_comparison_report(experiment_dirs, resolve_project_path(args.output_dir))
+    return 0
+
+
+def _resolve_strategy_dir(explicit: Path | None, *, strategy: str, root_dir: Path, model_size: str | None) -> Path | None:
+    """Resolve explicit paths strictly; retain metadata-based auto-discovery."""
+    if explicit is not None:
+        resolved = _existing(explicit)
+        if resolved is None:
+            raise FileNotFoundError(
+                f"Provided directory for strategy {strategy!r} does not exist: {explicit}"
+            )
+        discover_run_directories(resolved)
+        return resolved
+    return _discover_strategy_dir(root_dir, strategy, model_size)
+
+
+def main() -> int:
+    args = build_parser().parse_args()
+    root_dir = resolve_project_path(args.root_dir)
+    experiment_dirs = {
+        "paper": _resolve_strategy_dir(
+            args.paper_dir, strategy="paper", root_dir=root_dir, model_size=args.model_size
+        ),
+        "mango_mdd": _resolve_strategy_dir(
+            args.mango_mdd_dir, strategy="mango_mdd", root_dir=root_dir, model_size=args.model_size
+        ),
+        "mango_rmse": _resolve_strategy_dir(
+            args.mango_rmse_dir, strategy="mango_rmse", root_dir=root_dir, model_size=args.model_size
+        ),
+        "mango_rmse_random": _resolve_strategy_dir(
+            args.mango_rmse_random_dir,
+            strategy="mango_rmse_random",
+            root_dir=root_dir,
+            model_size=args.model_size,
+        ),
+    }
+    if not any(experiment_dirs.values()):
+        raise FileNotFoundError(
+            f"No GLP forecast outputs were found under {root_dir}. "
+            "Pass --model-size or explicit per-strategy paths."
+        )
+    create_glp_comparison_report(
+        experiment_dirs,
+        resolve_project_path(args.output_dir),
+        minimum_common_coverage=args.minimum_common_coverage,
+        allow_legacy_metadata=args.allow_legacy_metadata,
+    )
+    resolved_inputs = ", ".join(
+        str(path) for path in experiment_dirs.values() if path is not None
+    )
+    print(f"Comparison inputs: {resolved_inputs}")
     return 0
 
 

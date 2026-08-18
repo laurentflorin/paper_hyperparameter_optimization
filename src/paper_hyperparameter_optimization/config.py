@@ -44,6 +44,16 @@ PAPER_ESTIMATION_START = pd.Timestamp("1967-01-01")
 MAX_FORECAST_HORIZON_MONTHS = 24
 MAX_FORECAST_HORIZON_QUARTERS = 8
 
+# Optimizer choices are held fixed across the recursive exercise by default.
+# The same schedule is used for every optimized strategy so a comparison does
+# not inadvertently compare both an objective and an update frequency.
+DEFAULT_SELECTION_SCHEDULE = "first_origin"
+VALID_SELECTION_SCHEDULES = ("first_origin", "per_origin")
+
+# A recorded master seed makes serial and origin-parallel runs repeatable. The
+# workflow derives independent child streams for folds, Mango candidates,
+# objective simulations, and final forecasts from this value.
+
 PAPER_NSIM = 20_000
 PAPER_NBURN_PERC = 0.5
 PAPER_THINING = 1

@@ -9,9 +9,11 @@ simple averaging (Stock & Watson, 2008) and each series is transformed with the
 
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import time
+from datetime import datetime, timezone
 from io import StringIO
 from pathlib import Path
 from typing import Callable, Iterable
@@ -25,6 +27,8 @@ from .config import (
     GLP_DOWNLOAD_METADATA_PATH,
     GLP_FRED_CACHE_DIR,
     GLP_LATEST_PANEL_PATH,
+    GLP_EXPECTED_DATA_LAG_QUARTERS,
+    GLP_MODEL_SAMPLE_START,
     GLP_REALTIME_PANEL_PATH,
     GLP_SAMPLE_START,
     PROCESSED_DATA_DIR,
@@ -44,6 +48,13 @@ STOOQ_SP500_MONTHLY_URL = "https://stooq.com/q/d/l/?s=%5Espx&i=m"
 REQUEST_TIMEOUT_SECONDS = 120
 MAX_REQUEST_ATTEMPTS = 4
 RETRY_BACKOFF_SECONDS = 2.0
+GLP_DATA_SCHEMA_VERSION = 2
+
+REALTIME_CORE_COLUMNS = ("series_id", "vintage_date", "observation_date", "value")
+PROVENANCE_COLUMNS = (
+    "source_type", "source_url", "requested_vintage", "downloaded_at_utc",
+    "fallback_used", "data_sha256",
+)
 
 
 class DataDownloadError(RuntimeError):
@@ -52,6 +63,14 @@ class DataDownloadError(RuntimeError):
 
 class EmptyRemoteDataError(DataDownloadError):
     """Raised when a remote FRED/ALFRED endpoint returns an empty or unusable body."""
+
+
+class DataIntegrityError(RuntimeError):
+    """Raised when data violate the point-in-time or cache provenance contract."""
+
+
+class StaleInformationSetError(DataIntegrityError):
+    """Raised when a nominal origin maps to an unexpected complete-data quarter."""
 
 
 # --------------------------------------------------------------------------- #
@@ -152,15 +171,127 @@ def latest_cache_path(series_id: str) -> Path:
     return GLP_FRED_CACHE_DIR / f"{series_id}.csv.gz"
 
 
+def _frame_data_hash(frame: pd.DataFrame, columns: Iterable[str]) -> str:
+    """Hash canonical CSV bytes for the scientific values in a cached frame."""
+    selected = frame.loc[:, list(columns)].copy()
+    for column in ("vintage_date", "observation_date"):
+        if column in selected:
+            selected[column] = pd.to_datetime(selected[column]).dt.strftime("%Y-%m-%d")
+    payload = selected.to_csv(index=False, lineterminator="\n").encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _cache_metadata_path(path: Path) -> Path:
+    return path.with_name(f"{path.name}.metadata.json")
+
+
+def _provenance_record(
+    *,
+    source_type: str,
+    source_url: str,
+    series_id: str,
+    requested_vintage: pd.Timestamp | None,
+    frame: pd.DataFrame,
+    core_columns: Iterable[str],
+) -> dict[str, object]:
+    return {
+        "schema_version": GLP_DATA_SCHEMA_VERSION,
+        "source_type": source_type,
+        "source_url": source_url,
+        "series_id": series_id,
+        "requested_vintage": (
+            pd.Timestamp(requested_vintage).strftime("%Y-%m-%d")
+            if requested_vintage is not None
+            else None
+        ),
+        "downloaded_at_utc": datetime.now(timezone.utc).isoformat(),
+        "fallback_used": False,
+        "data_sha256": _frame_data_hash(frame, core_columns),
+    }
+
+
+def _attach_provenance(frame: pd.DataFrame, record: dict[str, object]) -> pd.DataFrame:
+    result = frame.copy()
+    for column in PROVENANCE_COLUMNS:
+        result[column] = record[column]
+    result.attrs["provenance"] = dict(record)
+    return result
+
+
+def _validate_realtime_vintage(
+    frame: pd.DataFrame,
+    *,
+    series_id: str | None = None,
+    vintage_date: pd.Timestamp | None = None,
+    require_provenance: bool = True,
+) -> pd.DataFrame:
+    missing = set(REALTIME_CORE_COLUMNS) - set(frame.columns)
+    if missing:
+        raise DataIntegrityError(f"Real-time vintage is missing required columns: {sorted(missing)}.")
+    result = frame.copy()
+    result["vintage_date"] = pd.to_datetime(result["vintage_date"], errors="coerce")
+    result["observation_date"] = pd.to_datetime(result["observation_date"], errors="coerce")
+    if result[list(REALTIME_CORE_COLUMNS)].isna().any().any():
+        raise DataIntegrityError("Real-time vintage contains missing core values.")
+    if series_id is not None and set(result["series_id"].astype(str)) != {str(series_id)}:
+        raise DataIntegrityError(f"Cached vintage does not contain only requested series {series_id}.")
+    if vintage_date is not None:
+        requested = pd.Timestamp(vintage_date)
+        if set(result["vintage_date"]) != {requested}:
+            raise DataIntegrityError(
+                f"Cached vintage date does not match requested vintage {requested:%Y-%m-%d}."
+            )
+    future = result["observation_date"] > result["vintage_date"]
+    if future.any():
+        example = result.loc[future, ["series_id", "vintage_date", "observation_date"]].iloc[0]
+        raise DataIntegrityError(
+            "Point-in-time invariant violated: observation_date exceeds vintage_date "
+            f"for {example['series_id']} ({example['observation_date']:%Y-%m-%d} > "
+            f"{example['vintage_date']:%Y-%m-%d})."
+        )
+    if require_provenance:
+        missing_provenance = set(PROVENANCE_COLUMNS) - set(result.columns)
+        if missing_provenance:
+            raise DataIntegrityError(
+                "Real-time vintage lacks required provenance fields: "
+                f"{sorted(missing_provenance)}. Regenerate the legacy cache/panel."
+            )
+        if result["fallback_used"].astype(str).str.lower().isin({"true", "1"}).any():
+            raise DataIntegrityError("Latest-history fallback data may not enter a real-time panel.")
+        expected_hashes = result["data_sha256"].dropna().astype(str).unique()
+        if len(expected_hashes) != 1:
+            raise DataIntegrityError("Real-time vintage has inconsistent data hashes.")
+        observed_hash = _frame_data_hash(result, REALTIME_CORE_COLUMNS)
+        if observed_hash != expected_hashes[0]:
+            raise DataIntegrityError("Real-time vintage data hash does not match its provenance.")
+    return result
+
+
 def _write_cached_frame(frame: pd.DataFrame, path: Path) -> None:
+    provenance = dict(frame.attrs.get("provenance") or {})
+    if provenance.get("schema_version") != GLP_DATA_SCHEMA_VERSION:
+        raise DataIntegrityError("Refusing to cache a frame without current provenance metadata.")
     path.parent.mkdir(parents=True, exist_ok=True)
     frame.to_csv(path, index=False, compression="gzip")
+    _cache_metadata_path(path).write_text(json.dumps(provenance, indent=2), encoding="utf-8")
 
 
 def _read_cached_frame(path: Path, date_columns: list[str]) -> pd.DataFrame:
+    metadata_path = _cache_metadata_path(path)
+    if not metadata_path.is_file():
+        raise DataIntegrityError(
+            f"Legacy cache {path} has no provenance sidecar; refresh it before use."
+        )
+    try:
+        provenance = json.loads(metadata_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise DataIntegrityError(f"Cannot read cache provenance {metadata_path}.") from exc
+    if provenance.get("schema_version") != GLP_DATA_SCHEMA_VERSION:
+        raise DataIntegrityError(f"Cache {path} uses an obsolete data schema.")
     frame = pd.read_csv(path, compression="gzip")
     for column in date_columns:
-        frame[column] = pd.to_datetime(frame[column])
+        frame[column] = pd.to_datetime(frame[column], errors="raise")
+    frame.attrs["provenance"] = provenance
     return frame
 
 
@@ -170,43 +301,105 @@ def download_series_vintage(
     *,
     force_latest_fallback: bool = False,
 ) -> pd.DataFrame:
-    if series_id == "SP500":
-        frame = download_sp500_stooq_monthly()
-        frame = frame.loc[frame["observation_date"] <= pd.Timestamp(vintage_date)].copy()
-    else:
-        try:
-            frame = _read_csv_from_url(alfred_vintage_url(series_id, vintage_date))
-        except EmptyRemoteDataError:
-            # Some ALFRED vintages return a zero-byte body for valid historical
-            # series rather than an HTTP error. When that happens, fall back to
-            # the latest available FRED history and truncate it at the requested
-            # vintage so the downloader can still build a complete panel.
-            frame, _ = _load_or_download_latest_series(series_id, force=force_latest_fallback)
-            frame = frame.loc[frame["observation_date"] <= pd.Timestamp(vintage_date)].copy()
-            if frame.empty:
-                raise DataDownloadError(
-                    f"ALFRED returned no vintage data for {series_id} at {pd.Timestamp(vintage_date):%Y-%m-%d}, "
-                    "and the latest FRED history also has no observations by that date."
-                )
+    """Download one true ALFRED vintage and fail closed on an unusable response.
+
+    force_latest_fallback is retained only for source compatibility. Latest
+    FRED history is never a valid substitute for a historical vintage.
+    """
+    if force_latest_fallback:
+        # The flag historically controlled cache refresh as well as an unsafe
+        # fallback. It no longer authorizes substituting revised latest data.
+        pass
+    requested = pd.Timestamp(vintage_date)
+    url = alfred_vintage_url(series_id, requested)
+    try:
+        frame = _read_csv_from_url(url)
+    except EmptyRemoteDataError as exc:
+        raise DataDownloadError(
+            f"ALFRED returned no true vintage data for {series_id} at "
+            f"{requested:%Y-%m-%d}; latest FRED history is not a point-in-time substitute."
+        ) from exc
     frame["series_id"] = series_id
-    frame["vintage_date"] = pd.Timestamp(vintage_date)
-    return frame[["series_id", "vintage_date", "observation_date", "value"]]
+    frame["vintage_date"] = requested
+    frame = frame.loc[:, list(REALTIME_CORE_COLUMNS)]
+    frame = _validate_realtime_vintage(
+        frame, series_id=series_id, vintage_date=requested, require_provenance=False
+    )
+    provenance = _provenance_record(
+        source_type="alfred_vintage",
+        source_url=url,
+        series_id=series_id,
+        requested_vintage=requested,
+        frame=frame,
+        core_columns=REALTIME_CORE_COLUMNS,
+    )
+    return _validate_realtime_vintage(
+        _attach_provenance(frame, provenance),
+        series_id=series_id,
+        vintage_date=requested,
+        require_provenance=True,
+    )
 
 
 def download_latest_series(series_id: str) -> pd.DataFrame:
     if series_id == "SP500":
+        url = STOOQ_SP500_MONTHLY_URL
+        source_type = "stooq_latest"
         frame = download_sp500_stooq_monthly()
     else:
-        frame = _read_csv_from_url(fred_latest_url(series_id))
+        url = fred_latest_url(series_id)
+        source_type = "fred_latest"
+        frame = _read_csv_from_url(url)
     frame["series_id"] = series_id
-    return frame[["series_id", "observation_date", "value"]]
+    frame = frame[["series_id", "observation_date", "value"]]
+    provenance = _provenance_record(
+        source_type=source_type,
+        source_url=url,
+        series_id=series_id,
+        requested_vintage=None,
+        frame=frame,
+        core_columns=("series_id", "observation_date", "value"),
+    )
+    return _attach_provenance(frame, provenance)
 
 
-def _load_or_download_realtime_vintage(series_id: str, vintage_date: pd.Timestamp, *, force: bool = False):
+def _validate_latest_cache(frame: pd.DataFrame, series_id: str) -> pd.DataFrame:
+    required = {"series_id", "observation_date", "value", *PROVENANCE_COLUMNS}
+    missing = required - set(frame.columns)
+    if missing:
+        raise DataIntegrityError(f"Latest-series cache lacks fields: {sorted(missing)}.")
+    if set(frame["series_id"].astype(str)) != {series_id}:
+        raise DataIntegrityError(f"Latest-series cache does not match {series_id}.")
+    hashes = frame["data_sha256"].dropna().astype(str).unique()
+    observed = _frame_data_hash(frame, ("series_id", "observation_date", "value"))
+    if len(hashes) != 1 or hashes[0] != observed:
+        raise DataIntegrityError(f"Latest-series cache hash mismatch for {series_id}.")
+    return frame
+
+
+def _load_or_download_realtime_vintage(
+    series_id: str,
+    vintage_date: pd.Timestamp,
+    *,
+    force: bool = False,
+):
     path = realtime_cache_path(series_id, vintage_date)
     if path.exists() and not force:
-        return _read_cached_frame(path, ["vintage_date", "observation_date"]), True
-    frame = download_series_vintage(series_id, vintage_date, force_latest_fallback=force)
+        try:
+            cached = _read_cached_frame(path, ["vintage_date", "observation_date"])
+            cached = _validate_realtime_vintage(
+                cached,
+                series_id=series_id,
+                vintage_date=pd.Timestamp(vintage_date),
+                require_provenance=True,
+            )
+            return cached, True
+        except DataIntegrityError:
+            # Legacy/incomplete caches are invalidated by replacement with a
+            # newly downloaded true vintage. Contaminated current-schema data
+            # can therefore never enter fitting.
+            pass
+    frame = download_series_vintage(series_id, vintage_date)
     _write_cached_frame(frame, path)
     return frame, False
 
@@ -214,7 +407,11 @@ def _load_or_download_realtime_vintage(series_id: str, vintage_date: pd.Timestam
 def _load_or_download_latest_series(series_id: str, *, force: bool = False):
     path = latest_cache_path(series_id)
     if path.exists() and not force:
-        return _read_cached_frame(path, ["observation_date"]), True
+        try:
+            cached = _read_cached_frame(path, ["observation_date"])
+            return _validate_latest_cache(cached, series_id), True
+        except DataIntegrityError:
+            pass
     frame = download_latest_series(series_id)
     _write_cached_frame(frame, path)
     return frame, False
@@ -238,12 +435,37 @@ def _existing_outputs_match(
     except (OSError, json.JSONDecodeError):
         return False
     return (
-        metadata.get("forecast_origin_start") == min(origins).strftime("%Y-%m-%d")
+        metadata.get("schema_version") == GLP_DATA_SCHEMA_VERSION
+        and metadata.get("forecast_origin_start") == min(origins).strftime("%Y-%m-%d")
         and metadata.get("forecast_origin_end") == max(origins).strftime("%Y-%m-%d")
         and metadata.get("actual_vintage") == pd.Timestamp(actual_vintage).strftime("%Y-%m-%d")
         and metadata.get("n_forecast_origins") == len(origins)
         and set(metadata.get("series_ids", [])) == set(series_ids)
     )
+
+
+def validate_glp_realtime_panel(
+    frame: pd.DataFrame,
+    *,
+    require_provenance: bool = True,
+) -> pd.DataFrame:
+    """Validate every series/vintage group in a processed real-time panel."""
+    missing = set(REALTIME_CORE_COLUMNS) - set(frame.columns)
+    if missing:
+        raise DataIntegrityError(f"Real-time panel is missing required columns: {sorted(missing)}.")
+    result = frame.copy()
+    result["vintage_date"] = pd.to_datetime(result["vintage_date"], errors="coerce")
+    result["observation_date"] = pd.to_datetime(result["observation_date"], errors="coerce")
+    for (series_id, vintage_date), group in result.groupby(
+        ["series_id", "vintage_date"], sort=False, dropna=False
+    ):
+        _validate_realtime_vintage(
+            group,
+            series_id=str(series_id),
+            vintage_date=pd.Timestamp(vintage_date),
+            require_provenance=require_provenance,
+        )
+    return result
 
 
 def download_glp_realtime_panel(
@@ -278,6 +500,7 @@ def download_glp_realtime_panel(
 
     report(f"Downloading {len(specs)} series across {len(vintage_dates)} vintages (resumable).")
     frames: list[pd.DataFrame] = []
+    vintage_provenance: list[dict[str, object]] = []
     for series_index, spec in enumerate(specs, start=1):
         cached = 0 if force else sum(realtime_cache_path(spec.series_id, v).exists() for v in vintage_dates)
         report(f"Series {series_index}/{len(specs)} {spec.series_id}: {cached}/{len(vintage_dates)} vintages cached.")
@@ -290,17 +513,22 @@ def download_glp_realtime_panel(
                     "Rerun to resume from the cached vintages."
                 ) from exc
             frames.append(frame)
+            vintage_provenance.append(dict(frame.attrs["provenance"]))
 
-    realtime_panel = pd.concat(frames, ignore_index=True).sort_values(["series_id", "vintage_date", "observation_date"])
+    realtime_panel = validate_glp_realtime_panel(
+        pd.concat(frames, ignore_index=True).sort_values(["series_id", "vintage_date", "observation_date"])
+    )
 
     report(f"Downloading latest FRED series ({len(specs)}).")
     latest_frames: list[pd.DataFrame] = []
+    latest_provenance: list[dict[str, object]] = []
     for spec in specs:
         try:
             frame, _ = _load_or_download_latest_series(spec.series_id, force=force)
         except DataDownloadError as exc:
             raise RuntimeError(f"Failed to download latest FRED series {spec.series_id}.") from exc
         latest_frames.append(frame)
+        latest_provenance.append(dict(frame.attrs["provenance"]))
     latest_panel = pd.concat(latest_frames, ignore_index=True).sort_values(["series_id", "observation_date"])
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -308,6 +536,7 @@ def download_glp_realtime_panel(
     latest_panel.to_csv(latest_output_path, index=False, compression="gzip")
 
     metadata = {
+        "schema_version": GLP_DATA_SCHEMA_VERSION,
         "forecast_origin_start": min(origins).strftime("%Y-%m-%d"),
         "forecast_origin_end": max(origins).strftime("%Y-%m-%d"),
         "actual_vintage": pd.Timestamp(actual_vintage).strftime("%Y-%m-%d"),
@@ -315,6 +544,12 @@ def download_glp_realtime_panel(
         "series_ids": resolved_ids,
         "series": serialise_series_specs(),
         "force_refresh": force,
+        "fallback_used": False,
+        "vintage_provenance": vintage_provenance,
+        "latest_provenance": latest_provenance,
+        "point_in_time_invariant": "observation_date <= vintage_date",
+        "realtime_panel_data_sha256": _frame_data_hash(realtime_panel, REALTIME_CORE_COLUMNS),
+        "latest_panel_data_sha256": _frame_data_hash(latest_panel, ("series_id", "observation_date", "value")),
     }
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     report("GLP download pipeline finished.")
@@ -329,7 +564,7 @@ def load_glp_realtime_panel(path: Path = GLP_REALTIME_PANEL_PATH) -> pd.DataFram
     frame = pd.read_csv(path, compression="gzip")
     frame["vintage_date"] = pd.to_datetime(frame["vintage_date"])
     frame["observation_date"] = pd.to_datetime(frame["observation_date"])
-    return frame
+    return validate_glp_realtime_panel(frame, require_provenance=True)
 
 
 def load_glp_latest_panel(path: Path = GLP_LATEST_PANEL_PATH) -> pd.DataFrame:
@@ -346,6 +581,7 @@ def build_quarterly_levels(panel: pd.DataFrame, vintage_date: pd.Timestamp, size
     quarter (Stock & Watson, 2008). The frame is indexed by a quarterly Period.
     """
     vintage_date = pd.Timestamp(vintage_date)
+    panel = validate_glp_realtime_panel(panel, require_provenance=False)
     specs = model_series(size)
     subset = panel.loc[panel["vintage_date"] == vintage_date, ["series_id", "observation_date", "value"]]
     columns: dict[str, pd.Series] = {}
@@ -375,33 +611,113 @@ def transform_quarterly_levels(levels: pd.DataFrame, size: str) -> pd.DataFrame:
     return transformed
 
 
-def _complete_window(frame: pd.DataFrame) -> pd.DataFrame:
-    complete_rows = frame.notna().all(axis=1)
+def _complete_window(
+    frame: pd.DataFrame,
+    *,
+    sample_start: pd.Timestamp,
+    sample_end: pd.Timestamp | None = None,
+) -> pd.DataFrame:
+    start_quarter = pd.Timestamp(sample_start).to_period("Q")
+    end_quarter = pd.Timestamp(sample_end).to_period("Q") if sample_end is not None else None
+    bounded = frame.loc[frame.index >= start_quarter]
+    if end_quarter is not None:
+        bounded = bounded.loc[bounded.index <= end_quarter]
+    complete_rows = bounded.notna().all(axis=1)
     if not complete_rows.any():
-        raise ValueError("No fully observed quarterly window is available for the selected vintage/model size.")
+        raise DataIntegrityError(
+            "No fully observed quarterly window is available at or after fixed "
+            f"sample start {start_quarter}."
+        )
     first = complete_rows[complete_rows].index[0]
+    if first != start_quarter:
+        raise DataIntegrityError(
+            f"Fixed estimation sample must start at {start_quarter}, but the first "
+            f"fully observed quarter is {first}."
+        )
     last = complete_rows[complete_rows].index[-1]
-    window = frame.loc[first:last].copy()
+    window = bounded.loc[first:last].copy()
     if window.isna().any().any():
-        raise ValueError("The selected vintage has interior gaps inside the complete quarterly window.")
+        missing_quarters = window.index[window.isna().any(axis=1)]
+        raise DataIntegrityError(
+            "The selected vintage has interior gaps inside the fixed estimation "
+            f"window; first affected quarter is {missing_quarters[0]}."
+        )
     return window
+
+
+def expected_information_set_quarter(
+    vintage_date: pd.Timestamp,
+    expected_data_lag_quarters: int,
+) -> pd.Period:
+    if not isinstance(expected_data_lag_quarters, (int, np.integer)):
+        raise TypeError("expected_data_lag_quarters must be an integer.")
+    if expected_data_lag_quarters < 0:
+        raise ValueError("expected_data_lag_quarters must be non-negative.")
+    return pd.Timestamp(vintage_date).to_period("Q") - int(expected_data_lag_quarters)
+
+
+def validate_glp_information_set(
+    vintage_date: pd.Timestamp,
+    information_set_quarter: pd.Period,
+    *,
+    expected_data_lag_quarters: int = GLP_EXPECTED_DATA_LAG_QUARTERS,
+) -> int:
+    """Validate and return the observed lag between nominal and effective origin."""
+    nominal_quarter = pd.Timestamp(vintage_date).to_period("Q")
+    information_set_quarter = pd.Period(information_set_quarter, freq="Q")
+    observed_lag = int(nominal_quarter.ordinal - information_set_quarter.ordinal)
+    expected = expected_information_set_quarter(vintage_date, expected_data_lag_quarters)
+    if information_set_quarter != expected:
+        direction = "stale" if observed_lag > expected_data_lag_quarters else "future-dated"
+        raise StaleInformationSetError(
+            f"{direction} GLP information set at nominal origin "
+            f"{pd.Timestamp(vintage_date):%Y-%m-%d}: expected last complete quarter "
+            f"{expected} (lag {expected_data_lag_quarters}), found "
+            f"{information_set_quarter} (lag {observed_lag})."
+        )
+    return observed_lag
 
 
 def build_glp_estimation_matrix(
     panel: pd.DataFrame,
     vintage_date: pd.Timestamp,
     size: str,
+    *,
+    sample_start: pd.Timestamp | None = None,
+    sample_end: pd.Timestamp | None = None,
+    expected_data_lag_quarters: int | None = GLP_EXPECTED_DATA_LAG_QUARTERS,
 ) -> tuple[np.ndarray, list[str], pd.PeriodIndex]:
-    """Return ``(y, codes, quarter_index)`` for estimation at ``vintage_date``.
+    """Return transformed estimation data and its explicit information-set index.
 
-    ``y`` is the transformed, complete-window quarterly matrix (rows = quarters,
-    columns = model variables in canonical order).
+    Recursive runs use a fixed model-specific start and an expanding endpoint.
+    sample_end is an explicit alternative-study override; the configured
+    GLP_SAMPLE_END is the original-replication endpoint, not a hidden recursive
+    cutoff. Set expected_data_lag_quarters=None only for a documented
+    non-forecast diagnostic.
     """
+    if size not in GLP_MODEL_SAMPLE_START:
+        raise ValueError(f"Unknown GLP model size {size!r}.")
+    resolved_start = (
+        pd.Timestamp(sample_start)
+        if sample_start is not None
+        else GLP_MODEL_SAMPLE_START[size]
+    )
     levels = build_quarterly_levels(panel, vintage_date, size)
     transformed = transform_quarterly_levels(levels, size)
-    window = _complete_window(transformed)
+    window = _complete_window(
+        transformed,
+        sample_start=resolved_start,
+        sample_end=sample_end,
+    )
+    quarter_index = pd.PeriodIndex(window.index, freq="Q")
+    if expected_data_lag_quarters is not None:
+        validate_glp_information_set(
+            vintage_date,
+            quarter_index[-1],
+            expected_data_lag_quarters=expected_data_lag_quarters,
+        )
     codes = list(window.columns)
-    return window.to_numpy(dtype=float), codes, pd.PeriodIndex(window.index, freq="Q")
+    return window.to_numpy(dtype=float), codes, quarter_index
 
 
 def build_glp_actual_frame(panel: pd.DataFrame, actual_vintage: pd.Timestamp, size: str) -> pd.DataFrame:

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import copy
+import math
 import os
 import re
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -11,9 +13,18 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+
+from experiment_provenance import (
+    deterministic_rng_context,
+    runtime_provenance,
+    stable_child_seed,
+    validate_mbfvar_revision,
+)
 from .config import (
     DEFAULT_OPTIMIZATION_NSIM,
     DEFAULT_PARAM_SPACE_BOUNDS,
+    DEFAULT_RANDOM_SEED,
+    DEFAULT_SELECTION_SCHEDULE,
     MBFVAR_TRANSFORMS,
     MAX_FORECAST_HORIZON_MONTHS,
     MAX_FORECAST_HORIZON_QUARTERS,
@@ -24,9 +35,12 @@ from .config import (
     PAPER_NSIM,
     PAPER_TEMPORAL_AGGREGATION,
     PAPER_THINING,
+    PROJECT_ROOT,
     QUARTERLY_SERIES,
     REALTIME_PANEL_PATH,
     SERIES_BY_CODE,
+    SERIES_SPECS,
+    VALID_SELECTION_SCHEDULES,
     forecast_origin_dates,
     origin_group,
     resolve_project_path,
@@ -88,10 +102,165 @@ def resolve_parallel_settings(
 def compute_quarterly_metrics(level_frame: pd.DataFrame) -> pd.DataFrame:
     metrics = level_frame.copy()
     for column in metrics.columns:
+        if column not in SERIES_BY_CODE:
+            raise KeyError(f"No evaluation transform is configured for {column}.")
         spec = SERIES_BY_CODE[column]
         if spec.evaluation_transform == "growth":
+            invalid = metrics[column].notna() & (metrics[column] <= 0)
+            if invalid.any():
+                raise ValueError(
+                    f"Growth metric for {column} requires strictly positive levels."
+                )
             metrics[column] = 100.0 * np.log(metrics[column]).diff()
     return metrics
+
+
+SUMMARY_QUANTILES = {
+    "median": 0.50,
+    "p95": 0.95,
+    "p84": 0.84,
+    "p16": 0.16,
+    "p05": 0.05,
+}
+
+
+def summarize_quarterly_draws(
+    draw_frames: list[pd.DataFrame],
+) -> tuple[dict[str, pd.DataFrame], dict[str, pd.DataFrame]]:
+    """Summarize levels and evaluation metrics from joint posterior paths."""
+    if not draw_frames:
+        raise ValueError("At least one posterior draw is required.")
+
+    index = pd.PeriodIndex(draw_frames[0].index, freq="Q")
+    columns = draw_frames[0].columns
+    normalized: list[pd.DataFrame] = []
+    for draw in draw_frames:
+        current = draw.copy()
+        current.index = pd.PeriodIndex(current.index, freq="Q")
+        if not current.index.equals(index) or not current.columns.equals(columns):
+            raise ValueError("Posterior draw paths must have identical quarter and variable keys.")
+        normalized.append(current)
+
+    level_stack = np.stack([draw.to_numpy(dtype=float) for draw in normalized], axis=0)
+    metric_stack = level_stack.copy()
+    for column_index, column in enumerate(columns):
+        if column not in SERIES_BY_CODE:
+            raise KeyError(f"No evaluation transform is configured for {column}.")
+        if SERIES_BY_CODE[column].evaluation_transform == "growth":
+            values = level_stack[:, :, column_index]
+            invalid = np.isfinite(values) & (values <= 0)
+            if invalid.any():
+                raise ValueError(f"Growth metric for {column} requires strictly positive posterior levels.")
+            metric_stack[:, 0, column_index] = np.nan
+            metric_stack[:, 1:, column_index] = 100.0 * np.diff(np.log(values), axis=1)
+
+    def frame_from(values: np.ndarray) -> pd.DataFrame:
+        return pd.DataFrame(values, index=index, columns=columns)
+
+    level_summaries = {"mean": frame_from(np.nanmean(level_stack, axis=0))}
+    metric_summaries = {"mean": frame_from(np.nanmean(metric_stack, axis=0))}
+    for name, quantile in SUMMARY_QUANTILES.items():
+        level_summaries[name] = frame_from(np.nanquantile(level_stack, quantile, axis=0))
+        metric_summaries[name] = frame_from(np.nanquantile(metric_stack, quantile, axis=0))
+    return level_summaries, metric_summaries
+
+
+def _back_transform_draw_block(values: np.ndarray, transform_codes: np.ndarray) -> np.ndarray:
+    out = np.asarray(values, dtype=float).copy()
+    codes = np.asarray(transform_codes)
+    out[..., codes == 0] = np.exp(out[..., codes == 0])
+    out[..., codes == 1] = 100.0 * out[..., codes == 1]
+    return out
+
+
+def aggregate_quarterly_posterior_draws(model) -> list[pd.DataFrame]:
+    """Reconstruct complete quarterly level paths while retaining draw identity."""
+    cached = getattr(model, "_repo_quarterly_draw_frames", None)
+    if cached is not None:
+        return [frame.copy() for frame in cached]
+
+    required = (
+        "forecast_draws_list",
+        "YYactsim_list",
+        "lstate_list",
+        "YMh_list",
+        "valid_draws",
+        "freq_ratio_list",
+        "Nm_list",
+        "select_m_list",
+        "select_q",
+        "select_list",
+        "varlist_list",
+        "index_list",
+        "temp_agg",
+    )
+    missing = [name for name in required if not hasattr(model, name)]
+    if missing:
+        raise RuntimeError(
+            "The installed MBFVAR model does not expose the joint draw state "
+            f"required for valid transformed intervals: {', '.join(missing)}."
+        )
+
+    ratio = int(model.freq_ratio_list[-1])
+    if ratio != 3:
+        raise NotImplementedError("Repository draw aggregation currently supports monthly-to-quarterly models only.")
+
+    forecast_draws = np.asarray(model.forecast_draws_list[-1])
+    valid_draws = [int(draw) for draw in model.valid_draws]
+    if forecast_draws.shape[0] != len(valid_draws):
+        raise RuntimeError("Forecast draw count does not match MBFVAR's retained posterior draw identifiers.")
+
+    yynow = np.asarray(model.YYactsim_list[-1])
+    lstate = np.asarray(model.lstate_list[-1])
+    ymh = np.asarray(model.YMh_list[-1])
+    if not ymh.size:
+        raise RuntimeError("Joint draw reconstruction requires a non-empty monthly observation block.")
+
+    monthly_codes = np.asarray(model.select_m_list[-1])
+    quarterly_codes = np.asarray(model.select_q[-1])
+    all_codes = np.asarray(model.select_list[-1])
+    n_monthly = int(model.Nm_list[-1])
+    columns = pd.Index(model.varlist_list[-1])
+    full_index = pd.DatetimeIndex(model.index_list[-1])
+    draw_frames: list[pd.DataFrame] = []
+
+    for draw_position, posterior_index in enumerate(valid_draws):
+        lstate_levels = _back_transform_draw_block(lstate[posterior_index].T, quarterly_codes)
+        nowcast_levels = _back_transform_draw_block(
+            yynow[posterior_index, 1 : ratio + 1, :n_monthly],
+            monthly_codes,
+        )
+        forecast_levels = _back_transform_draw_block(forecast_draws[draw_position], all_codes)
+
+        correction = int(ymh.shape[0] - lstate_levels[:-ratio].shape[0])
+        observed_monthly = ymh[correction:]
+        latent_history = lstate_levels[:-ratio]
+        if observed_monthly.shape[0] != latent_history.shape[0]:
+            raise RuntimeError("Monthly observations and latent quarterly paths are not calendar-aligned.")
+
+        history = np.hstack((observed_monthly, latent_history))
+        nowcast = np.hstack((nowcast_levels, lstate_levels[-ratio:]))
+        full_values = np.vstack((history, nowcast, forecast_levels))
+        if full_values.shape != (len(full_index), len(columns)):
+            raise RuntimeError(
+                "Reconstructed posterior path shape does not match MBFVAR's forecast calendar."
+            )
+
+        monthly_frame = pd.DataFrame(full_values, index=full_index, columns=columns)
+        quarter_keys = pd.PeriodIndex(monthly_frame.index, freq="Q")
+        row_counts = pd.Series(1, index=quarter_keys).groupby(level=0).sum()
+        if model.temp_agg == "mean":
+            quarterly_frame = monthly_frame.groupby(quarter_keys).mean()
+        elif model.temp_agg == "sum":
+            quarterly_frame = monthly_frame.groupby(quarter_keys).sum()
+        else:
+            raise ValueError(f"Unsupported temporal aggregation: {model.temp_agg}.")
+        complete_quarters = row_counts.index[row_counts.eq(ratio)]
+        quarterly_frame = quarterly_frame.loc[quarterly_frame.index.intersection(complete_quarters)]
+        draw_frames.append(quarterly_frame)
+
+    model._repo_quarterly_draw_frames = [frame.copy() for frame in draw_frames]
+    return draw_frames
 
 
 def make_param_space(bounds: dict[str, tuple[float, float]]) -> dict[str, Any]:
@@ -116,38 +285,53 @@ def make_data_in(quarterly: pd.DataFrame, monthly: pd.DataFrame):
     )
 
 
-DEFAULT_MDD_OPTIMIZATION_VARIABLES = ["GDP"]
-RMSE_REQUIRED_OPTIMIZATION_VARIABLES = [spec.paper_code for spec in QUARTERLY_SERIES]
-ONE_TIME_OPTIMIZATION_STRATEGIES = {"mango_rmse", "mango_rmse_random"}
+FAIR_OPTIMIZATION_VARIABLES = [spec.paper_code for spec in QUARTERLY_SERIES]
+DEFAULT_MDD_OPTIMIZATION_VARIABLES = FAIR_OPTIMIZATION_VARIABLES.copy()
+RMSE_REQUIRED_OPTIMIZATION_VARIABLES = FAIR_OPTIMIZATION_VARIABLES.copy()
+OPTIMIZED_STRATEGIES = {"mango_mdd", "mango_rmse", "mango_rmse_random"}
 
 
 def default_optimization_variables(strategy: str) -> list[str]:
-    if strategy in {"mango_rmse", "mango_rmse_random"}:
-        return RMSE_REQUIRED_OPTIMIZATION_VARIABLES.copy()
-    return DEFAULT_MDD_OPTIMIZATION_VARIABLES.copy()
+    if strategy in OPTIMIZED_STRATEGIES:
+        return FAIR_OPTIMIZATION_VARIABLES.copy()
+    return []
 
 
 def resolve_optimization_variables(strategy: str, optimization_variables: list[str] | None) -> list[str]:
-    resolved = []
+    resolved: list[str] = []
     for variable in optimization_variables or default_optimization_variables(strategy):
         if variable not in resolved:
             resolved.append(variable)
 
-    if strategy in {"mango_rmse", "mango_rmse_random"}:
-        if set(resolved) != set(RMSE_REQUIRED_OPTIMIZATION_VARIABLES):
-            required = ",".join(RMSE_REQUIRED_OPTIMIZATION_VARIABLES)
-            raise ValueError(
-                "MBFVAR's RMSE hyperparameter objective currently requires the full quarterly variable block "
-                f"{required}. Smaller quarterly subsets trigger an upstream forecast dimension mismatch and collapse "
-                "the optimizer to the fixed 1e10 penalty."
-            )
-        return RMSE_REQUIRED_OPTIMIZATION_VARIABLES.copy()
+    valid_quarterly = set(FAIR_OPTIMIZATION_VARIABLES)
+    invalid = [variable for variable in resolved if variable not in valid_quarterly]
+    if invalid:
+        raise ValueError(f"Optimization variables must belong to the quarterly block: {invalid}.")
 
+    if strategy in {"mango_rmse", "mango_rmse_random"}:
+        if set(resolved) != valid_quarterly:
+            required = ",".join(FAIR_OPTIMIZATION_VARIABLES)
+            raise ValueError(
+                "The repository RMSE objective requires the full quarterly model block "
+                f"{required} because the audited MBFVAR revision cannot forecast a reduced block safely."
+            )
+        return FAIR_OPTIMIZATION_VARIABLES.copy()
     return resolved
 
 
-def optimize_once_per_experiment(strategy: str) -> bool:
-    return strategy in ONE_TIME_OPTIMIZATION_STRATEGIES
+def validate_selection_schedule(selection_schedule: str) -> str:
+    if selection_schedule not in VALID_SELECTION_SCHEDULES:
+        allowed = ", ".join(VALID_SELECTION_SCHEDULES)
+        raise ValueError(f"selection_schedule must be one of {allowed}, got {selection_schedule}.")
+    return selection_schedule
+
+
+def optimize_once_per_experiment(
+    strategy: str,
+    selection_schedule: str = DEFAULT_SELECTION_SCHEDULE,
+) -> bool:
+    validate_selection_schedule(selection_schedule)
+    return strategy in OPTIMIZED_STRATEGIES and selection_schedule == "first_origin"
 
 
 def select_initial_hyperparameters(
@@ -155,8 +339,9 @@ def select_initial_hyperparameters(
     task_template: dict[str, Any],
     origin_date: pd.Timestamp,
 ) -> list[list[float]] | None:
-    if not optimize_once_per_experiment(strategy):
+    if not optimize_once_per_experiment(strategy, task_template["selection_schedule"]):
         return None
+    task_template["selection_origin"] = pd.Timestamp(origin_date).strftime("%Y-%m-%d")
 
     panel = load_realtime_panel(Path(task_template["panel_path"]))
     quarterly, monthly = build_model_input_frames(panel, origin_date)
@@ -173,13 +358,20 @@ def select_initial_hyperparameters(
     return select_hyperparameters(strategy, optimizer_model, data_in, task_template)
 
 
-def hyperparameter_record(origin_date: pd.Timestamp, strategy: str, hyperparameters: list[list[float]]) -> dict[str, Any]:
+def hyperparameter_record(
+    origin_date: pd.Timestamp,
+    strategy: str,
+    hyperparameters: list[list[float]],
+    information_set: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     base = {
         "forecast_origin": pd.Timestamp(origin_date).strftime("%Y-%m-%d"),
         "group": origin_group(pd.Timestamp(origin_date)),
         "strategy": strategy,
     }
     if hyperparameters:
+    if information_set:
+        base.update(information_set)
         values = hyperparameters[0]
         base.update(
             {
@@ -193,6 +385,402 @@ def hyperparameter_record(origin_date: pd.Timestamp, strategy: str, hyperparamet
     return base
 
 
+OPTIMIZATION_PENALTY = 1.0e10
+MDD_INVALID_FLOOR = -1.0e15
+EXPECTED_NUMERICAL_FAILURES = (
+    np.linalg.LinAlgError,
+    FloatingPointError,
+    OverflowError,
+    ZeroDivisionError,
+)
+
+
+def derive_minimum_training_quarters(
+    nlags: list[int],
+    n_objective_variables: int,
+    *,
+    frequency_ratio: int = 3,
+) -> int:
+    if not nlags or any(not isinstance(lag, (int, np.integer)) or lag < 1 for lag in nlags):
+        raise ValueError("nlags must contain positive integers.")
+    if n_objective_variables < 1:
+        raise ValueError("At least one objective variable is required.")
+    if frequency_ratio < 1:
+        raise ValueError("frequency_ratio must be positive.")
+    # One full lag history plus a predecessor for the first growth target is
+    # required. The variable term prevents a one-observation low-frequency fit
+    # when a larger quarterly block is selected.
+    return max(
+        2,
+        math.ceil((max(nlags) + 1) / frequency_ratio),
+        math.ceil(n_objective_variables / frequency_ratio),
+    )
+
+
+def build_rmse_validation_folds(
+    data_in,
+    *,
+    horizon_quarters: int,
+    h_eval: int | None,
+    n_eval: int,
+    variables: list[str],
+    nlags: list[int],
+    selection: str,
+    min_train_quarters: int | None,
+    fold_seed: int | None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if not isinstance(horizon_quarters, int) or horizon_quarters < 1:
+        raise ValueError("optimization_horizon_quarters must be a positive integer.")
+    if h_eval is not None and (
+        not isinstance(h_eval, int) or h_eval < 1 or h_eval > horizon_quarters
+    ):
+        raise ValueError(
+            f"optimization_eval_horizon_quarters must be in 1..{horizon_quarters}."
+        )
+    if not isinstance(n_eval, int) or n_eval < 1:
+        raise ValueError("optimization_n_eval must be a positive integer.")
+    if selection not in {"rolling", "random"}:
+        raise ValueError(f"Unknown validation-origin selection: {selection}.")
+
+    frequencies = list(data_in.frequencies)
+    if frequencies != ["Q", "M"] or int(data_in.freq_ratio_list[-1]) != 3:
+        raise NotImplementedError("The repository RMSE objective currently supports Q/M models only.")
+
+    quarterly = data_in.input_data_Q.copy()
+    monthly = list(data_in.input_data)[-1].copy()
+    missing_variables = [variable for variable in variables if variable not in quarterly]
+    if missing_variables:
+        raise ValueError(f"Objective variables are missing from the quarterly data: {missing_variables}.")
+
+    derived_minimum = derive_minimum_training_quarters(nlags, len(variables))
+    if min_train_quarters is None:
+        effective_minimum = derived_minimum
+    else:
+        if not isinstance(min_train_quarters, int) or min_train_quarters < derived_minimum:
+            raise ValueError(
+                "optimization_min_t must be an integer at least "
+                f"{derived_minimum} for the configured lags and variables."
+            )
+        effective_minimum = min_train_quarters
+
+    eligible: list[dict[str, Any]] = []
+    maximum_cut = len(quarterly) - horizon_quarters
+    for cut in range(effective_minimum, maximum_cut + 1):
+        train_quarterly = quarterly.iloc[:cut].copy()
+        holdout = quarterly.iloc[cut : cut + horizon_quarters].copy()
+        if len(holdout) != horizon_quarters or holdout[variables].isna().any().any():
+            continue
+        invalid_growth = False
+        for variable in variables:
+            if SERIES_BY_CODE[variable].evaluation_transform == "growth":
+                values = pd.concat(
+                    [train_quarterly[variable].iloc[-1:], holdout[variable]]
+                )
+                if values.isna().any() or (values <= 0).any():
+                    invalid_growth = True
+                    break
+        if invalid_growth:
+            continue
+
+        train_end_quarter = pd.Timestamp(train_quarterly.index[-1]).to_period("Q")
+        train_monthly = monthly.loc[
+            pd.PeriodIndex(monthly.index, freq="Q") <= train_end_quarter
+        ].copy()
+        if len(train_monthly) <= max(nlags) or train_monthly.iloc[-1].isna().any():
+            continue
+
+        target_quarters = pd.PeriodIndex(holdout.index, freq="Q")
+        eligible.append(
+            {
+                "cut": cut,
+                "training_end_quarter": train_end_quarter,
+                "target_quarters": target_quarters,
+                "quarterly": train_quarterly,
+                "monthly": train_monthly,
+                "holdout": holdout,
+            }
+        )
+
+    if n_eval > len(eligible):
+        raise ValueError(
+            f"optimization_n_eval={n_eval} exceeds the {len(eligible)} strictly feasible "
+            "validation origins; no silent truncation is allowed."
+        )
+    if selection == "rolling":
+        folds = eligible[-n_eval:]
+    else:
+        rng = np.random.default_rng(fold_seed)
+        positions = sorted(rng.choice(len(eligible), size=n_eval, replace=False).tolist())
+        folds = [eligible[position] for position in positions]
+
+    diagnostics = {
+        "selection": selection,
+        "requested_n_eval": n_eval,
+        "effective_n_eval": len(folds),
+        "derived_min_train_quarters": derived_minimum,
+        "effective_min_train_quarters": effective_minimum,
+        "fold_seed": fold_seed,
+        "origins": [
+            {
+                "training_end_quarter": str(fold["training_end_quarter"]),
+                "target_start_quarter": str(fold["target_quarters"][0]),
+                "target_end_quarter": str(fold["target_quarters"][-1]),
+                "cut": fold["cut"],
+            }
+            for fold in folds
+        ],
+    }
+    return folds, diagnostics
+
+
+def _candidate_hyperparameters(params: dict[str, Any]) -> list[list[float]]:
+    values: list[float] = []
+    for name in ("lambda1_1", "lambda2_1", "lambda4_1", "lambda5_1"):
+        if name not in params:
+            raise KeyError(f"Optimizer candidate is missing {name}.")
+        value = float(params[name])
+        lower, upper = DEFAULT_PARAM_SPACE_BOUNDS[name]
+        if not np.isfinite(value) or value < lower or value > upper:
+            raise ValueError(f"Optimizer candidate {name}={value} is outside [{lower}, {upper}].")
+        values.append(value)
+    return [[values[0], values[1], 1.0, values[2], values[3]]]
+
+
+def _rmse_candidate_score(
+    params: dict[str, Any],
+    *,
+    model_class,
+    folds: list[dict[str, Any]],
+    variables: list[str],
+    horizon_quarters: int,
+    h_eval: int | None,
+    nsim: int,
+    nburn_perc: float,
+    nlags: list[int],
+    thining: int,
+    temp_agg: str,
+    objective_seed: int | None,
+) -> float:
+    hyperparameters = _candidate_hyperparameters(params)
+    errors_by_variable: dict[str, list[float]] = {variable: [] for variable in variables}
+    evaluated_horizons = (
+        [h_eval] if h_eval is not None else list(range(1, horizon_quarters + 1))
+    )
+
+    for fold_index, fold in enumerate(folds):
+        fold_data = make_data_in(fold["quarterly"], fold["monthly"])
+        fold_model = model_class(nsim, nburn_perc, nlags, thining)
+        seed = stable_child_seed(objective_seed, "rmse_fold", fold_index)
+        with deterministic_rng_context(seed):
+            fold_model.fit(
+                fold_data,
+                hyp=hyperparameters,
+                var_of_interest=variables,
+                temp_agg=temp_agg,
+                check_explosive=False,
+            )
+            fold_model.forecast(horizon_quarters * 3)
+
+        draw_frames = aggregate_quarterly_posterior_draws(fold_model)
+        _, metric_summaries = summarize_quarterly_draws(draw_frames)
+        predicted_metrics = metric_summaries["mean"]
+
+        actual_levels = pd.concat(
+            [fold["quarterly"].iloc[-1:], fold["holdout"]]
+        ).copy()
+        actual_levels.index = pd.PeriodIndex(actual_levels.index, freq="Q")
+        actual_metrics = compute_quarterly_metrics(actual_levels)
+
+        for horizon in evaluated_horizons:
+            target = fold["target_quarters"][horizon - 1]
+            if target not in predicted_metrics.index or target not in actual_metrics.index:
+                raise ValueError(
+                    f"Validation forecast is missing target {target} at horizon {horizon}."
+                )
+            for variable in variables:
+                prediction = float(predicted_metrics.at[target, variable])
+                actual = float(actual_metrics.at[target, variable])
+                if not np.isfinite(prediction) or not np.isfinite(actual):
+                    raise FloatingPointError(
+                        f"Non-finite validation metric for {variable} at {target}."
+                    )
+                errors_by_variable[variable].append(prediction - actual)
+
+    variable_mses = []
+    for variable, errors in errors_by_variable.items():
+        if not errors:
+            raise ValueError(f"No validation errors were produced for {variable}.")
+        variable_mses.append(float(np.mean(np.square(errors))))
+    return float(np.sqrt(np.mean(variable_mses)))
+
+
+def _mdd_candidate_score(
+    params: dict[str, Any],
+    *,
+    model_class,
+    data_in,
+    variables: list[str],
+    nsim: int,
+    nburn_perc: float,
+    nlags: list[int],
+    thining: int,
+    temp_agg: str,
+    objective_seed: int | None,
+    n_replicates: int,
+) -> float:
+    hyperparameters = _candidate_hyperparameters(params)
+    mdd_values: list[float] = []
+    for replicate in range(n_replicates):
+        replicate_model = model_class(nsim, nburn_perc, nlags, thining)
+        seed = stable_child_seed(objective_seed, "mdd_replicate", replicate)
+        with deterministic_rng_context(seed):
+            value = replicate_model.fit(
+                copy.deepcopy(data_in),
+                hyp=hyperparameters,
+                var_of_interest=variables,
+                temp_agg=temp_agg,
+                check_explosive=False,
+                return_mdd=True,
+            )
+        value = float(value)
+        if not np.isfinite(value) or value <= MDD_INVALID_FLOOR:
+            raise FloatingPointError(f"Invalid MDD objective value: {value}.")
+        mdd_values.append(value)
+    return -float(np.mean(mdd_values))
+
+
+def _run_local_mango_optimizer(
+    strategy: str,
+    model,
+    data_in,
+    args: dict[str, Any],
+) -> list[list[float]]:
+    from mango import Tuner
+
+    variables = args["optimization_variables"]
+    diagnostics: dict[str, Any] = {
+        "objective": (
+            "equal_variable_weight_rmse_of_evaluation_metric"
+            if strategy in {"mango_rmse", "mango_rmse_random"}
+            else "negative_mean_log_marginal_data_density"
+        ),
+        "objective_variables": variables,
+        "variable_weights": {variable: 1.0 / len(variables) for variable in variables},
+        "valid_evaluations": 0,
+        "penalized_evaluations": 0,
+        "exceptional_evaluations": 0,
+        "nonfinite_evaluations": 0,
+        "penalty": OPTIMIZATION_PENALTY,
+        "candidate_seed": args.get("optimization_candidate_seed"),
+        "objective_seed": args.get("optimization_objective_seed"),
+        "optimizer_njobs_effective": 1,
+    }
+
+    folds: list[dict[str, Any]] | None = None
+    if strategy in {"mango_rmse", "mango_rmse_random"}:
+        folds, fold_diagnostics = build_rmse_validation_folds(
+            data_in,
+            horizon_quarters=args["optimization_horizon_quarters"],
+            h_eval=args["optimization_eval_horizon_quarters"],
+            n_eval=args["optimization_n_eval"],
+            variables=variables,
+            nlags=args["nlags"],
+            selection="random" if strategy == "mango_rmse_random" else "rolling",
+            min_train_quarters=args["optimization_min_t"],
+            fold_seed=args.get("optimization_fold_seed"),
+        )
+        diagnostics["validation"] = fold_diagnostics
+        diagnostics["metric_transforms"] = {
+            variable: SERIES_BY_CODE[variable].evaluation_transform
+            for variable in variables
+        }
+
+    def score_one(params: dict[str, Any]) -> float:
+        try:
+            if strategy in {"mango_rmse", "mango_rmse_random"}:
+                assert folds is not None
+                score = _rmse_candidate_score(
+                    params,
+                    model_class=model.__class__,
+                    folds=folds,
+                    variables=variables,
+                    horizon_quarters=args["optimization_horizon_quarters"],
+                    h_eval=args["optimization_eval_horizon_quarters"],
+                    nsim=args["optimization_nsim"],
+                    nburn_perc=args["nburn_perc"],
+                    nlags=args["nlags"],
+                    thining=args["thining"],
+                    temp_agg=args["temp_agg"],
+                    objective_seed=args.get("optimization_objective_seed"),
+                )
+            else:
+                score = _mdd_candidate_score(
+                    params,
+                    model_class=model.__class__,
+                    data_in=data_in,
+                    variables=variables,
+                    nsim=args["optimization_nsim"],
+                    nburn_perc=args["nburn_perc"],
+                    nlags=args["nlags"],
+                    thining=args["thining"],
+                    temp_agg=args["temp_agg"],
+                    objective_seed=args.get("optimization_objective_seed"),
+                    n_replicates=args["optimization_objective_replicates"],
+                )
+        except EXPECTED_NUMERICAL_FAILURES:
+            diagnostics["exceptional_evaluations"] += 1
+            diagnostics["penalized_evaluations"] += 1
+            return OPTIMIZATION_PENALTY
+        if not np.isfinite(score):
+            diagnostics["nonfinite_evaluations"] += 1
+            diagnostics["penalized_evaluations"] += 1
+            return OPTIMIZATION_PENALTY
+        diagnostics["valid_evaluations"] += 1
+        return float(score)
+
+    def batch_objective(params_batch: list[dict[str, Any]]) -> list[float]:
+        return [score_one(params) for params in params_batch]
+
+    configuration = {
+        "num_iteration": args["optimization_iterations"],
+        "initial_random": args["optimization_init_points"],
+        "batch_size": 1,
+    }
+    candidate_seed = args.get("optimization_candidate_seed")
+    with deterministic_rng_context(candidate_seed):
+        results = Tuner(
+            make_param_space(DEFAULT_PARAM_SPACE_BOUNDS),
+            batch_objective,
+            configuration,
+        ).minimize()
+
+    best_params = results.get("best_params")
+    best_objective = results.get("best_objective")
+    if not isinstance(best_params, dict) or best_objective is None:
+        raise RuntimeError("Mango did not return a best candidate and objective value.")
+    best_objective = float(best_objective)
+    postcheck_score = score_one(best_params)
+    if (
+        diagnostics["valid_evaluations"] == 0
+        or not np.isfinite(best_objective)
+        or best_objective >= OPTIMIZATION_PENALTY
+        or not np.isfinite(postcheck_score)
+        or postcheck_score >= OPTIMIZATION_PENALTY
+    ):
+        raise RuntimeError(
+            "Hyperparameter optimization produced no valid candidate; "
+            "an all-penalty result is never accepted."
+        )
+
+    diagnostics["best_objective"] = best_objective
+    diagnostics["postcheck_objective"] = postcheck_score
+    diagnostics["best_optimizer_coordinates"] = {
+        name: float(value) for name, value in best_params.items()
+    }
+    args["_selection_diagnostics"] = diagnostics
+    return _candidate_hyperparameters(best_params)
+
+
 def select_hyperparameters(
     strategy: str,
     model,
@@ -201,53 +789,9 @@ def select_hyperparameters(
 ) -> list[list[float]]:
     if strategy == "paper":
         return [PAPER_HYPERPARAMETERS]
+    if strategy in OPTIMIZED_STRATEGIES:
+        return _run_local_mango_optimizer(strategy, model, data_in, args)
 
-    param_space = make_param_space(DEFAULT_PARAM_SPACE_BOUNDS)
-    optimization_vars = args["optimization_variables"]
-    if strategy == "mango_mdd":
-        return model.update_hyperparameters_mango(
-            data_in,
-            param_space=param_space,
-            init_points=args["optimization_init_points"],
-            n_iter=args["optimization_iterations"],
-            nsim=args["optimization_nsim"],
-            njobs=args["optimization_njobs"],
-            var_of_interest=optimization_vars,
-            temp_agg=args["temp_agg"],
-            save=False,
-        )
-    if strategy == "mango_rmse":
-        return model.update_hyperparameters_mango_rmse(
-            data_in,
-            param_space=param_space,
-            H=args["optimization_horizon_quarters"],
-            init_points=args["optimization_init_points"],
-            n_iter=args["optimization_iterations"],
-            nsim=args["optimization_nsim"],
-            njobs=args["optimization_njobs"],
-            var_of_interest=optimization_vars,
-            temp_agg=args["temp_agg"],
-            h_eval=args["optimization_eval_horizon_quarters"],
-            n_eval=args["optimization_n_eval"],
-            save=False,
-        )
-    if strategy == "mango_rmse_random":
-        return model.update_hyperparameters_mango_rmse_random(
-            data_in,
-            param_space=param_space,
-            H=args["optimization_horizon_quarters"],
-            init_points=args["optimization_init_points"],
-            n_iter=args["optimization_iterations"],
-            nsim=args["optimization_nsim"],
-            njobs=args["optimization_njobs"],
-            var_of_interest=optimization_vars,
-            temp_agg=args["temp_agg"],
-            h_eval=args["optimization_eval_horizon_quarters"],
-            n_eval=args["optimization_n_eval"],
-            min_T=args["optimization_min_t"],
-            random_seed=args["optimization_random_seed"],
-            save=False,
-        )
     raise ValueError(f"Unsupported strategy: {strategy}")
 
 
@@ -257,45 +801,132 @@ def extract_forecasts(
     model,
     actual_levels: pd.DataFrame,
 ) -> pd.DataFrame:
-    current_quarter = origin_date.to_period("Q")
-    prediction_frames = {
-        "mean": model.YY_mean_agg,
-        "median": model.YY_median_agg,
-        "p95": model.YY_095_agg,
-        "p84": model.YY_084_agg,
-        "p16": model.YY_016_agg,
-        "p05": model.YY_005_agg,
-    }
-    metric_frames = {name: compute_quarterly_metrics(frame) for name, frame in prediction_frames.items()}
+    current_quarter = pd.Timestamp(origin_date).to_period("Q")
+    draw_frames = aggregate_quarterly_posterior_draws(model)
+    prediction_frames, metric_frames = summarize_quarterly_draws(draw_frames)
+
+    actual_levels = actual_levels.copy()
+    actual_levels.index = pd.PeriodIndex(actual_levels.index, freq="Q")
     actual_metrics = compute_quarterly_metrics(actual_levels)
+    variables = [spec.paper_code for spec in SERIES_SPECS]
+    prediction_variables = prediction_frames["mean"].columns.tolist()
+    if set(prediction_variables) != set(variables):
+        missing = sorted(set(variables) - set(prediction_variables))
+        extra = sorted(set(prediction_variables) - set(variables))
+        raise ValueError(
+            f"Forecast variable coverage mismatch; missing={missing}, extra={extra}."
+        )
+
+    target_quarters = [
+        current_quarter + (horizon - 1)
+        for horizon in range(1, MAX_FORECAST_HORIZON_QUARTERS + 1)
+    ]
+    missing_prediction_targets = [
+        str(target)
+        for target in target_quarters
+        if target not in prediction_frames["mean"].index
+    ]
+    missing_actual_targets = [
+        str(target) for target in target_quarters if target not in actual_levels.index
+    ]
+    if missing_prediction_targets or missing_actual_targets:
+        raise ValueError(
+            "Requested forecast coverage is incomplete: "
+            f"missing predictions={missing_prediction_targets}, "
+            f"missing actuals={missing_actual_targets}."
+        )
 
     rows: list[dict[str, Any]] = []
-    for horizon_quarters in range(1, MAX_FORECAST_HORIZON_QUARTERS + 1):
-        target_quarter = current_quarter + (horizon_quarters - 1)
-        if target_quarter not in actual_levels.index:
-            continue
-        if target_quarter not in prediction_frames["mean"].index:
-            continue
+    for horizon_quarters, target_quarter in enumerate(target_quarters, start=1):
+        for variable in variables:
+            actual_level = float(actual_levels.at[target_quarter, variable])
+            actual_metric = float(actual_metrics.at[target_quarter, variable])
+            if not np.isfinite(actual_level) or not np.isfinite(actual_metric):
+                raise ValueError(
+                    f"Actual {variable} for {target_quarter} is missing, partial, or non-finite."
+                )
 
-        for variable in prediction_frames["mean"].columns:
             row = {
                 "strategy": strategy,
-                "forecast_origin": origin_date.strftime("%Y-%m-%d"),
-                "group": origin_group(origin_date),
+                "forecast_origin": pd.Timestamp(origin_date).strftime("%Y-%m-%d"),
+                "group": origin_group(pd.Timestamp(origin_date)),
                 "target_quarter": str(target_quarter),
                 "horizon_quarters": horizon_quarters,
                 "variable": variable,
-                "actual_level": actual_levels.at[target_quarter, variable],
-                "actual_metric": actual_metrics.at[target_quarter, variable],
+                "actual_level": actual_level,
+                "actual_metric": actual_metric,
             }
             for frame_name, frame in prediction_frames.items():
-                row[f"{frame_name}_level"] = frame.at[target_quarter, variable]
+                value = float(frame.at[target_quarter, variable])
+                if not np.isfinite(value):
+                    raise ValueError(
+                        f"Posterior {frame_name} level is non-finite for {variable} at {target_quarter}."
+                    )
+                row[f"{frame_name}_level"] = value
             for frame_name, frame in metric_frames.items():
-                row[f"{frame_name}_metric"] = frame.at[target_quarter, variable]
+                value = float(frame.at[target_quarter, variable])
+                if not np.isfinite(value):
+                    raise ValueError(
+                        f"Posterior {frame_name} metric is non-finite for {variable} at {target_quarter}."
+                    )
+                row[f"{frame_name}_metric"] = value
             row["error_metric"] = row["mean_metric"] - row["actual_metric"]
             rows.append(row)
 
-    return pd.DataFrame(rows)
+    forecasts = pd.DataFrame(rows)
+    expected_rows = MAX_FORECAST_HORIZON_QUARTERS * len(variables)
+    key_columns = ["forecast_origin", "target_quarter", "horizon_quarters", "variable"]
+    if len(forecasts) != expected_rows or forecasts.duplicated(key_columns).any():
+        raise RuntimeError(
+            f"Forecast extraction produced {len(forecasts)} rows; expected {expected_rows} unique keys."
+        )
+    return forecasts
+
+
+def required_forecast_months(
+    monthly_frame: pd.DataFrame,
+    origin_date: pd.Timestamp,
+    *,
+    max_horizon_quarters: int = MAX_FORECAST_HORIZON_QUARTERS,
+) -> int:
+    if monthly_frame.empty:
+        raise ValueError("Cannot derive a forecast horizon from an empty monthly block.")
+    if max_horizon_quarters < 1:
+        raise ValueError("max_horizon_quarters must be positive.")
+    model_endpoint = pd.Timestamp(monthly_frame.index[-1]).to_period("M")
+    final_target_month = (
+        pd.Timestamp(origin_date)
+        .to_period("Q")
+        .add(max_horizon_quarters - 1)
+        .asfreq("M", how="end")
+    )
+    required = final_target_month.ordinal - model_endpoint.ordinal
+    if required < 1:
+        raise ValueError(
+            f"Model calendar endpoint {model_endpoint} is not before final target month {final_target_month}."
+        )
+    return required
+
+
+def _origin_information_set(
+    quarterly: pd.DataFrame,
+    monthly: pd.DataFrame,
+    origin_date: pd.Timestamp,
+    effective_forecast_months: int,
+) -> dict[str, Any]:
+    last_released_month = pd.Timestamp(
+        monthly.attrs.get("last_released_month", monthly.dropna(how="all").index[-1])
+    )
+    quarterly_observed = quarterly.dropna(how="all")
+    last_quarter = pd.Timestamp(quarterly_observed.index[-1]).to_period("Q")
+    origin_month = pd.Timestamp(origin_date).to_period("M")
+    return {
+        "quarterly_information_set_end": str(last_quarter),
+        "monthly_last_released": last_released_month.strftime("%Y-%m-%d"),
+        "model_calendar_endpoint": pd.Timestamp(monthly.index[-1]).strftime("%Y-%m-%d"),
+        "origin_data_lag_months": origin_month.ordinal - last_released_month.to_period("M").ordinal,
+        "forecast_horizon_months_effective": effective_forecast_months,
+    }
 
 
 def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:

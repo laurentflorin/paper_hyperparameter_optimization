@@ -29,6 +29,9 @@ from dataclasses import dataclass
 from typing import Any, Callable, Sequence
 
 import numpy as np
+import pandas as pd
+
+from experiment_provenance import deterministic_rng_context, stable_child_seed
 
 from .config import (
     GLP_HYPERPRIORS,
@@ -47,6 +50,23 @@ try:  # numpy>=2
 except AttributeError:  # pragma: no cover - older numpy
     _ComplexWarning = np.ComplexWarning  # type: ignore[attr-defined]
 warnings.filterwarnings("ignore", category=_ComplexWarning)
+
+
+MDD_PENALTY = -1.0e15
+RMSE_PENALTY = 1.0e10
+PSI_LOG_MULTIPLIER_BOUNDS = (float(np.log(0.01)), float(np.log(100.0)))
+
+
+class InvalidHyperparameterError(ValueError):
+    """Raised when optimizer coordinates do not map strictly inside GLP bounds."""
+
+
+class HyperparameterOptimizationError(RuntimeError):
+    """Raised when an optimizer produces no valid finite candidate."""
+
+
+class GLPModeOptimizationError(HyperparameterOptimizationError):
+    """Raised when scipy does not find a valid GLP posterior mode."""
 
 
 class _NumpySafeFloat(float):
@@ -259,39 +279,94 @@ def _bounds_from_context(ctx: GLPContext) -> tuple[np.ndarray, np.ndarray]:
     return _full_bounds(ctx)
 
 
-def to_transformed(natural: Sequence[float], ctx: GLPContext) -> np.ndarray:
-    """Map a natural hyperparameter vector to the unconstrained real line."""
+def _validate_natural_vector(
+    natural: Sequence[float],
+    ctx: GLPContext,
+) -> np.ndarray:
     lo, hi = _full_bounds(ctx)
-    nat = np.clip(np.asarray(natural, dtype=float).ravel(), lo + 1e-12, hi - 1e-12)
+    nat = np.asarray(natural, dtype=float).ravel()
+    if nat.shape != lo.shape:
+        raise InvalidHyperparameterError(
+            f"Expected {lo.size} natural hyperparameters, received {nat.size}."
+        )
+    if not np.isfinite(nat).all():
+        raise InvalidHyperparameterError("Hyperparameters must all be finite.")
+    invalid = (nat <= lo) | (nat >= hi)
+    if invalid.any():
+        indices = np.flatnonzero(invalid).tolist()
+        raise InvalidHyperparameterError(
+            "Hyperparameters must lie strictly inside context bounds; "
+            f"invalid coordinate indices: {indices}."
+        )
+    return nat
+
+
+def to_transformed(natural: Sequence[float], ctx: GLPContext) -> np.ndarray:
+    """Map a valid natural hyperparameter vector to the unconstrained real line."""
+    lo, hi = _full_bounds(ctx)
+    nat = _validate_natural_vector(natural, ctx)
     return -np.log((hi - nat) / (nat - lo))
 
 
 def to_natural(transformed: Sequence[float], ctx: GLPContext) -> np.ndarray:
-    """Inverse of :func:`to_transformed`."""
+    """Inverse of to_transformed."""
     lo, hi = _full_bounds(ctx)
     t = np.asarray(transformed, dtype=float).ravel()
-    return lo + (hi - lo) / (1.0 + np.exp(-t))
+    if t.shape != lo.shape or not np.isfinite(t).all():
+        raise InvalidHyperparameterError("Transformed hyperparameters have invalid shape or values.")
+    with np.errstate(over="raise", invalid="raise"):
+        natural = lo + (hi - lo) / (1.0 + np.exp(-t))
+    return _validate_natural_vector(natural, ctx)
+
+
+def _psi_from_log_multipliers(
+    multipliers: Sequence[float],
+    ctx: GLPContext,
+) -> np.ndarray:
+    log_multipliers = np.asarray(multipliers, dtype=float).ravel()
+    if log_multipliers.size != ctx.n:
+        raise InvalidHyperparameterError(
+            f"Expected {ctx.n} psi log multipliers, received {log_multipliers.size}."
+        )
+    lower, upper = PSI_LOG_MULTIPLIER_BOUNDS
+    if (
+        not np.isfinite(log_multipliers).all()
+        or np.any(log_multipliers <= lower)
+        or np.any(log_multipliers >= upper)
+    ):
+        raise InvalidHyperparameterError(
+            "psi log multipliers must lie strictly inside log(0.01)..log(100)."
+        )
+    return np.ravel(ctx.SS).astype(float) * np.exp(log_multipliers)
 
 
 def hyper_to_natural_vector(hyper: dict[str, Any], ctx: GLPContext) -> np.ndarray:
-    """Build the covbayesvar-ordered natural vector from a hyperparameter dict.
+    """Build a validated covbayesvar-ordered natural vector.
 
-    ``hyper`` must carry ``lambda``/``theta``/``miu``; the ``psi`` entry (a list of
-    ``n`` scales, or ``None``) is only consulted when psi is estimated and falls
-    back to the AR(1) residual variances otherwise.
+    RMSE-selected psi coordinates are fixed dimensionless log multipliers of
+    each context's training-only AR residual scale. Legacy absolute psi values
+    remain accepted but are never clipped.
     """
     vec = [float(hyper["lambda"])]
     if _psi_enabled(ctx):
-        psi = hyper.get("psi")
-        psi = np.ravel(ctx.SS) if psi is None else np.ravel(np.asarray(psi, dtype=float))
+        log_multipliers = hyper.get("psi_log_multipliers")
+        if log_multipliers is not None:
+            psi = _psi_from_log_multipliers(log_multipliers, ctx)
+        else:
+            psi_value = hyper.get("psi")
+            psi = (
+                np.ravel(ctx.SS).astype(float)
+                if psi_value is None
+                else np.ravel(np.asarray(psi_value, dtype=float))
+            )
         vec.extend(psi.astype(float).tolist())
     vec.extend([float(hyper["theta"]), float(hyper["miu"])])
-    return np.asarray(vec, dtype=float)
+    return _validate_natural_vector(vec, ctx)
 
 
 def natural_vector_to_hyper(vector: Sequence[float], ctx: GLPContext) -> dict[str, Any]:
-    """Inverse of :func:`hyper_to_natural_vector` (``psi`` is ``None`` when fixed)."""
-    vec = np.asarray(vector, dtype=float).ravel()
+    """Convert a validated natural vector to a serializable hyperparameter dict."""
+    vec = _validate_natural_vector(vector, ctx)
     hyper: dict[str, Any] = {"lambda": float(vec[0])}
     idx = 1
     if _psi_enabled(ctx):
@@ -305,8 +380,8 @@ def natural_vector_to_hyper(vector: Sequence[float], ctx: GLPContext) -> dict[st
 
 
 def _clip_natural(vector: Sequence[float], ctx: GLPContext) -> np.ndarray:
-    """Clip a natural vector strictly inside the context bounds (a safe round-trip)."""
-    return to_natural(to_transformed(vector, ctx), ctx)
+    """Compatibility alias that now validates and never clips."""
+    return _validate_natural_vector(vector, ctx)
 
 
 # --------------------------------------------------------------------------- #
@@ -461,6 +536,13 @@ def glp_find_mode(
         if method == "Nelder-Mead"
         else {"maxiter": scaled_maxiter},
     )
+    if not bool(result.success) or not np.isfinite(float(result.fun)):
+        raise GLPModeOptimizationError(
+            "GLP posterior-mode optimization failed: "
+            f"status={getattr(result, 'status', None)}, "
+            f"message={getattr(result, 'message', '')!s}, "
+            f"fun={getattr(result, 'fun', None)!r}."
+        )
     natural = to_natural(result.x, ctx)
     hyper = natural_vector_to_hyper(natural, ctx)
     _, betahat, sigmahat = _formin(ctx, result.x)
@@ -473,6 +555,13 @@ def glp_find_mode(
         "betahat": np.asarray(betahat, dtype=float),
         "sigmahat": np.asarray(sigmahat, dtype=float),
         "transformed": np.asarray(result.x, dtype=float),
+        "optimization_diagnostics": {
+            "success": True,
+            "status": int(getattr(result, "status", 0)),
+            "message": str(getattr(result, "message", "")),
+            "nfev": int(getattr(result, "nfev", 0)),
+            "nit": int(getattr(result, "nit", 0)),
+        },
     }
 
 
@@ -598,25 +687,31 @@ def glp_fixed_hyperparameter_forecast_draws(
 def make_param_space(
     ctx: GLPContext | None = None,
     bounds: dict[str, tuple[float, float]] | None = None,
+    *,
+    psi_parameterization: str = "absolute",
 ) -> dict[str, Any]:
-    """Mango search space over ``[lambda, psi_1..psi_n, theta, miu]``.
-
-    The psi dimensions (data-dependent bounds ``SS/100 .. SS*100``) are only added
-    when ``ctx`` is supplied and psi is estimated (``MNpsi=1``). scipy ``uniform``
-    distributions are built positionally to avoid the Mango keyword-args bug.
-    """
+    """Build a Mango space with absolute or training-scale-relative psi coordinates."""
     from scipy.stats import uniform
 
     if bounds is None:
         bounds = GLP_PARAM_SPACE_BOUNDS
+    if psi_parameterization not in {"absolute", "ss_log_multiplier"}:
+        raise ValueError(
+            "psi_parameterization must be 'absolute' or 'ss_log_multiplier'."
+        )
     space: dict[str, Any] = {}
     lower, upper = bounds["lambda"]
     space["lam"] = uniform(lower, upper - lower)
     if ctx is not None and _psi_enabled(ctx):
-        psi_lo = np.ravel(ctx.MIN["psi"]).astype(float)
-        psi_hi = np.ravel(ctx.MAX["psi"]).astype(float)
-        for i in range(ctx.n):
-            space[f"psi_{i}"] = uniform(psi_lo[i], psi_hi[i] - psi_lo[i])
+        if psi_parameterization == "ss_log_multiplier":
+            lower, upper = PSI_LOG_MULTIPLIER_BOUNDS
+            for i in range(ctx.n):
+                space[f"psi_log_multiplier_{i}"] = uniform(lower, upper - lower)
+        else:
+            psi_lo = np.ravel(ctx.MIN["psi"]).astype(float)
+            psi_hi = np.ravel(ctx.MAX["psi"]).astype(float)
+            for i in range(ctx.n):
+                space[f"psi_{i}"] = uniform(psi_lo[i], psi_hi[i] - psi_lo[i])
     for key in ("theta", "miu"):
         lower, upper = bounds[key]
         space[key] = uniform(lower, upper - lower)
@@ -624,17 +719,45 @@ def make_param_space(
 
 
 def _params_to_natural(params: dict[str, float], ctx: GLPContext) -> np.ndarray:
-    """Assemble the covbayesvar-ordered natural vector from a Mango params dict."""
+    """Map one Mango candidate to the current training context without clipping."""
     vec = [float(params["lam"])]
     if _psi_enabled(ctx):
-        for i in range(ctx.n):
-            vec.append(float(params[f"psi_{i}"]))
+        multiplier_keys = [f"psi_log_multiplier_{i}" for i in range(ctx.n)]
+        if any(key in params for key in multiplier_keys):
+            if not all(key in params for key in multiplier_keys):
+                raise InvalidHyperparameterError("Incomplete psi log-multiplier candidate.")
+            psi = _psi_from_log_multipliers(
+                [float(params[key]) for key in multiplier_keys],
+                ctx,
+            )
+            vec.extend(psi.tolist())
+        else:
+            try:
+                vec.extend(float(params[f"psi_{i}"]) for i in range(ctx.n))
+            except KeyError as exc:
+                raise InvalidHyperparameterError("Incomplete absolute psi candidate.") from exc
     vec.extend([float(params["theta"]), float(params["miu"])])
-    return np.asarray(vec, dtype=float)
+    return _validate_natural_vector(vec, ctx)
 
 
-def _best_hyperparameters(best_params: dict[str, float], ctx: GLPContext) -> dict[str, Any]:
-    return natural_vector_to_hyper(_params_to_natural(best_params, ctx), ctx)
+def _best_hyperparameters(
+    best_params: dict[str, float],
+    ctx: GLPContext,
+) -> dict[str, Any]:
+    hyper = natural_vector_to_hyper(_params_to_natural(best_params, ctx), ctx)
+    multiplier_keys = [f"psi_log_multiplier_{i}" for i in range(ctx.n)]
+    if _psi_enabled(ctx) and all(key in best_params for key in multiplier_keys):
+        hyper["psi_log_multipliers"] = [
+            float(best_params[key]) for key in multiplier_keys
+        ]
+        hyper["psi_parameterization"] = "ss_log_multiplier"
+    else:
+        hyper["psi_log_multipliers"] = None
+        hyper["psi_parameterization"] = "absolute"
+    hyper["optimizer_coordinates"] = {
+        str(key): float(value) for key, value in best_params.items()
+    }
+    return hyper
 
 
 # --------------------------------------------------------------------------- #
@@ -650,32 +773,66 @@ def update_hyperparameters_mango(
     njobs: int = 1,
     hyperpriors: int = GLP_HYPERPRIORS,
     context: GLPContext | None = None,
+    optimizer_seed: int | None = None,
     **prior_kwargs: Any,
-) -> dict[str, float]:
-    """Select ``[lambda, theta, miu]`` by MAXIMIZING the GLP (log) posterior /
-    marginal data density with Bayesian optimization (Mango).
-
-    This is the direct analogue of ``MBFVAR.update_hyperparameters_mango`` but on
-    the single-frequency GLP BVAR: the objective is ``logMLVAR_formcmc(draw=0)``,
-    i.e. the same quantity ``bvarGLP`` maximizes with ``csminwel`` -- only the
-    optimizer differs.
-    """
+) -> dict[str, Any]:
+    """Maximize the GLP posterior/MDD and fail if no valid candidate exists."""
     from mango import Tuner, scheduler
 
-    ctx = context if context is not None else prepare_glp_context(y, lags, hyperpriors=hyperpriors, **prior_kwargs)
+    if init_points <= 0 or n_iter <= 0 or njobs <= 0:
+        raise ValueError("init_points, n_iter, and njobs must be positive.")
+    ctx = (
+        context
+        if context is not None
+        else prepare_glp_context(y, lags, hyperpriors=hyperpriors, **prior_kwargs)
+    )
     if param_space is None:
         param_space = make_param_space(ctx)
 
-    @scheduler.parallel(n_jobs=njobs)
-    def objective(**params: float) -> float:
-        try:
-            return glp_logposterior(ctx, _params_to_natural(params, ctx))
-        except Exception:  # pragma: no cover - a bad draw must not kill the run
-            return -1.0e15
+    counters = {"valid": 0, "penalized": 0, "nonfinite": 0}
 
+    def raw_objective(**params: float) -> float:
+        try:
+            value = float(glp_logposterior(ctx, _params_to_natural(params, ctx)))
+        except (
+            InvalidHyperparameterError,
+            np.linalg.LinAlgError,
+            FloatingPointError,
+            OverflowError,
+            ZeroDivisionError,
+        ):
+            counters["penalized"] += 1
+            return MDD_PENALTY
+        if not np.isfinite(value):
+            counters["nonfinite"] += 1
+            return MDD_PENALTY
+        counters["valid"] += 1
+        return value
+
+    objective = scheduler.parallel(n_jobs=njobs)(raw_objective)
     conf = dict(num_iteration=n_iter, initial_random=init_points)
-    results = Tuner(param_space, objective, conf).maximize()
-    return _best_hyperparameters(results["best_params"], ctx)
+    with deterministic_rng_context(optimizer_seed):
+        results = Tuner(param_space, objective, conf).maximize()
+    best_params = results.get("best_params") if isinstance(results, dict) else None
+    if not isinstance(best_params, dict) or not best_params:
+        raise HyperparameterOptimizationError("Mango MDD returned no best_params mapping.")
+    best_score = raw_objective(**best_params)
+    if not np.isfinite(best_score) or best_score <= MDD_PENALTY:
+        raise HyperparameterOptimizationError(
+            "Mango MDD produced no valid finite candidate; refusing arbitrary parameters."
+        )
+    hyper = _best_hyperparameters(best_params, ctx)
+    hyper["optimization_diagnostics"] = {
+        "best_score": float(best_score),
+        "objective_direction": "maximize",
+        "penalty": MDD_PENALTY,
+        "optimizer_seed": optimizer_seed,
+        "valid_evaluations_observed_in_process": counters["valid"],
+        "penalized_evaluations_observed_in_process": counters["penalized"],
+        "nonfinite_evaluations_observed_in_process": counters["nonfinite"],
+        "postcondition_revalidated": True,
+    }
+    return hyper
 
 
 def _rmse_eval_origins(
@@ -683,30 +840,40 @@ def _rmse_eval_origins(
     H: int,
     n_eval: int,
     *,
+    lags: int,
     random: bool,
     min_t: int | None,
     random_seed: int | None,
 ) -> list[int]:
-    """Return the training cut points for the RMSE evaluation origins.
-
-    Origin ``k`` trains on ``y[:T - H - k]`` and scores the ``h``-step forecast
-    against ``y[T - H - k + h - 1]``.
-    """
-    min_t = min_t if min_t is not None else max(4 * 5, H + 5)
-    max_k = T - H - min_t
+    """Return exactly n_eval feasible training cut offsets."""
+    for name, value in (("T", T), ("H", H), ("n_eval", n_eval), ("lags", lags)):
+        if not isinstance(value, (int, np.integer)) or int(value) <= 0:
+            raise ValueError(f"{name} must be a positive integer.")
+    derived_min_t = max(4 * int(lags), int(H) + int(lags), int(lags) + 3)
+    if min_t is not None:
+        if not isinstance(min_t, (int, np.integer)) or int(min_t) <= 0:
+            raise ValueError("min_t must be a positive integer when supplied.")
+        resolved_min_t = max(int(min_t), derived_min_t)
+    else:
+        resolved_min_t = derived_min_t
+    max_k = int(T) - int(H) - resolved_min_t
     if max_k < 0:
         raise ValueError(
-            f"No valid RMSE evaluation origin: T={T}, H={H}, min_t={min_t}. Use a longer sample or smaller H/min_t."
+            "No valid RMSE evaluation origin: "
+            f"T={T}, H={H}, lags={lags}, min_t={resolved_min_t}."
         )
     n_valid = max_k + 1
+    if int(n_eval) > n_valid:
+        raise ValueError(
+            f"n_eval={n_eval} exceeds the {n_valid} feasible origins "
+            f"(T={T}, H={H}, lags={lags}, min_t={resolved_min_t})."
+        )
     if random:
-        if n_eval > n_valid:
-            raise ValueError(f"n_eval={n_eval} exceeds the {n_valid} valid random origins.")
         rng = np.random.default_rng(random_seed)
-        ks = sorted(rng.choice(n_valid, size=n_eval, replace=False).tolist())
-    else:
-        ks = [k for k in range(min(n_eval, n_valid))]
-    return ks
+        return sorted(
+            int(k) for k in rng.choice(n_valid, size=int(n_eval), replace=False)
+        )
+    return list(range(int(n_eval)))
 
 
 def _build_rmse_origins(
@@ -723,11 +890,118 @@ def _build_rmse_origins(
     origins: list[tuple[GLPContext, np.ndarray]] = []
     for k in ks:
         cut = T - H - k
+        if cut <= lags:
+            raise ValueError(f"RMSE origin k={k} leaves only {cut} rows for lags={lags}.")
         train = y[:cut, :]
         actual = y[cut : cut + H, :]  # H future quarters (rows 0..H-1)
+        if actual.shape != (H, y.shape[1]):
+            raise ValueError(
+                f"RMSE origin k={k} has incomplete holdout shape {actual.shape}; "
+                f"expected {(H, y.shape[1])}."
+            )
         ctx = prepare_glp_context(train, lags, **prior_kwargs)
         origins.append((ctx, actual))
     return origins
+
+
+def _period_to_quarter_end(period: pd.Period) -> pd.Timestamp:
+    return pd.Timestamp(pd.Period(period, freq="Q").end_time).normalize()
+
+
+def _build_realtime_rmse_origins(
+    panel: pd.DataFrame,
+    *,
+    size: str,
+    quarter_index: pd.PeriodIndex,
+    lags: int,
+    ks: Sequence[int],
+    H: int,
+    prior_kwargs: dict[str, Any],
+    outer_vintage: pd.Timestamp,
+    target_vintage_policy: str,
+    fixed_actual_vintage: pd.Timestamp | None,
+    expected_data_lag_quarters: int,
+    sample_start: pd.Timestamp | None,
+    sample_end: pd.Timestamp | None,
+) -> tuple[list[tuple[GLPContext, np.ndarray]], list[dict[str, Any]]]:
+    """Build true calendar-keyed inner folds from each inner origin's own vintage."""
+    from .data_utils import build_glp_actual_frame, build_glp_estimation_matrix
+
+    if target_vintage_policy not in {"outer_vintage", "fixed_final"}:
+        raise ValueError(
+            "target_vintage_policy must be 'outer_vintage' or 'fixed_final'."
+        )
+    target_vintage = (
+        pd.Timestamp(outer_vintage)
+        if target_vintage_policy == "outer_vintage"
+        else pd.Timestamp(fixed_actual_vintage)
+        if fixed_actual_vintage is not None
+        else None
+    )
+    if target_vintage is None:
+        raise ValueError("fixed_final validation requires fixed_actual_vintage.")
+    target_frame = build_glp_actual_frame(panel, target_vintage, size)
+    available_vintages = set(pd.to_datetime(panel["vintage_date"]).unique())
+
+    origins: list[tuple[GLPContext, np.ndarray]] = []
+    metadata: list[dict[str, Any]] = []
+    T = len(quarter_index)
+    for k in ks:
+        cut = T - H - int(k)
+        expected_information_quarter = pd.Period(quarter_index[cut - 1], freq="Q")
+        inner_nominal_quarter = (
+            expected_information_quarter + int(expected_data_lag_quarters)
+        )
+        inner_vintage = _period_to_quarter_end(inner_nominal_quarter)
+        if inner_vintage.to_datetime64() not in available_vintages:
+            raise ValueError(
+                "True real-time validation vintage is unavailable: "
+                f"{inner_vintage:%Y-%m-%d} (training through "
+                f"{expected_information_quarter}). Extend the vintage panel or "
+                "use validation_vintage_mode='retrospective'."
+            )
+        inner_y, inner_codes, inner_qidx = build_glp_estimation_matrix(
+            panel,
+            inner_vintage,
+            size,
+            sample_start=sample_start,
+            sample_end=sample_end,
+            expected_data_lag_quarters=expected_data_lag_quarters,
+        )
+        if pd.Period(inner_qidx[-1], freq="Q") != expected_information_quarter:
+            raise ValueError(
+                f"Inner vintage {inner_vintage:%Y-%m-%d} ends at {inner_qidx[-1]}, "
+                f"expected {expected_information_quarter}."
+            )
+        target_quarters = pd.period_range(
+            expected_information_quarter + 1,
+            periods=H,
+            freq="Q",
+        )
+        aligned = target_frame.reindex(target_quarters).loc[:, inner_codes]
+        if aligned.shape != (H, len(inner_codes)) or aligned.isna().any().any():
+            raise ValueError(
+                f"Validation targets are incomplete for inner vintage "
+                f"{inner_vintage:%Y-%m-%d} under policy {target_vintage_policy}."
+            )
+        origins.append(
+            (
+                prepare_glp_context(inner_y, lags, **prior_kwargs),
+                aligned.to_numpy(dtype=float),
+            )
+        )
+        metadata.append(
+            {
+                "k": int(k),
+                "cut": int(cut),
+                "inner_vintage": inner_vintage.strftime("%Y-%m-%d"),
+                "information_set_quarter": str(expected_information_quarter),
+                "target_quarters": [str(value) for value in target_quarters],
+                "target_vintage": target_vintage.strftime("%Y-%m-%d"),
+                "target_vintage_policy": target_vintage_policy,
+            }
+        )
+    return origins, metadata
 
 
 def _rmse_objective(
@@ -738,163 +1012,94 @@ def _rmse_objective(
     ctx_ref: GLPContext,
     *,
     n_obj_draws: int = 1,
-    seed_base: int = 0,
+    seed_base: int | None = 0,
 ) -> Callable[..., float]:
-    """Build the (Mango-minimized) RMSE objective for one set of evaluation origins.
+    """Build a deterministic predictive-mean RMSE objective.
 
-    When ``n_obj_draws <= 1`` each origin is scored with the deterministic
-    posterior-**mode** point forecast (the original behaviour). When
-    ``n_obj_draws > 1`` the origin forecast is the Bayesian **predictive mean**:
-    ``bvarFcst`` averaged over ``n_obj_draws`` posterior draws of beta. This
-    matches how the recursive forecasts are aggregated in
-    ``forecasting._forecast_rows`` (mean over draws). Only beta is drawn -- the
-    mean-zero Gaussian shocks are *not* simulated because, for a point RMSE, they
-    contribute only Monte Carlo variance and average out to ``bvarFcst(beta)``.
-
-    The per-origin draws are seeded deterministically (``seed_base + origin``) so
-    the objective returns the same value for the same hyperparameters across
-    Mango candidate evaluations (a noisy objective would corrupt the GP
-    surrogate). The global RNG state is saved and restored around the seeded
-    block so Mango's own random sampling stream is left untouched.
+    Each optimizer candidate is mapped independently into every training
+    context. Under the default psi log-multiplier parameterization this gives
+    one candidate the same dimensionless meaning without using holdout-derived
+    residual variances or silently clipping values.
     """
+    if H <= 0:
+        raise ValueError("H must be positive.")
+    if h_eval is not None and not 1 <= int(h_eval) <= int(H):
+        raise ValueError(f"h_eval must be within 1..H ({H}).")
+    if not origins:
+        raise ValueError("At least one RMSE evaluation origin is required.")
     horizons = list(range(1, H + 1))
     var_indices = list(var_indices)
+    if not var_indices:
+        raise ValueError("At least one RMSE variable index is required.")
+    if any(ctx.n != ctx_ref.n for ctx, _ in origins):
+        raise ValueError("All RMSE fold contexts must share the reference dimension.")
     use_draws = n_obj_draws > 1
+    counters = {"valid": 0, "penalized": 0, "nonfinite": 0}
 
-    def _origin_forecast(ctx: GLPContext, vec: np.ndarray, origin_index: int) -> np.ndarray:
+    def _origin_forecast(
+        ctx: GLPContext,
+        vec: np.ndarray,
+        origin_index: int,
+    ) -> np.ndarray:
         if not use_draws:
             betahat, _ = glp_mode_estimate(ctx, vec)
-            return point_forecast(ctx.y, betahat, horizons)  # (H, n)
-        rng_state = np.random.get_state()
-        try:
-            np.random.seed((int(seed_base) + int(origin_index)) % (2**32 - 1))
+            return point_forecast(ctx.y, betahat, horizons)
+        child_seed = stable_child_seed(
+            seed_base,
+            "glp-rmse-objective",
+            int(origin_index),
+        )
+        with deterministic_rng_context(child_seed):
             total: np.ndarray | None = None
-            for _ in range(n_obj_draws):
+            for _ in range(int(n_obj_draws)):
                 beta, _ = glp_draw(ctx, vec)
-                forecast = point_forecast(ctx.y, beta, horizons)  # (H, n)
+                forecast = point_forecast(ctx.y, beta, horizons)
                 total = forecast if total is None else total + forecast
-        finally:
-            np.random.set_state(rng_state)
-        return total / float(n_obj_draws)  # type: ignore[operator]
+        assert total is not None
+        return total / float(n_obj_draws)
 
     def calc_rmse(**params: float) -> float:
-        vec = _params_to_natural(params, ctx_ref)
         squared_errors: list[float] = []
         try:
             for origin_index, (ctx, actual) in enumerate(origins):
-                forecast = _origin_forecast(ctx, vec, origin_index)  # (H, n)
-                rows = [h_eval - 1] if h_eval is not None else list(range(H))
+                if actual.shape != (H, ctx.n):
+                    raise ValueError(
+                        f"RMSE holdout shape {actual.shape} does not match {(H, ctx.n)}."
+                    )
+                vec = _params_to_natural(params, ctx)
+                forecast = _origin_forecast(ctx, vec, origin_index)
+                if forecast.shape != (H, ctx.n):
+                    raise ValueError(
+                        f"RMSE forecast shape {forecast.shape} does not match {(H, ctx.n)}."
+                    )
+                rows = [int(h_eval) - 1] if h_eval is not None else list(range(H))
                 for row in rows:
-                    if row >= actual.shape[0] or row >= forecast.shape[0]:
-                        continue
                     for vi in var_indices:
-                        error = forecast[row, vi] - actual[row, vi]
-                        squared_errors.append(float(error) ** 2)
-            if not squared_errors:
-                return 1.0e10
-            rmse = float(np.sqrt(np.mean(squared_errors)))
-            if not np.isfinite(rmse):
-                return 1.0e10
-            return rmse
-        except Exception:  # pragma: no cover
-            return 1.0e10
+                        error = float(forecast[row, vi] - actual[row, vi])
+                        squared_errors.append(error**2)
+        except (
+            InvalidHyperparameterError,
+            np.linalg.LinAlgError,
+            FloatingPointError,
+            OverflowError,
+            ZeroDivisionError,
+        ):
+            counters["penalized"] += 1
+            return RMSE_PENALTY
+        if not squared_errors:
+            raise ValueError("RMSE objective produced no squared errors.")
+        rmse = float(np.sqrt(np.mean(squared_errors)))
+        if not np.isfinite(rmse):
+            counters["nonfinite"] += 1
+            return RMSE_PENALTY
+        counters["valid"] += 1
+        return rmse
 
+    calc_rmse.diagnostics = counters  # type: ignore[attr-defined]
     return calc_rmse
 
 
-def update_hyperparameters_mango_rmse(
-    y: np.ndarray,
-    lags: int,
-    *,
-    model_codes: Sequence[str],
-    var_of_interest: Sequence[str],
-    H: int,
-    param_space: dict[str, Any] | None = None,
-    init_points: int = 5,
-    n_iter: int = 15,
-    njobs: int = 1,
-    h_eval: int | None = None,
-    n_eval: int = 1,
-    min_t: int | None = None,
-    n_obj_draws: int = 200,
-    hyperpriors: int = GLP_HYPERPRIORS,
-    **prior_kwargs: Any,
-) -> dict[str, float]:
-    """Select ``[lambda, theta, miu]`` by MINIMIZING the rolling out-of-sample
-    RMSE for ``var_of_interest`` at horizon ``h_eval`` (analogue of
-    ``MBFVAR.update_hyperparameters_mango_rmse``).
-
-    The objective scores the Bayesian predictive-mean forecast -- ``bvarFcst``
-    averaged over ``n_obj_draws`` posterior draws of beta -- to match how the
-    recursive forecasts are aggregated. Set ``n_obj_draws <= 1`` to fall back to
-    the deterministic posterior-mode point forecast."""
-    from mango import Tuner, scheduler
-
-    prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
-    var_indices = _resolve_var_indices(model_codes, var_of_interest)
-
-    y = np.asarray(y, dtype=float)
-    ks = _rmse_eval_origins(y.shape[0], H, n_eval, random=False, min_t=min_t, random_seed=None)
-    origins = _build_rmse_origins(y, lags, ks, H, prior_kwargs)
-    ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
-    if param_space is None:
-        param_space = make_param_space(ctx_ref)
-    calc_rmse = _rmse_objective(
-        origins, var_indices, H, h_eval, ctx_ref, n_obj_draws=n_obj_draws, seed_base=0
-    )
-
-    parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
-    conf = dict(num_iteration=n_iter, initial_random=init_points)
-    results = Tuner(param_space, parallel_objective, conf).minimize()
-    return _best_hyperparameters(results["best_params"], ctx_ref)
-
-
-def update_hyperparameters_mango_rmse_random(
-    y: np.ndarray,
-    lags: int,
-    *,
-    model_codes: Sequence[str],
-    var_of_interest: Sequence[str],
-    H: int,
-    param_space: dict[str, Any] | None = None,
-    init_points: int = 5,
-    n_iter: int = 15,
-    njobs: int = 1,
-    h_eval: int | None = None,
-    n_eval: int = 1,
-    min_t: int | None = None,
-    random_seed: int | None = None,
-    n_obj_draws: int = 200,
-    hyperpriors: int = GLP_HYPERPRIORS,
-    **prior_kwargs: Any,
-) -> dict[str, float]:
-    """Like :func:`update_hyperparameters_mango_rmse` but the ``n_eval`` origins
-    are drawn at random from the valid pool (analogue of
-    ``MBFVAR.update_hyperparameters_mango_rmse_random``).
-
-    As in the rolling variant, the objective scores the predictive-mean forecast
-    over ``n_obj_draws`` posterior draws of beta (``n_obj_draws <= 1`` restores
-    the deterministic posterior-mode forecast)."""
-    from mango import Tuner, scheduler
-
-    prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
-    var_indices = _resolve_var_indices(model_codes, var_of_interest)
-
-    y = np.asarray(y, dtype=float)
-    ks = _rmse_eval_origins(y.shape[0], H, n_eval, random=True, min_t=min_t, random_seed=random_seed)
-    origins = _build_rmse_origins(y, lags, ks, H, prior_kwargs)
-    ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
-    if param_space is None:
-        param_space = make_param_space(ctx_ref)
-    calc_rmse = _rmse_objective(
-        origins, var_indices, H, h_eval, ctx_ref,
-        n_obj_draws=n_obj_draws, seed_base=int(random_seed) if random_seed is not None else 0,
-    )
-
-    parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
-    conf = dict(num_iteration=n_iter, initial_random=init_points)
-    results = Tuner(param_space, parallel_objective, conf).minimize()
-    return _best_hyperparameters(results["best_params"], ctx_ref)
+# RMSE_UPDATERS_IMPLEMENTATION
 
 
 def _resolve_var_indices(model_codes: Sequence[str], var_of_interest: Sequence[str]) -> list[int]:

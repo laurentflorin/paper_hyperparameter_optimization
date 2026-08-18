@@ -1,0 +1,70 @@
+import hashlib
+import sys
+from pathlib import Path
+
+import numpy as np
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SRC_ROOT = REPO_ROOT / "src"
+sys.path.insert(0, str(SRC_ROOT))
+
+from experiment_provenance import AUDITED_MBFVAR_COMMIT, deterministic_rng_context, runtime_provenance, sha256_file, stable_child_seed, stable_rng, validate_mbfvar_revision
+
+
+def test_sha256_file_streams_exact_contents(tmp_path: Path):
+    path = tmp_path / "data.bin"
+    path.write_bytes(b"point-in-time data\x00")
+    assert sha256_file(path) == hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_stable_child_seeds_are_repeatable_and_component_specific():
+    first = stable_child_seed(17, "forecast", "2000Q1")
+    assert first == stable_child_seed(17, "forecast", "2000Q1")
+    assert first != stable_child_seed(17, "forecast", "2000Q2")
+    assert first != stable_child_seed(17, "optimizer", "2000Q1")
+    assert stable_child_seed(None, "forecast") is None
+
+
+def test_stable_rng_repeats_the_same_stream():
+    a = stable_rng(91, "candidate", 3).normal(size=8)
+    b = stable_rng(91, "candidate", 3).normal(size=8)
+    np.testing.assert_array_equal(a, b)
+
+
+def test_deterministic_context_controls_fresh_generators_and_restores_global_state():
+    np.random.seed(2026)
+    expected_after = np.random.random(4)
+    np.random.seed(2026)
+    with deterministic_rng_context(44):
+        first_global = np.random.random(4)
+        first_fresh = np.random.default_rng().normal(size=4)
+    after = np.random.random(4)
+    with deterministic_rng_context(44):
+        np.testing.assert_array_equal(first_global, np.random.random(4))
+        np.testing.assert_array_equal(first_fresh, np.random.default_rng().normal(size=4))
+    np.testing.assert_array_equal(expected_after, after)
+
+
+def test_runtime_provenance_fingerprints_inputs(tmp_path: Path):
+    path = tmp_path / "panel.csv"
+    path.write_text("x\n1\n", encoding="utf-8")
+    metadata = runtime_provenance(REPO_ROOT, data_paths=[path])
+    assert metadata["repository_commit"]
+    assert metadata["data_fingerprints_sha256"][str(path.resolve())] == sha256_file(path)
+    assert "python" in metadata["platform"]
+    assert metadata["expected_mbfvar_commit"] == AUDITED_MBFVAR_COMMIT
+
+
+def test_validate_mbfvar_revision_rejects_a_different_vcs_commit():
+    sources = {
+        "MBFVAR": {
+            "url": "https://github.com/laurentflorin/MBFVAR.git",
+            "vcs_info": {"vcs": "git", "commit_id": "0" * 40},
+        }
+    }
+    try:
+        validate_mbfvar_revision(sources)
+    except RuntimeError as exc:
+        assert AUDITED_MBFVAR_COMMIT in str(exc)
+    else:  # pragma: no cover
+        raise AssertionError("Expected a mismatched MBFVAR revision to fail.")
