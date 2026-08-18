@@ -416,6 +416,104 @@ Density‑forecast objects (predictive quantiles) are also stored, so the study 
 compare not just point accuracy but calibration — the dimension on which the
 `paper` strategy's integrate‑out step is expected to matter most.
 
+### 6.1 Selection scopes and the scope-grid runner
+
+The Stage 6 workflow adds a **first-class scope-grid runner**,
+`scripts/glp/run_glp_scope_grid.py`, for experiments that intentionally vary
+*which targets share one hyperparameter vector* and *how often that vector is
+retuned*. This is distinct from the legacy `paper` / `mango_*` scripts, which
+remain available for backward compatibility and preserve their historical,
+low-budget defaults.
+
+The scope-grid runner works with four core selection scopes plus grouped cells:
+
+- `pooled`: one hyperparameter vector is selected for every requested variable
+  and horizon.
+- `horizon`: one vector per horizon, shared across variables.
+- `variable`: one vector per variable, shared across horizons.
+- `variable_horizon`: one vector per `(variable, horizon)` pair.
+- `group`: one vector per user-supplied variable group, optionally split by
+  horizon.
+
+The key output is the **canonical stitched forecast panel**. Each target
+`(variable, horizon)` is assigned to exactly one selection cell by the chosen
+scope. The runner then:
+
+1. selects one system-wide hyperparameter vector for each active cell at each
+   retuning event,
+2. generates the full-system VAR forecast under that cell's selected vector,
+3. stitches one canonical forecast row per requested target from the
+   responsible cell, and
+4. optionally saves `forecast_panel_all_cells.csv` as a diagnostic panel of the
+   full-system forecasts for every cell.
+
+This distinction matters empirically. A `variable_horizon` experiment can target
+GDP at horizon four with a different shrinkage vector than GDP at horizon one,
+while the final `forecast_panel.csv` still contains exactly one canonical row per
+requested target and origin.
+
+### 6.2 Legacy runners versus the study runner
+
+The repository now has two GLP entry-point families:
+
+- **Legacy strategy runners** (`run_glp_paper.py`, `run_glp_mango.py`,
+  `run_glp_mango_rmse.py`, `run_glp_mango_rmse_random.py`): preserve the
+  original single-cell workflows and their historical budgets for backward
+  compatibility.
+- **Study runner** (`run_glp_scope_grid.py`): validates the full experiment
+  configuration up front, prints and saves a deterministic manifest, writes one
+  self-contained run directory per scope, supports explicit retuning schedules,
+  and defaults to the **recommended reduced search** that optimizes
+  `lambda`, `theta`, and `miu` while holding `psi` fixed.
+
+That reduced search is deliberate. Estimating `psi` makes the problem
+$(3+n)$-dimensional, which is often too expensive for a broad scope study unless
+the optimizer budget is raised substantially. The study runner therefore treats
+`--no-optimize-psi` with `--fixed-psi-source context_ss` as the default design,
+and warns prominently when a requested dimension-budget combination is too weak
+to support scientific claims.
+
+### 6.3 Recommended study examples
+
+Recommended reduced-search scope study:
+
+```bash
+python scripts/glp/run_glp_scope_grid.py \
+  --output-root outputs/glp/scope_study \
+  --model-size medium \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --target-variables GDP,DEFL,FFR \
+  --target-horizons 1,2,4,8 \
+  --loss-metric rmse \
+  --loss-scaling benchmark_rmse \
+  --benchmark last_observation \
+  --inner-n-origins 20 \
+  --inner-origin-stride 2 \
+  --selection-frequency 4 \
+  --no-optimize-psi
+```
+
+Grouped-variable study with one residual block:
+
+```bash
+python scripts/glp/run_glp_scope_grid.py \
+  --output-root outputs/glp/group_scope_study \
+  --model-size medium \
+  --selection-scopes group \
+  --target-variables GDP,DEFL,FFR,CONS,INV \
+  --target-horizons 1,4,8 \
+  --variable-groups Real=GDP+CONS+INV;Prices=DEFL \
+  --residual-group-name Rates \
+  --group-separate-horizons \
+  --selection-frequency per_origin \
+  --no-optimize-psi
+```
+
+For a planning pass that requires **no optional Bayesian backend**, add
+`--dry-run`. The runner still validates the configuration, estimates the number
+of optimization cells and candidate evaluations, prints the manifest, and writes
+per-scope run directories with manifests only.
+
 ---
 
 ## 7. Model size and the central GLP finding
@@ -518,8 +616,10 @@ minimization.
   $(3+n)$‑dimensional — $6$/$10$/$24$ dimensions for the small/medium/large
   models. This makes the Mango Bayesian optimization and the random‑walk
   Metropolis / observed‑information Hessian markedly heavier for the larger
-  models, and the default optimizer budget (`init_points`, `n_iter`) and MCMC
-  length may need raising for the large model to explore the $\psi$ block well.
+  models. Any study that turns `--optimize-psi` back on should therefore raise
+  the optimizer budget well above the legacy settings. The scope-grid runner
+  uses a reduced-search default precisely because the full $\psi$ search is
+  rarely defensible under a modest scope-study budget.
 - **Plug‑in vs. integrate‑out is confounded with the objective.** Only the
   `paper` strategy integrates $\gamma$ out. If a difference appears between
   `paper` and `mango_mdd`, it may stem from the integrate‑out step rather than

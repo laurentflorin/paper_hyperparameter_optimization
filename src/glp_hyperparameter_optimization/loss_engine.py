@@ -45,11 +45,13 @@ import numpy as np
 from experiment_provenance import deterministic_rng_context, stable_child_seed
 
 from common_hpo.losses import (
+    BenchmarkForecaster,
     ForecastErrorRecord,
     LossConfig,
     LossConfigurationError,
     LossResult,
     MissingCellError,
+    attach_benchmark_errors,
     evaluate_selection_loss,
 )
 from common_hpo.splits import ValidationSplit
@@ -375,6 +377,7 @@ def evaluate_glp_candidate(
     forecast_fn: ForecastFn = default_glp_forecast_fn,
     to_natural: Callable[[Mapping[str, float], Any], np.ndarray] = glp_model._params_to_natural,
     penalty: float = RMSE_PENALTY,
+    benchmark: BenchmarkForecaster | None = None,
 ) -> GLPCandidateEvaluation:
     """Score one candidate across every context and return structured diagnostics.
 
@@ -434,14 +437,43 @@ def evaluate_glp_candidate(
             failure_reason=str(exc),
         )
 
+    scored_records: tuple[ForecastErrorRecord, ...] = tuple(records)
+    if spec.loss_config.scale.method == "benchmark_rmse":
+        if benchmark is None:
+            return GLPCandidateEvaluation(
+                failed=True,
+                total_loss=float(penalty),
+                loss_by_cell={},
+                n_valid_records=len(records),
+                numerical_failures=numerical_failures,
+                nonfinite_forecasts=nonfinite_forecasts,
+                scale_problems=1,
+                failure_reason="benchmark_rmse scaling requires a benchmark callback.",
+                records=tuple(records),
+            )
+        try:
+            scored_records = attach_benchmark_errors(scored_records, benchmark)
+        except Exception as exc:
+            return GLPCandidateEvaluation(
+                failed=True,
+                total_loss=float(penalty),
+                loss_by_cell={},
+                n_valid_records=len(records),
+                numerical_failures=numerical_failures,
+                nonfinite_forecasts=nonfinite_forecasts,
+                scale_problems=1,
+                failure_reason=f"{type(exc).__name__}: {exc}",
+                records=tuple(records),
+            )
+
     try:
-        result = evaluate_selection_loss(records, spec.loss_config)
+        result = evaluate_selection_loss(scored_records, spec.loss_config)
     except (MissingCellError, LossConfigurationError) as exc:
         return GLPCandidateEvaluation(
             failed=True,
             total_loss=float(penalty),
             loss_by_cell={},
-            n_valid_records=len(records),
+            n_valid_records=len(scored_records),
             numerical_failures=numerical_failures,
             nonfinite_forecasts=nonfinite_forecasts,
             scale_problems=1,
@@ -455,12 +487,12 @@ def evaluate_glp_candidate(
             loss_by_cell={
                 (cell.variable, cell.horizon): cell.cell_value for cell in result.cells
             },
-            n_valid_records=len(records),
+            n_valid_records=len(scored_records),
             numerical_failures=numerical_failures,
             nonfinite_forecasts=nonfinite_forecasts,
             scale_problems=sum(1 for cell in result.cells if cell.scale_floored),
             failure_reason="non-finite aggregated loss.",
-            records=tuple(records),
+            records=scored_records,
             loss_result=result,
         )
 
@@ -470,12 +502,12 @@ def evaluate_glp_candidate(
         loss_by_cell={
             (cell.variable, cell.horizon): cell.cell_value for cell in result.cells
         },
-        n_valid_records=len(records),
+        n_valid_records=len(scored_records),
         numerical_failures=0,
         nonfinite_forecasts=0,
         scale_problems=sum(1 for cell in result.cells if cell.scale_floored),
         failure_reason=None,
-        records=tuple(records),
+        records=scored_records,
         loss_result=result,
     )
 
@@ -488,6 +520,7 @@ def make_glp_loss_objective(
     to_natural: Callable[[Mapping[str, float], Any], np.ndarray] = glp_model._params_to_natural,
     penalty: float = RMSE_PENALTY,
     diagnostics_collector: MutableSequence[dict[str, object]] | None = None,
+    benchmark: BenchmarkForecaster | None = None,
 ) -> Callable[..., float]:
     """Return an optimizer-friendly objective for one target cell.
 
@@ -515,6 +548,7 @@ def make_glp_loss_objective(
             forecast_fn=forecast_fn,
             to_natural=to_natural,
             penalty=penalty,
+            benchmark=benchmark,
         )
         diagnostics["numerical_failures"] += evaluation.numerical_failures
         diagnostics["nonfinite_forecasts"] += evaluation.nonfinite_forecasts
