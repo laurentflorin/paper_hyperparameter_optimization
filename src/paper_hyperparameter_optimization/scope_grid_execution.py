@@ -16,6 +16,21 @@ from typing import TYPE_CHECKING, Any, Sequence
 
 import pandas as pd
 
+from common_hpo import (
+    CSVSchema,
+    JSONSchema,
+    atomic_write_csv_rows,
+    atomic_write_dataframe_csv,
+    atomic_write_json,
+    build_run_metadata,
+    classify_failure,
+    mark_run_cancelled,
+    mark_run_complete,
+    mark_run_failed,
+    prepare_run_directory,
+    utc_now,
+)
+
 from .config import (
     PAPER_NBURN_PERC,
     PAPER_NLAGS,
@@ -35,21 +50,123 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
     from .selection_experiment import MFVARForecastRequest
 
 
-def _write_outputs(output_dir: Path, result, *, save_all_cell_forecasts: bool) -> None:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(result.forecast_panel).to_csv(output_dir / "forecast_panel.csv", index=False)
-    pd.DataFrame(result.selected_hyperparameters).to_csv(
-        output_dir / "selected_hyperparameters.csv", index=False
+_FAILED_ORIGINS_COLUMNS = ("forecast_origin", "stage", "failure_category", "error")
+_FORECAST_PANEL_COLUMNS = (
+    "forecast_origin",
+    "variable",
+    "horizon",
+    "forecast",
+)
+_SELECTION_COLUMNS = (
+    "cell_id",
+    "selection_event_id",
+    "selection_loss",
+)
+
+
+def _run_metadata(config, plan, *, started_utc: str, finished_utc: str | None, completion_status: str, extra=None):
+    expected_outputs = [
+        "forecast_panel.csv",
+        "selected_hyperparameters.csv",
+        "failed_origins.csv",
+        "run_metadata.json",
+    ]
+    if config.save_all_cell_forecasts:
+        expected_outputs.append("forecast_panel_all_cells.csv")
+    return build_run_metadata(
+        project_root=Path(__file__).resolve().parents[2],
+        command_line=config.command_line,
+        started_utc=started_utc,
+        finished_utc=finished_utc,
+        completion_status=completion_status,
+        model_family="mfbvar",
+        model_version="mfvar_scope_grid",
+        data_source={"panel_path": str(config.panel_path), "format": "realtime_panel"},
+        data_vintage_identifiers={
+            "outer_vintage_policy": "outer_vintage_consistent",
+            "optimization_horizon_quarters": config.optimization_horizon_quarters,
+            "optimization_eval_horizon_quarters": config.optimization_eval_horizon_quarters,
+        },
+        input_files=(config.panel_path,),
+        transformation_configuration={
+            "forecast_variables": list(config.forecast_variables),
+            "quarterly_transform_pipeline": "paper_mfvar_default",
+        },
+        variable_order=config.forecast_variables,
+        target_variables=config.target_variables,
+        target_horizons=config.target_horizons,
+        selection_plan=plan.selection_plan.to_dict(),
+        validation_scheme={
+            "window": config.inner_window,
+            "n_origins": config.inner_n_origins,
+            "origin_stride": config.inner_origin_stride,
+            "origin_selection": config.inner_origin_selection,
+            "rolling_window_length": config.rolling_window_length,
+        },
+        vintage_policy="outer_vintage_consistent",
+        selection_schedule={"requested": config.selection_frequency},
+        loss_configuration={"metric": config.loss_metric, "scaling": config.loss_scaling},
+        search_space={
+            "forecast_variables": list(config.forecast_variables),
+            "variable_groups": list(config.variable_groups or ()),
+            "residual_group_name": config.residual_group_name,
+            "group_separate_horizons": config.group_separate_horizons,
+        },
+        optimizer_budget={
+            "n_eval": config.optimization_n_eval,
+            "optimization_horizon_quarters": config.optimization_horizon_quarters,
+            "optimization_eval_horizon_quarters": config.optimization_eval_horizon_quarters,
+        },
+        random_seeds={"base_seed": config.base_seed, "inner_random_seed": config.inner_random_seed},
+        parallel_worker_count=1,
+        configuration_extra={
+            "scope": plan.scope,
+            "expected_outputs": expected_outputs,
+            "output_dir": str(plan.output_dir),
+            "save_all_cell_forecasts": config.save_all_cell_forecasts,
+        },
+        extra=extra,
     )
-    pd.DataFrame(columns=["forecast_origin", "error"]).to_csv(
-        output_dir / "failed_origins.csv", index=False
-    )
-    (output_dir / "run_metadata.json").write_text(
-        json.dumps(result.run_metadata, indent=2, default=str), encoding="utf-8"
-    )
+
+
+def _output_schemas(save_all_cell_forecasts: bool):
+    csv_schemas = [
+        CSVSchema("forecast_panel.csv", _FORECAST_PANEL_COLUMNS, min_rows=1),
+        CSVSchema("selected_hyperparameters.csv", _SELECTION_COLUMNS, min_rows=1),
+        CSVSchema("failed_origins.csv", _FAILED_ORIGINS_COLUMNS, min_rows=0),
+    ]
     if save_all_cell_forecasts:
-        pd.DataFrame(result.forecast_panel_all_cells).to_csv(
-            output_dir / "forecast_panel_all_cells.csv", index=False
+        csv_schemas.append(CSVSchema("forecast_panel_all_cells.csv", _FORECAST_PANEL_COLUMNS, min_rows=1))
+    json_schemas = [
+        JSONSchema(
+            "run_metadata.json",
+            (
+                "configuration_hash",
+                "completion_status",
+                "repository_commit",
+                "target_variables",
+                "target_horizons",
+            ),
+        )
+    ]
+    return tuple(csv_schemas), tuple(json_schemas)
+
+
+def _write_outputs(output_dir: Path, result, *, save_all_cell_forecasts: bool, metadata_override=None) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    atomic_write_dataframe_csv(output_dir / "forecast_panel.csv", pd.DataFrame(result.forecast_panel), index=False)
+    atomic_write_dataframe_csv(
+        output_dir / "selected_hyperparameters.csv",
+        pd.DataFrame(result.selected_hyperparameters),
+        index=False,
+    )
+    atomic_write_csv_rows(output_dir / "failed_origins.csv", _FAILED_ORIGINS_COLUMNS, ())
+    atomic_write_json(output_dir / "run_metadata.json", dict(metadata_override or result.run_metadata))
+    if save_all_cell_forecasts:
+        atomic_write_dataframe_csv(
+            output_dir / "forecast_panel_all_cells.csv",
+            pd.DataFrame(result.forecast_panel_all_cells),
+            index=False,
         )
 
 
@@ -130,6 +247,23 @@ def execute_scope_runs(config, plans) -> None:
     for plan in plans:
         if plan.existing_policy == "resume_skip":
             continue
+        started_utc = utc_now()
+        initial_metadata = _run_metadata(
+            config,
+            plan,
+            started_utc=started_utc,
+            finished_utc=None,
+            completion_status="partial",
+        )
+        expected_outputs = list(EXPECTED_OUTPUT_FILES)
+        if config.save_all_cell_forecasts:
+            expected_outputs.append("forecast_panel_all_cells.csv")
+        prepare_run_directory(
+            plan.output_dir,
+            manifest=initial_metadata,
+            if_exists_policy=config.if_exists_policy,
+            expected_outputs=expected_outputs,
+        )
         selector = build_mfvar_objective_selector(
             data_in=data_in,
             model_class=__import__("MBFVAR").MixedFrequencyBVAR,
@@ -157,9 +291,67 @@ def execute_scope_runs(config, plans) -> None:
             retain_off_target=config.save_all_cell_forecasts,
             base_seed=config.base_seed,
         )
-        _write_outputs(
-            plan.output_dir, result, save_all_cell_forecasts=config.save_all_cell_forecasts
-        )
+        try:
+            final_metadata = _run_metadata(
+                config,
+                plan,
+                started_utc=started_utc,
+                finished_utc=utc_now(),
+                completion_status="complete",
+                extra={
+                    "runner": "mfvar_scope_grid",
+                    "cache_stats": result.cache_stats,
+                    "selection_event_count": len(result.run_metadata.get("selection_events", [])),
+                },
+            )
+            _write_outputs(
+                plan.output_dir,
+                result,
+                save_all_cell_forecasts=config.save_all_cell_forecasts,
+                metadata_override=final_metadata,
+            )
+            csv_schemas, json_schemas = _output_schemas(config.save_all_cell_forecasts)
+            mark_run_complete(
+                plan.output_dir,
+                configuration_hash=str(final_metadata["configuration_hash"]),
+                csv_schemas=csv_schemas,
+                json_schemas=json_schemas,
+            )
+        except KeyboardInterrupt:
+            cancelled_metadata = _run_metadata(
+                config,
+                plan,
+                started_utc=started_utc,
+                finished_utc=utc_now(),
+                completion_status="cancelled",
+                extra={"runner": "mfvar_scope_grid"},
+            )
+            mark_run_cancelled(
+                plan.output_dir,
+                configuration_hash=str(initial_metadata["configuration_hash"]),
+                metadata=cancelled_metadata,
+            )
+            raise
+        except Exception as exc:  # noqa: BLE001
+            failed_metadata = _run_metadata(
+                config,
+                plan,
+                started_utc=started_utc,
+                finished_utc=utc_now(),
+                completion_status="failed",
+                extra={
+                    "runner": "mfvar_scope_grid",
+                    "failure_reason": f"{type(exc).__name__}: {exc}",
+                    "failure_category": classify_failure(exc),
+                },
+            )
+            mark_run_failed(
+                plan.output_dir,
+                configuration_hash=str(initial_metadata["configuration_hash"]),
+                reason=f"{type(exc).__name__}: {exc}",
+                metadata=failed_metadata,
+            )
+            raise
 
 
 def _build_schedule(selection_frequency: str):

@@ -38,9 +38,23 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from common_hpo import LossConfig, ScaleConfig, SelectionSchedule, ValidationScheme  # noqa: E402
+from common_hpo import (  # noqa: E402
+    CSVSchema,
+    JSONSchema,
+    build_run_metadata,
+    build_selection_plan,
+    classify_failure,
+    mark_run_cancelled,
+    mark_run_complete,
+    mark_run_failed,
+    prepare_run_directory,
+    resolve_run_directory_policy,
+    utc_now,
+)
 from common_hpo.schedules import ScheduleError  # noqa: E402
 from regularized_var.experiment import (  # noqa: E402
     BENCHMARK_STRATEGIES,
+    FORECAST_PANEL_COLUMNS,
     RidgeExperimentConfig,
     estimate_fit_counts,
 )
@@ -56,6 +70,28 @@ EXPECTED_OUTPUT_FILES = (
     "failed_origins.csv",
 )
 DEFAULT_TARGET_HORIZONS = (1, 2, 4, 8)
+_SELECTION_COLUMNS = (
+    "forecast_origin",
+    "group",
+    "strategy",
+    "cell_id",
+    "event_id",
+    "param_lam",
+    "param_p",
+    "param_alpha",
+    "param_kappa",
+    "selection_loss",
+    "n_tied",
+)
+_BENCHMARK_SELECTION_COLUMNS = (
+    "forecast_origin",
+    "strategy",
+    "group",
+    "parameter",
+    "value",
+)
+_FAILED_SCOPE_COLUMNS = ("forecast_origin", "cell_id", "stage", "failure_category", "error")
+_FAILED_BENCHMARK_COLUMNS = ("forecast_origin", "stage", "failure_category", "error")
 
 
 class ScopeGridConfigError(ValueError):
@@ -306,6 +342,115 @@ def _resolve_existing_policy(output_dir: Path, *, if_exists_policy: str) -> str:
     )
 
 
+def _scope_selection_plan(config: ScopeGridConfig, scope: str) -> dict[str, object]:
+    return build_selection_plan(scope, config.target_variables, config.target_horizons).to_dict()
+
+
+def _scope_run_metadata(
+    config: ScopeGridConfig,
+    *,
+    scope: str,
+    output_dir: Path,
+    started_utc: str,
+    finished_utc: str | None,
+    completion_status: str,
+    failure_records: Sequence[Mapping[str, object]] = (),
+    extra: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    return build_run_metadata(
+        project_root=PROJECT_ROOT,
+        command_line=config.command_line,
+        started_utc=started_utc,
+        finished_utc=finished_utc,
+        completion_status=completion_status,
+        model_family="ridge",
+        model_version=RUNNER_NAME,
+        data_source={"panel_path": str(config.panel_path) if config.panel_path else None, "format": "csv"},
+        data_vintage_identifiers={"policy": "non_vintage_csv"},
+        input_files=(() if config.panel_path is None else (config.panel_path,)),
+        transformation_configuration={
+            "preprocessing": config.experiment.preprocessing,
+            "forecast_method": config.experiment.forecast_method,
+            "horizon_row_offset": config.experiment.horizon_row_offset,
+        },
+        variable_order=config.target_variables,
+        target_variables=config.target_variables,
+        target_horizons=config.target_horizons,
+        selection_plan=_scope_selection_plan(config, scope),
+        validation_scheme={
+            "inner": config.experiment.inner_scheme.to_dict(),
+            "outer": config.experiment.outer_scheme.to_dict(),
+        },
+        vintage_policy={
+            "inner": getattr(config.experiment.inner_scheme.vintage_policy, "value", None),
+            "outer": getattr(config.experiment.outer_scheme.vintage_policy, "value", None),
+        },
+        selection_schedule=config.experiment.selection_schedule.to_dict(),
+        loss_configuration=config.experiment.loss_config.to_dict(),
+        search_space=config.experiment.grid_spec.to_dict(),
+        optimizer_budget={
+            "search_strategy": "deterministic_grid",
+            "grid_size": grid_size(config.experiment.grid_spec),
+            "benchmark_lag_orders": list(config.experiment.benchmark_lag_orders),
+        },
+        random_seeds={
+            "base_seed": config.experiment.base_seed,
+            "inner_random_seed": config.experiment.inner_scheme.random_seed,
+        },
+        parallel_worker_count=config.n_workers,
+        failure_records=failure_records,
+        configuration_extra={"scope": scope, "output_dir": str(output_dir)},
+        extra=extra,
+    )
+
+
+def _benchmark_run_metadata(
+    config: ScopeGridConfig,
+    *,
+    benchmark: str,
+    output_dir: Path,
+    started_utc: str,
+    finished_utc: str | None,
+    completion_status: str,
+    failure_records: Sequence[Mapping[str, object]] = (),
+    extra: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    return build_run_metadata(
+        project_root=PROJECT_ROOT,
+        command_line=config.command_line,
+        started_utc=started_utc,
+        finished_utc=finished_utc,
+        completion_status=completion_status,
+        model_family="ridge_benchmark",
+        model_version=benchmark,
+        data_source={"panel_path": str(config.panel_path) if config.panel_path else None, "format": "csv"},
+        data_vintage_identifiers={"policy": "non_vintage_csv"},
+        input_files=(() if config.panel_path is None else (config.panel_path,)),
+        transformation_configuration={
+            "preprocessing": config.experiment.preprocessing,
+            "forecast_method": config.experiment.forecast_method,
+            "horizon_row_offset": config.experiment.horizon_row_offset,
+        },
+        variable_order=config.target_variables,
+        target_variables=config.target_variables,
+        target_horizons=config.target_horizons,
+        selection_plan={"scope": "benchmark", "strategy": benchmark},
+        validation_scheme={"outer": config.experiment.outer_scheme.to_dict()},
+        vintage_policy={
+            "outer": getattr(config.experiment.outer_scheme.vintage_policy, "value", None),
+        },
+        selection_schedule="benchmark_per_origin",
+        loss_configuration=config.experiment.loss_config.to_dict(),
+        search_space={"benchmark_lag_orders": list(config.experiment.benchmark_lag_orders)},
+        optimizer_budget={"search_strategy": "benchmark_rule"},
+        random_seeds={"base_seed": config.experiment.base_seed},
+        parallel_worker_count=config.n_workers,
+        failure_records=failure_records,
+        configuration_extra={"benchmark": benchmark, "output_dir": str(output_dir)},
+        extra=extra,
+    )
+
+
 def build_manifest(config: ScopeGridConfig) -> dict[str, Any]:
     scopes: list[dict[str, Any]] = []
     total_fits = 0
@@ -317,14 +462,26 @@ def build_manifest(config: ScopeGridConfig) -> dict[str, Any]:
         )
         total_fits += counts["total_fits"]
         output_dir = config.output_root / f"scope_{scope}"
-        existing_policy = _resolve_existing_policy(
-            output_dir, if_exists_policy=config.if_exists_policy
+        started_utc = utc_now()
+        manifest_metadata = _scope_run_metadata(
+            config,
+            scope=scope,
+            output_dir=output_dir,
+            started_utc=started_utc,
+            finished_utc=None,
+            completion_status="partial",
+        )
+        existing_policy = resolve_run_directory_policy(
+            output_dir,
+            if_exists_policy=config.if_exists_policy,
+            configuration_hash=str(manifest_metadata["configuration_hash"]),
         )
         scopes.append(
             {
                 "scope": scope,
                 "output_dir": str(output_dir),
                 "existing_policy": existing_policy,
+                "configuration_hash": manifest_metadata["configuration_hash"],
                 "fit_counts": counts,
             }
         )
@@ -354,6 +511,50 @@ def build_manifest(config: ScopeGridConfig) -> dict[str, Any]:
         "reproducibility": "deterministic grid search; no Mango / Bayesian optimizer required.",
         "scopes": scopes,
     }
+
+
+def _scope_output_schemas() -> tuple[tuple[CSVSchema, ...], tuple[JSONSchema, ...]]:
+    return (
+        (
+            CSVSchema("forecast_panel.csv", tuple(FORECAST_PANEL_COLUMNS), min_rows=1),
+            CSVSchema("selected_hyperparameters.csv", _SELECTION_COLUMNS, min_rows=1),
+            CSVSchema("failed_origins.csv", _FAILED_SCOPE_COLUMNS, min_rows=0),
+        ),
+        (
+            JSONSchema(
+                "run_metadata.json",
+                (
+                    "configuration_hash",
+                    "completion_status",
+                    "repository_commit",
+                    "target_variables",
+                    "target_horizons",
+                ),
+            ),
+        ),
+    )
+
+
+def _benchmark_output_schemas() -> tuple[tuple[CSVSchema, ...], tuple[JSONSchema, ...]]:
+    return (
+        (
+            CSVSchema("forecast_panel.csv", tuple(FORECAST_PANEL_COLUMNS), min_rows=1),
+            CSVSchema("selected_hyperparameters.csv", _BENCHMARK_SELECTION_COLUMNS, min_rows=0),
+            CSVSchema("failed_origins.csv", _FAILED_BENCHMARK_COLUMNS, min_rows=0),
+        ),
+        (
+            JSONSchema(
+                "run_metadata.json",
+                (
+                    "configuration_hash",
+                    "completion_status",
+                    "repository_commit",
+                    "target_variables",
+                    "target_horizons",
+                ),
+            ),
+        ),
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -433,24 +634,179 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     panel = load_panel_csv(config.panel_path, variables=config.target_variables)
 
-    for scope in config.selection_scopes:
-        output_dir = config.output_root / f"scope_{scope}"
-        state = _classify_existing_directory(output_dir)
-        if config.if_exists_policy == "resume" and state == "complete":
-            print(f"[resume] skipping complete scope {scope} -> {output_dir}")
-            continue
-        result = run_scope_experiment(panel, scope, config.experiment)
-        write_scope_outputs(result, output_dir)
-        print(f"[done] scope {scope}: {len(result.forecast_rows)} forecast rows -> {output_dir}")
+    try:
+        for scope in config.selection_scopes:
+            output_dir = config.output_root / f"scope_{scope}"
+            started_utc = utc_now()
+            initial_metadata = _scope_run_metadata(
+                config,
+                scope=scope,
+                output_dir=output_dir,
+                started_utc=started_utc,
+                finished_utc=None,
+                completion_status="partial",
+            )
+            action = prepare_run_directory(
+                output_dir,
+                manifest=initial_metadata,
+                if_exists_policy=config.if_exists_policy,
+                expected_outputs=EXPECTED_OUTPUT_FILES,
+            )
+            if action == "resume_skip":
+                print(f"[resume] skipping complete scope {scope} -> {output_dir}")
+                continue
+            try:
+                result = run_scope_experiment(panel, scope, config.experiment)
+                final_metadata = _scope_run_metadata(
+                    config,
+                    scope=scope,
+                    output_dir=output_dir,
+                    started_utc=started_utc,
+                    finished_utc=utc_now(),
+                    completion_status="complete",
+                    failure_records=result.failed_origins,
+                    extra={
+                        "runner": RUNNER_NAME,
+                        "scope": scope,
+                        "panel": result.metadata.get("panel"),
+                        "n_outer_origins": result.metadata.get("n_outer_origins"),
+                        "n_selection_events": result.metadata.get("n_selection_events"),
+                        "n_target_cells": result.metadata.get("n_target_cells"),
+                        "preprocessing": result.metadata.get("preprocessing"),
+                    },
+                )
+                write_scope_outputs(result, output_dir, metadata_override=final_metadata)
+                csv_schemas, json_schemas = _scope_output_schemas()
+                mark_run_complete(
+                    output_dir,
+                    configuration_hash=str(final_metadata["configuration_hash"]),
+                    csv_schemas=csv_schemas,
+                    json_schemas=json_schemas,
+                )
+                print(f"[done] scope {scope}: {len(result.forecast_rows)} forecast rows -> {output_dir}")
+            except KeyboardInterrupt:
+                cancelled_metadata = _scope_run_metadata(
+                    config,
+                    scope=scope,
+                    output_dir=output_dir,
+                    started_utc=started_utc,
+                    finished_utc=utc_now(),
+                    completion_status="cancelled",
+                    failure_records=({"stage": "run", "error": "KeyboardInterrupt", "failure_category": "cancelled"},),
+                )
+                mark_run_cancelled(
+                    output_dir,
+                    configuration_hash=str(initial_metadata["configuration_hash"]),
+                    metadata=cancelled_metadata,
+                )
+                raise
+            except Exception as exc:  # noqa: BLE001
+                failed_metadata = _scope_run_metadata(
+                    config,
+                    scope=scope,
+                    output_dir=output_dir,
+                    started_utc=started_utc,
+                    finished_utc=utc_now(),
+                    completion_status="failed",
+                    failure_records=({"stage": "run", "error": f"{type(exc).__name__}: {exc}", "failure_category": classify_failure(exc)},),
+                )
+                mark_run_failed(
+                    output_dir,
+                    configuration_hash=str(initial_metadata["configuration_hash"]),
+                    reason=f"{type(exc).__name__}: {exc}",
+                    metadata=failed_metadata,
+                )
+                raise
 
-    for benchmark in config.benchmarks:
-        output_dir = config.output_root / "benchmarks" / benchmark
-        result = run_benchmark(panel, benchmark, config.experiment)
-        write_benchmark_outputs(result, output_dir)
-        print(f"[done] benchmark {benchmark}: {len(result.forecast_rows)} forecast rows -> {output_dir}")
+        for benchmark in config.benchmarks:
+            output_dir = config.output_root / "benchmarks" / benchmark
+            started_utc = utc_now()
+            initial_metadata = _benchmark_run_metadata(
+                config,
+                benchmark=benchmark,
+                output_dir=output_dir,
+                started_utc=started_utc,
+                finished_utc=None,
+                completion_status="partial",
+            )
+            action = prepare_run_directory(
+                output_dir,
+                manifest=initial_metadata,
+                if_exists_policy=config.if_exists_policy,
+                expected_outputs=EXPECTED_OUTPUT_FILES,
+            )
+            if action == "resume_skip":
+                print(f"[resume] skipping complete benchmark {benchmark} -> {output_dir}")
+                continue
+            try:
+                result = run_benchmark(panel, benchmark, config.experiment)
+                final_metadata = _benchmark_run_metadata(
+                    config,
+                    benchmark=benchmark,
+                    output_dir=output_dir,
+                    started_utc=started_utc,
+                    finished_utc=utc_now(),
+                    completion_status="complete",
+                    failure_records=result.failed_origins,
+                    extra={
+                        "runner": RUNNER_NAME,
+                        "strategy": benchmark,
+                        "panel": result.metadata.get("panel"),
+                        "n_outer_origins": result.metadata.get("n_outer_origins"),
+                    },
+                )
+                write_benchmark_outputs(result, output_dir, metadata_override=final_metadata)
+                csv_schemas, json_schemas = _benchmark_output_schemas()
+                mark_run_complete(
+                    output_dir,
+                    configuration_hash=str(final_metadata["configuration_hash"]),
+                    csv_schemas=csv_schemas,
+                    json_schemas=json_schemas,
+                )
+                print(f"[done] benchmark {benchmark}: {len(result.forecast_rows)} forecast rows -> {output_dir}")
+            except KeyboardInterrupt:
+                cancelled_metadata = _benchmark_run_metadata(
+                    config,
+                    benchmark=benchmark,
+                    output_dir=output_dir,
+                    started_utc=started_utc,
+                    finished_utc=utc_now(),
+                    completion_status="cancelled",
+                    failure_records=({"stage": "run", "error": "KeyboardInterrupt", "failure_category": "cancelled"},),
+                )
+                mark_run_cancelled(
+                    output_dir,
+                    configuration_hash=str(initial_metadata["configuration_hash"]),
+                    metadata=cancelled_metadata,
+                )
+                raise
+            except Exception as exc:  # noqa: BLE001
+                failed_metadata = _benchmark_run_metadata(
+                    config,
+                    benchmark=benchmark,
+                    output_dir=output_dir,
+                    started_utc=started_utc,
+                    finished_utc=utc_now(),
+                    completion_status="failed",
+                    failure_records=({"stage": "run", "error": f"{type(exc).__name__}: {exc}", "failure_category": classify_failure(exc)},),
+                )
+                mark_run_failed(
+                    output_dir,
+                    configuration_hash=str(initial_metadata["configuration_hash"]),
+                    reason=f"{type(exc).__name__}: {exc}",
+                    metadata=failed_metadata,
+                )
+                raise
+    except KeyboardInterrupt:
+        print("error: run cancelled by user.", file=sys.stderr)
+        return 130
+    except Exception as exc:  # noqa: BLE001
+        print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return 1
 
-    with (config.output_root / "scope_grid_manifest.json").open("w", encoding="utf-8") as handle:
-        json.dump(manifest, handle, indent=2, default=str)
+    from common_hpo.io import atomic_write_json
+
+    atomic_write_json(config.output_root / "scope_grid_manifest.json", manifest)
     return 0
 
 

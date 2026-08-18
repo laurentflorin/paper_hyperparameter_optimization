@@ -54,6 +54,7 @@ from common_hpo.losses import (
     attach_benchmark_errors,
     evaluate_selection_loss,
 )
+from common_hpo.metadata import classify_failure
 from common_hpo.splits import ValidationSplit
 
 from . import glp_model
@@ -182,6 +183,7 @@ class GLPCandidateEvaluation:
     numerical_failures: int
     nonfinite_forecasts: int
     scale_problems: int
+    failure_category: str | None = None
     failure_reason: str | None = None
     records: tuple[ForecastErrorRecord, ...] = ()
     loss_result: LossResult | None = None
@@ -195,6 +197,7 @@ class GLPCandidateEvaluation:
             "numerical_failures": self.numerical_failures,
             "nonfinite_forecasts": self.nonfinite_forecasts,
             "scale_problems": self.scale_problems,
+            "failure_category": self.failure_category,
             "failure_reason": self.failure_reason,
             "records": [record.to_dict() for record in self.records],
             "loss_result": self.loss_result.to_dict() if self.loss_result is not None else None,
@@ -412,6 +415,7 @@ def evaluate_glp_candidate(
             numerical_failures=numerical_failures,
             nonfinite_forecasts=nonfinite_forecasts,
             scale_problems=0,
+            failure_category=classify_failure(exc),
             failure_reason=f"{type(exc).__name__}: {exc}",
         )
     except MissingCellError as exc:
@@ -423,6 +427,7 @@ def evaluate_glp_candidate(
             numerical_failures=numerical_failures,
             nonfinite_forecasts=nonfinite_forecasts,
             scale_problems=1,
+            failure_category=classify_failure(exc),
             failure_reason=f"{type(exc).__name__}: {exc}",
         )
     except _NonFiniteForecast as exc:
@@ -434,6 +439,7 @@ def evaluate_glp_candidate(
             numerical_failures=numerical_failures,
             nonfinite_forecasts=nonfinite_forecasts,
             scale_problems=0,
+            failure_category=classify_failure(exc),
             failure_reason=str(exc),
         )
 
@@ -448,6 +454,7 @@ def evaluate_glp_candidate(
                 numerical_failures=numerical_failures,
                 nonfinite_forecasts=nonfinite_forecasts,
                 scale_problems=1,
+                failure_category="invalid_configuration",
                 failure_reason="benchmark_rmse scaling requires a benchmark callback.",
                 records=tuple(records),
             )
@@ -462,6 +469,7 @@ def evaluate_glp_candidate(
                 numerical_failures=numerical_failures,
                 nonfinite_forecasts=nonfinite_forecasts,
                 scale_problems=1,
+                failure_category=classify_failure(exc),
                 failure_reason=f"{type(exc).__name__}: {exc}",
                 records=tuple(records),
             )
@@ -477,6 +485,7 @@ def evaluate_glp_candidate(
             numerical_failures=numerical_failures,
             nonfinite_forecasts=nonfinite_forecasts,
             scale_problems=1,
+            failure_category=classify_failure(exc),
             failure_reason=f"{type(exc).__name__}: {exc}",
         )
 
@@ -491,6 +500,7 @@ def evaluate_glp_candidate(
             numerical_failures=numerical_failures,
             nonfinite_forecasts=nonfinite_forecasts,
             scale_problems=sum(1 for cell in result.cells if cell.scale_floored),
+            failure_category="nonfinite_forecast",
             failure_reason="non-finite aggregated loss.",
             records=scored_records,
             loss_result=result,
@@ -537,6 +547,7 @@ def make_glp_loss_objective(
         "numerical_failures": 0,
         "nonfinite_forecasts": 0,
         "scale_problems": 0,
+        "last_failure_category": None,
         "last_failure_reason": None,
     }
 
@@ -555,11 +566,13 @@ def make_glp_loss_objective(
         diagnostics["scale_problems"] += evaluation.scale_problems
         if evaluation.failed:
             diagnostics["penalized"] += 1
+            diagnostics["last_failure_category"] = evaluation.failure_category
             diagnostics["last_failure_reason"] = evaluation.failure_reason
             if diagnostics_collector is not None:
                 diagnostics_collector.append(
                     {
                         "params": {str(k): float(v) for k, v in params.items()},
+                        "category": evaluation.failure_category,
                         "reason": evaluation.failure_reason,
                         "numerical_failures": evaluation.numerical_failures,
                         "nonfinite_forecasts": evaluation.nonfinite_forecasts,

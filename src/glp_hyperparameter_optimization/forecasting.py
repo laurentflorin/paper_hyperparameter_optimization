@@ -31,6 +31,8 @@ from typing import Any, Iterable, Iterator
 import numpy as np
 import pandas as pd
 
+from common_hpo.metadata import classify_failure
+
 from .config import (
     EVAL_HORIZONS_QUARTERS,
     GLP_ACTUAL_VINTAGE,
@@ -322,7 +324,12 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
             hyper_record["psi"] = json.dumps([float(v) for v in psi_values])
         return {"forecast_rows": rows, "hyperparameters": hyper_record, "error": None}
     except Exception as exc:  # pragma: no cover - per-origin failures are logged
-        return {"forecast_rows": [], "hyperparameters": {}, "error": f"{type(exc).__name__}: {exc}"}
+        return {
+            "forecast_rows": [],
+            "hyperparameters": {},
+            "failure_category": classify_failure(exc),
+            "error": f"{type(exc).__name__}: {exc}",
+        }
 
 
 # --------------------------------------------------------------------------- #

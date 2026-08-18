@@ -31,6 +31,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from common_hpo import (  # noqa: E402
+    build_run_metadata,
     LossConfig,
     ScaleConfig,
     SelectionPlan,
@@ -38,6 +39,7 @@ from common_hpo import (  # noqa: E402
     ValidationScheme,
     build_selection_plan,
 )
+from common_hpo import resolve_run_directory_policy, utc_now  # noqa: E402
 from common_hpo.schedules import ScheduleError  # noqa: E402
 from common_hpo.splits import VintagePolicy  # noqa: E402
 from paper_hyperparameter_optimization.config import (  # noqa: E402
@@ -370,6 +372,72 @@ def _resolve_existing_policy(
     )
 
 
+def _plan_run_metadata(
+    config: ScopeGridConfig,
+    plan: ScopeRunPlan,
+    *,
+    started_utc: str,
+    finished_utc: str | None,
+    completion_status: str,
+) -> dict[str, object]:
+    expected_outputs = list(EXPECTED_OUTPUT_FILES)
+    if config.save_all_cell_forecasts:
+        expected_outputs.append("forecast_panel_all_cells.csv")
+    return build_run_metadata(
+        project_root=PROJECT_ROOT,
+        command_line=config.command_line,
+        started_utc=started_utc,
+        finished_utc=finished_utc,
+        completion_status=completion_status,
+        model_family="mfbvar",
+        model_version=RUNNER_NAME,
+        data_source={"panel_path": str(config.panel_path), "format": "realtime_panel"},
+        data_vintage_identifiers={
+            "outer_vintage_policy": "outer_vintage_consistent",
+            "optimization_horizon_quarters": config.optimization_horizon_quarters,
+            "optimization_eval_horizon_quarters": config.optimization_eval_horizon_quarters,
+        },
+        input_files=(config.panel_path,),
+        transformation_configuration={
+            "forecast_variables": list(config.forecast_variables),
+            "quarterly_transform_pipeline": "paper_mfvar_default",
+        },
+        variable_order=config.forecast_variables,
+        target_variables=config.target_variables,
+        target_horizons=config.target_horizons,
+        selection_plan=plan.selection_plan.to_dict(),
+        validation_scheme={
+            "window": config.inner_window,
+            "n_origins": config.inner_n_origins,
+            "origin_stride": config.inner_origin_stride,
+            "origin_selection": config.inner_origin_selection,
+            "rolling_window_length": config.rolling_window_length,
+        },
+        vintage_policy="outer_vintage_consistent",
+        selection_schedule={"requested": config.selection_frequency},
+        loss_configuration={"metric": config.loss_metric, "scaling": config.loss_scaling},
+        search_space={
+            "forecast_variables": list(config.forecast_variables),
+            "variable_groups": list(config.variable_groups or ()),
+            "residual_group_name": config.residual_group_name,
+            "group_separate_horizons": config.group_separate_horizons,
+        },
+        optimizer_budget={
+            "n_eval": config.optimization_n_eval,
+            "optimization_horizon_quarters": config.optimization_horizon_quarters,
+            "optimization_eval_horizon_quarters": config.optimization_eval_horizon_quarters,
+        },
+        random_seeds={"base_seed": config.base_seed, "inner_random_seed": config.inner_random_seed},
+        parallel_worker_count=1,
+        configuration_extra={
+            "scope": plan.scope,
+            "expected_outputs": expected_outputs,
+            "output_dir": str(plan.output_dir),
+            "save_all_cell_forecasts": config.save_all_cell_forecasts,
+        },
+    )
+
+
 def plan_scope_runs(config: ScopeGridConfig) -> list[ScopeRunPlan]:
     schedule = build_selection_schedule(config.selection_frequency)
     plans: list[ScopeRunPlan] = []
@@ -379,10 +447,25 @@ def plan_scope_runs(config: ScopeGridConfig) -> list[ScopeRunPlan]:
         # the manifest; the real run resolves against actual origins.
         n_events = _estimate_selection_events(schedule, config)
         output_dir = config.output_root / f"scope_{scope}"
-        existing_policy = _resolve_existing_policy(
+        provisional_plan = ScopeRunPlan(
+            scope=scope,
+            output_dir=output_dir,
+            selection_plan=selection_plan,
+            n_selection_events=n_events,
+            n_target_cells=len(selection_plan.cells),
+            existing_policy="planned",
+        )
+        provisional_metadata = _plan_run_metadata(
+            config,
+            provisional_plan,
+            started_utc=utc_now(),
+            finished_utc=None,
+            completion_status="partial",
+        )
+        existing_policy = resolve_run_directory_policy(
             output_dir,
             if_exists_policy=config.if_exists_policy,
-            save_all_cell_forecasts=config.save_all_cell_forecasts,
+            configuration_hash=str(provisional_metadata["configuration_hash"]),
         )
         plans.append(
             ScopeRunPlan(
@@ -522,7 +605,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     config.output_root.mkdir(parents=True, exist_ok=True)
     manifest_path = config.output_root / "scope_grid_manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2, default=str), encoding="utf-8")
+    from common_hpo import atomic_write_json
+
+    atomic_write_json(manifest_path, manifest)
 
     # A real run requires data + MBFVAR; those heavy imports stay lazy so the
     # dry-run and manifest paths never need them.

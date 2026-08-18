@@ -1,0 +1,14 @@
+numpy
+scipy
+pandas
+matplotlib
+requests
+joblib
+openpyxl
+xlsxwriter
+tqdm
+plotly
+seaborn
+arm-mango
+bayesian-optimization
+pytest

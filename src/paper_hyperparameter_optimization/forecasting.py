@@ -13,6 +13,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from common_hpo.metadata import classify_failure
+
 
 from experiment_provenance import (
     deterministic_rng_context,
@@ -1099,6 +1101,7 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
         return {
             "forecast_rows": [],
             "hyperparameters": {},
+            "failure_category": classify_failure(exc),
             "error": f"{type(exc).__name__}: {exc}",
         }
 

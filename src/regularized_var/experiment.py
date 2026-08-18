@@ -551,11 +551,14 @@ def run_scope_experiment(
                         forecast_method=config.forecast_method,
                     )
                 except Exception as exc:  # noqa: BLE001 - record and continue
+                    from common_hpo.metadata import classify_failure
+
                     failed.append(
                         {
                             "forecast_origin": origin_label,
                             "cell_id": cell.cell_id,
                             "stage": "selection",
+                            "failure_category": classify_failure(exc),
                             "error": f"{type(exc).__name__}: {exc}",
                         }
                     )
@@ -596,6 +599,7 @@ def run_scope_experiment(
                         "forecast_origin": origin_label,
                         "cell_id": cell.cell_id,
                         "stage": "forecast",
+                        "failure_category": "forecast_invalid",
                         "error": "non-finite or infeasible ridge forecast",
                     }
                 )
@@ -756,10 +760,13 @@ def run_benchmark(
                 panel, strategy, block, config, offsets, split.origin
             )
         except Exception as exc:  # noqa: BLE001
+            from common_hpo.metadata import classify_failure
+
             failed.append(
                 {
                     "forecast_origin": origin_label,
                     "stage": "forecast",
+                    "failure_category": classify_failure(exc),
                     "error": f"{type(exc).__name__}: {exc}",
                 }
             )
@@ -920,21 +927,22 @@ def estimate_fit_counts(
 # Output writing (canonical files matching GLP / MF-BVAR)
 # --------------------------------------------------------------------------- #
 def _write_csv(path, columns: Sequence[str], rows: Sequence[Mapping[str, object]]) -> None:
-    import csv
+    from common_hpo.io import atomic_write_csv_rows
 
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(columns))
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({key: row.get(key) for key in columns})
+    atomic_write_csv_rows(path, columns, rows)
 
 
-def write_scope_outputs(result: ScopeExperimentResult, output_dir) -> dict[str, object]:
+def write_scope_outputs(
+    result: ScopeExperimentResult,
+    output_dir,
+    *,
+    metadata_override: Mapping[str, object] | None = None,
+) -> dict[str, object]:
     """Write the canonical output files for one scope run."""
 
-    import json
     from pathlib import Path
+
+    from common_hpo.io import atomic_write_json
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -976,22 +984,27 @@ def write_scope_outputs(result: ScopeExperimentResult, output_dir) -> dict[str, 
 
     _write_csv(
         output_dir / "failed_origins.csv",
-        ("forecast_origin", "cell_id", "stage", "error"),
+        ("forecast_origin", "cell_id", "stage", "failure_category", "error"),
         result.failed_origins,
     )
 
-    metadata = dict(result.metadata)
+    metadata = dict(metadata_override or result.metadata)
     metadata["n_forecast_rows"] = len(result.forecast_rows)
-    with (output_dir / "run_metadata.json").open("w", encoding="utf-8") as handle:
-        json.dump(metadata, handle, indent=2, default=str)
+    atomic_write_json(output_dir / "run_metadata.json", metadata)
     return metadata
 
 
-def write_benchmark_outputs(result: BenchmarkResult, output_dir) -> dict[str, object]:
+def write_benchmark_outputs(
+    result: BenchmarkResult,
+    output_dir,
+    *,
+    metadata_override: Mapping[str, object] | None = None,
+) -> dict[str, object]:
     """Write the canonical output files for one benchmark strategy."""
 
-    import json
     from pathlib import Path
+
+    from common_hpo.io import atomic_write_json
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1004,11 +1017,10 @@ def write_benchmark_outputs(result: BenchmarkResult, output_dir) -> dict[str, ob
     )
     _write_csv(
         output_dir / "failed_origins.csv",
-        ("forecast_origin", "stage", "error"),
+        ("forecast_origin", "stage", "failure_category", "error"),
         result.failed_origins,
     )
-    metadata = dict(result.metadata)
+    metadata = dict(metadata_override or result.metadata)
     metadata["n_forecast_rows"] = len(result.forecast_rows)
-    with (output_dir / "run_metadata.json").open("w", encoding="utf-8") as handle:
-        json.dump(metadata, handle, indent=2, default=str)
+    atomic_write_json(output_dir / "run_metadata.json", metadata)
     return metadata

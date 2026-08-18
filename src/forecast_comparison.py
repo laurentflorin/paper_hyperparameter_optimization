@@ -19,6 +19,8 @@ import warnings
 import numpy as np
 import pandas as pd
 
+from common_hpo.io import classify_run_directory
+
 
 OPTIMIZATION_HORIZON_RE = re.compile(r"^h([1-9][0-9]*)q$")
 RUN_FILES = (
@@ -39,6 +41,12 @@ def sha256_file(path: Path) -> str:
 
 
 def _complete_run_directory(path: Path) -> tuple[bool, str]:
+    state = classify_run_directory(path)
+    if state.status == "complete":
+        return True, ""
+    if state.status in {"partial", "failed", "cancelled"}:
+        return False, state.reason or f"run state is {state.status}"
+
     forecast_path = path / "forecast_panel.csv"
     metadata_path = path / "run_metadata.json"
     if not forecast_path.exists():

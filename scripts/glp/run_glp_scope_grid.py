@@ -27,7 +27,28 @@ SRC_ROOT = PROJECT_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from common_hpo import LossConfig, ScaleConfig, SelectionPlan, SelectionSchedule, ValidationScheme, build_selection_plan  # noqa: E402
+from common_hpo import (  # noqa: E402
+    CSVSchema,
+    JSONSchema,
+    LossConfig,
+    ScaleConfig,
+    SelectionPlan,
+    SelectionSchedule,
+    ValidationScheme,
+    atomic_write_csv_rows,
+    atomic_write_dataframe_csv,
+    atomic_write_json,
+    atomic_write_text,
+    build_run_metadata,
+    build_selection_plan,
+    classify_failure,
+    mark_run_cancelled,
+    mark_run_complete,
+    mark_run_failed,
+    prepare_run_directory,
+    resolve_run_directory_policy,
+    utc_now,
+)
 from common_hpo.schedules import ScheduleError  # noqa: E402
 from experiment_provenance import deterministic_rng_context, stable_child_seed  # noqa: E402
 from glp_hyperparameter_optimization.config import (  # noqa: E402
@@ -65,7 +86,20 @@ DEFAULT_SELECTION_FREQUENCY = "4"
 EXPECTED_OUTPUT_FILES = (
     "forecast_panel.csv",
     "selected_hyperparameters.csv",
+    "failed_origins.csv",
     "run_metadata.json",
+)
+_FAILED_ORIGINS_COLUMNS = ("forecast_origin", "cell_id", "stage", "failure_category", "error")
+_FORECAST_PANEL_COLUMNS = (
+    "forecast_origin",
+    "variable",
+    "horizon",
+    "forecast",
+)
+_SELECTION_COLUMNS = (
+    "cell_id",
+    "selection_event_id",
+    "selection_loss",
 )
 
 
@@ -385,33 +419,94 @@ def _classify_existing_directory(output_dir: Path, *, save_all_cell_forecasts: b
     return "complete" if complete else "partial"
 
 
-def _resolve_existing_policy(
-    output_dir: Path,
+def _scope_run_metadata(
+    config: ScopeGridConfig,
+    plan: ScopeRunPlan,
     *,
-    if_exists_policy: str,
-    save_all_cell_forecasts: bool,
-) -> str:
-    state = _classify_existing_directory(
-        output_dir,
-        save_all_cell_forecasts=save_all_cell_forecasts,
+    started_utc: str,
+    finished_utc: str | None,
+    completion_status: str,
+    failure_records: Sequence[Mapping[str, object]] = (),
+    extra: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    expected_outputs = list(EXPECTED_OUTPUT_FILES)
+    if config.save_all_cell_forecasts:
+        expected_outputs.append("forecast_panel_all_cells.csv")
+    return build_run_metadata(
+        project_root=PROJECT_ROOT,
+        command_line=config.command_line,
+        started_utc=started_utc,
+        finished_utc=finished_utc,
+        completion_status=completion_status,
+        model_family="glp",
+        model_version=RUNNER_NAME,
+        data_source={"panel_path": str(config.panel_path), "format": "glp_realtime_panel"},
+        data_vintage_identifiers={
+            "actual_vintage": config.actual_vintage.strftime("%Y-%m-%d"),
+            "outer_origin_start": config.start.strftime("%Y-%m-%d"),
+            "outer_origin_end": config.end.strftime("%Y-%m-%d"),
+        },
+        input_files=(config.panel_path,),
+        transformation_configuration={
+            "lags": config.lags,
+            "transform_convention": "glp_default_transforms",
+            "model_size": config.model_size,
+        },
+        variable_order=_model_codes(config.model_size),
+        target_variables=config.target_variables,
+        target_horizons=config.target_horizons,
+        selection_plan=plan.selection_plan.to_dict(),
+        validation_scheme=config.validation_scheme.to_dict(),
+        vintage_policy=getattr(config.validation_scheme.vintage_policy, "value", None),
+        selection_schedule=config.schedule.to_dict(),
+        loss_configuration=config.loss_config.to_dict(),
+        search_space=config.search_config.to_dict(),
+        optimizer_budget={
+            "init_points": config.optimizer_init_points,
+            "iterations": config.optimizer_iterations,
+            "total_candidates_per_cell": config.optimizer_init_points + config.optimizer_iterations,
+            "objective_posterior_draws": config.objective_posterior_draws,
+        },
+        random_seeds={
+            "optimizer_seed": config.optimizer_seed,
+            "inner_random_seed": config.validation_scheme.random_seed,
+        },
+        parallel_worker_count=config.worker_count,
+        failure_records=failure_records,
+        configuration_extra={
+            "scope": plan.scope,
+            "execution_mode": config.execution_mode,
+            "search_config_id": config.search_config_id,
+            "loss_config_id": config.loss_config_id,
+            "save_all_cell_forecasts": config.save_all_cell_forecasts,
+            "expected_outputs": expected_outputs,
+            "output_dir": str(plan.output_dir),
+        },
+        extra=extra,
     )
-    if if_exists_policy == "overwrite":
-        return "planned"
-    if if_exists_policy == "resume":
-        if state == "complete":
-            return "resume_skip"
-        if state in {"missing", "empty"}:
-            return "planned"
-        raise FileExistsError(
-            f"run directory {output_dir} already contains partial outputs; "
-            "refusing an ambiguous resume. Use --overwrite to replace it."
+
+
+def _scope_output_schemas(config: ScopeGridConfig) -> tuple[tuple[CSVSchema, ...], tuple[JSONSchema, ...]]:
+    csv_schemas = [
+        CSVSchema("forecast_panel.csv", _FORECAST_PANEL_COLUMNS, min_rows=1),
+        CSVSchema("selected_hyperparameters.csv", _SELECTION_COLUMNS, min_rows=1),
+        CSVSchema("failed_origins.csv", _FAILED_ORIGINS_COLUMNS, min_rows=0),
+    ]
+    if config.save_all_cell_forecasts:
+        csv_schemas.append(CSVSchema("forecast_panel_all_cells.csv", _FORECAST_PANEL_COLUMNS, min_rows=1))
+    json_schemas = [
+        JSONSchema(
+            "run_metadata.json",
+            (
+                "configuration_hash",
+                "completion_status",
+                "repository_commit",
+                "target_variables",
+                "target_horizons",
+            ),
         )
-    if state in {"missing", "empty"}:
-        return "planned"
-    raise FileExistsError(
-        f"run directory {output_dir} already exists and is not empty. "
-        "Use --resume or --overwrite explicitly."
-    )
+    ]
+    return tuple(csv_schemas), tuple(json_schemas)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -596,52 +691,15 @@ def build_study_config(
         model_size=model_size,
     )
 
-    n_events = len(schedule.resolve(outer_origins))
-    scope_plans: list[ScopeRunPlan] = []
-    for scope in selection_scopes:
-        if scope == "group":
-            selection_plan = build_selection_plan(
-                scope,
-                target_variables,
-                target_horizons,
-                variable_groups=variable_groups,
-                separate_group_horizons=bool(args.group_separate_horizons),
-                residual_group_name=residual_group_name,
-            )
-        else:
-            selection_plan = build_selection_plan(scope, target_variables, target_horizons)
-        output_dir = _scope_output_dir(output_root, scope)
-        status = _resolve_existing_policy(
-            output_dir,
-            if_exists_policy=if_exists_policy,
-            save_all_cell_forecasts=bool(args.save_all_cell_forecasts),
-        )
-        n_cells = len(selection_plan.cells)
-        optimization_cells = n_events * n_cells
-        candidate_evaluations = optimization_cells * total_budget
-        scope_plans.append(
-            ScopeRunPlan(
-                scope=scope,
-                output_dir=output_dir,
-                selection_plan=selection_plan,
-                n_selection_events=n_events,
-                n_target_cells=n_cells,
-                estimated_optimization_cells=optimization_cells,
-                estimated_candidate_evaluations=candidate_evaluations,
-                estimated_validation_split_evaluations=(candidate_evaluations * validation_scheme.n_origins),
-                status=status,
-            )
-        )
-
     argv_tokens = tuple(str(value) for value in (argv if argv is not None else sys.argv[1:]))
     command_line = shlex.join((program, *argv_tokens))
 
     worker_count = 1
     if args.execution_mode == "parallel":
-        requested_workers = int(args.worker_count) if args.worker_count is not None else len(scope_plans)
-        worker_count = max(1, min(requested_workers, len(scope_plans)))
+        requested_workers = int(args.worker_count) if args.worker_count is not None else len(selection_scopes)
+        worker_count = max(1, min(requested_workers, len(selection_scopes)))
 
-    return ScopeGridConfig(
+    base_config = ScopeGridConfig(
         output_root=output_root,
         panel_path=panel_path,
         model_size=model_size,
@@ -677,6 +735,100 @@ def build_study_config(
         argv=argv_tokens,
         outer_origins=outer_origins,
         warnings=warnings,
+        scope_plans=(),
+    )
+
+    n_events = len(schedule.resolve(outer_origins))
+    scope_plans: list[ScopeRunPlan] = []
+    for scope in selection_scopes:
+        if scope == "group":
+            selection_plan = build_selection_plan(
+                scope,
+                target_variables,
+                target_horizons,
+                variable_groups=variable_groups,
+                separate_group_horizons=bool(args.group_separate_horizons),
+                residual_group_name=residual_group_name,
+            )
+        else:
+            selection_plan = build_selection_plan(scope, target_variables, target_horizons)
+        output_dir = _scope_output_dir(output_root, scope)
+        n_cells = len(selection_plan.cells)
+        optimization_cells = n_events * n_cells
+        candidate_evaluations = optimization_cells * total_budget
+        provisional_plan = ScopeRunPlan(
+            scope=scope,
+            output_dir=output_dir,
+            selection_plan=selection_plan,
+            n_selection_events=n_events,
+            n_target_cells=n_cells,
+            estimated_optimization_cells=optimization_cells,
+            estimated_candidate_evaluations=candidate_evaluations,
+            estimated_validation_split_evaluations=(candidate_evaluations * validation_scheme.n_origins),
+            status="planned",
+        )
+        provisional_metadata = _scope_run_metadata(
+            base_config,
+            provisional_plan,
+            started_utc=utc_now(),
+            finished_utc=None,
+            completion_status="partial",
+        )
+        status = resolve_run_directory_policy(
+            output_dir,
+            if_exists_policy=if_exists_policy,
+            configuration_hash=str(provisional_metadata["configuration_hash"]),
+        )
+        scope_plans.append(
+            ScopeRunPlan(
+                scope=scope,
+                output_dir=output_dir,
+                selection_plan=selection_plan,
+                n_selection_events=n_events,
+                n_target_cells=n_cells,
+                estimated_optimization_cells=optimization_cells,
+                estimated_candidate_evaluations=candidate_evaluations,
+                estimated_validation_split_evaluations=(candidate_evaluations * validation_scheme.n_origins),
+                status=status,
+            )
+        )
+
+    return ScopeGridConfig(
+        output_root=base_config.output_root,
+        panel_path=base_config.panel_path,
+        model_size=base_config.model_size,
+        start=base_config.start,
+        end=base_config.end,
+        actual_vintage=base_config.actual_vintage,
+        lags=base_config.lags,
+        selection_scopes=base_config.selection_scopes,
+        target_variables=base_config.target_variables,
+        target_horizons=base_config.target_horizons,
+        variable_groups=base_config.variable_groups,
+        residual_group_name=base_config.residual_group_name,
+        separate_group_horizons=base_config.separate_group_horizons,
+        loss_metric=base_config.loss_metric,
+        loss_scaling=base_config.loss_scaling,
+        benchmark=base_config.benchmark,
+        validation_scheme=base_config.validation_scheme,
+        schedule=base_config.schedule,
+        search_config=base_config.search_config,
+        search_config_id=base_config.search_config_id,
+        loss_config=base_config.loss_config,
+        loss_config_id=base_config.loss_config_id,
+        optimizer_init_points=base_config.optimizer_init_points,
+        optimizer_iterations=base_config.optimizer_iterations,
+        optimizer_seed=base_config.optimizer_seed,
+        objective_posterior_draws=base_config.objective_posterior_draws,
+        save_all_cell_forecasts=base_config.save_all_cell_forecasts,
+        execution_mode=base_config.execution_mode,
+        worker_count=base_config.worker_count,
+        dry_run=base_config.dry_run,
+        if_exists_policy=base_config.if_exists_policy,
+        command_line=base_config.command_line,
+        argv=base_config.argv,
+        outer_origins=base_config.outer_origins,
+        warnings=base_config.warnings,
         scope_plans=tuple(scope_plans),
     )
 
@@ -784,8 +936,7 @@ def _scope_manifest(config: ScopeGridConfig, plan: ScopeRunPlan) -> dict[str, ob
 
 
 def _write_text(path: Path, content: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content, encoding="utf-8")
+    atomic_write_text(path, content)
 
 
 def _write_manifests(config: ScopeGridConfig) -> None:
@@ -1098,19 +1249,28 @@ def run_scope_study(plan: ScopeRunPlan, config: ScopeGridConfig, panel) -> GLPEx
     )
 
 
-def _write_scope_outputs(plan: ScopeRunPlan, config: ScopeGridConfig, result: GLPExperimentResult) -> None:
+def _write_scope_outputs(
+    plan: ScopeRunPlan,
+    config: ScopeGridConfig,
+    result: GLPExperimentResult,
+    *,
+    metadata_override: Mapping[str, object] | None = None,
+) -> None:
     plan.output_dir.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(result.forecast_panel).to_csv(plan.output_dir / "forecast_panel.csv", index=False)
-    pd.DataFrame(result.selected_hyperparameters).to_csv(
+    atomic_write_dataframe_csv(plan.output_dir / "forecast_panel.csv", pd.DataFrame(result.forecast_panel), index=False)
+    atomic_write_dataframe_csv(
         plan.output_dir / "selected_hyperparameters.csv",
+        pd.DataFrame(result.selected_hyperparameters),
         index=False,
     )
+    atomic_write_csv_rows(plan.output_dir / "failed_origins.csv", _FAILED_ORIGINS_COLUMNS, ())
     if config.save_all_cell_forecasts:
-        pd.DataFrame(result.forecast_panel_all_cells).to_csv(
+        atomic_write_dataframe_csv(
             plan.output_dir / "forecast_panel_all_cells.csv",
+            pd.DataFrame(result.forecast_panel_all_cells),
             index=False,
         )
-    metadata = dict(result.run_metadata)
+    metadata = dict(metadata_override or result.run_metadata)
     metadata.update(
         {
             "runner": RUNNER_NAME,
@@ -1146,7 +1306,7 @@ def _write_scope_outputs(plan: ScopeRunPlan, config: ScopeGridConfig, result: GL
             "completed_utc": _timestamp_utc(),
         }
     )
-    _write_text(plan.output_dir / "run_metadata.json", _json_dumps(metadata))
+    atomic_write_json(plan.output_dir / "run_metadata.json", metadata)
 
 
 def execute_study(config: ScopeGridConfig) -> dict[str, object]:
@@ -1169,9 +1329,77 @@ def execute_study(config: ScopeGridConfig) -> dict[str, object]:
     executed: list[str] = []
 
     def _run_one(plan: ScopeRunPlan) -> tuple[str, GLPExperimentResult]:
-        result = run_scope_study(plan, config, panel)
-        _write_scope_outputs(plan, config, result)
-        return plan.scope, result
+        started_utc = utc_now()
+        initial_metadata = _scope_run_metadata(
+            config,
+            plan,
+            started_utc=started_utc,
+            finished_utc=None,
+            completion_status="partial",
+        )
+        expected_outputs = list(EXPECTED_OUTPUT_FILES)
+        if config.save_all_cell_forecasts:
+            expected_outputs.append("forecast_panel_all_cells.csv")
+        prepare_run_directory(
+            plan.output_dir,
+            manifest=initial_metadata,
+            if_exists_policy="overwrite",
+            expected_outputs=expected_outputs,
+        )
+        try:
+            result = run_scope_study(plan, config, panel)
+            final_metadata = _scope_run_metadata(
+                config,
+                plan,
+                started_utc=started_utc,
+                finished_utc=utc_now(),
+                completion_status="complete",
+                extra={
+                    "runner": RUNNER_NAME,
+                    "cache_stats": result.cache_stats,
+                    "selection_event_count": len(result.run_metadata.get("selection_events", [])),
+                },
+            )
+            _write_scope_outputs(plan, config, result, metadata_override=final_metadata)
+            csv_schemas, json_schemas = _scope_output_schemas(config)
+            mark_run_complete(
+                plan.output_dir,
+                configuration_hash=str(final_metadata["configuration_hash"]),
+                csv_schemas=csv_schemas,
+                json_schemas=json_schemas,
+            )
+            return plan.scope, result
+        except KeyboardInterrupt:
+            cancelled_metadata = _scope_run_metadata(
+                config,
+                plan,
+                started_utc=started_utc,
+                finished_utc=utc_now(),
+                completion_status="cancelled",
+                failure_records=({"stage": "run", "cell_id": plan.scope, "error": "KeyboardInterrupt", "failure_category": "cancelled"},),
+            )
+            mark_run_cancelled(
+                plan.output_dir,
+                configuration_hash=str(initial_metadata["configuration_hash"]),
+                metadata=cancelled_metadata,
+            )
+            raise
+        except Exception as exc:  # noqa: BLE001
+            failed_metadata = _scope_run_metadata(
+                config,
+                plan,
+                started_utc=started_utc,
+                finished_utc=utc_now(),
+                completion_status="failed",
+                failure_records=({"stage": "run", "cell_id": plan.scope, "error": f"{type(exc).__name__}: {exc}", "failure_category": classify_failure(exc)},),
+            )
+            mark_run_failed(
+                plan.output_dir,
+                configuration_hash=str(initial_metadata["configuration_hash"]),
+                reason=f"{type(exc).__name__}: {exc}",
+                metadata=failed_metadata,
+            )
+            raise
 
     if config.execution_mode == "parallel" and len(pending) > 1:
         with ThreadPoolExecutor(max_workers=config.worker_count) as executor:
@@ -1214,8 +1442,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         parsed,
         argv=tuple(argv) if argv is not None else tuple(sys.argv[1:]),
     )
-    execute_study(config)
-    return 0
+    try:
+        execute_study(config)
+        return 0
+    except KeyboardInterrupt:
+        print("error: run cancelled by user.", file=sys.stderr)
+        return 130
+    except Exception as exc:  # noqa: BLE001
+        print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
