@@ -1,5 +1,12 @@
 # GLP (2015) Prior Selection: Methodological Companion
 
+> **Status (2026-08-18):** This document is current. The scope-grid
+> architecture described in [docs/EXPERIMENT_DESIGN.md](docs/EXPERIMENT_DESIGN.md)
+> supersedes the single-origin strategy descriptions in earlier versions of this
+> file; the statistical derivation below remains unchanged and authoritative.
+> Implementation commands are in [README.md](README.md) and
+> [docs/PILOT_VALIDATION.md](docs/PILOT_VALIDATION.md).
+
 This document is the **theoretical** companion to the GLP workflow in
 `src/glp_hyperparameter_optimization` and `scripts/glp`. It explains every
 hyperparameter‑selection strategy implemented in this repository, what each one

@@ -1,5 +1,14 @@
 # Review of the GLP `mango_rmse` Hyperparameter-Selection Approaches
 
+> **Historical review — do not delete.** This document analyses the legacy
+> `mango_rmse` objective-vs-predictive-mean mismatch (finding GLP-RMSE in the
+> implementation audit). The scope-grid runner
+> (`scripts/glp/run_glp_scope_grid.py`) uses the `evaluate_glp_candidate`
+> path, which avoids the mismatch described here. The findings in this review
+> apply to the legacy `scripts/glp/run_glp_mango_rmse.py` path only. See
+> [docs/EXPERIMENT_DESIGN.md](docs/EXPERIMENT_DESIGN.md) §9 for the current
+> full/reduced search design.
+
 **Scope.** This report reviews the two RMSE-based GLP hyperparameter strategies
 — `mango_rmse` (contiguous tail origins) and `mango_rmse_random` (random
 origins) — and answers three questions:

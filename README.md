@@ -1,21 +1,191 @@
 # paper_hyperparameter_optimization
 
-This repository contains a reproducible Python workflow for:
+Reproducible Python experiments for comparing two strategies for selecting
+the shrinkage hyperparameters of Bayesian VARs on out-of-sample forecast
+accuracy:
 
-1. downloading the Schorfheide-Song real-time macro dataset from ALFRED/FRED,
-2. recreating the mixed-frequency BVAR forecasts with the paper hyperparameters,
-3. re-optimizing the hyperparameters with `update_hyperparameters_mango`,
-4. re-optimizing the hyperparameters with `update_hyperparameters_mango_rmse`,
-5. re-optimizing the hyperparameters with `update_hyperparameters_mango_rmse_random`,
-6. comparing the out-of-sample forecasts from the analysis runs with paper-ready tables and figures.
+1. **Native selection** — maximize the marginal data density (MDD / marginal
+   likelihood) as in Giannone, Lenza, and Primiceri (2015).
+2. **Forecast-loss selection** — minimize pseudo-out-of-sample RMSE on inner
+   validation splits.
 
-The target paper is:
+> **Research question:** does selecting hyperparameters by forecast loss
+> produce better real-time macroeconomic forecasts than the principled
+> Bayesian (MDD) rule?
 
-- Schorfheide, F. and Song, D. (2015), *Real-Time Forecasting With a Mixed-Frequency VAR*, *Journal of Business & Economic Statistics*, 33(3), 366-380.
+### Target papers
 
-The workflow uses the `MBFVAR` package from [laurentflorin/MBFVAR](https://github.com/laurentflorin/MBFVAR.git).
+| Paper | Abbr |
+|---|---|
+| Giannone, Lenza, Primiceri (2015), *Prior Selection for VARs*, ReStat 97(2) | GLP |
+| Schorfheide, Song (2015), *Real-Time Forecasting With a Mixed-Frequency VAR*, JBES 33(3) | SS |
 
-## Data Setup
+---
+
+## Documentation
+
+| Document | Contents |
+|---|---|
+| [docs/EXPERIMENT_DESIGN.md](docs/EXPERIMENT_DESIGN.md) | Research question, selection scopes, inner/outer evaluation, vintage policies, selection schedules, loss scaling, forecast methods, known limitations |
+| [docs/OUTPUT_SCHEMA.md](docs/OUTPUT_SCHEMA.md) | Full column-level schema for all output files |
+| [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) | Configuration hashes, resume semantics, test tiers, CI setup |
+| [docs/PILOT_VALIDATION.md](docs/PILOT_VALIDATION.md) | Exact pilot commands, timing, output counts, validation results, dependency status |
+| [README_GLP_METHODOLOGY.md](README_GLP_METHODOLOGY.md) | Statistical derivation of the GLP model and hyperparameter strategies |
+| [docs/CURRENT_STATE_AUDIT.md](docs/CURRENT_STATE_AUDIT.md) | Repository audit (2026-08-18): known blockers, output quality, code state |
+| [IMPLEMENTATION_AUDIT.md](IMPLEMENTATION_AUDIT.md) | Implementation audit with severity-tagged findings; see status notes for resolved items |
+
+---
+
+## Environment
+
+```bash
+# Full environment (required for GLP and MFVAR workflows)
+pip install -r requirements.txt
+
+# Minimal CI environment (ridge + shared infrastructure only; no optional deps)
+pip install -r requirements-dev.txt
+```
+
+`MBFVAR` requires a C/C++ build toolchain and is pinned to commit
+`5b06f93272cd6ebf370fbf2aac3b3573c7830493`. `covbayesvar` is required for GLP.
+
+---
+
+## Quick start: synthetic ridge integration (no downloads required)
+
+```bash
+# 1. Generate synthetic panel
+python - <<'EOF'
+import numpy as np, pandas as pd
+from pathlib import Path
+rng = np.random.default_rng(42)
+T = 120
+A = np.array([[0.6,0.1,0.0],[-0.1,0.5,0.1],[0.0,0.1,0.4]])
+c = np.array([0.2,-0.1,0.1])
+y = np.zeros((T,3))
+for t in range(1,T):
+    y[t] = c + A@y[t-1] + rng.normal(scale=0.15,size=3)
+Path("/tmp/pilot_a").mkdir(exist_ok=True)
+pd.DataFrame(y, columns=["gdp","inv","cons"]).to_csv("/tmp/pilot_a/panel.csv", index=False)
+EOF
+
+# 2. Iterated ridge, selected once, all four scopes
+python scripts/regularized_var/run_ridge_scope_grid.py \
+  --output-root /tmp/pilot_a/iterated \
+  --panel-path  /tmp/pilot_a/panel.csv \
+  --target-variables gdp,inv,cons --target-horizons 1,2,4,8 \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --forecast-method iterated \
+  --grid-lambdas 0.001,0.01,0.1,1.0 --grid-lag-orders 1,2 \
+  --grid-alphas 0.0 --grid-kappas 1.0 \
+  --outer-n-origins 8 --inner-n-origins 4 --min-train-length 30 \
+  --selection-frequency once --benchmarks no_change,var_aic --overwrite
+```
+
+See [docs/PILOT_VALIDATION.md](docs/PILOT_VALIDATION.md) for the full
+command set, comparison manifest, validation script, and all expected output
+row counts.
+
+---
+
+## Scope-grid runners (primary experiment entrypoints)
+
+Each runner supports all four selection scopes (`pooled`, `horizon`,
+`variable`, `variable_horizon`), configurable schedules, loss scaling, and
+canonical run-state markers with configuration-hash-based resume logic.
+
+### Ridge VAR (no optional dependencies)
+
+```bash
+python scripts/regularized_var/run_ridge_scope_grid.py \
+  --output-root outputs/regularized/<study> \
+  --panel-path  <panel.csv> \
+  --target-variables <v1,v2,...> \
+  --target-horizons  1,2,4,8 \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --forecast-method  iterated \    # or: direct
+  --selection-frequency once \     # or: per_origin, annual_quarterly, N
+  --benchmarks no_change,var_aic \
+  --overwrite
+```
+
+### GLP (requires `covbayesvar`)
+
+```bash
+python scripts/glp/run_glp_scope_grid.py \
+  --output-root outputs/glp/<study> \
+  --panel-path  data/processed/glp_realtime_panel.csv.gz \
+  --model-size  small \            # or: medium, large
+  --start 2000-03-31 --end 2019-12-31 \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --no-optimize-psi \              # reduced search (recommended)
+  --selection-frequency once \
+  --overwrite
+```
+
+### MFVAR / Schorfheide-Song (requires `MBFVAR`)
+
+```bash
+python scripts/mfvar/run_mfvar_scope_grid.py \
+  --output-root outputs/mfvar/<study> \
+  --panel-path  data/processed/realtime_panel.csv.gz \
+  --forecast-variables GDP,INVFIX,GOV,UNR,HRS,CPI,IP,PCE,FF,TB,SP500 \
+  --target-variables   GDP \
+  --target-horizons    1,4 \
+  --selection-scopes   pooled,variable \
+  --selection-frequency once \
+  --overwrite
+```
+
+`--forecast-variables` is the full quarterly block required by the model.
+`--target-variables` restricts the inner RMSE loss without changing the model.
+
+### Comparison
+
+```bash
+python scripts/compare_scope_study.py \
+  --manifest <manifest.json> \
+  --output-dir outputs/<study>/comparison
+```
+
+The manifest is a JSON file listing each panel directory with its model
+label and family tag. See [docs/OUTPUT_SCHEMA.md](docs/OUTPUT_SCHEMA.md)
+for the manifest format and comparison output schemas.
+
+---
+
+## Tests
+
+```bash
+# Minimal CI (no optional deps)
+pytest --skip-optional -q -rs
+
+# Full suite
+pytest -q
+
+# Unit tests only
+pytest -m unit -q
+```
+
+CI workflow: [.github/workflows/ci.yml](.github/workflows/ci.yml).
+Test tiers: [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md#9-test-tiers).
+
+---
+
+## Legacy scripts
+
+The sections below document the original single-origin scripts that predate
+the scope-grid architecture. They remain operational but do not write
+configuration hashes or run-state files.
+
+### Data
+
+## Legacy scripts
+
+The sections below document the original single-origin scripts. They remain
+operational but do not write configuration hashes or run-state files.
+
+### Schorfheide-Song data setup
 
 The download script reproduces the paper's 11-variable ALFRED mapping:
 
@@ -30,15 +200,15 @@ It pulls:
 
 If the ALFRED `SP500` vintage endpoint is unavailable, the downloader falls back to Stooq monthly S&P 500 closes and truncates that non-revised history at each vintage date.
 
-## Environment
+### Environment
 
-Create a Python environment with the dependencies in [requirements.txt](/workspaces/paper_hyperparameter_optimization/requirements.txt).
+Create a Python environment with the dependencies in [requirements.txt](requirements.txt).
 
 `MBFVAR` compiles native extensions, so a working C/C++ build toolchain is required.
 
-## Scripts
+### Scripts
 
-All script path arguments are resolved relative to the repository root, so the commands below work even when launched from a different current working directory.
+All script path arguments are resolved relative to the repository root.
 
 ### 1. Download data
 

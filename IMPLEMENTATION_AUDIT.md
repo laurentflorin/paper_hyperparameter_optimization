@@ -1,5 +1,13 @@
 # Forecasting, Hyperparameter-Optimization, and Ranking Audit
 
+> **Historical review — do not delete.** This document records findings from
+> the 2026-08-18 audit of commit `afa5977`. Findings marked *Critical* or
+> *High* have been partially or fully addressed in Stages 0–15; see
+> [docs/CURRENT_STATE_AUDIT.md](docs/CURRENT_STATE_AUDIT.md) for the current
+> state assessment and [docs/EXPERIMENT_DESIGN.md](docs/EXPERIMENT_DESIGN.md)
+> for the current design. The severity table below remains accurate for any
+> components not yet regenerated.
+
 Audit date: 2026-08-18  
 Audited repository commit: `afa5977ac90d617e681bd5fe7d9b1c200864a50f`  
 Primary focus: GLP code, in-/out-of-sample indices, look-ahead bias, and consistency of the rolling and random RMSE selectors and downstream rankings.
