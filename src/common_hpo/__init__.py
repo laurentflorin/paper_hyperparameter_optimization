@@ -6,5 +6,32 @@ shared by all targets assigned to that cell.
 """
 
 from .selection_scope import SelectionPlan, TargetCell, TargetKey, build_selection_plan
+from .splits import (
+    InfeasibleValidationDesign,
+    ValidationScheme,
+    ValidationSplit,
+    VintagePolicy,
+    assert_rolling_window_length,
+    assert_sorted_deterministically,
+    assert_split_is_leakage_safe,
+    build_validation_splits,
+    resolve_horizon_offsets,
+    verify_validation_splits,
+)
 
-__all__ = ["TargetKey", "TargetCell", "SelectionPlan", "build_selection_plan"]
+__all__ = [
+    "TargetKey",
+    "TargetCell",
+    "SelectionPlan",
+    "build_selection_plan",
+    "InfeasibleValidationDesign",
+    "ValidationScheme",
+    "ValidationSplit",
+    "VintagePolicy",
+    "assert_rolling_window_length",
+    "assert_sorted_deterministically",
+    "assert_split_is_leakage_safe",
+    "build_validation_splits",
+    "resolve_horizon_offsets",
+    "verify_validation_splits",
+]
