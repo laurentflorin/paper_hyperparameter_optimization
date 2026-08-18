@@ -6,6 +6,22 @@ shared by all targets assigned to that cell.
 """
 
 from .selection_scope import SelectionPlan, TargetCell, TargetKey, build_selection_plan
+from .losses import (
+    BenchmarkForecaster,
+    CellDiagnostic,
+    DuplicateErrorRecord,
+    ForecastErrorRecord,
+    LossConfig,
+    LossConfigurationError,
+    LossResult,
+    MissingCellError,
+    ScaleConfig,
+    absolute_error,
+    attach_benchmark_errors,
+    compute_outer_report_metrics,
+    evaluate_selection_loss,
+    squared_error,
+)
 from .splits import (
     InfeasibleValidationDesign,
     ValidationScheme,
@@ -24,6 +40,20 @@ __all__ = [
     "TargetCell",
     "SelectionPlan",
     "build_selection_plan",
+    "BenchmarkForecaster",
+    "CellDiagnostic",
+    "DuplicateErrorRecord",
+    "ForecastErrorRecord",
+    "LossConfig",
+    "LossConfigurationError",
+    "LossResult",
+    "MissingCellError",
+    "ScaleConfig",
+    "absolute_error",
+    "attach_benchmark_errors",
+    "compute_outer_report_metrics",
+    "evaluate_selection_loss",
+    "squared_error",
     "InfeasibleValidationDesign",
     "ValidationScheme",
     "ValidationSplit",
