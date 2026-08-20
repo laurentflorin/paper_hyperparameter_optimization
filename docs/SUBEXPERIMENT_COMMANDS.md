@@ -33,6 +33,9 @@ python scripts/glp/run_glp_scope_grid.py \
   --selection-scopes pooled,horizon,variable,variable_horizon \
   --target-horizons 1,2,4,8 \
   --selection-frequency once \
+  --optimization-init-points 24 \
+  --optimization-iterations 72 \
+  --objective-posterior-draws 25 \
   --no-optimize-psi \
   --overwrite
 
@@ -44,6 +47,9 @@ python scripts/glp/run_glp_scope_grid.py \
   --selection-scopes pooled,horizon,variable,variable_horizon \
   --target-horizons 1,2,4,8 \
   --selection-frequency once \
+  --optimization-init-points 24 \
+  --optimization-iterations 72 \
+  --objective-posterior-draws 25 \
   --no-optimize-psi \
   --overwrite
 
@@ -55,8 +61,103 @@ python scripts/glp/run_glp_scope_grid.py \
   --selection-scopes pooled,horizon,variable,variable_horizon \
   --target-horizons 1,2,4,8 \
   --selection-frequency once \
+  --optimization-init-points 24 \
+  --optimization-iterations 72 \
+  --objective-posterior-draws 25 \
   --no-optimize-psi \
   --overwrite
+```
+
+### 1.3 GLP commands for different `--selection-frequency` values
+
+Valid values are `once`, `per_origin`, `annual_quarterly`, or an integer `N`
+(meaning re-select every `N` origins). Below uses `model-size medium`; switch
+to `small` or `large` as needed.
+
+```bash
+# Re-select once at the first origin (most common paper setting)
+python scripts/glp/run_glp_scope_grid.py \
+  --output-root outputs/glp/scope_medium_once \
+  --panel-path data/processed/glp_realtime_panel.csv.gz \
+  --model-size medium \
+  --start 2000-03-31 --end 2019-12-31 \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --target-horizons 1,2,4,8 \
+  --selection-frequency once \
+  --optimization-init-points 24 \
+  --optimization-iterations 72 \
+  --objective-posterior-draws 25 \
+  --no-optimize-psi \
+  --overwrite
+
+# Re-select at every forecast origin (most expensive)
+python scripts/glp/run_glp_scope_grid.py \
+  --output-root outputs/glp/scope_medium_per_origin \
+  --panel-path data/processed/glp_realtime_panel.csv.gz \
+  --model-size medium \
+  --start 2000-03-31 --end 2019-12-31 \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --target-horizons 1,2,4,8 \
+  --selection-frequency per_origin \
+  --optimization-init-points 24 \
+  --optimization-iterations 72 \
+  --objective-posterior-draws 25 \
+  --no-optimize-psi \
+  --overwrite
+
+# Re-select annually in quarterly data (every 4 origins)
+python scripts/glp/run_glp_scope_grid.py \
+  --output-root outputs/glp/scope_medium_annual \
+  --panel-path data/processed/glp_realtime_panel.csv.gz \
+  --model-size medium \
+  --start 2000-03-31 --end 2019-12-31 \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --target-horizons 1,2,4,8 \
+  --selection-frequency annual_quarterly \
+  --optimization-init-points 24 \
+  --optimization-iterations 72 \
+  --objective-posterior-draws 25 \
+  --no-optimize-psi \
+  --overwrite
+
+# Re-select every N origins (example: N=8)
+python scripts/glp/run_glp_scope_grid.py \
+  --output-root outputs/glp/scope_medium_every8 \
+  --panel-path data/processed/glp_realtime_panel.csv.gz \
+  --model-size medium \
+  --start 2000-03-31 --end 2019-12-31 \
+  --selection-scopes pooled,horizon,variable,variable_horizon \
+  --target-horizons 1,2,4,8 \
+  --selection-frequency 8 \
+  --optimization-init-points 24 \
+  --optimization-iterations 72 \
+  --objective-posterior-draws 25 \
+  --no-optimize-psi \
+  --overwrite
+```
+
+### 1.4 Are GLP Bayesian-optimization defaults good enough?
+
+For the GLP scope-grid runner, the defaults are:
+
+- `--optimization-init-points 24`
+- `--optimization-iterations 72`
+- `--objective-posterior-draws 25`
+
+These are generally good baseline settings for the full experiment (they are
+not the old low-budget legacy defaults). Keep them for your main runs unless
+you are explicitly doing a quick smoke test.
+
+If you need a stronger robustness run (more compute):
+
+```bash
+--optimization-init-points 40 --optimization-iterations 120 --objective-posterior-draws 50
+```
+
+If you only need a quick sanity check (faster, lower fidelity):
+
+```bash
+--optimization-init-points 8 --optimization-iterations 16 --objective-posterior-draws 10
 ```
 
 ## 2) Schorfheide-Song (MFVAR)

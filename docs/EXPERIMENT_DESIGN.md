@@ -261,12 +261,28 @@ specification of every output file.
 
 ## 13. Known limitations
 
+This table lists implementation limitations. Threats to the **validity of the
+comparison itself** — unequal search budgets and schedules between the MDD and
+forecast-loss arms, the log-posterior versus marginal-likelihood objective,
+scope granularity confounded with compute, inner/outer loss mismatch,
+single-seed practice, and the reproducibility caveat — are documented
+separately in [docs/KNOWN_CONFOUNDS.md](KNOWN_CONFOUNDS.md).
+
 | ID | Area | Description |
 |---|---|---|
 | L-01 | Ridge / real data | `forecast_origin` and `target_quarter` are stored as integer row indices when the panel CSV has no date column. Real-data runs should supply a date column for interpretable outputs. |
 | L-02 | Ridge | `actual_level` is always NaN because ridge operates on pre-transformed series and does not carry a back-transform. Only `actual_metric` (the transformed actual) is valid. |
 | L-03 | All | There is no direct foreign-key column in `forecast_panel.csv` linking rows to `event_id` in `selected_hyperparameters.csv`. The linkage is implicit through the selection schedule recorded in `run_metadata.json`. |
-| L-04 | GLP | The `update_hyperparameters_mango_rmse(_random)` functions are not yet exported from `glp_model.py`, blocking legacy RMSE strategies. The scope-grid runner (which uses the internal `evaluate_glp_candidate` path) is not affected. |
+| L-04 | GLP | **Resolved.** `update_hyperparameters_mango_rmse` and `update_hyperparameters_mango_rmse_random` are exported from `glp_model.py` again, and the legacy GLP runners import successfully. The legacy RMSE strategies are no longer blocked. |
 | L-05 | GLP / MFVAR | Both depend on optional packages (`covbayesvar`, `MBFVAR`). Missing dependencies are reported as collection-time skips under `--skip-optional`. |
 | L-06 | MFVAR | `MBFVAR` creates fresh unseeded NumPy generators internally, so MFVAR results are not fully bit-reproducible across runs even with a fixed `--base-seed`. |
 | L-07 | Comparison | The `compare_scope_study.py` comparison CLI requires the `family` field in the manifest to be a known value (`ridge`, `ridge_direct`, `glp`, `glp_legacy`, `mfbvar`, `paper_mf`, `minnesota`). Benchmark panels must use the same family as their corresponding tuned panel. |
+
+---
+
+## 14. Known confounds and threats to validity
+
+See [docs/KNOWN_CONFOUNDS.md](KNOWN_CONFOUNDS.md) for confirmed threats to the
+validity of the MDD versus forecast-loss comparison, and for the changes
+required to remove them. Any headline result from this repository should be
+read together with that document.

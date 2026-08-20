@@ -9,7 +9,20 @@ optional model size), loads and aligns them through the explicit adapters in
     average_ranks.csv         scope_gains.csv          scope_gain_summary.csv
     hyperparameter_summary.csv selection_stability.csv failure_summary.csv
     computational_cost.csv    dm_tests.csv             bootstrap_intervals.csv
-    comparison_summary.md
+    common_sample.csv         comparison_summary.md
+
+Every table is built from a *single*, globally restricted frame: the panels are
+first reduced to the cell-wise common sample (see
+``common_hpo.reporting.restrict_to_common_sample``) and that one frame feeds the
+loss tables, the ranks, the scope gains and the paired DM/bootstrap inference.
+The "same sample basis" guarantee is therefore mechanical rather than
+aspirational -- the per-table restrictions downstream receive the same
+``--coverage-policy``/``--min-coverage`` and are therefore exact no-ops.
+
+Under ``--coverage-policy advisory`` the frame is deliberately left
+unrestricted: the coverage shortfall is reported in ``common_sample.csv`` but no
+table drops observations, so each model is evaluated on its own rows and the
+average ranks relax their common-sample precondition accordingly.
 
 The main paper question is answerable directly from ``scope_gains.csv`` without
 manually stitching directories.
@@ -69,6 +82,7 @@ from common_hpo.reporting import (  # noqa: E402
     load_selected_hyperparameters,
     mae_by_target,
     relative_rmse,
+    restrict_to_common_sample,
     rmse_by_target,
     scope_gain_summary,
     scope_gains,
@@ -131,15 +145,40 @@ def load_study(manifest: dict[str, Any], *, root: Path) -> dict[str, Any]:
     }
 
 
-def build_tables(study: dict[str, Any], *, baseline_model: str, bootstrap_seed: int = 0) -> dict[str, pd.DataFrame]:
-    combined = study["combined"]
-    alignment = check_origin_alignment(combined)
+def build_tables(
+    study: dict[str, Any],
+    *,
+    baseline_model: str,
+    bootstrap_seed: int = 0,
+    coverage_policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> dict[str, pd.DataFrame]:
+    raw = study["combined"]
+    alignment = check_origin_alignment(raw, policy=coverage_policy, min_coverage=min_coverage)
 
-    rmse_tbl = rmse_by_target(combined)
-    mae_tbl = mae_by_target(combined)
-    rel_tbl = relative_rmse(rmse_tbl, baseline_model=baseline_model)
-    ranks_tbl = average_ranks(rmse_tbl)
-    gains_tbl = scope_gains(combined)
+    # Restrict ONCE, globally: every table below -- point estimates and paired
+    # inference alike -- is computed from this single frame, so they cannot drift
+    # onto different samples.
+    combined, sample_report = restrict_to_common_sample(
+        raw, policy=coverage_policy, min_coverage=min_coverage
+    )
+
+    # The policy must be threaded into *every* builder. Under "restrict" the
+    # frame is already restricted, so the downstream restriction is a genuine
+    # no-op; under "advisory" nothing below may silently re-restrict, which is
+    # exactly what passing the policy through guarantees.
+    coverage_kwargs = {"policy": coverage_policy, "min_coverage": min_coverage}
+
+    rmse_tbl = rmse_by_target(combined, **coverage_kwargs)
+    mae_tbl = mae_by_target(combined, **coverage_kwargs)
+    rel_tbl = relative_rmse(
+        rmse_tbl, baseline_model=baseline_model, combined=combined, **coverage_kwargs
+    )
+    # Under "advisory" the models legitimately sit on different samples, so the
+    # common-sample precondition of the ranks is relaxed (and recorded in
+    # common_sample.csv / comparison_summary.md) instead of raising.
+    ranks_tbl = average_ranks(rmse_tbl, require_common_sample=coverage_policy != "advisory")
+    gains_tbl = scope_gains(combined, **coverage_kwargs)
     gain_summary_tbl = scope_gain_summary(gains_tbl)
 
     contrasts = standard_scope_contrasts(combined)
@@ -168,6 +207,7 @@ def build_tables(study: dict[str, Any], *, baseline_model: str, bootstrap_seed: 
         "computational_cost": cost,
         "dm_tests": dm_tbl,
         "bootstrap_intervals": boot_tbl,
+        "common_sample": sample_report.to_frame(),
         "_alignment": alignment,
     }
 
@@ -199,6 +239,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--baseline-model", type=str, default=None,
                         help="Model label used as the relative-RMSE baseline (default: manifest).")
     parser.add_argument("--bootstrap-seed", type=int, default=0)
+    parser.add_argument(
+        "--coverage-policy", type=str, default="restrict",
+        choices=["restrict", "raise", "advisory"],
+        help="How to handle observations not shared by every model in a cell: "
+             "restrict (drop them, default), raise (fail), advisory (report only).",
+    )
+    parser.add_argument(
+        "--min-coverage", type=float, default=0.0,
+        help="Fail if the retained share of observations falls below this value.",
+    )
     return parser
 
 
@@ -217,7 +267,13 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     try:
         study = load_study(manifest, root=Path(args.root))
-        tables = build_tables(study, baseline_model=baseline, bootstrap_seed=args.bootstrap_seed)
+        tables = build_tables(
+            study,
+            baseline_model=baseline,
+            bootstrap_seed=args.bootstrap_seed,
+            coverage_policy=args.coverage_policy,
+            min_coverage=args.min_coverage,
+        )
     except Exception as exc:  # noqa: BLE001
         print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1

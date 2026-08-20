@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import time
 from typing import TYPE_CHECKING, Any, Sequence
 
 import pandas as pd
@@ -39,10 +40,10 @@ from .config import (
     PAPER_THINING,
     DEFAULT_OPTIMIZATION_NSIM,
     forecast_origin_dates,
+    param_space_metadata,
 )
 from .horizon_mapping import (
     quarterly_horizon_to_state_rows,
-    required_forecast_months,
     target_quarter_for_origin,
 )
 
@@ -111,6 +112,7 @@ def _run_metadata(config, plan, *, started_utc: str, finished_utc: str | None, c
             "variable_groups": list(config.variable_groups or ()),
             "residual_group_name": config.residual_group_name,
             "group_separate_horizons": config.group_separate_horizons,
+            **param_space_metadata(),
         },
         optimizer_budget={
             "n_eval": config.optimization_n_eval,
@@ -196,7 +198,17 @@ def _build_real_forecast_generator(panel_path: Path, forecast_variables: Sequenc
             hyp=[list(request.hyperparameter_vector)],
             temp_agg=PAPER_TEMPORAL_AGGREGATION,
         )
-        model.forecast(required_forecast_months(max(request.system_horizons)))
+        # Endpoint-aware forecast length (MF-01): the monthly block is ragged in
+        # real time, so its last calendar month can lag the nominal origin
+        # quarter. A nominal ``max_horizon * 3`` would then stop short of the
+        # final target quarter and the extraction below would raise KeyError.
+        model.forecast(
+            forecasting.required_forecast_months(
+                monthly,
+                origin_date,
+                max_horizon_quarters=max(request.system_horizons),
+            )
+        )
         model.aggregate(frequency="Q")
 
         draw_frames = forecasting.aggregate_quarterly_posterior_draws(model)
@@ -248,6 +260,7 @@ def execute_scope_runs(config, plans) -> None:
         if plan.existing_policy == "resume_skip":
             continue
         started_utc = utc_now()
+        started_monotonic = time.monotonic()
         initial_metadata = _run_metadata(
             config,
             plan,
@@ -302,6 +315,7 @@ def execute_scope_runs(config, plans) -> None:
                     "runner": "mfvar_scope_grid",
                     "cache_stats": result.cache_stats,
                     "selection_event_count": len(result.run_metadata.get("selection_events", [])),
+                    "wall_time_seconds": time.monotonic() - started_monotonic,
                 },
             )
             _write_outputs(
@@ -324,7 +338,10 @@ def execute_scope_runs(config, plans) -> None:
                 started_utc=started_utc,
                 finished_utc=utc_now(),
                 completion_status="cancelled",
-                extra={"runner": "mfvar_scope_grid"},
+                extra={
+                    "runner": "mfvar_scope_grid",
+                    "wall_time_seconds": time.monotonic() - started_monotonic,
+                },
             )
             mark_run_cancelled(
                 plan.output_dir,
@@ -343,6 +360,7 @@ def execute_scope_runs(config, plans) -> None:
                     "runner": "mfvar_scope_grid",
                     "failure_reason": f"{type(exc).__name__}: {exc}",
                     "failure_category": classify_failure(exc),
+                    "wall_time_seconds": time.monotonic() - started_monotonic,
                 },
             )
             mark_run_failed(

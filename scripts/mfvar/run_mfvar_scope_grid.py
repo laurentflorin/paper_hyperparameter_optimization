@@ -46,9 +46,10 @@ from paper_hyperparameter_optimization.config import (  # noqa: E402
     MAX_FORECAST_HORIZON_QUARTERS,
     QUARTERLY_SERIES,
     REALTIME_PANEL_PATH,
+    param_space_metadata,
     resolve_project_path,
 )
-from paper_hyperparameter_optimization.horizon_mapping import required_forecast_months  # noqa: E402
+from paper_hyperparameter_optimization.horizon_mapping import nominal_forecast_months  # noqa: E402
 
 
 RUNNER_NAME = "mfvar_scope_grid"
@@ -284,7 +285,9 @@ def build_study_config(
     else:
         eval_horizon = None
 
-    required_months = required_forecast_months(config_max_horizon := max(target_horizons))
+    # Calendar-nominal length, used only for configuration validation below; the
+    # real forecast length is derived endpoint-aware at execution time.
+    nominal_months = nominal_forecast_months(config_max_horizon := max(target_horizons))
     if args.optimization_horizon_quarters < config_max_horizon:
         raise ScopeGridConfigError(
             "optimization-horizon-quarters must be at least the largest target horizon "
@@ -421,6 +424,7 @@ def _plan_run_metadata(
             "variable_groups": list(config.variable_groups or ()),
             "residual_group_name": config.residual_group_name,
             "group_separate_horizons": config.group_separate_horizons,
+            **param_space_metadata(),
         },
         optimizer_budget={
             "n_eval": config.optimization_n_eval,

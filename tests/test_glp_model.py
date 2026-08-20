@@ -95,7 +95,9 @@ def _rmse_setup(seed: int, *, lags: int = 4, H: int = 4, n_eval: int = 2):
     codes = ["GDP", "DEFL", "FFR"]
     prior_kwargs = {"hyperpriors": gm.GLP_HYPERPRIORS}
     var_indices = gm._resolve_var_indices(codes, ["GDP"])
-    ks = gm._rmse_eval_origins(y.shape[0], H, n_eval=n_eval, random=False, min_t=None, random_seed=None)
+    ks = gm._rmse_eval_origins(
+        y.shape[0], H, n_eval=n_eval, lags=lags, random=False, min_t=None, random_seed=None
+    )
     origins = gm._build_rmse_origins(y, lags, ks, H, prior_kwargs)
     ctx_ref = gm.prepare_glp_context(y, lags, **prior_kwargs)
     params = {
@@ -167,9 +169,9 @@ def test_mango_rmse_predictive_mean_returns_in_bounds():
 
 
 def test_rmse_eval_origins_rolling_and_random():
-    rolling = gm._rmse_eval_origins(100, H=4, n_eval=3, random=False, min_t=40, random_seed=None)
+    rolling = gm._rmse_eval_origins(100, 4, 3, lags=4, random=False, min_t=40, random_seed=None)
     assert rolling == [0, 1, 2]
-    random = gm._rmse_eval_origins(100, H=4, n_eval=3, random=True, min_t=40, random_seed=7)
+    random = gm._rmse_eval_origins(100, 4, 3, lags=4, random=True, min_t=40, random_seed=7)
     assert len(random) == 3 and len(set(random)) == 3
     assert all(0 <= k <= (100 - 4 - 40) for k in random)
 

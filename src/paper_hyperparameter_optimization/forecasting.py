@@ -48,6 +48,7 @@ from .config import (
     resolve_project_path,
 )
 from .data_utils import build_model_input_frames, build_quarterly_evaluation_frame, load_realtime_panel
+from .horizon_mapping import FREQ_RATIO
 
 
 def parse_csv_list(value: str | None, default: list[str]) -> list[str]:
@@ -296,6 +297,31 @@ RMSE_REQUIRED_OPTIMIZATION_VARIABLES = FAIR_OPTIMIZATION_VARIABLES.copy()
 RMSE_REQUIRED_FORECAST_VARIABLES = FAIR_OPTIMIZATION_VARIABLES.copy()
 OPTIMIZED_STRATEGIES = {"mango_mdd", "mango_rmse", "mango_rmse_random"}
 RMSE_STRATEGIES = {"mango_rmse", "mango_rmse_random"}
+
+# The selection schedule is an orthogonal option, but each strategy keeps the
+# baseline update frequency of the original exercise unless a run overrides it.
+# The rolling-RMSE objective needs a held-out evaluation span, so the RMSE
+# variants select once on the first origin. The marginal data density is a
+# function of the sample available at each origin, so MDD re-selects per origin.
+# Pass an explicit selection_schedule to force one common schedule when the
+# point of the run is to compare objectives rather than update frequencies.
+DEFAULT_SELECTION_SCHEDULE_BY_STRATEGY = {
+    "mango_mdd": "per_origin",
+    "mango_rmse": "first_origin",
+    "mango_rmse_random": "first_origin",
+}
+
+
+def default_selection_schedule(strategy: str) -> str:
+    """Return the baseline selection schedule for one strategy."""
+    return DEFAULT_SELECTION_SCHEDULE_BY_STRATEGY.get(strategy, DEFAULT_SELECTION_SCHEDULE)
+
+
+def resolve_selection_schedule(strategy: str, selection_schedule: str | None) -> str:
+    """Resolve and validate the schedule, falling back to the strategy baseline."""
+    if selection_schedule is None:
+        selection_schedule = default_selection_schedule(strategy)
+    return validate_selection_schedule(selection_schedule)
 
 
 def default_optimization_variables(strategy: str) -> list[str]:
@@ -701,7 +727,10 @@ def _rmse_candidate_score(
                 temp_agg=temp_agg,
                 check_explosive=False,
             )
-            fold_model.forecast(horizon_quarters * 3)
+            # Folds are non-ragged by construction (each fold's monthly block
+            # ends exactly at its quarter end), so the calendar-nominal length
+            # is exact here; FREQ_RATIO keeps the ratio centralized.
+            fold_model.forecast(horizon_quarters * FREQ_RATIO)
 
         draw_frames = aggregate_quarterly_posterior_draws(fold_model)
         _, metric_summaries = summarize_quarterly_draws(draw_frames)
@@ -1023,12 +1052,11 @@ def required_forecast_months(
     if max_horizon_quarters < 1:
         raise ValueError("max_horizon_quarters must be positive.")
     model_endpoint = pd.Timestamp(monthly_frame.index[-1]).to_period("M")
+    # ``Period.add`` does not exist in supported pandas versions; use operator
+    # arithmetic, which is period-aware across year/quarter boundaries.
     final_target_month = (
-        pd.Timestamp(origin_date)
-        .to_period("Q")
-        .add(max_horizon_quarters - 1)
-        .asfreq("M", how="end")
-    )
+        pd.Timestamp(origin_date).to_period("Q") + (max_horizon_quarters - 1)
+    ).asfreq("M", how="end")
     required = final_target_month.ordinal - model_endpoint.ordinal
     if required < 1:
         raise ValueError(
@@ -1132,7 +1160,9 @@ def run_recursive_experiment(
     objective_variables: list[str] | None = None,
     temp_agg: str = PAPER_TEMPORAL_AGGREGATION,
     n_workers: int | None = None,
+    selection_schedule: str | None = None,
 ) -> Path:
+    resolved_selection_schedule = resolve_selection_schedule(strategy, selection_schedule)
     output_dir = resolve_project_path(output_dir)
     panel_path = resolve_project_path(panel_path)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1175,9 +1205,11 @@ def run_recursive_experiment(
         "forecast_variables": resolved_forecast_variables,
         "objective_variables": resolved_objective_variables,
         "temp_agg": temp_agg,
+        "selection_schedule": resolved_selection_schedule,
     }
 
     has_origins = len(origins) > 0
+    selected_once = optimize_once_per_experiment(strategy, resolved_selection_schedule)
     shared_hyperparameters = None
     if has_origins:
         shared_hyperparameters = select_initial_hyperparameters(strategy, task_template, origins[0])
@@ -1253,8 +1285,9 @@ def run_recursive_experiment(
         "optimization_variables": resolved_objective_variables,
         "forecast_variables": resolved_forecast_variables,
         "objective_variables": resolved_objective_variables,
-        "hyperparameters_selected_once": optimize_once_per_experiment(strategy),
-        "hyperparameter_selection_origin": (origins[0].strftime("%Y-%m-%d") if has_origins and optimize_once_per_experiment(strategy) else None),
+        "selection_schedule": resolved_selection_schedule,
+        "hyperparameters_selected_once": selected_once,
+        "hyperparameter_selection_origin": (origins[0].strftime("%Y-%m-%d") if has_origins and selected_once else None),
         "temp_agg": temp_agg,
         "n_workers": resolved_n_workers,
         "n_origins_requested": len(origins),
@@ -1295,6 +1328,18 @@ def build_optimizer_parser(description: str) -> argparse.ArgumentParser:
         help="Per-origin optimizer parallelism. Defaults to the remaining Slurm allocation after splitting across workers, otherwise 1.",
     )
     parser.add_argument("--optimization-horizon-quarters", type=int, default=4)
+    parser.add_argument(
+        "--selection-schedule",
+        type=str,
+        default=None,
+        choices=list(VALID_SELECTION_SCHEDULES),
+        help=(
+            "How often hyperparameters are re-selected. Defaults to the baseline schedule "
+            "for the strategy: first_origin for the Mango RMSE variants and per_origin for "
+            "Mango MDD. Set the same value for every strategy to compare objectives without "
+            "also comparing update frequencies."
+        ),
+    )
     parser.add_argument(
         "--optimization-variables",
         type=str,
@@ -1362,6 +1407,7 @@ def run_from_namespace(strategy: str, namespace: argparse.Namespace) -> Path:
                 "optimization_variables": parse_csv_list(namespace.optimization_variables, []),
                 "forecast_variables": parse_csv_list(getattr(namespace, "forecast_variables", None), []) or None,
                 "objective_variables": parse_csv_list(getattr(namespace, "objective_variables", None), []) or None,
+                "selection_schedule": getattr(namespace, "selection_schedule", None),
             }
         )
     return run_recursive_experiment(**kwargs)

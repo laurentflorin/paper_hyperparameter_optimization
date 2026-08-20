@@ -17,6 +17,19 @@ Preserved behavior (delegated to :mod:`.glp_model`):
   and draw index -- never on the candidate hyperparameter values -- and the
   caller's global NumPy / Python random state is restored afterward.
 
+Leakage contract for ``to_natural``
+-----------------------------------
+``to_natural(params, context)`` is invoked once *per validation fold* with that
+fold's own training context. Any callable passed here must therefore derive
+data-dependent prior quantities (notably the AR(1) residual scale ``ctx.SS``,
+which sets psi and the absolute psi bounds) from the ``context`` argument it is
+given, and must not close over a resolution computed on a wider sample. A
+pre-bound ``ResolvedGLPSearch.to_natural`` from an outer-sample context violates
+this contract: it would set the prior scale of the forecasting model using rows
+that are themselves the inner holdout targets. Use
+:meth:`~.search_config.GLPSearchConfig.fold_resolving_to_natural` (or the module
+default ``glp_model._params_to_natural``), both of which resolve per context.
+
 The design decomposition is:
 
 * :func:`prepare_glp_validation_contexts` -- wrap pre-built inner folds
@@ -386,6 +399,12 @@ def evaluate_glp_candidate(
 
     The evaluation never raises for numerical failures: instead it records the
     failure reason and returns a failed evaluation carrying the finite penalty.
+
+    ``to_natural`` is called once per context with *that context*; it must
+    resolve every data-dependent prior quantity from the context handed to it
+    (see the module-level leakage contract). Numerical rejections
+    (``InvalidHyperparameterError``) are converted into the finite ``penalty``
+    rather than propagated.
     """
 
     if not contexts:
@@ -539,6 +558,16 @@ def make_glp_loss_objective(
     reason is retained on the callable's ``diagnostics`` attribute and, when
     supplied, appended to ``diagnostics_collector`` so an optimizer that only
     sees a finite penalty does not lose the underlying cause.
+
+    ``to_natural`` is called once per context with *that context*; it must
+    resolve every data-dependent prior quantity from the context handed to it
+    (see the module-level leakage contract). Numerical rejections
+    (``InvalidHyperparameterError``) are converted into the finite ``penalty``
+    rather than propagated.
+
+    For a coordinate to have a stable meaning across folds, the search space
+    handed to the optimizer must be fold-invariant; with the GLP search config
+    that holds whenever psi is fixed or optimized as an ``SS`` log multiplier.
     """
 
     diagnostics = {

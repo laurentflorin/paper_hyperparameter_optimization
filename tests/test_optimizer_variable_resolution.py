@@ -4,6 +4,7 @@ import types
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
@@ -23,13 +24,21 @@ def test_mango_mdd_defaults_to_gdp():
     assert resolve_optimization_variables("mango_mdd", []) == DEFAULT_MDD_OPTIMIZATION_VARIABLES
 
 
-def test_optimization_nsim_default_is_single_sourced():
+def test_optimization_nsim_default_is_single_sourced(tmp_path: Path):
     parser = forecasting.build_optimizer_parser("test")
-    args = parser.parse_args([])
+    # --output-dir is deliberately required: a run must never write to an implicit path.
+    args = parser.parse_args(["--output-dir", str(tmp_path)])
     parameter = inspect.signature(forecasting.run_recursive_experiment).parameters["optimization_nsim"]
 
     assert args.optimization_nsim == DEFAULT_OPTIMIZATION_NSIM
     assert parameter.default == DEFAULT_OPTIMIZATION_NSIM
+
+
+def test_optimizer_parser_requires_output_dir():
+    """The optimizer CLI must fail closed when no output directory is given."""
+    parser = forecasting.build_optimizer_parser("test")
+    with pytest.raises(SystemExit):
+        parser.parse_args([])
 
 
 def test_mango_rmse_defaults_to_full_quarterly_block():
@@ -47,7 +56,13 @@ def test_mango_rmse_legacy_subset_maps_to_objective_only():
     assert resolve_optimization_variables("mango_rmse", ["GDP"]) == ["GDP"]
 
 
-def _run_recursive_experiment_with_stubbed_optimizer(monkeypatch, tmp_path: Path, strategy: str, optimization_variables: list[str]):
+def _run_recursive_experiment_with_stubbed_optimizer(
+    monkeypatch,
+    tmp_path: Path,
+    strategy: str,
+    optimization_variables: list[str],
+    selection_schedule: str | None = None,
+):
     origins = pd.DatetimeIndex(
         [
             pd.Timestamp("2000-01-31"),
@@ -96,6 +111,7 @@ def _run_recursive_experiment_with_stubbed_optimizer(monkeypatch, tmp_path: Path
         end=origins[-1],
         optimization_variables=optimization_variables,
         n_workers=1,
+        selection_schedule=selection_schedule,
     )
     return optimization_calls, output_dir
 
@@ -133,3 +149,49 @@ def test_mango_mdd_still_optimizes_per_origin(monkeypatch, tmp_path: Path):
     )
 
     assert optimization_calls == ["2000-01-31", "2000-02-29", "2000-03-31"]
+
+def test_selection_schedule_is_threaded_into_the_task_template(monkeypatch, tmp_path: Path):
+    """An explicit per_origin schedule must override the strategy baseline.
+
+    The schedule is consumed from the task template, so a schedule that never
+    reaches the template silently reverts every run to the strategy default.
+    """
+    optimization_calls, output_dir = _run_recursive_experiment_with_stubbed_optimizer(
+        monkeypatch,
+        tmp_path,
+        "mango_rmse",
+        RMSE_REQUIRED_OPTIMIZATION_VARIABLES,
+        selection_schedule="per_origin",
+    )
+
+    assert optimization_calls == ["2000-01-31", "2000-02-29", "2000-03-31"]
+
+    metadata = pd.read_json(output_dir / "run_metadata.json", typ="series")
+    assert metadata["selection_schedule"] == "per_origin"
+    assert not bool(metadata["hyperparameters_selected_once"])
+    assert metadata["hyperparameter_selection_origin"] is None
+
+
+def test_default_selection_schedule_matches_the_baseline_exercise():
+    assert forecasting.default_selection_schedule("mango_mdd") == "per_origin"
+    assert forecasting.default_selection_schedule("mango_rmse") == "first_origin"
+    assert forecasting.default_selection_schedule("mango_rmse_random") == "first_origin"
+
+
+def test_resolve_selection_schedule_rejects_unknown_values():
+    with pytest.raises(ValueError, match="selection_schedule must be one of"):
+        forecasting.resolve_selection_schedule("mango_rmse", "every_other_tuesday")
+
+
+def test_mango_mdd_records_its_per_origin_schedule(monkeypatch, tmp_path: Path):
+    """MDD metadata must not claim a single selection when it reselects per origin."""
+    _, output_dir = _run_recursive_experiment_with_stubbed_optimizer(
+        monkeypatch,
+        tmp_path,
+        "mango_mdd",
+        DEFAULT_MDD_OPTIMIZATION_VARIABLES,
+    )
+
+    metadata = pd.read_json(output_dir / "run_metadata.json", typ="series")
+    assert metadata["selection_schedule"] == "per_origin"
+    assert not bool(metadata["hyperparameters_selected_once"])

@@ -16,6 +16,23 @@ Design notes
   dimensions -- genuinely excluding psi from the optimizer.
 * Natural-parameter conversion, bound validation, and the psi log-multiplier map
   are reused from :mod:`.glp_model` rather than reimplemented here.
+* **Leakage safety.** Any quantity derived from an estimation context's data
+  (the AR(1) residual scale ``ctx.SS``, and the ``ctx.MIN``/``ctx.MAX`` psi
+  bounds derived from it) is context-specific. A :class:`ResolvedGLPSearch`
+  therefore binds such quantities to *one* context and must never be reused
+  across a different one. When scoring inner validation folds, resolve the
+  configuration against each fold's own training context -- use
+  :meth:`GLPSearchConfig.fold_resolving_to_natural` rather than pre-binding a
+  single outer-sample :meth:`ResolvedGLPSearch.to_natural`. Reusing an outer
+  resolution injects outer-sample (and hence inner-holdout) information into the
+  prior scale used to forecast that same holdout.
+* **Fold stability.** With ``psi_parameterization='ss_log_multiplier'`` every
+  optimizer coordinate has the same interpretation in every fold (a log
+  multiplier of *that fold's* ``SS``), so the search domain is a fixed box and
+  the feasible set does not depend on fold composition. With ``'absolute'`` the
+  psi coordinates are raw prior scales whose admissible range is
+  context-dependent, so a single coordinate means different things in different
+  folds and candidates feasible in one fold can be rejected in another.
 * alpha optimization is intentionally *not* added in this stage. The backend
   holds alpha fixed (``MNalpha=0``); adding an alpha search would require a
   separate, isolated change to the estimation context and is documented here as
@@ -25,7 +42,7 @@ Design notes
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 import numpy as np
 
@@ -103,7 +120,13 @@ class GLPSearchConfig:
     psi_parameterization:
         The psi transformation when psi *is* optimized: ``"absolute"`` (search
         psi directly) or ``"ss_log_multiplier"`` (search log multipliers of
-        ``ctx.SS``).
+        ``ctx.SS``). ``"ss_log_multiplier"`` is the fold-stable, leakage-safe
+        choice: coordinate ``psi_log_multiplier_i`` always means
+        ``psi_i = SS_i * exp(coordinate)`` evaluated on the context being
+        scored, so the optimizer's box is the constant
+        ``PSI_LOG_MULTIPLIER_BOUNDS`` in every fold. ``"absolute"`` makes the
+        search box depend on the resolving context's ``MIN``/``MAX`` psi and is
+        therefore neither fold-stable nor safe to pre-bind to an outer sample.
     initial_values:
         Optional supplied initial/fixed values for scalar parameters
         (``lambda``/``theta``/``miu``). Required as a fixed value when a scalar
@@ -401,10 +424,85 @@ class GLPSearchConfig:
             )
         return values
 
+    # -- fold-local resolution --------------------------------------------- #
+    @property
+    def has_context_dependent_domain(self) -> bool:
+        """Whether the optimizer's search box depends on the resolving context.
+
+        ``True`` only when psi is optimized in the ``"absolute"``
+        parameterization, whose psi bounds come from ``ctx.MIN``/``ctx.MAX``.
+        In that case one optimizer coordinate does *not* have a stable
+        interpretation across inner folds.
+        """
+
+        return bool(self.optimize_psi and self.psi_parameterization == "absolute")
+
+    def to_natural_for(self, params: Mapping[str, float], ctx: GLPContext) -> np.ndarray:
+        """Resolve against ``ctx`` and assemble the natural vector in one step.
+
+        This is the leakage-safe entry point for scoring a validation fold: the
+        fixed psi and the psi bounds are taken from ``ctx`` itself, never from a
+        wider sample.
+        """
+
+        return self.resolve(ctx).to_natural(params, ctx)
+
+    def fold_resolving_to_natural(
+        self,
+        *,
+        reference: "ResolvedGLPSearch | None" = None,
+    ) -> Callable[[Mapping[str, float], GLPContext], np.ndarray]:
+        """Return a ``(params, ctx) -> natural_vector`` callable resolved per context.
+
+        The returned callable resolves this configuration against *each* context
+        it is handed (memoized by context identity) instead of reusing a single
+        pre-bound resolution. Every ``SS``-derived quantity -- fixed psi and the
+        absolute psi bounds -- therefore comes from that context's own training
+        rows only.
+
+        Parameters
+        ----------
+        reference:
+            Optional resolution whose optimized coordinate names define the
+            optimizer's parameter space. When supplied, each fold-local
+            resolution is checked to expose the *same* coordinate names, so a
+            coordinate keeps its documented meaning in every fold.
+        """
+
+        cache: dict[int, tuple[Any, ResolvedGLPSearch]] = {}
+
+        def _resolved(ctx: GLPContext) -> ResolvedGLPSearch:
+            cached = cache.get(id(ctx))
+            if cached is not None and cached[0] is ctx:
+                return cached[1]
+            resolved = self.resolve(ctx)
+            if reference is not None and resolved.optimized_names != reference.optimized_names:
+                raise GLPSearchConfigError(
+                    "fold-local search resolution exposes coordinates "
+                    f"{list(resolved.optimized_names)} but the optimizer searches "
+                    f"{list(reference.optimized_names)}; the coordinate meaning is "
+                    "not stable across folds."
+                )
+            cache[id(ctx)] = (ctx, resolved)
+            return resolved
+
+        def to_natural(params: Mapping[str, float], ctx: GLPContext) -> np.ndarray:
+            return _resolved(ctx).to_natural(params, ctx)
+
+        return to_natural
+
 
 @dataclass(frozen=True)
 class ResolvedGLPSearch:
-    """A :class:`GLPSearchConfig` resolved against one estimation context."""
+    """A :class:`GLPSearchConfig` resolved against *one* estimation context.
+
+    The resolution captures data-dependent quantities of that context -- the
+    fixed psi (when ``fixed_psi_source='context_ss'``) and the absolute psi
+    bounds -- so an instance is only valid for the context it was resolved
+    against. Do **not** reuse an outer-sample resolution to score inner
+    validation folds; call :meth:`GLPSearchConfig.fold_resolving_to_natural`
+    instead.
+    """
 
     config: GLPSearchConfig
     optimized_names: tuple[str, ...]
@@ -438,6 +536,14 @@ class ResolvedGLPSearch:
         Optimized coordinates come from ``params``; fixed scalars and fixed psi
         come from the resolved configuration. Works whether psi is optimized or
         fixed, and validates the assembled vector against the context bounds.
+
+        ``ctx`` must be the *same* context this search was resolved against.
+        Passing a different context silently mixes that context's data with the
+        resolution's ``SS``-derived psi and is a leakage bug; use
+        :meth:`GLPSearchConfig.fold_resolving_to_natural` for multi-fold
+        scoring. Out-of-bounds candidates raise
+        :class:`~.glp_model.InvalidHyperparameterError`; values are never
+        silently clipped.
         """
 
         # lambda

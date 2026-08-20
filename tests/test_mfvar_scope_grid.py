@@ -148,3 +148,28 @@ def test_existing_scripts_still_import():
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         assert hasattr(module, "build_parser") or hasattr(module, "main")
+
+
+def test_run_metadata_records_search_space_bounds_and_scaling(tmp_path):
+    """Peer-review requirement: exact bounds + scaling must be in run metadata."""
+
+    from paper_hyperparameter_optimization.config import DEFAULT_PARAM_SPACE_BOUNDS
+
+    argv = _args(tmp_path, selection_scopes="pooled")
+    args = runner.build_parser().parse_args(argv)
+    config = runner.build_study_config(args, argv=argv)
+    plan = runner.plan_scope_runs(config)[0]
+    metadata = runner._plan_run_metadata(
+        config,
+        plan,
+        started_utc="2020-01-01T00:00:00+00:00",
+        finished_utc=None,
+        completion_status="partial",
+    )
+    search_space = metadata["search_space"]
+    assert search_space["bounds"] == {
+        name: [float(lo), float(hi)]
+        for name, (lo, hi) in DEFAULT_PARAM_SPACE_BOUNDS.items()
+    }
+    assert set(search_space["scaling"].values()) == {"uniform"}
+    assert search_space["log_transform"] is False

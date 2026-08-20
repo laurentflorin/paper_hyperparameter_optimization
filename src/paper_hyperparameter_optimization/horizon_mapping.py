@@ -48,8 +48,21 @@ def state_rows_for_max_horizon(max_horizon_quarters: int) -> int:
     return quarterly_horizon_to_state_rows(max_horizon_quarters)
 
 
-def required_forecast_months(max_horizon_quarters: int) -> int:
-    """Return the minimum monthly forecast length covering ``max_horizon_quarters``."""
+def nominal_forecast_months(max_horizon_quarters: int) -> int:
+    """Return the calendar-nominal monthly forecast length for a quarterly horizon.
+
+    This is purely ``max_horizon_quarters * FREQ_RATIO``: the number of months
+    spanned by the horizon window measured from the *nominal* origin quarter.
+
+    It is **not** endpoint-aware. It does not know where the model's monthly
+    calendar actually ends, so it must not be used to size a real
+    ``model.forecast(...)`` call whenever the monthly block can be ragged (the
+    normal real-time case, where the last released monthly observation lags the
+    nominal origin quarter). For that, use
+    :func:`paper_hyperparameter_optimization.forecasting.required_forecast_months`,
+    which derives the length from the model's monthly endpoint and the calendar
+    target month.
+    """
 
     return quarterly_horizon_to_state_rows(max_horizon_quarters)
 
@@ -90,7 +103,7 @@ __all__ = [
     "FREQ_RATIO",
     "quarterly_horizon_to_state_rows",
     "state_rows_for_max_horizon",
-    "required_forecast_months",
+    "nominal_forecast_months",
     "target_quarter_for_origin",
     "target_quarters_for_origin",
 ]

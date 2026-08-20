@@ -20,27 +20,43 @@ def test_parse_remote_csv_text_rejects_empty_and_headerless_bodies():
         du._parse_remote_csv_text("only_one_column\nvalue\n", "https://example.com/bad")
 
 
-def test_download_series_vintage_falls_back_to_latest_when_alfred_body_is_empty(monkeypatch):
+def test_download_series_vintage_fails_closed_when_alfred_body_is_empty(monkeypatch):
+    """An empty ALFRED body must raise instead of substituting latest FRED data.
+
+    Latest FRED history is revised data. Silently returning it in place of a
+    true point-in-time vintage would leak post-origin information into a
+    real-time forecast exercise, so the download fails closed.
+    """
+
     def fake_read_csv(url: str):
         raise du.EmptyRemoteDataError("empty")
 
-    latest = pd.DataFrame(
-        {
-            "series_id": ["BOGMBASE", "BOGMBASE", "BOGMBASE"],
-            "observation_date": pd.to_datetime(["1999-12-01", "2000-03-01", "2000-06-01"]),
-            "value": [1.0, 2.0, 3.0],
-        }
-    )
+    def unexpected_latest(series_id: str, force: bool = False):
+        raise AssertionError("latest FRED history must never be used as a vintage substitute")
 
     monkeypatch.setattr(du, "_read_csv_from_url", fake_read_csv)
-    monkeypatch.setattr(du, "_load_or_download_latest_series", lambda series_id, force=False: (latest.copy(), True))
+    monkeypatch.setattr(du, "_load_or_download_latest_series", unexpected_latest)
 
-    frame = du.download_series_vintage("BOGMBASE", pd.Timestamp("2000-03-31"))
-    assert list(frame.columns) == ["series_id", "vintage_date", "observation_date", "value"]
-    assert frame["series_id"].nunique() == 1
-    assert frame["observation_date"].max() == pd.Timestamp("2000-03-01")
-    assert frame["vintage_date"].nunique() == 1
-    assert frame["vintage_date"].iloc[0] == pd.Timestamp("2000-03-31")
+    with pytest.raises(du.DataDownloadError, match="not a point-in-time substitute"):
+        du.download_series_vintage("BOGMBASE", pd.Timestamp("2000-03-31"))
+
+
+def test_download_series_vintage_fails_closed_even_with_force_latest_fallback(monkeypatch):
+    """The legacy force_latest_fallback flag no longer authorizes the unsafe fallback."""
+
+    def fake_read_csv(url: str):
+        raise du.EmptyRemoteDataError("empty")
+
+    def unexpected_latest(series_id: str, force: bool = False):
+        raise AssertionError("latest FRED history must never be used as a vintage substitute")
+
+    monkeypatch.setattr(du, "_read_csv_from_url", fake_read_csv)
+    monkeypatch.setattr(du, "_load_or_download_latest_series", unexpected_latest)
+
+    with pytest.raises(du.DataDownloadError):
+        du.download_series_vintage(
+            "BOGMBASE", pd.Timestamp("2000-03-31"), force_latest_fallback=True
+        )
 
 
 def test_build_quarterly_levels_uses_proxy_series_for_large_model():

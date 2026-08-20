@@ -220,16 +220,24 @@ signal for downstream reporting.
 
 | File | Content |
 |---|---|
-| `rmse_by_target.csv` | RMSE per (model, variable, horizon). |
-| `mae_by_target.csv` | MAE per (model, variable, horizon). |
-| `relative_rmse.csv` | Relative RMSE vs. baseline per (model, variable, horizon). |
-| `average_ranks.csv` | Average rank across (variable, horizon) cells per model. |
-| `scope_gains.csv` | Additive scope-gain decomposition (horizon, variable, interaction). |
+| `rmse_by_target.csv` | RMSE per (model, variable, horizon), computed on the cell-wise common sample. Columns `n` (observations used), `n_common` (shared observations in the cell), `n_model_total` (the model's own observations), `n_excluded` (`n_model_total - n_common`). |
+| `mae_by_target.csv` | MAE per (model, variable, horizon), same sample and same `n`/`n_common`/`n_model_total`/`n_excluded` columns as `rmse_by_target.csv`. |
+| `relative_rmse.csv` | Relative RMSE vs. baseline per (model, variable, horizon). Both numerator and denominator are recomputed on the sample the model shares **with the baseline**, which is not necessarily the sample shared with all models: `n` (model observations used), `n_baseline` (baseline observations used, equal to `n` under the pairwise basis), `n_common`, and `sample_basis` (`pairwise_common_with_baseline` or `as_supplied`). |
+| `average_ranks.csv` | Average rank across (variable, horizon) cells per model, plus `n_cells`, `n`, `n_common` (summed over cells) and `sample_basis` (`common_sample` or `unpaired_per_model`). Ranking refuses cells whose models rest on different sample sizes, except under `--coverage-policy advisory`, where nothing is restricted by design and the ranks are flagged `unpaired_per_model`. |
+| `scope_gains.csv` | Additive scope-gain decomposition (horizon, variable, interaction). Losses are compared within one forecasting system (family, size, forecast_method) on that system's common sample: `n_common`, `n_models`, `n_excluded`, `sample_basis`. |
 | `scope_gain_summary.csv` | Summary statistics of scope gains. |
 | `hyperparameter_summary.csv` | Descriptive statistics of selected parameters. |
 | `selection_stability.csv` | Variation of selected parameters across selection events. |
 | `failure_summary.csv` | Failure counts by model and stage. |
 | `computational_cost.csv` | Elapsed times from `run_metadata.json`. |
 | `dm_tests.csv` | Diebold-Mariano test statistics and p-values for pairwise comparisons. |
-| `bootstrap_intervals.csv` | Bootstrap confidence intervals for relative RMSE. |
-| `comparison_summary.md` | Human-readable summary of key findings. |
+| `bootstrap_intervals.csv` | Block-bootstrap confidence intervals for the **paired mean loss differential** `mean(L(model_a) - L(model_b))`, where `L` is the per-observation squared or absolute error (column `loss`). This is a difference of losses, **not** a ratio such as relative RMSE. Columns: `mean_diff`, `ci_lower`, `ci_upper`, `n` (paired observations), `method`, `block_length`, `n_boot`, `seed`, `valid`. A negative `mean_diff` favours `model_a`. |
+| `common_sample.csv` | Common-sample audit: one row per model plus an `__all__` row, with `policy` (`restrict`/`raise`/`advisory`), `coverage` (retained share of observations), `n_common_keys`, `n_excluded_keys`, and per-model `n_model_total`/`n_common`/`n_excluded`. |
+| `comparison_summary.md` | Human-readable summary of key findings, including the coverage policy and the number of excluded observation keys. |
+
+Every table above is built from a single frame that `--coverage-policy` /
+`--min-coverage` are threaded into consistently: under `restrict` (default) the
+frame is restricted once and each per-table restriction is an exact no-op; under
+`advisory` the shortfall is reported in `common_sample.csv` but **no** table
+drops observations, so `n` is each model's own row count and `sample_basis`
+reads `unpaired_per_model`.

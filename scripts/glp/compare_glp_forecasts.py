@@ -115,42 +115,6 @@ def _discover_strategy_dir(root_dir: Path, strategy: str, model_size: str | None
     return None
 
 
-def _resolve_strategy_dir(explicit: Path | None, *, strategy: str, root_dir: Path, model_size: str | None) -> Path | None:
-    if explicit is not None:
-        resolved = _existing(explicit)
-        if resolved is None:
-            raise FileNotFoundError(f"Provided directory for strategy {strategy!r} does not exist: {explicit}")
-        return resolved
-    return _discover_strategy_dir(root_dir, strategy, model_size)
-
-
-def main() -> int:
-    args = build_parser().parse_args()
-    root_dir = resolve_project_path(args.root_dir)
-    experiment_dirs = {
-        "paper": _resolve_strategy_dir(args.paper_dir, strategy="paper", root_dir=root_dir, model_size=args.model_size),
-        "mango_mdd": _resolve_strategy_dir(
-            args.mango_mdd_dir, strategy="mango_mdd", root_dir=root_dir, model_size=args.model_size
-        ),
-        "mango_rmse": _resolve_strategy_dir(
-            args.mango_rmse_dir, strategy="mango_rmse", root_dir=root_dir, model_size=args.model_size
-        ),
-        "mango_rmse_random": _resolve_strategy_dir(
-            args.mango_rmse_random_dir,
-            strategy="mango_rmse_random",
-            root_dir=root_dir,
-            model_size=args.model_size,
-        ),
-    }
-    if not any(experiment_dirs.values()):
-        raise FileNotFoundError(
-            "No GLP forecast outputs were found. "
-            f"Scanned {root_dir} for strategy directories via run_metadata.json. "
-            "Pass --model-size or the explicit --paper-dir / --mango-*-dir flags."
-        )
-    create_glp_comparison_report(experiment_dirs, resolve_project_path(args.output_dir))
-    return 0
-
 
 def _resolve_strategy_dir(explicit: Path | None, *, strategy: str, root_dir: Path, model_size: str | None) -> Path | None:
     """Resolve explicit paths strictly; retain metadata-based auto-discovery."""

@@ -12,7 +12,9 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+import common_hpo.reporting as reporting_module
 from common_hpo.reporting import (
+    CoverageError,
     DuplicateForecastError,
     PanelSpec,
     RealizationMismatchError,
@@ -30,6 +32,7 @@ from common_hpo.reporting import (
     load_selected_hyperparameters,
     mae_by_target,
     relative_rmse,
+    restrict_to_common_sample,
     rmse_by_target,
     scope_gain_summary,
     scope_gains,
@@ -514,3 +517,301 @@ def test_end_to_end_runner(tmp_path):
     gains = pd.read_csv(out / "scope_gains.csv")
     assert "vh_vs_pooled_gain" in gains.columns
     assert (gains["vh_vs_pooled_gain"] > 0).all()  # variable_horizon beats pooled
+
+
+def test_computational_cost_accepts_legacy_total_fits_alias():
+    metadata = {
+        "ridge": {"strategy": "ridge_var", "estimated_total_fits": 120,
+                  "wall_time_seconds": 3.5},
+        "glp": {"strategy": "paper", "total_fits": 7},
+    }
+    cost = computational_cost(metadata)
+    ridge_row = cost[cost["model"] == "ridge"].iloc[0]
+    glp_row = cost[cost["model"] == "glp"].iloc[0]
+    assert ridge_row["total_fits"] == 120
+    assert ridge_row["wall_time_seconds"] == 3.5
+    assert glp_row["total_fits"] == 7
+
+
+# --------------------------------------------------------------------------- #
+# Common-sample restriction (prior-audit RANK-02 regression)
+# --------------------------------------------------------------------------- #
+def _unbalanced_scope_panels():
+    """Two scopes of one ridge system; the second misses the first 2 of 8 origins.
+
+    Model ``a`` (pooled) has errors 10, 10 on exactly the two origins that model
+    ``b`` (horizon) is missing, and 1.0 elsewhere; model ``b`` has 2.0 everywhere.
+    Unpaired:      RMSE(a) = 5.074 on n=8, RMSE(b) = 2.0 on n=6  -> b "wins".
+    Common sample: RMSE(a) = 1.0   on n=6, RMSE(b) = 2.0 on n=6  -> a wins.
+    """
+
+    origins = ORIGINS[:8]
+    a = _metric_panel("ridge_pooled", origins, ["x"], [1],
+                      lambda oi, v, h: 10.0 if oi < 2 else 1.0)
+    b = _metric_panel("ridge_horizon", origins[2:], ["x"], [1],
+                      lambda oi, v, h: 2.0)
+    return [
+        load_forecast_panel(a, PanelSpec(model="ridge_pooled", family="ridge", size="small",
+                                         scope="pooled", selection="forecast_loss",
+                                         forecast_method="iterated")),
+        load_forecast_panel(b, PanelSpec(model="ridge_horizon", family="ridge", size="small",
+                                         scope="horizon", selection="forecast_loss",
+                                         forecast_method="iterated")),
+    ]
+
+
+def test_unpaired_vs_common_sample_winner_reversal():
+    combined = combine_panels(_unbalanced_scope_panels())
+
+    raw = rmse_by_target(combined, common_sample=False).set_index("model")
+    assert raw.loc["ridge_pooled", "rmse"] == pytest.approx(np.sqrt(206.0 / 8))  # 5.0744
+    assert raw.loc["ridge_pooled", "n"] == 8
+    assert raw.loc["ridge_horizon", "rmse"] == pytest.approx(2.0)
+    assert raw.loc["ridge_horizon", "n"] == 6
+    # Unpaired aggregation picks the WRONG winner (b) ...
+    assert raw["rmse"].idxmin() == "ridge_horizon"
+
+    common = rmse_by_target(combined).set_index("model")
+    assert common.loc["ridge_pooled", "rmse"] == pytest.approx(1.0)
+    assert common.loc["ridge_horizon", "rmse"] == pytest.approx(2.0)
+    assert (common["n"] == 6).all()
+    # ... the common sample picks a.
+    assert common["rmse"].idxmin() == "ridge_pooled"
+
+    # And the headline scope gain flips sign: L(pooled) - L(horizon).
+    unpaired_gain = scope_gains(combined, common_sample=False).iloc[0]["horizon_gain"]
+    paired_gain = scope_gains(combined).iloc[0]["horizon_gain"]
+    assert unpaired_gain > 0
+    assert unpaired_gain == pytest.approx(np.sqrt(206.0 / 8) - 2.0)
+    assert paired_gain < 0
+    assert paired_gain == pytest.approx(-1.0)
+
+
+def test_common_sample_counts_report_exclusions():
+    combined = combine_panels(_unbalanced_scope_panels())
+    rmse = rmse_by_target(combined).set_index("model")
+    assert rmse.loc["ridge_pooled", "n_common"] == 6
+    assert rmse.loc["ridge_pooled", "n_model_total"] == 8
+    assert rmse.loc["ridge_pooled", "n_excluded"] == 2
+    assert rmse.loc["ridge_horizon", "n_common"] == 6
+    assert rmse.loc["ridge_horizon", "n_excluded"] == 0
+
+    _, report = restrict_to_common_sample(combined)
+    assert report.n_common_keys == 6
+    assert report.n_excluded_keys == 2
+    assert report.coverage == pytest.approx(12.0 / 14.0)
+
+
+def test_scope_gains_report_the_paired_sample_size():
+    combined = combine_panels(_unbalanced_scope_panels())
+    gains = scope_gains(combined)
+    assert "n_common" in gains.columns
+    row = gains.iloc[0]
+    _, _, n_paired = reporting_module._paired_errors(
+        combined, "ridge_pooled", "ridge_horizon", "x", 1
+    )
+    assert n_paired == 6
+    assert int(row["n_common"]) == n_paired
+    assert int(row["n_models"]) == 2
+    assert int(row["n_excluded"]) == 2
+
+
+def test_coverage_policies_and_min_coverage():
+    combined = combine_panels(_unbalanced_scope_panels())
+    with pytest.raises(CoverageError):
+        restrict_to_common_sample(combined, policy="raise")
+    with pytest.raises(CoverageError):
+        restrict_to_common_sample(combined, min_coverage=0.99)
+    advisory, report = restrict_to_common_sample(combined, policy="advisory")
+    assert len(advisory) == len(combined)  # nothing dropped ...
+    assert report.n_excluded_keys == 2  # ... but the shortfall is reported.
+
+
+def test_disjoint_cells_are_not_annihilated():
+    """A model absent from a cell must not shrink that cell's sample."""
+
+    a = _metric_panel("a", ORIGINS[:4], ["x"], [1], lambda oi, v, h: 1.0)
+    b = _metric_panel("b", ORIGINS[:4], ["y"], [1], lambda oi, v, h: 2.0)
+    combined = combine_panels([
+        load_forecast_panel(a, PanelSpec(model="a", family="ridge")),
+        load_forecast_panel(b, PanelSpec(model="b", family="ridge")),
+    ])
+    restricted, report = restrict_to_common_sample(combined)
+    assert len(restricted) == len(combined)
+    assert report.n_excluded_keys == 0
+
+
+def test_average_ranks_refuses_mixed_sample_sizes():
+    combined = combine_panels(_unbalanced_scope_panels())
+    unpaired = rmse_by_target(combined, common_sample=False)
+    with pytest.raises(CoverageError):
+        average_ranks(unpaired)
+    ranks = average_ranks(rmse_by_target(combined))
+    assert ranks.iloc[0]["model"] == "ridge_pooled"
+    assert int(ranks.iloc[0]["n_common"]) == 6
+
+
+def test_relative_rmse_pairwise_common_sample():
+    combined = combine_panels(_unbalanced_scope_panels())
+    rmse = rmse_by_target(combined, common_sample=False)
+    rel = relative_rmse(rmse, baseline_model="ridge_horizon", combined=combined)
+    row = rel[rel["model"] == "ridge_pooled"].iloc[0]
+    assert row["rmse"] == pytest.approx(1.0)  # recomputed on the paired sample
+    assert row["baseline_rmse"] == pytest.approx(2.0)
+    assert row["relative_rmse"] == pytest.approx(0.5)
+    assert int(row["n"]) == 6
+    assert int(row["n_baseline"]) == 6
+    assert row["sample_basis"] == "pairwise_common_with_baseline"
+
+
+def test_runner_writes_common_sample_table(tmp_path):
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import compare_scope_study as runner
+    import json
+
+    manifest = {"baseline_model": "ridge_pooled", "panels": []}
+    for scope, origins, err in (
+        ("pooled", ORIGINS[:8], lambda oi, v, h: 10.0 if oi < 2 else 1.0),
+        ("horizon", ORIGINS[2:8], lambda oi, v, h: 2.0),
+    ):
+        d = tmp_path / f"scope_{scope}"
+        d.mkdir()
+        _metric_panel(f"ridge_{scope}", origins, ["x"], [1], err).to_csv(
+            d / "forecast_panel.csv", index=False
+        )
+        manifest["panels"].append(
+            {"model": f"ridge_{scope}", "family": "ridge", "scope": scope,
+             "selection": "forecast_loss", "forecast_method": "iterated",
+             "size": "small", "dir": f"scope_{scope}"}
+        )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest))
+
+    out = tmp_path / "out"
+    rc = runner.main([
+        "--manifest", str(manifest_path), "--root", str(tmp_path),
+        "--output-dir", str(out), "--coverage-policy", "restrict",
+    ])
+    assert rc == 0
+    sample = pd.read_csv(out / "common_sample.csv").set_index("model")
+    assert (sample["policy"] == "restrict").all()
+    assert int(sample.loc["ridge_pooled", "n_excluded"]) == 2
+    assert int(sample.loc["__all__", "n_common_keys"]) == 6
+    # The globally restricted frame feeds every table: gains and DM agree on n.
+    gains = pd.read_csv(out / "scope_gains.csv")
+    dm = pd.read_csv(out / "dm_tests.csv")
+    assert int(gains.iloc[0]["n_common"]) == int(dm.iloc[0]["n"]) == 6
+    assert gains.iloc[0]["horizon_gain"] == pytest.approx(-1.0)
+
+    # A strict policy refuses the unbalanced study outright.
+    rc_raise = runner.main([
+        "--manifest", str(manifest_path), "--root", str(tmp_path),
+        "--output-dir", str(tmp_path / "out_raise"), "--coverage-policy", "raise",
+    ])
+    assert rc_raise == 1
+
+
+def _unequal_coverage_study(tmp_path):
+    """Two ridge panels with unequal origin coverage (8 vs 6) plus a manifest."""
+    import json
+
+    manifest = {"baseline_model": "ridge_pooled", "panels": []}
+    for scope, origins, err in (
+        ("pooled", ORIGINS[:8], lambda oi, v, h: 10.0 if oi < 2 else 1.0),
+        ("horizon", ORIGINS[2:8], lambda oi, v, h: 2.0),
+    ):
+        d = tmp_path / f"scope_{scope}"
+        d.mkdir()
+        _metric_panel(f"ridge_{scope}", origins, ["x"], [1], err).to_csv(
+            d / "forecast_panel.csv", index=False
+        )
+        manifest["panels"].append(
+            {"model": f"ridge_{scope}", "family": "ridge", "scope": scope,
+             "selection": "forecast_loss", "forecast_method": "iterated",
+             "size": "small", "dir": f"scope_{scope}"}
+        )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest))
+    return manifest_path
+
+
+def _runner():
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import compare_scope_study as runner
+
+    return runner
+
+
+def test_cli_advisory_policy_does_not_restrict_any_table(tmp_path):
+    """`--coverage-policy advisory` must report, never restrict -- in every table."""
+    runner = _runner()
+    manifest_path = _unequal_coverage_study(tmp_path)
+    out = tmp_path / "out_advisory"
+    rc = runner.main([
+        "--manifest", str(manifest_path), "--root", str(tmp_path),
+        "--output-dir", str(out), "--coverage-policy", "advisory",
+    ])
+    assert rc == 0
+
+    # common_sample.csv still *reports* the shortfall...
+    sample = pd.read_csv(out / "common_sample.csv").set_index("model")
+    assert (sample["policy"] == "advisory").all()
+    assert int(sample.loc["ridge_pooled", "n_excluded"]) == 2
+
+    # ...but no table is allowed to act on it: n is each model's own row count.
+    rmse = pd.read_csv(out / "rmse_by_target.csv").set_index("model")
+    assert int(rmse.loc["ridge_pooled", "n"]) == 8
+    assert int(rmse.loc["ridge_horizon", "n"]) == 6
+    # unrestricted pooled RMSE keeps the two large early errors
+    assert rmse.loc["ridge_pooled", "rmse"] == pytest.approx(np.sqrt(206.0 / 8.0))
+
+    mae = pd.read_csv(out / "mae_by_target.csv").set_index("model")
+    assert int(mae.loc["ridge_pooled", "n"]) == 8
+    assert int(mae.loc["ridge_horizon", "n"]) == 6
+
+    rel = pd.read_csv(out / "relative_rmse.csv").set_index("model")
+    assert int(rel.loc["ridge_pooled", "n"]) == 8
+    assert int(rel.loc["ridge_horizon", "n"]) == 6
+
+    gains = pd.read_csv(out / "scope_gains.csv")
+    assert gains.iloc[0]["L_pooled"] == pytest.approx(np.sqrt(206.0 / 8.0))
+    assert gains.iloc[0]["L_horizon"] == pytest.approx(2.0)
+    assert gains.iloc[0]["sample_basis"] == "unpaired_per_model"
+
+    # ranks must not blow up merely because the samples differ under advisory
+    ranks = pd.read_csv(out / "average_ranks.csv")
+    assert set(ranks["model"]) == {"ridge_pooled", "ridge_horizon"}
+    assert (ranks["sample_basis"] == "unpaired_per_model").all()
+
+
+def test_cli_restrict_policy_restricts_every_table(tmp_path):
+    """`--coverage-policy restrict` puts every table on the one common sample."""
+    runner = _runner()
+    manifest_path = _unequal_coverage_study(tmp_path)
+    out = tmp_path / "out_restrict"
+    rc = runner.main([
+        "--manifest", str(manifest_path), "--root", str(tmp_path),
+        "--output-dir", str(out), "--coverage-policy", "restrict",
+    ])
+    assert rc == 0
+
+    for name, column in (("rmse_by_target", "rmse"), ("mae_by_target", "mae")):
+        table = pd.read_csv(out / f"{name}.csv")
+        assert set(table["n"]) == {6}
+        assert set(table["n_common"]) == {6}
+        del column
+
+    rmse = pd.read_csv(out / "rmse_by_target.csv").set_index("model")
+    assert rmse.loc["ridge_pooled", "rmse"] == pytest.approx(1.0)  # the 10.0s are gone
+
+    rel = pd.read_csv(out / "relative_rmse.csv")
+    assert set(rel["n"]) == {6}
+
+    gains = pd.read_csv(out / "scope_gains.csv")
+    assert int(gains.iloc[0]["n_common"]) == 6
+    assert gains.iloc[0]["sample_basis"] == "system_common_sample"
+    assert gains.iloc[0]["horizon_gain"] == pytest.approx(-1.0)
+
+    ranks = pd.read_csv(out / "average_ranks.csv")
+    assert set(ranks["n_common"]) == {6}
+    assert (ranks["sample_basis"] == "common_sample").all()

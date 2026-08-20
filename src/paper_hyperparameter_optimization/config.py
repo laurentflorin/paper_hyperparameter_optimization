@@ -70,6 +70,29 @@ DEFAULT_PARAM_SPACE_BOUNDS = {
     "lambda5_1": (0.01, 10.0),
 }
 
+
+def param_space_metadata() -> dict[str, object]:
+    """Describe the MF-BVAR hyperparameter search space for run metadata.
+
+    ``make_param_space`` builds ``scipy.stats.uniform(lower, upper - lower)``
+    for every entry of :data:`DEFAULT_PARAM_SPACE_BOUNDS`, i.e. candidates are
+    drawn on the natural (linear) scale with no log transform, and
+    ``lambda3_1`` is held fixed at 1.0.
+    """
+
+    return {
+        "parameters": sorted(DEFAULT_PARAM_SPACE_BOUNDS),
+        "bounds": {
+            name: [float(lower), float(upper)]
+            for name, (lower, upper) in DEFAULT_PARAM_SPACE_BOUNDS.items()
+        },
+        "scaling": {name: "uniform" for name in DEFAULT_PARAM_SPACE_BOUNDS},
+        "transform": "identity",
+        "log_transform": False,
+        "distribution": "scipy.stats.uniform(loc=lower, scale=upper - lower)",
+        "fixed_parameters": {"lambda3_1": 1.0},
+    }
+
 SERIES_SPECS = (
     SeriesSpec("GDPC1", "GDP", "Gross Domestic Product", "Q", 0, "growth"),
     SeriesSpec("FPIC1", "INVFIX", "Fixed Investment", "Q", 0, "growth"),

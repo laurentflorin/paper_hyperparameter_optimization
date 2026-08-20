@@ -44,8 +44,11 @@ __all__ = [
     "SchemaError",
     "DuplicateForecastError",
     "RealizationMismatchError",
+    "CoverageError",
     "PanelSpec",
     "AlignmentReport",
+    "CommonSampleReport",
+    "restrict_to_common_sample",
     "CANONICAL_COLUMNS",
     "KEY_COLUMNS",
     "load_forecast_panel",
@@ -87,6 +90,15 @@ class DuplicateForecastError(ReportingError):
 
 class RealizationMismatchError(ReportingError):
     """Raised when two models disagree on a realization for a shared target."""
+
+
+class CoverageError(ReportingError):
+    """Raised when common-sample coverage is unacceptable.
+
+    Either the caller demanded ``policy="raise"`` and some observations are not
+    shared by every model in a cell, or the retained share of observations fell
+    below ``min_coverage``.
+    """
 
 
 # Canonical long-form columns after adaptation.
@@ -315,6 +327,11 @@ class AlignmentReport:
     common_origins: tuple[str, ...]
     per_model_origins: Mapping[str, tuple[str, ...]]
     unmatched: Mapping[str, tuple[str, ...]]
+    # Common-sample diagnostics (defaults keep legacy constructions valid).
+    policy: str = "restrict"
+    n_common_keys: int = 0
+    n_excluded_keys: int = 0
+    coverage: float = float("nan")
 
     @property
     def is_aligned(self) -> bool:
@@ -365,8 +382,19 @@ def combine_panels(
     return combined
 
 
-def check_origin_alignment(combined: pd.DataFrame) -> AlignmentReport:
-    """Report whether all models use the same set of outer forecast origins."""
+def check_origin_alignment(
+    combined: pd.DataFrame,
+    *,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> AlignmentReport:
+    """Report whether all models use the same set of outer forecast origins.
+
+    In addition to the origin-level view, the report carries the *cell-wise*
+    common-sample diagnostics used by the loss tables (``n_common_keys``,
+    ``n_excluded_keys``, ``coverage``), computed under ``policy`` and
+    ``min_coverage`` exactly as :func:`restrict_to_common_sample` would.
+    """
 
     per_model: dict[str, tuple[str, ...]] = {}
     for model, group in combined.groupby("model"):
@@ -380,11 +408,234 @@ def check_origin_alignment(combined: pd.DataFrame) -> AlignmentReport:
         model: tuple(sorted(set(origins) - common))
         for model, origins in per_model.items()
     }
+    _, sample_report = restrict_to_common_sample(
+        combined, policy=policy, min_coverage=min_coverage
+    )
     return AlignmentReport(
         common_origins=tuple(sorted(common)),
         per_model_origins=per_model,
         unmatched=unmatched,
+        policy=policy,
+        n_common_keys=sample_report.n_common_keys,
+        n_excluded_keys=sample_report.n_excluded_keys,
+        coverage=sample_report.coverage,
     )
+
+
+# --------------------------------------------------------------------------- #
+# Common-sample restriction
+# --------------------------------------------------------------------------- #
+# Observation key used for *pairing* models within one (variable, horizon) cell.
+# It is deliberately the same tuple used by :func:`_paired_errors`, so point
+# estimates (RMSE / ranks / scope gains) and paired inference (DM, bootstrap)
+# describe the same estimand on the same sample.
+COMMON_SAMPLE_KEY = ("forecast_origin", "target_quarter", "group")
+
+_COMMON_SAMPLE_POLICIES = ("restrict", "raise", "advisory")
+
+
+@dataclass
+class CommonSampleReport:
+    """Diagnostics for a cell-wise common-sample restriction."""
+
+    policy: str
+    models: tuple[str, ...]
+    n_rows_input: int
+    n_rows_common: int
+    n_rows_excluded: int
+    n_common_keys: int
+    n_excluded_keys: int
+    coverage: float
+    counts: pd.DataFrame = field(default_factory=pd.DataFrame)
+
+    def to_frame(self) -> pd.DataFrame:
+        """One row per model plus an ``__all__`` row, for ``common_sample.csv``."""
+
+        base = {
+            "policy": self.policy,
+            "coverage": self.coverage,
+            "n_common_keys": self.n_common_keys,
+            "n_excluded_keys": self.n_excluded_keys,
+        }
+        rows: list[dict[str, object]] = []
+        if not self.counts.empty:
+            per_model = self.counts.groupby("model", dropna=False)[
+                ["n_model_total", "n_common", "n_excluded"]
+            ].sum()
+            for model, row in per_model.iterrows():
+                rows.append(
+                    {
+                        "model": str(model),
+                        "n_model_total": int(row["n_model_total"]),
+                        "n_common": int(row["n_common"]),
+                        "n_excluded": int(row["n_excluded"]),
+                        **base,
+                    }
+                )
+        rows.append(
+            {
+                "model": "__all__",
+                "n_model_total": int(self.n_rows_input),
+                "n_common": int(self.n_rows_common),
+                "n_excluded": int(self.n_rows_excluded),
+                **base,
+            }
+        )
+        return pd.DataFrame(rows)
+
+
+def _key_tuples(frame: pd.DataFrame) -> pd.Series:
+    keys = frame[list(COMMON_SAMPLE_KEY)].astype(str)
+    return pd.Series(list(map(tuple, keys.to_numpy())), index=frame.index, dtype=object)
+
+
+def restrict_to_common_sample(
+    combined: pd.DataFrame,
+    *,
+    models: Sequence[str] | None = None,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> tuple[pd.DataFrame, CommonSampleReport]:
+    """Restrict ``combined`` to the **cell-wise** common sample across models.
+
+    The convention is identical to :func:`_paired_errors`: within each
+    ``(variable, horizon)`` cell, only the observation keys
+    ``(forecast_origin, target_quarter, group)`` that are present for *every
+    model appearing in that cell* are retained. Models covering disjoint cells
+    are therefore never annihilated -- a model that is simply absent from a cell
+    does not shrink that cell's sample.
+
+    Without this restriction, per-model aggregates (RMSE, MAE, ranks, scope
+    gains) are estimated on *different* samples, so their ratios and differences
+    are not comparable and can even reverse the sign of the headline number.
+
+    ``policy``:
+
+    * ``"restrict"`` (default) -- drop the non-shared rows,
+    * ``"raise"``  -- raise :class:`CoverageError` if anything would be dropped,
+    * ``"advisory"`` -- return the frame unchanged but report what *would* be
+      dropped (diagnostics only; aggregates stay unpaired).
+
+    ``min_coverage`` raises :class:`CoverageError` when the retained share of
+    rows falls below the given threshold.
+
+    Returns the (possibly restricted) frame and a :class:`CommonSampleReport`.
+    """
+
+    if policy not in _COMMON_SAMPLE_POLICIES:
+        raise ReportingError(
+            f"unknown coverage policy {policy!r}; expected one of "
+            f"{list(_COMMON_SAMPLE_POLICIES)}."
+        )
+    if not 0.0 <= float(min_coverage) <= 1.0:
+        raise ReportingError("min_coverage must lie in [0, 1].")
+
+    frame = combined
+    if models is not None:
+        wanted = {str(m) for m in models}
+        frame = frame[frame["model"].astype(str).isin(wanted)]
+
+    keep = pd.Series(False, index=frame.index)
+    n_common_keys = 0
+    n_excluded_keys = 0
+    count_rows: list[dict[str, object]] = []
+
+    if not frame.empty:
+        for (variable, horizon), block in frame.groupby(["variable", "horizon"], dropna=False):
+            key_series = _key_tuples(block)
+            per_model_keys: dict[object, set] = {}
+            for model, model_block in block.groupby("model", dropna=False):
+                per_model_keys[model] = set(key_series.loc[model_block.index])
+            all_keys: set = set().union(*per_model_keys.values())
+            common: set = set.intersection(*per_model_keys.values())
+            n_common_keys += len(common)
+            n_excluded_keys += len(all_keys - common)
+            keep.loc[block.index] = key_series.isin(common).to_numpy()
+            for model, model_keys in per_model_keys.items():
+                count_rows.append(
+                    {
+                        "model": model,
+                        "variable": variable,
+                        "horizon": horizon,
+                        "n_model_total": int(len(model_keys)),
+                        "n_common": int(len(common)),
+                        "n_excluded": int(len(model_keys) - len(common)),
+                    }
+                )
+
+    counts = pd.DataFrame(
+        count_rows,
+        columns=["model", "variable", "horizon", "n_model_total", "n_common", "n_excluded"],
+    )
+    n_rows_input = int(len(frame))
+    n_rows_common = int(keep.sum())
+    coverage = float(n_rows_common / n_rows_input) if n_rows_input else float("nan")
+
+    report = CommonSampleReport(
+        policy=policy,
+        models=tuple(sorted(str(m) for m in frame["model"].astype(str).unique())) if n_rows_input else (),
+        n_rows_input=n_rows_input,
+        n_rows_common=n_rows_common,
+        n_rows_excluded=n_rows_input - n_rows_common,
+        n_common_keys=n_common_keys,
+        n_excluded_keys=n_excluded_keys,
+        coverage=coverage,
+        counts=counts,
+    )
+
+    if policy == "raise" and report.n_rows_excluded > 0:
+        raise CoverageError(
+            f"{report.n_rows_excluded} observation(s) across {n_excluded_keys} key(s) "
+            "are not shared by every model in their (variable, horizon) cell; "
+            'coverage policy is "raise".'
+        )
+    if n_rows_input and coverage < float(min_coverage):
+        raise CoverageError(
+            f"common-sample coverage {coverage:.4f} is below the required "
+            f"minimum {float(min_coverage):.4f}."
+        )
+
+    restricted = frame if policy == "advisory" else frame[keep]
+    return restricted.copy(), report
+
+
+def _restricted(
+    combined: pd.DataFrame,
+    *,
+    common_sample: bool,
+    policy: str,
+    min_coverage: float,
+) -> tuple[pd.DataFrame, CommonSampleReport | None]:
+    """Apply the restriction (or not) and return the frame plus its report."""
+
+    if not common_sample:
+        return combined, None
+    return restrict_to_common_sample(combined, policy=policy, min_coverage=min_coverage)
+
+
+def _count_lookup(report: CommonSampleReport | None) -> dict[tuple, tuple[int, int, int]]:
+    if report is None or report.counts.empty:
+        return {}
+    return {
+        (str(r.model), str(r.variable), int(r.horizon)):
+            (int(r.n_common), int(r.n_model_total), int(r.n_excluded))
+        for r in report.counts.itertuples(index=False)
+    }
+
+
+def _count_fields(
+    lookup: dict[tuple, tuple[int, int, int]],
+    model: object,
+    variable: object,
+    horizon: object,
+    n_used: int,
+) -> dict[str, int]:
+    key = (str(model), str(variable), int(horizon))
+    if key in lookup:
+        n_common, n_total, n_excluded = lookup[key]
+    else:
+        n_common, n_total, n_excluded = n_used, n_used, 0
+    return {"n_common": n_common, "n_model_total": n_total, "n_excluded": n_excluded}
 
 
 # --------------------------------------------------------------------------- #
@@ -394,16 +645,38 @@ def _rmse(values: pd.Series) -> float:
     return float(np.sqrt(np.mean(np.square(values.astype(float)))))
 
 
-def cell_losses(combined: pd.DataFrame, *, loss: str = "rmse") -> pd.DataFrame:
+def cell_losses(
+    combined: pd.DataFrame,
+    *,
+    loss: str = "rmse",
+    common_sample: bool = True,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> pd.DataFrame:
     """Return per-``(model, variable, horizon)`` loss with model tags preserved.
 
     ``loss`` is ``"rmse"``, ``"mse"``, or ``"mae"``. The result carries the
     ``family``, ``size``, ``scope``, ``selection`` and ``forecast_method`` tags so
     scope gains can be computed without re-joining directories.
+
+    With ``common_sample=True`` (default) every model in a ``(variable,
+    horizon)`` cell is evaluated on the *same* observation keys -- see
+    :func:`restrict_to_common_sample`. The reported ``n`` is the sample actually
+    used; ``n_common``/``n_model_total``/``n_excluded`` document the restriction.
+
+    ``policy``/``min_coverage`` are forwarded to
+    :func:`restrict_to_common_sample`; with ``policy="advisory"`` nothing is
+    dropped, so ``n`` is each model's own row count while ``n_common`` still
+    reports the shared sample that *would* have been used.
     """
 
+    frame, report = _restricted(
+        combined, common_sample=common_sample, policy=policy, min_coverage=min_coverage
+    )
+    lookup = _count_lookup(report)
+
     tag_columns = ["model", "family", "size", "scope", "selection", "forecast_method"]
-    grouped = combined.groupby(tag_columns + ["variable", "horizon"], dropna=False)
+    grouped = frame.groupby(tag_columns + ["variable", "horizon"], dropna=False)
     rows = []
     for keys, block in grouped:
         record = dict(zip(tag_columns + ["variable", "horizon"], keys))
@@ -419,15 +692,35 @@ def cell_losses(combined: pd.DataFrame, *, loss: str = "rmse") -> pd.DataFrame:
         record["loss"] = loss
         record["loss_value"] = value
         record["n"] = int(len(block))
+        record.update(
+            _count_fields(lookup, record["model"], record["variable"],
+                          record["horizon"], int(len(block)))
+        )
         rows.append(record)
     return pd.DataFrame(rows)
 
 
-def rmse_by_target(combined: pd.DataFrame) -> pd.DataFrame:
-    """RMSE per ``(model, variable, horizon)``."""
+def rmse_by_target(
+    combined: pd.DataFrame,
+    *,
+    common_sample: bool = True,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> pd.DataFrame:
+    """RMSE per ``(model, variable, horizon)`` on the cell-wise common sample.
+
+    See :func:`restrict_to_common_sample`. Without the restriction the RMSEs of
+    two models in the same cell may be estimated on different observations, so
+    their ratio, difference or rank is not interpretable.
+    """
+
+    frame, report = _restricted(
+        combined, common_sample=common_sample, policy=policy, min_coverage=min_coverage
+    )
+    lookup = _count_lookup(report)
 
     rows = []
-    for (model, variable, horizon), block in combined.groupby(["model", "variable", "horizon"]):
+    for (model, variable, horizon), block in frame.groupby(["model", "variable", "horizon"]):
         rows.append(
             {
                 "model": model,
@@ -435,16 +728,28 @@ def rmse_by_target(combined: pd.DataFrame) -> pd.DataFrame:
                 "horizon": int(horizon),
                 "rmse": _rmse(block["error"]),
                 "n": int(len(block)),
+                **_count_fields(lookup, model, variable, horizon, int(len(block))),
             }
         )
     return pd.DataFrame(rows).sort_values(["model", "variable", "horizon"]).reset_index(drop=True)
 
 
-def mae_by_target(combined: pd.DataFrame) -> pd.DataFrame:
-    """MAE per ``(model, variable, horizon)``."""
+def mae_by_target(
+    combined: pd.DataFrame,
+    *,
+    common_sample: bool = True,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> pd.DataFrame:
+    """MAE per ``(model, variable, horizon)`` on the cell-wise common sample."""
+
+    frame, report = _restricted(
+        combined, common_sample=common_sample, policy=policy, min_coverage=min_coverage
+    )
+    lookup = _count_lookup(report)
 
     rows = []
-    for (model, variable, horizon), block in combined.groupby(["model", "variable", "horizon"]):
+    for (model, variable, horizon), block in frame.groupby(["model", "variable", "horizon"]):
         rows.append(
             {
                 "model": model,
@@ -452,20 +757,48 @@ def mae_by_target(combined: pd.DataFrame) -> pd.DataFrame:
                 "horizon": int(horizon),
                 "mae": float(np.mean(np.abs(block["error"].astype(float)))),
                 "n": int(len(block)),
+                **_count_fields(lookup, model, variable, horizon, int(len(block))),
             }
         )
     return pd.DataFrame(rows).sort_values(["model", "variable", "horizon"]).reset_index(drop=True)
 
 
-def relative_rmse(rmse_table: pd.DataFrame, *, baseline_model: str) -> pd.DataFrame:
-    """Relative RMSE of each model versus ``baseline_model`` per target cell."""
+def relative_rmse(
+    rmse_table: pd.DataFrame,
+    *,
+    baseline_model: str,
+    combined: pd.DataFrame | None = None,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> pd.DataFrame:
+    """Relative RMSE of each model versus ``baseline_model`` per target cell.
+
+    When ``combined`` is supplied, **both** the model RMSE and the baseline RMSE
+    are recomputed on the *pairwise* common sample shared by that model and the
+    baseline, so the ratio is a like-for-like comparison.
+
+    Note explicitly that "common with the baseline" is **not** the same sample as
+    "common with all models": each row of the resulting table may rest on a
+    different (pairwise) sample, which is why ``n``, ``n_common`` and
+    ``n_baseline`` are reported per row. If you need one single sample basis for
+    every model, restrict ``combined`` once with
+    :func:`restrict_to_common_sample` before building any table -- then the
+    pairwise restriction below is a no-op.
+    """
 
     if baseline_model not in set(rmse_table["model"]):
         raise ReportingError(f"baseline model {baseline_model!r} is not in the RMSE table.")
-    baseline = (
-        rmse_table[rmse_table["model"] == baseline_model]
-        .set_index(["variable", "horizon"])["rmse"]
+
+    if combined is not None:
+        return _relative_rmse_pairwise(
+            combined, baseline_model=baseline_model, policy=policy, min_coverage=min_coverage
+        )
+
+    baseline_rows = rmse_table[rmse_table["model"] == baseline_model].set_index(
+        ["variable", "horizon"]
     )
+    baseline = baseline_rows["rmse"]
+    baseline_n = baseline_rows["n"] if "n" in baseline_rows.columns else None
     rows = []
     for _, row in rmse_table.iterrows():
         key = (row["variable"], int(row["horizon"]))
@@ -477,6 +810,11 @@ def relative_rmse(rmse_table: pd.DataFrame, *, baseline_model: str) -> pd.DataFr
         else:
             ratio = float("nan")
             pct = float("nan")
+        n_used = int(row["n"]) if "n" in rmse_table.columns else -1
+        n_common = int(row["n_common"]) if "n_common" in rmse_table.columns else n_used
+        n_baseline = (
+            int(baseline_n.get(key, n_common)) if baseline_n is not None else n_common
+        )
         rows.append(
             {
                 "model": row["model"],
@@ -487,27 +825,118 @@ def relative_rmse(rmse_table: pd.DataFrame, *, baseline_model: str) -> pd.DataFr
                 "baseline_rmse": base,
                 "relative_rmse": ratio,
                 "relative_rmse_pct": pct,
+                "n": n_used,
+                "n_common": n_common,
+                "n_baseline": n_baseline,
+                "sample_basis": "as_supplied",
             }
         )
     return pd.DataFrame(rows).sort_values(["model", "variable", "horizon"]).reset_index(drop=True)
 
 
-def average_ranks(rmse_table: pd.DataFrame) -> pd.DataFrame:
-    """Average rank of each model across target cells (ties share average rank)."""
+def _relative_rmse_pairwise(
+    combined: pd.DataFrame,
+    *,
+    baseline_model: str,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> pd.DataFrame:
+    """Relative RMSE where each model is paired with the baseline separately."""
 
+    if baseline_model not in set(combined["model"].astype(str)):
+        raise ReportingError(f"baseline model {baseline_model!r} is not in the panel.")
+
+    rows = []
+    for model in sorted(combined["model"].astype(str).unique()):
+        models = [model] if model == baseline_model else [model, baseline_model]
+        pair, report = restrict_to_common_sample(
+            combined, models=models, policy=policy, min_coverage=min_coverage
+        )
+        lookup = _count_lookup(report)
+        for (variable, horizon), block in pair.groupby(["variable", "horizon"]):
+            model_block = block[block["model"].astype(str) == model]
+            base_block = block[block["model"].astype(str) == baseline_model]
+            if model_block.empty:
+                continue
+            rmse = _rmse(model_block["error"])
+            base = _rmse(base_block["error"]) if not base_block.empty else float("nan")
+            if np.isfinite(base) and base > 0.0:
+                ratio = rmse / base
+                pct = 100.0 * (rmse - base) / base
+            else:
+                ratio = float("nan")
+                pct = float("nan")
+            counts = _count_fields(lookup, model, variable, horizon, int(len(model_block)))
+            rows.append(
+                {
+                    "model": model,
+                    "variable": variable,
+                    "horizon": int(horizon),
+                    "rmse": rmse,
+                    "baseline_model": baseline_model,
+                    "baseline_rmse": base,
+                    "relative_rmse": ratio,
+                    "relative_rmse_pct": pct,
+                    "n": int(len(model_block)),
+                    "n_common": counts["n_common"],
+                    "n_baseline": int(len(base_block)),
+                    "sample_basis": "pairwise_common_with_baseline",
+                }
+            )
+    return pd.DataFrame(rows).sort_values(["model", "variable", "horizon"]).reset_index(drop=True)
+
+
+def average_ranks(
+    rmse_table: pd.DataFrame, *, require_common_sample: bool = True
+) -> pd.DataFrame:
+    """Average rank of each model across target cells (ties share average rank).
+
+    Ranking losses that were estimated on different samples is meaningless, so
+    with ``require_common_sample=True`` (default) a cell whose models disagree on
+    their sample size raises :class:`CoverageError`. Pass a table built by
+    :func:`rmse_by_target` with ``common_sample=True`` (the default), or set the
+    flag to ``False`` to rank explicitly unpaired losses.
+
+    Callers running under the ``"advisory"`` coverage policy must pass
+    ``require_common_sample=False``: advisory means "report the coverage
+    shortfall, restrict nothing", so the per-model samples legitimately differ
+    and raising here would contradict the policy. The resulting ranks are then
+    explicitly unpaired and the emitted ``sample_basis`` column says so.
+    """
+
+    count_columns = [c for c in ("n", "n_common") if c in rmse_table.columns]
     ranked_frames = []
     for (variable, horizon), block in rmse_table.groupby(["variable", "horizon"]):
+        if require_common_sample and count_columns and len(block) > 1:
+            for count_column in count_columns:
+                distinct = sorted({int(v) for v in block[count_column]})
+                if len(distinct) > 1:
+                    raise CoverageError(
+                        f"cell (variable={variable!r}, horizon={int(horizon)}) mixes models "
+                        f"estimated on different sample sizes ({count_column}={distinct}); "
+                        "ranks would compare losses on different samples. Build the RMSE "
+                        "table with common_sample=True or pass require_common_sample=False."
+                    )
         block = block.copy()
         block["rank"] = block["rmse"].rank(method="average", ascending=True)
         ranked_frames.append(block)
     ranked = pd.concat(ranked_frames, ignore_index=True)
     rows = []
     for model, block in ranked.groupby("model"):
+        n_used = int(block["n"].sum()) if "n" in block.columns else -1
+        n_common = (
+            int(block["n_common"].sum()) if "n_common" in block.columns else n_used
+        )
         rows.append(
             {
                 "model": model,
                 "average_rank": float(block["rank"].mean()),
                 "n_cells": int(len(block)),
+                "n": n_used,
+                "n_common": n_common,
+                "sample_basis": (
+                    "common_sample" if require_common_sample else "unpaired_per_model"
+                ),
             }
         )
     return pd.DataFrame(rows).sort_values("average_rank").reset_index(drop=True)
@@ -531,7 +960,14 @@ def _min_ignore_nan(a: float, b: float) -> float:
     return float(min(a, b))
 
 
-def scope_gains(combined: pd.DataFrame, *, loss: str = "rmse") -> pd.DataFrame:
+def scope_gains(
+    combined: pd.DataFrame,
+    *,
+    loss: str = "rmse",
+    common_sample: bool = True,
+    policy: str = "restrict",
+    min_coverage: float = 0.0,
+) -> pd.DataFrame:
     """Compute scope-gain decompositions per forecasting *system* and target cell.
 
     A *system* is a ``(family, size, forecast_method)`` triple. Within a system
@@ -546,10 +982,51 @@ def scope_gains(combined: pd.DataFrame, *, loss: str = "rmse") -> pd.DataFrame:
 
     A **positive** gain always denotes a loss reduction (an improvement). Missing
     scopes yield ``NaN`` gains rather than fabricated numbers.
+
+    With ``common_sample=True`` (default) the restriction is applied **per
+    system**: within each system, all of that system's scopes are evaluated on
+    the observation keys they share in a given cell. A gain is then a difference
+    of losses measured on one and the same sample, which is what the paper
+    claims. ``n_common``/``n_models``/``n_excluded`` document that sample.
     """
 
-    losses = cell_losses(combined, loss=loss)
     system_cols = ["family", "size", "forecast_method", "variable", "horizon"]
+    frames = []
+    reports: dict[tuple, CommonSampleReport] = {}
+    for keys, system_block in combined.groupby(
+        ["family", "size", "forecast_method"], dropna=False
+    ):
+        if common_sample:
+            restricted, report = restrict_to_common_sample(
+                system_block, policy=policy, min_coverage=min_coverage
+            )
+        else:
+            restricted, report = system_block, None
+        block_losses = cell_losses(restricted, loss=loss, common_sample=False)
+        frames.append(block_losses)
+        if report is not None:
+            reports[keys] = report
+
+    losses = (
+        pd.concat(frames, ignore_index=True) if frames else cell_losses(combined, loss=loss)
+    )
+
+    def _system_counts(keys: tuple, variable: object, horizon: object) -> dict[str, object]:
+        report = reports.get(keys)
+        if report is None or report.counts.empty:
+            return {"n_common": -1, "n_excluded": -1}
+        counts = report.counts
+        sel = counts[
+            (counts["variable"].astype(str) == str(variable))
+            & (counts["horizon"].astype(int) == int(horizon))
+        ]
+        if sel.empty:
+            return {"n_common": 0, "n_excluded": 0}
+        return {
+            "n_common": int(sel["n_common"].iloc[0]),
+            "n_excluded": int(sel["n_excluded"].sum()),
+        }
+
     rows = []
     for keys, block in losses.groupby(system_cols, dropna=False):
         record = dict(zip(system_cols, keys))
@@ -565,6 +1042,9 @@ def scope_gains(combined: pd.DataFrame, *, loss: str = "rmse") -> pd.DataFrame:
         L_vh = by_scope["variable_horizon"]
         L_native = by_scope["native"]
 
+        system_key = (record["family"], record["size"], record["forecast_method"])
+        counts = _system_counts(system_key, record["variable"], record["horizon"])
+
         record.update(
             {
                 "loss": loss,
@@ -579,6 +1059,14 @@ def scope_gains(combined: pd.DataFrame, *, loss: str = "rmse") -> pd.DataFrame:
                 "vh_vs_pooled_gain": L_pooled - L_vh,
                 "vh_vs_best_marginal_gain": _min_ignore_nan(L_horizon, L_variable) - L_vh,
                 "pooled_vs_native_gain": L_native - L_pooled,
+                "n_common": counts["n_common"],
+                "n_models": int(block["model"].nunique()),
+                "n_excluded": counts["n_excluded"],
+                "sample_basis": (
+                    "system_common_sample"
+                    if common_sample and policy != "advisory"
+                    else "unpaired_per_model"
+                ),
             }
         )
         rows.append(record)
@@ -739,6 +1227,23 @@ _COST_KEYS = (
 )
 
 
+# Legacy / producer-specific spellings accepted for a canonical cost key.
+_COST_KEY_ALIASES: dict[str, tuple[str, ...]] = {
+    "total_fits": ("estimated_total_fits",),
+}
+
+
+def _cost_value(metadata: Mapping[str, object], key: str) -> object:
+    """Return ``metadata[key]``, falling back to documented alias spellings."""
+
+    if key in metadata:
+        return metadata[key]
+    for alias in _COST_KEY_ALIASES.get(key, ()):
+        if alias in metadata:
+            return metadata[alias]
+    return np.nan
+
+
 def computational_cost(metadata_by_model: Mapping[str, Mapping[str, object]]) -> pd.DataFrame:
     """Extract a documented set of cost fields from each model's run metadata.
 
@@ -750,7 +1255,7 @@ def computational_cost(metadata_by_model: Mapping[str, Mapping[str, object]]) ->
     for model, metadata in metadata_by_model.items():
         record: dict[str, object] = {"model": model}
         for key in _COST_KEYS:
-            record[key] = metadata.get(key, np.nan) if metadata is not None else np.nan
+            record[key] = _cost_value(metadata, key) if metadata is not None else np.nan
         record["strategy"] = metadata.get("strategy") if metadata else None
         rows.append(record)
     columns = ["model", "strategy", *_COST_KEYS]
@@ -774,7 +1279,7 @@ def _paired_errors(
 ) -> tuple[np.ndarray, np.ndarray, int]:
     """Return per-origin errors for two models on their **matched** origins."""
 
-    obs_key = ["forecast_origin", "target_quarter"]
+    obs_key = list(COMMON_SAMPLE_KEY)
     mask = (combined["variable"] == variable) & (combined["horizon"] == int(horizon))
     a = combined[mask & (combined["model"] == model_a)].set_index(obs_key)["error"].astype(float)
     b = combined[mask & (combined["model"] == model_b)].set_index(obs_key)["error"].astype(float)
@@ -1012,6 +1517,20 @@ def write_comparison_summary(
         for model, unmatched in alignment.unmatched.items():
             if unmatched:
                 lines.append(f"  - `{model}`: {len(unmatched)} unmatched origin(s).\n")
+    lines.append(f"- Coverage policy: `{alignment.policy}`.\n")
+    lines.append(
+        f"- Common-sample keys: {alignment.n_common_keys}; "
+        f"excluded keys: {alignment.n_excluded_keys}"
+        + (
+            f" (coverage {alignment.coverage:.2%}).\n"
+            if alignment.coverage == alignment.coverage
+            else ".\n"
+        )
+    )
+    lines.append(
+        "- All loss tables, ranks, scope gains and paired tests use the same "
+        "cell-wise common sample.\n"
+    )
 
     lines.append("\n## Scope-gain decomposition (loss reduction; positive = better)\n")
     if gain_summary.empty:

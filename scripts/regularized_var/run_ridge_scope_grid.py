@@ -30,6 +30,7 @@ import json
 from pathlib import Path
 import shlex
 import sys
+import time
 from typing import Any, Sequence
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -638,6 +639,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         for scope in config.selection_scopes:
             output_dir = config.output_root / f"scope_{scope}"
             started_utc = utc_now()
+            started_monotonic = time.monotonic()
             initial_metadata = _scope_run_metadata(
                 config,
                 scope=scope,
@@ -657,6 +659,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 continue
             try:
                 result = run_scope_experiment(panel, scope, config.experiment)
+                fit_counts = estimate_fit_counts(
+                    config.experiment.outer_scheme.min_train_length
+                    + config.experiment.outer_scheme.n_origins,
+                    scope,
+                    config.experiment,
+                )
                 final_metadata = _scope_run_metadata(
                     config,
                     scope=scope,
@@ -673,6 +681,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                         "n_selection_events": result.metadata.get("n_selection_events"),
                         "n_target_cells": result.metadata.get("n_target_cells"),
                         "preprocessing": result.metadata.get("preprocessing"),
+                        "grid_size": fit_counts["grid_size"],
+                        "total_fits": fit_counts["total_fits"],
+                        "wall_time_seconds": time.monotonic() - started_monotonic,
                     },
                 )
                 write_scope_outputs(result, output_dir, metadata_override=final_metadata)
@@ -693,6 +704,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     finished_utc=utc_now(),
                     completion_status="cancelled",
                     failure_records=({"stage": "run", "error": "KeyboardInterrupt", "failure_category": "cancelled"},),
+                    extra={"wall_time_seconds": time.monotonic() - started_monotonic},
                 )
                 mark_run_cancelled(
                     output_dir,
@@ -709,6 +721,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     finished_utc=utc_now(),
                     completion_status="failed",
                     failure_records=({"stage": "run", "error": f"{type(exc).__name__}: {exc}", "failure_category": classify_failure(exc)},),
+                    extra={"wall_time_seconds": time.monotonic() - started_monotonic},
                 )
                 mark_run_failed(
                     output_dir,
@@ -721,6 +734,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         for benchmark in config.benchmarks:
             output_dir = config.output_root / "benchmarks" / benchmark
             started_utc = utc_now()
+            started_monotonic = time.monotonic()
             initial_metadata = _benchmark_run_metadata(
                 config,
                 benchmark=benchmark,
@@ -753,6 +767,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                         "strategy": benchmark,
                         "panel": result.metadata.get("panel"),
                         "n_outer_origins": result.metadata.get("n_outer_origins"),
+                        "wall_time_seconds": time.monotonic() - started_monotonic,
                     },
                 )
                 write_benchmark_outputs(result, output_dir, metadata_override=final_metadata)
@@ -773,6 +788,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     finished_utc=utc_now(),
                     completion_status="cancelled",
                     failure_records=({"stage": "run", "error": "KeyboardInterrupt", "failure_category": "cancelled"},),
+                    extra={"wall_time_seconds": time.monotonic() - started_monotonic},
                 )
                 mark_run_cancelled(
                     output_dir,
@@ -789,6 +805,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     finished_utc=utc_now(),
                     completion_status="failed",
                     failure_records=({"stage": "run", "error": f"{type(exc).__name__}: {exc}", "failure_category": classify_failure(exc)},),
+                    extra={"wall_time_seconds": time.monotonic() - started_monotonic},
                 )
                 mark_run_failed(
                     output_dir,

@@ -1099,7 +1099,196 @@ def _rmse_objective(
     return calc_rmse
 
 
-# RMSE_UPDATERS_IMPLEMENTATION
+def _finalize_rmse_result(
+    results: Any,
+    calc_rmse: Callable[..., float],
+    ctx_ref: GLPContext,
+    *,
+    label: str,
+    optimizer_seed: int | None,
+    n_obj_draws: int,
+    origin_ks: Sequence[int],
+) -> dict[str, Any]:
+    """Validate a Mango RMSE run fail-closed and package the best candidate.
+
+    Mirrors the postcondition enforced by :func:`update_hyperparameters_mango`:
+    the returned candidate is re-evaluated and any penalty-valued or non-finite
+    best score is raised rather than silently returned as an in-bounds result.
+    """
+    best_params = results.get("best_params") if isinstance(results, dict) else None
+    if not isinstance(best_params, dict) or not best_params:
+        raise HyperparameterOptimizationError(f"{label} returned no best_params mapping.")
+    counters = dict(getattr(calc_rmse, "diagnostics", {}) or {})
+    if int(counters.get("valid", 0)) <= 0:
+        raise HyperparameterOptimizationError(
+            f"{label} never produced a valid finite RMSE evaluation; "
+            "refusing arbitrary parameters."
+        )
+    best_score = calc_rmse(**best_params)
+    if not np.isfinite(best_score) or best_score >= RMSE_PENALTY:
+        raise HyperparameterOptimizationError(
+            f"{label} recorded the sentinel penalty as its best score; "
+            "refusing arbitrary parameters."
+        )
+    hyper = _best_hyperparameters(best_params, ctx_ref)
+    hyper["optimization_diagnostics"] = {
+        "best_score": float(best_score),
+        "objective_direction": "minimize",
+        "penalty": RMSE_PENALTY,
+        "optimizer_seed": optimizer_seed,
+        "n_obj_draws": int(n_obj_draws),
+        "evaluation_origins": [int(k) for k in origin_ks],
+        "valid_evaluations_observed_in_process": int(counters.get("valid", 0)),
+        "penalized_evaluations_observed_in_process": int(counters.get("penalized", 0)),
+        "nonfinite_evaluations_observed_in_process": int(counters.get("nonfinite", 0)),
+        "postcondition_revalidated": True,
+    }
+    return hyper
+
+
+def update_hyperparameters_mango_rmse(
+    y: np.ndarray,
+    lags: int,
+    *,
+    model_codes: Sequence[str],
+    var_of_interest: Sequence[str],
+    H: int,
+    param_space: dict[str, Any] | None = None,
+    init_points: int = 5,
+    n_iter: int = 15,
+    njobs: int = 1,
+    h_eval: int | None = None,
+    n_eval: int = 1,
+    min_t: int | None = None,
+    n_obj_draws: int = 200,
+    hyperpriors: int = GLP_HYPERPRIORS,
+    optimizer_seed: int | None = None,
+    **prior_kwargs: Any,
+) -> dict[str, Any]:
+    """Select the shrinkage hyperparameters by MINIMIZING the rolling
+    out-of-sample RMSE for ``var_of_interest`` at horizon ``h_eval``.
+
+    The objective scores the Bayesian predictive-mean forecast averaged over
+    ``n_obj_draws`` posterior draws of beta, matching how the recursive
+    forecasts are aggregated. Set ``n_obj_draws <= 1`` to fall back to the
+    deterministic posterior-mode point forecast.
+    """
+    from mango import Tuner, scheduler
+
+    if init_points <= 0 or n_iter <= 0 or njobs <= 0:
+        raise ValueError("init_points, n_iter, and njobs must be positive.")
+    prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
+    var_indices = _resolve_var_indices(model_codes, var_of_interest)
+
+    y = np.asarray(y, dtype=float)
+    ks = _rmse_eval_origins(
+        y.shape[0],
+        H,
+        n_eval,
+        lags=lags,
+        random=False,
+        min_t=min_t,
+        random_seed=None,
+    )
+    origins = _build_rmse_origins(y, lags, ks, H, prior_kwargs)
+    ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
+    if param_space is None:
+        param_space = make_param_space(ctx_ref)
+    calc_rmse = _rmse_objective(
+        origins,
+        var_indices,
+        H,
+        h_eval,
+        ctx_ref,
+        n_obj_draws=n_obj_draws,
+        seed_base=0 if optimizer_seed is None else int(optimizer_seed),
+    )
+
+    objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
+    conf = dict(num_iteration=n_iter, initial_random=init_points)
+    with deterministic_rng_context(optimizer_seed):
+        results = Tuner(param_space, objective, conf).minimize()
+    return _finalize_rmse_result(
+        results,
+        calc_rmse,
+        ctx_ref,
+        label="Mango RMSE",
+        optimizer_seed=optimizer_seed,
+        n_obj_draws=n_obj_draws,
+        origin_ks=ks,
+    )
+
+
+def update_hyperparameters_mango_rmse_random(
+    y: np.ndarray,
+    lags: int,
+    *,
+    model_codes: Sequence[str],
+    var_of_interest: Sequence[str],
+    H: int,
+    param_space: dict[str, Any] | None = None,
+    init_points: int = 5,
+    n_iter: int = 15,
+    njobs: int = 1,
+    h_eval: int | None = None,
+    n_eval: int = 1,
+    min_t: int | None = None,
+    random_seed: int | None = None,
+    n_obj_draws: int = 200,
+    hyperpriors: int = GLP_HYPERPRIORS,
+    **prior_kwargs: Any,
+) -> dict[str, Any]:
+    """Like :func:`update_hyperparameters_mango_rmse` but the ``n_eval``
+    evaluation origins are drawn at random from the feasible pool.
+
+    As in the rolling variant the objective scores the predictive-mean forecast
+    over ``n_obj_draws`` posterior draws of beta (``n_obj_draws <= 1`` restores
+    the deterministic posterior-mode forecast).
+    """
+    from mango import Tuner, scheduler
+
+    if init_points <= 0 or n_iter <= 0 or njobs <= 0:
+        raise ValueError("init_points, n_iter, and njobs must be positive.")
+    prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
+    var_indices = _resolve_var_indices(model_codes, var_of_interest)
+
+    y = np.asarray(y, dtype=float)
+    ks = _rmse_eval_origins(
+        y.shape[0],
+        H,
+        n_eval,
+        lags=lags,
+        random=True,
+        min_t=min_t,
+        random_seed=random_seed,
+    )
+    origins = _build_rmse_origins(y, lags, ks, H, prior_kwargs)
+    ctx_ref = prepare_glp_context(y, lags, **prior_kwargs)
+    if param_space is None:
+        param_space = make_param_space(ctx_ref)
+    calc_rmse = _rmse_objective(
+        origins,
+        var_indices,
+        H,
+        h_eval,
+        ctx_ref,
+        n_obj_draws=n_obj_draws,
+        seed_base=0 if random_seed is None else int(random_seed),
+    )
+
+    objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
+    conf = dict(num_iteration=n_iter, initial_random=init_points)
+    with deterministic_rng_context(random_seed):
+        results = Tuner(param_space, objective, conf).minimize()
+    return _finalize_rmse_result(
+        results,
+        calc_rmse,
+        ctx_ref,
+        label="Mango RMSE (random origins)",
+        optimizer_seed=random_seed,
+        n_obj_draws=n_obj_draws,
+        origin_ks=ks,
+    )
 
 
 def _resolve_var_indices(model_codes: Sequence[str], var_of_interest: Sequence[str]) -> list[int]:

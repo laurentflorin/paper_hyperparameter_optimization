@@ -27,6 +27,7 @@ accuracy:
 | Document | Contents |
 |---|---|
 | [docs/EXPERIMENT_DESIGN.md](docs/EXPERIMENT_DESIGN.md) | Research question, selection scopes, inner/outer evaluation, vintage policies, selection schedules, loss scaling, forecast methods, known limitations |
+| [docs/KNOWN_CONFOUNDS.md](docs/KNOWN_CONFOUNDS.md) | Confirmed threats to validity of the MDD vs. forecast-loss comparison and how to remove them |
 | [docs/OUTPUT_SCHEMA.md](docs/OUTPUT_SCHEMA.md) | Full column-level schema for all output files |
 | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) | Configuration hashes, resume semantics, test tiers, CI setup |
 | [docs/PILOT_VALIDATION.md](docs/PILOT_VALIDATION.md) | Exact pilot commands, timing, output counts, validation results, dependency status |
@@ -542,4 +543,9 @@ Each forecast script writes:
 
 - The repository implements the paper's MF-VAR setup, not the paper's quarterly-frequency VAR or MIDAS benchmark models.
 - The comparison script evaluates quarterly averages. For `GDP`, `INVFIX`, `GOV`, `HRS`, `CPI`, `IP`, `PCE`, and `SP500`, forecast errors are computed on quarter-on-quarter log growth rates in percent. For `UNR`, `FF`, and `TB`, they are computed on quarterly-average levels.
-- `MBFVAR` currently uses `numpy.random.default_rng()` internally without a user-exposed seed path in the package API, so exact bit-for-bit replication across runs may require patching the upstream package.
+- `MBFVAR` still creates `numpy.random.default_rng()` instances internally without a user-exposed seed path in its package API. The runners mitigate this with `experiment_provenance.deterministic_rng_context(seed)`, which is applied around optimizer and model calls: it seeds the legacy global NumPy and Python RNGs and temporarily patches `numpy.random.default_rng` so that unseeded calls draw successive child `SeedSequence`s from the run seed, restoring all process-global state on exit (explicit `default_rng(seed)` calls keep their normal semantics). Caveat: the patch is process-global and thread-unsafe, so it must not be entered concurrently in overlapping threads (process workers are isolated and safe), and because it is a workaround rather than an upstream seed path, bit-for-bit replication is not guaranteed across environments or package versions.
+
+## License
+
+This project is released under the MIT License. See [LICENSE](LICENSE) for the
+full text.

@@ -113,6 +113,15 @@ def test_end_to_end_real_run_writes_canonical_outputs(tmp_path):
         assert (scope_dir / "forecast_panel.csv").exists()
         assert (scope_dir / "selected_hyperparameters.csv").exists()
         assert (scope_dir / "run_metadata.json").exists()
+        metadata = json.loads((scope_dir / "run_metadata.json").read_text())
+        # Cost fields consumed by reporting.computational_cost must be populated.
+        assert metadata["total_fits"] > 0
+        assert metadata["grid_size"] > 0
+        assert metadata["wall_time_seconds"] >= 0.0
     for benchmark in ("no_change", "var_aic"):
         assert (output_root / "benchmarks" / benchmark / "forecast_panel.csv").exists()
+        benchmark_metadata = json.loads(
+            (output_root / "benchmarks" / benchmark / "run_metadata.json").read_text()
+        )
+        assert benchmark_metadata["wall_time_seconds"] >= 0.0
     assert (output_root / "scope_grid_manifest.json").exists()

@@ -83,6 +83,9 @@ DEFAULT_INNER_N_ORIGINS = 20
 DEFAULT_INNER_ORIGIN_STRIDE = 2
 DEFAULT_OBJECTIVE_POSTERIOR_DRAWS = 25
 DEFAULT_SELECTION_FREQUENCY = "4"
+# Leakage-safe, fold-stable psi coordinatization for the forecast-loss arm:
+# psi_i = SS_i * exp(coordinate) recomputed from each fold's own training rows.
+DEFAULT_PSI_PARAMETERIZATION = "ss_log_multiplier"
 EXPECTED_OUTPUT_FILES = (
     "forecast_panel.csv",
     "selected_hyperparameters.csv",
@@ -350,12 +353,26 @@ def _build_search_config(
     optimize_psi: bool,
     fixed_psi_source: str | None,
     fixed_psi_values: Sequence[float] | None,
+    psi_parameterization: str = DEFAULT_PSI_PARAMETERIZATION,
 ) -> GLPSearchConfig:
+    """Build the forecast-loss arm's search configuration.
+
+    ``psi_parameterization`` selects how an *optimized* psi is coordinatized.
+    The default ``"ss_log_multiplier"`` is the leakage-safe, fold-stable choice:
+    coordinate ``psi_log_multiplier_i`` always means
+    ``psi_i = SS_i * exp(coordinate)`` recomputed from the training rows of the
+    fold being scored, so the optimizer's box is a constant and one coordinate
+    has the same interpretation in every inner fold. ``"absolute"`` searches raw
+    psi levels whose admissible range is derived from a specific context's
+    ``MIN``/``MAX``; it is retained for backward comparison only.
+    """
+
     if optimize_psi:
-        return GLPSearchConfig.legacy_full()
+        return GLPSearchConfig.legacy_full(psi_parameterization=psi_parameterization)
     return GLPSearchConfig.reduced_lambda_theta_miu(
         fixed_psi_source=fixed_psi_source or "context_ss",
         fixed_psi_values=fixed_psi_values,
+        psi_parameterization=psi_parameterization,
     )
 
 
@@ -376,8 +393,17 @@ def _scientific_warnings(
     n_inner_origins: int,
     optimize_psi: bool,
     model_size: str,
+    psi_parameterization: str = DEFAULT_PSI_PARAMETERIZATION,
 ) -> tuple[str, ...]:
     warnings: list[str] = []
+    if optimize_psi and psi_parameterization == "absolute":
+        warnings.append(
+            "psi is optimized in the 'absolute' parameterization. The psi search "
+            "bounds are then derived from a single context's AR(1) residual scale, "
+            "so one optimizer coordinate means different prior scales in different "
+            "inner folds and the feasible set depends on fold composition. Prefer "
+            "--psi-parameterization ss_log_multiplier."
+        )
     if total_budget <= LEGACY_LOW_BUDGET_TOTAL:
         warnings.append(
             "The requested optimizer budget matches or falls below the legacy GLP "
@@ -575,6 +601,19 @@ def build_parser() -> argparse.ArgumentParser:
         default="context_ss",
     )
     parser.add_argument("--fixed-psi-values", type=str, default=None)
+    parser.add_argument(
+        "--psi-parameterization",
+        choices=("absolute", "ss_log_multiplier"),
+        default=DEFAULT_PSI_PARAMETERIZATION,
+        help=(
+            "Coordinatization of psi when --optimize-psi is used. "
+            "'ss_log_multiplier' (default) searches log multipliers of each "
+            "inner fold's own AR(1) residual scale, so a coordinate has the "
+            "same meaning in every fold and no outer-sample scale leaks into "
+            "the inner objective. 'absolute' searches raw psi levels against "
+            "context-dependent bounds and is retained for comparison only."
+        ),
+    )
     parser.add_argument("--save-all-cell-forecasts", action="store_true")
     parser.add_argument("--execution-mode", choices=("serial", "parallel"), default="serial")
     parser.add_argument("--worker-count", type=int, default=None)
@@ -639,6 +678,9 @@ def build_study_config(
         optimize_psi=bool(args.optimize_psi),
         fixed_psi_source=None if args.optimize_psi else args.fixed_psi_source,
         fixed_psi_values=tuple(_csv_floats(args.fixed_psi_values)) if args.fixed_psi_values else None,
+        psi_parameterization=str(
+            getattr(args, "psi_parameterization", DEFAULT_PSI_PARAMETERIZATION)
+        ),
     )
     loss_config = _build_loss_config(args.loss_metric, args.loss_scaling)
 
@@ -689,6 +731,7 @@ def build_study_config(
         n_inner_origins=validation_scheme.n_origins,
         optimize_psi=search_config.optimize_psi,
         model_size=model_size,
+        psi_parameterization=search_config.psi_parameterization,
     )
 
     argv_tokens = tuple(str(value) for value in (argv if argv is not None else sys.argv[1:]))
@@ -1123,7 +1166,17 @@ def run_scope_study(plan: ScopeRunPlan, config: ScopeGridConfig, panel) -> GLPEx
     def selector(request) -> CellSelection:
         start_time = time.perf_counter()
         bundle = outer_bundle(request.origin_label)
+        # ``resolved_search`` is bound to the OUTER context. It is used only to
+        # define the optimizer's search space and to assemble the final natural
+        # vector for the outer forecast. It must NOT be used to score inner
+        # folds: its SS-derived quantities (fixed psi, absolute psi bounds) are
+        # estimated over rows that include the inner holdout targets.
         resolved_search = request.search_config.resolve(bundle.context)
+        # Inner folds are scored with a fold-resolving converter, so psi and its
+        # bounds are recomputed from each fold's own training rows.
+        fold_to_natural = request.search_config.fold_resolving_to_natural(
+            reference=resolved_search
+        )
         contexts = _objective_contexts(
             bundle=bundle,
             lags=config.lags,
@@ -1140,7 +1193,7 @@ def run_scope_study(plan: ScopeRunPlan, config: ScopeGridConfig, panel) -> GLPEx
         objective = make_glp_loss_objective(
             contexts,
             spec,
-            to_natural=resolved_search.to_natural,
+            to_natural=fold_to_natural,
             penalty=RMSE_PENALTY,
             benchmark=benchmark,
         )
@@ -1161,7 +1214,7 @@ def run_scope_study(plan: ScopeRunPlan, config: ScopeGridConfig, panel) -> GLPEx
             best_params,
             contexts,
             spec,
-            to_natural=resolved_search.to_natural,
+            to_natural=fold_to_natural,
             penalty=RMSE_PENALTY,
             benchmark=benchmark,
         )
@@ -1330,6 +1383,7 @@ def execute_study(config: ScopeGridConfig) -> dict[str, object]:
 
     def _run_one(plan: ScopeRunPlan) -> tuple[str, GLPExperimentResult]:
         started_utc = utc_now()
+        started_monotonic = time.monotonic()
         initial_metadata = _scope_run_metadata(
             config,
             plan,
@@ -1358,6 +1412,7 @@ def execute_study(config: ScopeGridConfig) -> dict[str, object]:
                     "runner": RUNNER_NAME,
                     "cache_stats": result.cache_stats,
                     "selection_event_count": len(result.run_metadata.get("selection_events", [])),
+                    "wall_time_seconds": time.monotonic() - started_monotonic,
                 },
             )
             _write_scope_outputs(plan, config, result, metadata_override=final_metadata)
@@ -1377,6 +1432,7 @@ def execute_study(config: ScopeGridConfig) -> dict[str, object]:
                 finished_utc=utc_now(),
                 completion_status="cancelled",
                 failure_records=({"stage": "run", "cell_id": plan.scope, "error": "KeyboardInterrupt", "failure_category": "cancelled"},),
+                extra={"wall_time_seconds": time.monotonic() - started_monotonic},
             )
             mark_run_cancelled(
                 plan.output_dir,
@@ -1392,6 +1448,7 @@ def execute_study(config: ScopeGridConfig) -> dict[str, object]:
                 finished_utc=utc_now(),
                 completion_status="failed",
                 failure_records=({"stage": "run", "cell_id": plan.scope, "error": f"{type(exc).__name__}: {exc}", "failure_category": classify_failure(exc)},),
+                extra={"wall_time_seconds": time.monotonic() - started_monotonic},
             )
             mark_run_failed(
                 plan.output_dir,

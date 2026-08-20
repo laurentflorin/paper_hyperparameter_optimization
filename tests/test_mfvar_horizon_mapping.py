@@ -14,7 +14,7 @@ if str(SRC_ROOT) not in sys.path:
 from paper_hyperparameter_optimization.horizon_mapping import (
     FREQ_RATIO,
     quarterly_horizon_to_state_rows,
-    required_forecast_months,
+    nominal_forecast_months,
     state_rows_for_max_horizon,
     target_quarter_for_origin,
     target_quarters_for_origin,
@@ -32,7 +32,7 @@ def test_frequency_ratio_is_three():
 def test_quarterly_horizon_to_state_rows(horizon, expected_rows):
     assert quarterly_horizon_to_state_rows(horizon) == expected_rows
     assert state_rows_for_max_horizon(horizon) == expected_rows
-    assert required_forecast_months(horizon) == expected_rows
+    assert nominal_forecast_months(horizon) == expected_rows
 
 
 def test_invalid_horizon_rejected():

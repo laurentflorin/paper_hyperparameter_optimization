@@ -43,8 +43,29 @@ def test_discover_strategy_dir_requires_disambiguation_if_multiple_match(tmp_pat
     assert C._discover_strategy_dir(tmp_path, "paper", "small") == tmp_path / "paper_small"
 
 
-def test_resolve_strategy_dir_honors_explicit_override(tmp_path: Path):
+def test_resolve_strategy_dir_honors_complete_explicit_override(tmp_path: Path):
+    """An explicit override is honored only when it holds a complete run."""
     explicit = tmp_path / "paper_custom"
-    explicit.mkdir()
+    _write_metadata(explicit, strategy="paper", model_size="small")
     resolved = C._resolve_strategy_dir(explicit, strategy="paper", root_dir=tmp_path, model_size=None)
     assert resolved == explicit
+
+
+def test_resolve_strategy_dir_rejects_empty_explicit_override(tmp_path: Path):
+    """Explicit overrides are fail-closed: an empty directory must raise.
+
+    Silently accepting an empty override would let the comparison report be
+    built from a strategy that produced no forecasts at all.
+    """
+    explicit = tmp_path / "paper_custom"
+    explicit.mkdir()
+    with pytest.raises(FileNotFoundError, match="No complete run was found"):
+        C._resolve_strategy_dir(explicit, strategy="paper", root_dir=tmp_path, model_size=None)
+
+
+def test_resolve_strategy_dir_rejects_missing_explicit_override(tmp_path: Path):
+    """A nonexistent explicit override must raise rather than fall back to discovery."""
+    with pytest.raises(FileNotFoundError, match="does not exist"):
+        C._resolve_strategy_dir(
+            tmp_path / "absent", strategy="paper", root_dir=tmp_path, model_size=None
+        )
