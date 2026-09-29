@@ -154,6 +154,15 @@ This creates:
 - hyperparameter summary tables for the optimized models,
 - paper-style PNG figures for relative RMSE by group and hyperparameter paths.
 
+### 7. Prior-selection criteria for the MF-VAR (complete-data ladder)
+
+```bash
+python scripts/run_mf_ladder.py --output-dir outputs/mf_ladder --n-workers 12
+python scripts/compare_mf_ladder.py --run-dir outputs/mf_ladder
+```
+
+At every origin the Gibbs sampler runs once at the paper hyperparameters and keeps draws of the balanced monthly data (latent monthly values of the quarterly variables included). Conditional on those draws the MF-VAR is a conjugate monthly VAR, so the criteria are cheap: `ml` (one Monte Carlo EM step for the marginal likelihood), `rmse:h4:w12` (GDP RMSE over the last 12 quarters) and `rmsej:h4:w60` (RMSE of all variables over 60 quarters, weighted by AR(1) residual variances). The model is then re-fit with every selected prior and scored on growth rates anchored at the real-time jump-off, with CRPS and log score from the draws, Diebold-Mariano/Holm tests and the Model Confidence Set. MBFVAR's explosive-root rejection is replaced by an exact, faster check (`fast_is_explosive`) that gives identical draws. See `src/paper_hyperparameter_optimization/mf_ladder.py`; `scripts/run_mf_ladder_euler.sh` runs it on Euler.
+
 ## GLP Workflow
 
 This repository also contains a separate quarterly BVAR workflow for Giannone, Lenza and Primiceri (2015) under `src/glp_hyperparameter_optimization` and `scripts/glp`. Those commands are independent of the Schorfheide-Song MF-VAR workflow above and write to `outputs/glp/...` by convention.
