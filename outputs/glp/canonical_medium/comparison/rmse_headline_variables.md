@@ -1,0 +1,817 @@
+              model model_size variable  horizon_quarters     rmse  n
+    ladder_lsj1_all     medium     DEFL                 1 0.931617 80
+    ladder_lsj1_w12     medium     DEFL                 1 0.922312 80
+    ladder_lsj1_w40     medium     DEFL                 1 0.944235 80
+    ladder_lsj1_w60     medium     DEFL                 1 0.936922 80
+    ladder_lsj1_w80     medium     DEFL                 1 0.940507 80
+  ladder_lsj_h2_w12     medium     DEFL                 1 0.923985 80
+  ladder_lsj_h2_w60     medium     DEFL                 1 0.939035 80
+  ladder_lsj_h4_w12     medium     DEFL                 1 0.910189 80
+  ladder_lsj_h4_w40     medium     DEFL                 1 0.929566 80
+  ladder_lsj_h4_w60     medium     DEFL                 1 0.933425 80
+  ladder_lsj_h4_w80     medium     DEFL                 1 0.939342 80
+  ladder_lsj_h8_w12     medium     DEFL                 1 0.927850 80
+  ladder_lsj_h8_w60     medium     DEFL                 1 0.951483 80
+  ladder_lsm_h1_w12     medium     DEFL                 1 1.168318 80
+  ladder_lsm_h1_w60     medium     DEFL                 1 1.076797 80
+  ladder_lsm_h2_w12     medium     DEFL                 1 1.239306 80
+  ladder_lsm_h2_w60     medium     DEFL                 1 1.069470 80
+  ladder_lsm_h4_w12     medium     DEFL                 1 1.083330 80
+  ladder_lsm_h4_w40     medium     DEFL                 1 1.046828 80
+  ladder_lsm_h4_w60     medium     DEFL                 1 1.248503 80
+  ladder_lsm_h4_w80     medium     DEFL                 1 1.190246 80
+  ladder_lsm_h8_w12     medium     DEFL                 1 1.194662 80
+  ladder_lsm_h8_w60     medium     DEFL                 1 1.149402 80
+         ladder_mdd     medium     DEFL                 1 0.927181 80
+ ladder_rmse_h4_w12     medium     DEFL                 1 1.088187 80
+ ladder_rmse_h4_w40     medium     DEFL                 1 1.027365 80
+ ladder_rmse_h4_w60     medium     DEFL                 1 1.050970 80
+ ladder_rmse_h4_w80     medium     DEFL                 1 0.920298 80
+ladder_rmsej_h4_w12     medium     DEFL                 1 1.004892 80
+ladder_rmsej_h4_w40     medium     DEFL                 1 0.904345 80
+ladder_rmsej_h4_w60     medium     DEFL                 1 0.963549 80
+ladder_rmsej_h4_w80     medium     DEFL                 1 0.881712 80
+              paper     medium     DEFL                 1 0.927845 80
+       paper_plugin     medium     DEFL                 1 0.927181 80
+    ladder_lsj1_all     medium     DEFL                 2 0.838929 80
+    ladder_lsj1_w12     medium     DEFL                 2 0.824188 80
+    ladder_lsj1_w40     medium     DEFL                 2 0.852744 80
+    ladder_lsj1_w60     medium     DEFL                 2 0.836602 80
+    ladder_lsj1_w80     medium     DEFL                 2 0.837239 80
+  ladder_lsj_h2_w12     medium     DEFL                 2 0.823480 80
+  ladder_lsj_h2_w60     medium     DEFL                 2 0.837260 80
+  ladder_lsj_h4_w12     medium     DEFL                 2 0.809381 80
+  ladder_lsj_h4_w40     medium     DEFL                 2 0.818683 80
+  ladder_lsj_h4_w60     medium     DEFL                 2 0.824139 80
+  ladder_lsj_h4_w80     medium     DEFL                 2 0.839923 80
+  ladder_lsj_h8_w12     medium     DEFL                 2 0.829000 80
+  ladder_lsj_h8_w60     medium     DEFL                 2 0.827088 80
+  ladder_lsm_h1_w12     medium     DEFL                 2 1.082074 80
+  ladder_lsm_h1_w60     medium     DEFL                 2 0.958169 80
+  ladder_lsm_h2_w12     medium     DEFL                 2 1.138191 80
+  ladder_lsm_h2_w60     medium     DEFL                 2 1.002966 80
+  ladder_lsm_h4_w12     medium     DEFL                 2 1.051908 80
+  ladder_lsm_h4_w40     medium     DEFL                 2 0.980018 80
+  ladder_lsm_h4_w60     medium     DEFL                 2 1.165907 80
+  ladder_lsm_h4_w80     medium     DEFL                 2 1.119470 80
+  ladder_lsm_h8_w12     medium     DEFL                 2 1.106719 80
+  ladder_lsm_h8_w60     medium     DEFL                 2 1.097060 80
+         ladder_mdd     medium     DEFL                 2 0.833168 80
+ ladder_rmse_h4_w12     medium     DEFL                 2 0.987835 80
+ ladder_rmse_h4_w40     medium     DEFL                 2 0.989795 80
+ ladder_rmse_h4_w60     medium     DEFL                 2 0.966397 80
+ ladder_rmse_h4_w80     medium     DEFL                 2 0.807541 80
+ladder_rmsej_h4_w12     medium     DEFL                 2 0.915103 80
+ladder_rmsej_h4_w40     medium     DEFL                 2 0.812331 80
+ladder_rmsej_h4_w60     medium     DEFL                 2 0.843158 80
+ladder_rmsej_h4_w80     medium     DEFL                 2 0.775830 80
+              paper     medium     DEFL                 2 0.834183 80
+       paper_plugin     medium     DEFL                 2 0.833168 80
+    ladder_lsj1_all     medium     DEFL                 3 0.801477 80
+    ladder_lsj1_w12     medium     DEFL                 3 0.788423 80
+    ladder_lsj1_w40     medium     DEFL                 3 0.813398 80
+    ladder_lsj1_w60     medium     DEFL                 3 0.795468 80
+    ladder_lsj1_w80     medium     DEFL                 3 0.791921 80
+  ladder_lsj_h2_w12     medium     DEFL                 3 0.784725 80
+  ladder_lsj_h2_w60     medium     DEFL                 3 0.795506 80
+  ladder_lsj_h4_w12     medium     DEFL                 3 0.786515 80
+  ladder_lsj_h4_w40     medium     DEFL                 3 0.775505 80
+  ladder_lsj_h4_w60     medium     DEFL                 3 0.775479 80
+  ladder_lsj_h4_w80     medium     DEFL                 3 0.799968 80
+  ladder_lsj_h8_w12     medium     DEFL                 3 0.786905 80
+  ladder_lsj_h8_w60     medium     DEFL                 3 0.781323 80
+  ladder_lsm_h1_w12     medium     DEFL                 3 1.085318 80
+  ladder_lsm_h1_w60     medium     DEFL                 3 0.920919 80
+  ladder_lsm_h2_w12     medium     DEFL                 3 1.093747 80
+  ladder_lsm_h2_w60     medium     DEFL                 3 0.959871 80
+  ladder_lsm_h4_w12     medium     DEFL                 3 1.059579 80
+  ladder_lsm_h4_w40     medium     DEFL                 3 0.970940 80
+  ladder_lsm_h4_w60     medium     DEFL                 3 1.158637 80
+  ladder_lsm_h4_w80     medium     DEFL                 3 1.088811 80
+  ladder_lsm_h8_w12     medium     DEFL                 3 1.093533 80
+  ladder_lsm_h8_w60     medium     DEFL                 3 1.081585 80
+         ladder_mdd     medium     DEFL                 3 0.792789 80
+ ladder_rmse_h4_w12     medium     DEFL                 3 0.982943 80
+ ladder_rmse_h4_w40     medium     DEFL                 3 0.987320 80
+ ladder_rmse_h4_w60     medium     DEFL                 3 0.948877 80
+ ladder_rmse_h4_w80     medium     DEFL                 3 0.783661 80
+ladder_rmsej_h4_w12     medium     DEFL                 3 0.917013 80
+ladder_rmsej_h4_w40     medium     DEFL                 3 0.788882 80
+ladder_rmsej_h4_w60     medium     DEFL                 3 0.815797 80
+ladder_rmsej_h4_w80     medium     DEFL                 3 0.742641 80
+              paper     medium     DEFL                 3 0.794418 80
+       paper_plugin     medium     DEFL                 3 0.792789 80
+    ladder_lsj1_all     medium     DEFL                 4 0.775462 80
+    ladder_lsj1_w12     medium     DEFL                 4 0.758242 80
+    ladder_lsj1_w40     medium     DEFL                 4 0.788922 80
+    ladder_lsj1_w60     medium     DEFL                 4 0.765925 80
+    ladder_lsj1_w80     medium     DEFL                 4 0.760695 80
+  ladder_lsj_h2_w12     medium     DEFL                 4 0.755743 80
+  ladder_lsj_h2_w60     medium     DEFL                 4 0.763874 80
+  ladder_lsj_h4_w12     medium     DEFL                 4 0.764159 80
+  ladder_lsj_h4_w40     medium     DEFL                 4 0.753656 80
+  ladder_lsj_h4_w60     medium     DEFL                 4 0.749891 80
+  ladder_lsj_h4_w80     medium     DEFL                 4 0.774717 80
+  ladder_lsj_h8_w12     medium     DEFL                 4 0.770190 80
+  ladder_lsj_h8_w60     medium     DEFL                 4 0.757923 80
+  ladder_lsm_h1_w12     medium     DEFL                 4 1.082914 80
+  ladder_lsm_h1_w60     medium     DEFL                 4 0.893039 80
+  ladder_lsm_h2_w12     medium     DEFL                 4 1.087687 80
+  ladder_lsm_h2_w60     medium     DEFL                 4 0.946208 80
+  ladder_lsm_h4_w12     medium     DEFL                 4 1.058241 80
+  ladder_lsm_h4_w40     medium     DEFL                 4 0.988271 80
+  ladder_lsm_h4_w60     medium     DEFL                 4 1.152680 80
+  ladder_lsm_h4_w80     medium     DEFL                 4 1.075022 80
+  ladder_lsm_h8_w12     medium     DEFL                 4 1.099667 80
+  ladder_lsm_h8_w60     medium     DEFL                 4 1.099877 80
+         ladder_mdd     medium     DEFL                 4 0.765089 80
+ ladder_rmse_h4_w12     medium     DEFL                 4 0.974283 80
+ ladder_rmse_h4_w40     medium     DEFL                 4 0.967643 80
+ ladder_rmse_h4_w60     medium     DEFL                 4 0.942428 80
+ ladder_rmse_h4_w80     medium     DEFL                 4 0.770721 80
+ladder_rmsej_h4_w12     medium     DEFL                 4 0.908223 80
+ladder_rmsej_h4_w40     medium     DEFL                 4 0.766551 80
+ladder_rmsej_h4_w60     medium     DEFL                 4 0.784076 80
+ladder_rmsej_h4_w80     medium     DEFL                 4 0.712781 80
+              paper     medium     DEFL                 4 0.767518 80
+       paper_plugin     medium     DEFL                 4 0.765089 80
+    ladder_lsj1_all     medium     DEFL                 5 0.764247 80
+    ladder_lsj1_w12     medium     DEFL                 5 0.745490 80
+    ladder_lsj1_w40     medium     DEFL                 5 0.779094 80
+    ladder_lsj1_w60     medium     DEFL                 5 0.754423 80
+    ladder_lsj1_w80     medium     DEFL                 5 0.749587 80
+  ladder_lsj_h2_w12     medium     DEFL                 5 0.746053 80
+  ladder_lsj_h2_w60     medium     DEFL                 5 0.754327 80
+  ladder_lsj_h4_w12     medium     DEFL                 5 0.755589 80
+  ladder_lsj_h4_w40     medium     DEFL                 5 0.740746 80
+  ladder_lsj_h4_w60     medium     DEFL                 5 0.744763 80
+  ladder_lsj_h4_w80     medium     DEFL                 5 0.768593 80
+  ladder_lsj_h8_w12     medium     DEFL                 5 0.762550 80
+  ladder_lsj_h8_w60     medium     DEFL                 5 0.749875 80
+  ladder_lsm_h1_w12     medium     DEFL                 5 1.082415 80
+  ladder_lsm_h1_w60     medium     DEFL                 5 0.875896 80
+  ladder_lsm_h2_w12     medium     DEFL                 5 1.098841 80
+  ladder_lsm_h2_w60     medium     DEFL                 5 0.948590 80
+  ladder_lsm_h4_w12     medium     DEFL                 5 1.064578 80
+  ladder_lsm_h4_w40     medium     DEFL                 5 0.974973 80
+  ladder_lsm_h4_w60     medium     DEFL                 5 1.151374 80
+  ladder_lsm_h4_w80     medium     DEFL                 5 1.070324 80
+  ladder_lsm_h8_w12     medium     DEFL                 5 1.100295 80
+  ladder_lsm_h8_w60     medium     DEFL                 5 1.106662 80
+         ladder_mdd     medium     DEFL                 5 0.753277 80
+ ladder_rmse_h4_w12     medium     DEFL                 5 0.965773 80
+ ladder_rmse_h4_w40     medium     DEFL                 5 0.970514 80
+ ladder_rmse_h4_w60     medium     DEFL                 5 0.921081 80
+ ladder_rmse_h4_w80     medium     DEFL                 5 0.767031 80
+ladder_rmsej_h4_w12     medium     DEFL                 5 0.911638 80
+ladder_rmsej_h4_w40     medium     DEFL                 5 0.758944 80
+ladder_rmsej_h4_w60     medium     DEFL                 5 0.758852 80
+ladder_rmsej_h4_w80     medium     DEFL                 5 0.701073 80
+              paper     medium     DEFL                 5 0.756145 80
+       paper_plugin     medium     DEFL                 5 0.753277 80
+    ladder_lsj1_all     medium     DEFL                 6 0.776968 80
+    ladder_lsj1_w12     medium     DEFL                 6 0.748477 80
+    ladder_lsj1_w40     medium     DEFL                 6 0.789306 80
+    ladder_lsj1_w60     medium     DEFL                 6 0.762373 80
+    ladder_lsj1_w80     medium     DEFL                 6 0.759658 80
+  ladder_lsj_h2_w12     medium     DEFL                 6 0.761492 80
+  ladder_lsj_h2_w60     medium     DEFL                 6 0.763553 80
+  ladder_lsj_h4_w12     medium     DEFL                 6 0.771197 80
+  ladder_lsj_h4_w40     medium     DEFL                 6 0.750300 80
+  ladder_lsj_h4_w60     medium     DEFL                 6 0.757328 80
+  ladder_lsj_h4_w80     medium     DEFL                 6 0.781264 80
+  ladder_lsj_h8_w12     medium     DEFL                 6 0.778854 80
+  ladder_lsj_h8_w60     medium     DEFL                 6 0.750016 80
+  ladder_lsm_h1_w12     medium     DEFL                 6 1.067083 80
+  ladder_lsm_h1_w60     medium     DEFL                 6 0.860829 80
+  ladder_lsm_h2_w12     medium     DEFL                 6 1.096595 80
+  ladder_lsm_h2_w60     medium     DEFL                 6 0.972484 80
+  ladder_lsm_h4_w12     medium     DEFL                 6 1.066699 80
+  ladder_lsm_h4_w40     medium     DEFL                 6 0.988559 80
+  ladder_lsm_h4_w60     medium     DEFL                 6 1.160706 80
+  ladder_lsm_h4_w80     medium     DEFL                 6 1.067810 80
+  ladder_lsm_h8_w12     medium     DEFL                 6 1.107983 80
+  ladder_lsm_h8_w60     medium     DEFL                 6 1.122365 80
+         ladder_mdd     medium     DEFL                 6 0.767202 80
+ ladder_rmse_h4_w12     medium     DEFL                 6 0.979838 80
+ ladder_rmse_h4_w40     medium     DEFL                 6 0.984778 80
+ ladder_rmse_h4_w60     medium     DEFL                 6 0.930936 80
+ ladder_rmse_h4_w80     medium     DEFL                 6 0.778090 80
+ladder_rmsej_h4_w12     medium     DEFL                 6 0.917675 80
+ladder_rmsej_h4_w40     medium     DEFL                 6 0.760477 80
+ladder_rmsej_h4_w60     medium     DEFL                 6 0.751780 80
+ladder_rmsej_h4_w80     medium     DEFL                 6 0.709673 80
+              paper     medium     DEFL                 6 0.770308 80
+       paper_plugin     medium     DEFL                 6 0.767202 80
+    ladder_lsj1_all     medium     DEFL                 7 0.793926 80
+    ladder_lsj1_w12     medium     DEFL                 7 0.753980 80
+    ladder_lsj1_w40     medium     DEFL                 7 0.805417 80
+    ladder_lsj1_w60     medium     DEFL                 7 0.776709 80
+    ladder_lsj1_w80     medium     DEFL                 7 0.775318 80
+  ladder_lsj_h2_w12     medium     DEFL                 7 0.773308 80
+  ladder_lsj_h2_w60     medium     DEFL                 7 0.779224 80
+  ladder_lsj_h4_w12     medium     DEFL                 7 0.783979 80
+  ladder_lsj_h4_w40     medium     DEFL                 7 0.765096 80
+  ladder_lsj_h4_w60     medium     DEFL                 7 0.774870 80
+  ladder_lsj_h4_w80     medium     DEFL                 7 0.796667 80
+  ladder_lsj_h8_w12     medium     DEFL                 7 0.791988 80
+  ladder_lsj_h8_w60     medium     DEFL                 7 0.754398 80
+  ladder_lsm_h1_w12     medium     DEFL                 7 1.061168 80
+  ladder_lsm_h1_w60     medium     DEFL                 7 0.863396 80
+  ladder_lsm_h2_w12     medium     DEFL                 7 1.098286 80
+  ladder_lsm_h2_w60     medium     DEFL                 7 0.988931 80
+  ladder_lsm_h4_w12     medium     DEFL                 7 1.078275 80
+  ladder_lsm_h4_w40     medium     DEFL                 7 0.992848 80
+  ladder_lsm_h4_w60     medium     DEFL                 7 1.167529 80
+  ladder_lsm_h4_w80     medium     DEFL                 7 1.075416 80
+  ladder_lsm_h8_w12     medium     DEFL                 7 1.115307 80
+  ladder_lsm_h8_w60     medium     DEFL                 7 1.133056 80
+         ladder_mdd     medium     DEFL                 7 0.785308 80
+ ladder_rmse_h4_w12     medium     DEFL                 7 0.992020 80
+ ladder_rmse_h4_w40     medium     DEFL                 7 0.997277 80
+ ladder_rmse_h4_w60     medium     DEFL                 7 0.942918 80
+ ladder_rmse_h4_w80     medium     DEFL                 7 0.795420 80
+ladder_rmsej_h4_w12     medium     DEFL                 7 0.925224 80
+ladder_rmsej_h4_w40     medium     DEFL                 7 0.769119 80
+ladder_rmsej_h4_w60     medium     DEFL                 7 0.756134 80
+ladder_rmsej_h4_w80     medium     DEFL                 7 0.729207 80
+              paper     medium     DEFL                 7 0.788667 80
+       paper_plugin     medium     DEFL                 7 0.785308 80
+    ladder_lsj1_all     medium     DEFL                 8 0.819212 80
+    ladder_lsj1_w12     medium     DEFL                 8 0.773753 80
+    ladder_lsj1_w40     medium     DEFL                 8 0.832350 80
+    ladder_lsj1_w60     medium     DEFL                 8 0.800781 80
+    ladder_lsj1_w80     medium     DEFL                 8 0.801305 80
+  ladder_lsj_h2_w12     medium     DEFL                 8 0.791376 80
+  ladder_lsj_h2_w60     medium     DEFL                 8 0.803743 80
+  ladder_lsj_h4_w12     medium     DEFL                 8 0.805128 80
+  ladder_lsj_h4_w40     medium     DEFL                 8 0.790549 80
+  ladder_lsj_h4_w60     medium     DEFL                 8 0.800353 80
+  ladder_lsj_h4_w80     medium     DEFL                 8 0.821082 80
+  ladder_lsj_h8_w12     medium     DEFL                 8 0.812014 80
+  ladder_lsj_h8_w60     medium     DEFL                 8 0.765060 80
+  ladder_lsm_h1_w12     medium     DEFL                 8 1.053314 80
+  ladder_lsm_h1_w60     medium     DEFL                 8 0.870622 80
+  ladder_lsm_h2_w12     medium     DEFL                 8 1.095339 80
+  ladder_lsm_h2_w60     medium     DEFL                 8 1.014808 80
+  ladder_lsm_h4_w12     medium     DEFL                 8 1.106536 80
+  ladder_lsm_h4_w40     medium     DEFL                 8 1.006069 80
+  ladder_lsm_h4_w60     medium     DEFL                 8 1.174626 80
+  ladder_lsm_h4_w80     medium     DEFL                 8 1.083832 80
+  ladder_lsm_h8_w12     medium     DEFL                 8 1.122044 80
+  ladder_lsm_h8_w60     medium     DEFL                 8 1.137012 80
+         ladder_mdd     medium     DEFL                 8 0.811587 80
+ ladder_rmse_h4_w12     medium     DEFL                 8 1.018379 80
+ ladder_rmse_h4_w40     medium     DEFL                 8 1.018737 80
+ ladder_rmse_h4_w60     medium     DEFL                 8 0.960174 80
+ ladder_rmse_h4_w80     medium     DEFL                 8 0.819635 80
+ladder_rmsej_h4_w12     medium     DEFL                 8 0.938300 80
+ladder_rmsej_h4_w40     medium     DEFL                 8 0.789533 80
+ladder_rmsej_h4_w60     medium     DEFL                 8 0.765239 80
+ladder_rmsej_h4_w80     medium     DEFL                 8 0.754555 80
+              paper     medium     DEFL                 8 0.814895 80
+       paper_plugin     medium     DEFL                 8 0.811587 80
+    ladder_lsj1_all     medium      FFR                 1 0.387440 80
+    ladder_lsj1_w12     medium      FFR                 1 0.390151 80
+    ladder_lsj1_w40     medium      FFR                 1 0.412507 80
+    ladder_lsj1_w60     medium      FFR                 1 0.399830 80
+    ladder_lsj1_w80     medium      FFR                 1 0.405732 80
+  ladder_lsj_h2_w12     medium      FFR                 1 0.406530 80
+  ladder_lsj_h2_w60     medium      FFR                 1 0.401722 80
+  ladder_lsj_h4_w12     medium      FFR                 1 0.409030 80
+  ladder_lsj_h4_w40     medium      FFR                 1 0.396825 80
+  ladder_lsj_h4_w60     medium      FFR                 1 0.414713 80
+  ladder_lsj_h4_w80     medium      FFR                 1 0.408309 80
+  ladder_lsj_h8_w12     medium      FFR                 1 0.407372 80
+  ladder_lsj_h8_w60     medium      FFR                 1 0.418730 80
+  ladder_lsm_h1_w12     medium      FFR                 1 0.434585 80
+  ladder_lsm_h1_w60     medium      FFR                 1 0.426691 80
+  ladder_lsm_h2_w12     medium      FFR                 1 0.388212 80
+  ladder_lsm_h2_w60     medium      FFR                 1 0.392050 80
+  ladder_lsm_h4_w12     medium      FFR                 1 0.407384 80
+  ladder_lsm_h4_w40     medium      FFR                 1 0.409484 80
+  ladder_lsm_h4_w60     medium      FFR                 1 0.419321 80
+  ladder_lsm_h4_w80     medium      FFR                 1 0.378060 80
+  ladder_lsm_h8_w12     medium      FFR                 1 0.451392 80
+  ladder_lsm_h8_w60     medium      FFR                 1 0.418208 80
+         ladder_mdd     medium      FFR                 1 0.387057 80
+ ladder_rmse_h4_w12     medium      FFR                 1 0.375626 80
+ ladder_rmse_h4_w40     medium      FFR                 1 0.369562 80
+ ladder_rmse_h4_w60     medium      FFR                 1 0.384474 80
+ ladder_rmse_h4_w80     medium      FFR                 1 0.362238 80
+ladder_rmsej_h4_w12     medium      FFR                 1 0.387203 80
+ladder_rmsej_h4_w40     medium      FFR                 1 0.393563 80
+ladder_rmsej_h4_w60     medium      FFR                 1 0.358097 80
+ladder_rmsej_h4_w80     medium      FFR                 1 0.372192 80
+              paper     medium      FFR                 1 0.386981 80
+       paper_plugin     medium      FFR                 1 0.387057 80
+    ladder_lsj1_all     medium      FFR                 2 0.724766 80
+    ladder_lsj1_w12     medium      FFR                 2 0.771408 80
+    ladder_lsj1_w40     medium      FFR                 2 0.789163 80
+    ladder_lsj1_w60     medium      FFR                 2 0.766401 80
+    ladder_lsj1_w80     medium      FFR                 2 0.765011 80
+  ladder_lsj_h2_w12     medium      FFR                 2 0.801117 80
+  ladder_lsj_h2_w60     medium      FFR                 2 0.768783 80
+  ladder_lsj_h4_w12     medium      FFR                 2 0.799756 80
+  ladder_lsj_h4_w40     medium      FFR                 2 0.749705 80
+  ladder_lsj_h4_w60     medium      FFR                 2 0.770846 80
+  ladder_lsj_h4_w80     medium      FFR                 2 0.783003 80
+  ladder_lsj_h8_w12     medium      FFR                 2 0.777003 80
+  ladder_lsj_h8_w60     medium      FFR                 2 0.751471 80
+  ladder_lsm_h1_w12     medium      FFR                 2 0.829385 80
+  ladder_lsm_h1_w60     medium      FFR                 2 0.819949 80
+  ladder_lsm_h2_w12     medium      FFR                 2 0.759709 80
+  ladder_lsm_h2_w60     medium      FFR                 2 0.751674 80
+  ladder_lsm_h4_w12     medium      FFR                 2 0.782389 80
+  ladder_lsm_h4_w40     medium      FFR                 2 0.761527 80
+  ladder_lsm_h4_w60     medium      FFR                 2 0.766552 80
+  ladder_lsm_h4_w80     medium      FFR                 2 0.726681 80
+  ladder_lsm_h8_w12     medium      FFR                 2 0.827764 80
+  ladder_lsm_h8_w60     medium      FFR                 2 0.773956 80
+         ladder_mdd     medium      FFR                 2 0.735274 80
+ ladder_rmse_h4_w12     medium      FFR                 2 0.739364 80
+ ladder_rmse_h4_w40     medium      FFR                 2 0.716877 80
+ ladder_rmse_h4_w60     medium      FFR                 2 0.728496 80
+ ladder_rmse_h4_w80     medium      FFR                 2 0.697827 80
+ladder_rmsej_h4_w12     medium      FFR                 2 0.747142 80
+ladder_rmsej_h4_w40     medium      FFR                 2 0.747099 80
+ladder_rmsej_h4_w60     medium      FFR                 2 0.669764 80
+ladder_rmsej_h4_w80     medium      FFR                 2 0.710266 80
+              paper     medium      FFR                 2 0.735960 80
+       paper_plugin     medium      FFR                 2 0.735274 80
+    ladder_lsj1_all     medium      FFR                 3 1.042400 80
+    ladder_lsj1_w12     medium      FFR                 3 1.089336 80
+    ladder_lsj1_w40     medium      FFR                 3 1.116554 80
+    ladder_lsj1_w60     medium      FFR                 3 1.078309 80
+    ladder_lsj1_w80     medium      FFR                 3 1.080270 80
+  ladder_lsj_h2_w12     medium      FFR                 3 1.137749 80
+  ladder_lsj_h2_w60     medium      FFR                 3 1.101989 80
+  ladder_lsj_h4_w12     medium      FFR                 3 1.124086 80
+  ladder_lsj_h4_w40     medium      FFR                 3 1.072332 80
+  ladder_lsj_h4_w60     medium      FFR                 3 1.099083 80
+  ladder_lsj_h4_w80     medium      FFR                 3 1.121402 80
+  ladder_lsj_h8_w12     medium      FFR                 3 1.112761 80
+  ladder_lsj_h8_w60     medium      FFR                 3 1.045753 80
+  ladder_lsm_h1_w12     medium      FFR                 3 1.148500 80
+  ladder_lsm_h1_w60     medium      FFR                 3 1.109973 80
+  ladder_lsm_h2_w12     medium      FFR                 3 1.100861 80
+  ladder_lsm_h2_w60     medium      FFR                 3 1.082398 80
+  ladder_lsm_h4_w12     medium      FFR                 3 1.129026 80
+  ladder_lsm_h4_w40     medium      FFR                 3 1.102086 80
+  ladder_lsm_h4_w60     medium      FFR                 3 1.105322 80
+  ladder_lsm_h4_w80     medium      FFR                 3 1.086234 80
+  ladder_lsm_h8_w12     medium      FFR                 3 1.147516 80
+  ladder_lsm_h8_w60     medium      FFR                 3 1.115898 80
+         ladder_mdd     medium      FFR                 3 1.047173 80
+ ladder_rmse_h4_w12     medium      FFR                 3 1.048806 80
+ ladder_rmse_h4_w40     medium      FFR                 3 1.045119 80
+ ladder_rmse_h4_w60     medium      FFR                 3 1.074546 80
+ ladder_rmse_h4_w80     medium      FFR                 3 1.051253 80
+ladder_rmsej_h4_w12     medium      FFR                 3 1.092052 80
+ladder_rmsej_h4_w40     medium      FFR                 3 1.082640 80
+ladder_rmsej_h4_w60     medium      FFR                 3 0.992038 80
+ladder_rmsej_h4_w80     medium      FFR                 3 1.046996 80
+              paper     medium      FFR                 3 1.054195 80
+       paper_plugin     medium      FFR                 3 1.047173 80
+    ladder_lsj1_all     medium      FFR                 4 1.312247 80
+    ladder_lsj1_w12     medium      FFR                 4 1.340080 80
+    ladder_lsj1_w40     medium      FFR                 4 1.391897 80
+    ladder_lsj1_w60     medium      FFR                 4 1.340174 80
+    ladder_lsj1_w80     medium      FFR                 4 1.358394 80
+  ladder_lsj_h2_w12     medium      FFR                 4 1.417341 80
+  ladder_lsj_h2_w60     medium      FFR                 4 1.382828 80
+  ladder_lsj_h4_w12     medium      FFR                 4 1.418710 80
+  ladder_lsj_h4_w40     medium      FFR                 4 1.341775 80
+  ladder_lsj_h4_w60     medium      FFR                 4 1.377500 80
+  ladder_lsj_h4_w80     medium      FFR                 4 1.416814 80
+  ladder_lsj_h8_w12     medium      FFR                 4 1.408397 80
+  ladder_lsj_h8_w60     medium      FFR                 4 1.307711 80
+  ladder_lsm_h1_w12     medium      FFR                 4 1.426406 80
+  ladder_lsm_h1_w60     medium      FFR                 4 1.381533 80
+  ladder_lsm_h2_w12     medium      FFR                 4 1.410176 80
+  ladder_lsm_h2_w60     medium      FFR                 4 1.379201 80
+  ladder_lsm_h4_w12     medium      FFR                 4 1.451703 80
+  ladder_lsm_h4_w40     medium      FFR                 4 1.411065 80
+  ladder_lsm_h4_w60     medium      FFR                 4 1.415600 80
+  ladder_lsm_h4_w80     medium      FFR                 4 1.420574 80
+  ladder_lsm_h8_w12     medium      FFR                 4 1.438728 80
+  ladder_lsm_h8_w60     medium      FFR                 4 1.419834 80
+         ladder_mdd     medium      FFR                 4 1.314216 80
+ ladder_rmse_h4_w12     medium      FFR                 4 1.345260 80
+ ladder_rmse_h4_w40     medium      FFR                 4 1.350401 80
+ ladder_rmse_h4_w60     medium      FFR                 4 1.383290 80
+ ladder_rmse_h4_w80     medium      FFR                 4 1.386151 80
+ladder_rmsej_h4_w12     medium      FFR                 4 1.403319 80
+ladder_rmsej_h4_w40     medium      FFR                 4 1.381639 80
+ladder_rmsej_h4_w60     medium      FFR                 4 1.292226 80
+ladder_rmsej_h4_w80     medium      FFR                 4 1.348645 80
+              paper     medium      FFR                 4 1.330361 80
+       paper_plugin     medium      FFR                 4 1.314216 80
+    ladder_lsj1_all     medium      FFR                 5 1.550993 80
+    ladder_lsj1_w12     medium      FFR                 5 1.553941 80
+    ladder_lsj1_w40     medium      FFR                 5 1.634288 80
+    ladder_lsj1_w60     medium      FFR                 5 1.583472 80
+    ladder_lsj1_w80     medium      FFR                 5 1.614419 80
+  ladder_lsj_h2_w12     medium      FFR                 5 1.670219 80
+  ladder_lsj_h2_w60     medium      FFR                 5 1.633790 80
+  ladder_lsj_h4_w12     medium      FFR                 5 1.680006 80
+  ladder_lsj_h4_w40     medium      FFR                 5 1.585827 80
+  ladder_lsj_h4_w60     medium      FFR                 5 1.622103 80
+  ladder_lsj_h4_w80     medium      FFR                 5 1.673285 80
+  ladder_lsj_h8_w12     medium      FFR                 5 1.681809 80
+  ladder_lsj_h8_w60     medium      FFR                 5 1.545296 80
+  ladder_lsm_h1_w12     medium      FFR                 5 1.681198 80
+  ladder_lsm_h1_w60     medium      FFR                 5 1.657437 80
+  ladder_lsm_h2_w12     medium      FFR                 5 1.694378 80
+  ladder_lsm_h2_w60     medium      FFR                 5 1.666794 80
+  ladder_lsm_h4_w12     medium      FFR                 5 1.734036 80
+  ladder_lsm_h4_w40     medium      FFR                 5 1.687248 80
+  ladder_lsm_h4_w60     medium      FFR                 5 1.687673 80
+  ladder_lsm_h4_w80     medium      FFR                 5 1.721666 80
+  ladder_lsm_h8_w12     medium      FFR                 5 1.719705 80
+  ladder_lsm_h8_w60     medium      FFR                 5 1.685238 80
+         ladder_mdd     medium      FFR                 5 1.556488 80
+ ladder_rmse_h4_w12     medium      FFR                 5 1.620457 80
+ ladder_rmse_h4_w40     medium      FFR                 5 1.637649 80
+ ladder_rmse_h4_w60     medium      FFR                 5 1.656091 80
+ ladder_rmse_h4_w80     medium      FFR                 5 1.689585 80
+ladder_rmsej_h4_w12     medium      FFR                 5 1.685274 80
+ladder_rmsej_h4_w40     medium      FFR                 5 1.661751 80
+ladder_rmsej_h4_w60     medium      FFR                 5 1.558478 80
+ladder_rmsej_h4_w80     medium      FFR                 5 1.618322 80
+              paper     medium      FFR                 5 1.578154 80
+       paper_plugin     medium      FFR                 5 1.556488 80
+    ladder_lsj1_all     medium      FFR                 6 1.776163 80
+    ladder_lsj1_w12     medium      FFR                 6 1.770994 80
+    ladder_lsj1_w40     medium      FFR                 6 1.870611 80
+    ladder_lsj1_w60     medium      FFR                 6 1.814246 80
+    ladder_lsj1_w80     medium      FFR                 6 1.844880 80
+  ladder_lsj_h2_w12     medium      FFR                 6 1.909957 80
+  ladder_lsj_h2_w60     medium      FFR                 6 1.861660 80
+  ladder_lsj_h4_w12     medium      FFR                 6 1.922236 80
+  ladder_lsj_h4_w40     medium      FFR                 6 1.811555 80
+  ladder_lsj_h4_w60     medium      FFR                 6 1.849291 80
+  ladder_lsj_h4_w80     medium      FFR                 6 1.903819 80
+  ladder_lsj_h8_w12     medium      FFR                 6 1.930178 80
+  ladder_lsj_h8_w60     medium      FFR                 6 1.758371 80
+  ladder_lsm_h1_w12     medium      FFR                 6 1.920821 80
+  ladder_lsm_h1_w60     medium      FFR                 6 1.906616 80
+  ladder_lsm_h2_w12     medium      FFR                 6 1.955352 80
+  ladder_lsm_h2_w60     medium      FFR                 6 1.918421 80
+  ladder_lsm_h4_w12     medium      FFR                 6 1.993436 80
+  ladder_lsm_h4_w40     medium      FFR                 6 1.931013 80
+  ladder_lsm_h4_w60     medium      FFR                 6 1.925298 80
+  ladder_lsm_h4_w80     medium      FFR                 6 1.985108 80
+  ladder_lsm_h8_w12     medium      FFR                 6 1.969084 80
+  ladder_lsm_h8_w60     medium      FFR                 6 1.913212 80
+         ladder_mdd     medium      FFR                 6 1.785702 80
+ ladder_rmse_h4_w12     medium      FFR                 6 1.872646 80
+ ladder_rmse_h4_w40     medium      FFR                 6 1.890552 80
+ ladder_rmse_h4_w60     medium      FFR                 6 1.899528 80
+ ladder_rmse_h4_w80     medium      FFR                 6 1.961593 80
+ladder_rmsej_h4_w12     medium      FFR                 6 1.932536 80
+ladder_rmsej_h4_w40     medium      FFR                 6 1.920822 80
+ladder_rmsej_h4_w60     medium      FFR                 6 1.798124 80
+ladder_rmsej_h4_w80     medium      FFR                 6 1.862331 80
+              paper     medium      FFR                 6 1.814136 80
+       paper_plugin     medium      FFR                 6 1.785702 80
+    ladder_lsj1_all     medium      FFR                 7 1.979720 80
+    ladder_lsj1_w12     medium      FFR                 7 1.973519 80
+    ladder_lsj1_w40     medium      FFR                 7 2.088931 80
+    ladder_lsj1_w60     medium      FFR                 7 2.022147 80
+    ladder_lsj1_w80     medium      FFR                 7 2.054353 80
+  ladder_lsj_h2_w12     medium      FFR                 7 2.120573 80
+  ladder_lsj_h2_w60     medium      FFR                 7 2.066501 80
+  ladder_lsj_h4_w12     medium      FFR                 7 2.134225 80
+  ladder_lsj_h4_w40     medium      FFR                 7 2.021024 80
+  ladder_lsj_h4_w60     medium      FFR                 7 2.055895 80
+  ladder_lsj_h4_w80     medium      FFR                 7 2.111396 80
+  ladder_lsj_h8_w12     medium      FFR                 7 2.145776 80
+  ladder_lsj_h8_w60     medium      FFR                 7 1.951895 80
+  ladder_lsm_h1_w12     medium      FFR                 7 2.138614 80
+  ladder_lsm_h1_w60     medium      FFR                 7 2.108982 80
+  ladder_lsm_h2_w12     medium      FFR                 7 2.177743 80
+  ladder_lsm_h2_w60     medium      FFR                 7 2.117771 80
+  ladder_lsm_h4_w12     medium      FFR                 7 2.218239 80
+  ladder_lsm_h4_w40     medium      FFR                 7 2.136814 80
+  ladder_lsm_h4_w60     medium      FFR                 7 2.126702 80
+  ladder_lsm_h4_w80     medium      FFR                 7 2.213114 80
+  ladder_lsm_h8_w12     medium      FFR                 7 2.174880 80
+  ladder_lsm_h8_w60     medium      FFR                 7 2.104163 80
+         ladder_mdd     medium      FFR                 7 1.992068 80
+ ladder_rmse_h4_w12     medium      FFR                 7 2.088351 80
+ ladder_rmse_h4_w40     medium      FFR                 7 2.104556 80
+ ladder_rmse_h4_w60     medium      FFR                 7 2.101215 80
+ ladder_rmse_h4_w80     medium      FFR                 7 2.193850 80
+ladder_rmsej_h4_w12     medium      FFR                 7 2.143570 80
+ladder_rmsej_h4_w40     medium      FFR                 7 2.139494 80
+ladder_rmsej_h4_w60     medium      FFR                 7 1.996375 80
+ladder_rmsej_h4_w80     medium      FFR                 7 2.077309 80
+              paper     medium      FFR                 7 2.023106 80
+       paper_plugin     medium      FFR                 7 1.992068 80
+    ladder_lsj1_all     medium      FFR                 8 2.152735 80
+    ladder_lsj1_w12     medium      FFR                 8 2.144257 80
+    ladder_lsj1_w40     medium      FFR                 8 2.265882 80
+    ladder_lsj1_w60     medium      FFR                 8 2.187222 80
+    ladder_lsj1_w80     medium      FFR                 8 2.224996 80
+  ladder_lsj_h2_w12     medium      FFR                 8 2.292837 80
+  ladder_lsj_h2_w60     medium      FFR                 8 2.232850 80
+  ladder_lsj_h4_w12     medium      FFR                 8 2.305592 80
+  ladder_lsj_h4_w40     medium      FFR                 8 2.193370 80
+  ladder_lsj_h4_w60     medium      FFR                 8 2.223382 80
+  ladder_lsj_h4_w80     medium      FFR                 8 2.283613 80
+  ladder_lsj_h8_w12     medium      FFR                 8 2.327660 80
+  ladder_lsj_h8_w60     medium      FFR                 8 2.111886 80
+  ladder_lsm_h1_w12     medium      FFR                 8 2.320723 80
+  ladder_lsm_h1_w60     medium      FFR                 8 2.270354 80
+  ladder_lsm_h2_w12     medium      FFR                 8 2.356554 80
+  ladder_lsm_h2_w60     medium      FFR                 8 2.284250 80
+  ladder_lsm_h4_w12     medium      FFR                 8 2.403472 80
+  ladder_lsm_h4_w40     medium      FFR                 8 2.311322 80
+  ladder_lsm_h4_w60     medium      FFR                 8 2.296309 80
+  ladder_lsm_h4_w80     medium      FFR                 8 2.403665 80
+  ladder_lsm_h8_w12     medium      FFR                 8 2.350598 80
+  ladder_lsm_h8_w60     medium      FFR                 8 2.262601 80
+         ladder_mdd     medium      FFR                 8 2.169742 80
+ ladder_rmse_h4_w12     medium      FFR                 8 2.286392 80
+ ladder_rmse_h4_w40     medium      FFR                 8 2.283622 80
+ ladder_rmse_h4_w60     medium      FFR                 8 2.271178 80
+ ladder_rmse_h4_w80     medium      FFR                 8 2.389321 80
+ladder_rmsej_h4_w12     medium      FFR                 8 2.318968 80
+ladder_rmsej_h4_w40     medium      FFR                 8 2.319427 80
+ladder_rmsej_h4_w60     medium      FFR                 8 2.156416 80
+ladder_rmsej_h4_w80     medium      FFR                 8 2.259080 80
+              paper     medium      FFR                 8 2.200062 80
+       paper_plugin     medium      FFR                 8 2.169742 80
+    ladder_lsj1_all     medium      GDP                 1 2.211339 80
+    ladder_lsj1_w12     medium      GDP                 1 2.193913 80
+    ladder_lsj1_w40     medium      GDP                 1 2.213433 80
+    ladder_lsj1_w60     medium      GDP                 1 2.218192 80
+    ladder_lsj1_w80     medium      GDP                 1 2.229179 80
+  ladder_lsj_h2_w12     medium      GDP                 1 2.200495 80
+  ladder_lsj_h2_w60     medium      GDP                 1 2.155554 80
+  ladder_lsj_h4_w12     medium      GDP                 1 2.278531 80
+  ladder_lsj_h4_w40     medium      GDP                 1 2.361645 80
+  ladder_lsj_h4_w60     medium      GDP                 1 2.418229 80
+  ladder_lsj_h4_w80     medium      GDP                 1 2.193578 80
+  ladder_lsj_h8_w12     medium      GDP                 1 2.358170 80
+  ladder_lsj_h8_w60     medium      GDP                 1 2.411038 80
+  ladder_lsm_h1_w12     medium      GDP                 1 2.161246 80
+  ladder_lsm_h1_w60     medium      GDP                 1 2.254338 80
+  ladder_lsm_h2_w12     medium      GDP                 1 2.235341 80
+  ladder_lsm_h2_w60     medium      GDP                 1 2.341857 80
+  ladder_lsm_h4_w12     medium      GDP                 1 2.639675 80
+  ladder_lsm_h4_w40     medium      GDP                 1 2.610840 80
+  ladder_lsm_h4_w60     medium      GDP                 1 2.651820 80
+  ladder_lsm_h4_w80     medium      GDP                 1 2.582142 80
+  ladder_lsm_h8_w12     medium      GDP                 1 2.701423 80
+  ladder_lsm_h8_w60     medium      GDP                 1 2.638896 80
+         ladder_mdd     medium      GDP                 1 2.271911 80
+ ladder_rmse_h4_w12     medium      GDP                 1 2.333892 80
+ ladder_rmse_h4_w40     medium      GDP                 1 2.462755 80
+ ladder_rmse_h4_w60     medium      GDP                 1 2.420981 80
+ ladder_rmse_h4_w80     medium      GDP                 1 2.437951 80
+ladder_rmsej_h4_w12     medium      GDP                 1 2.390460 80
+ladder_rmsej_h4_w40     medium      GDP                 1 2.438339 80
+ladder_rmsej_h4_w60     medium      GDP                 1 2.408652 80
+ladder_rmsej_h4_w80     medium      GDP                 1 2.412991 80
+              paper     medium      GDP                 1 2.280307 80
+       paper_plugin     medium      GDP                 1 2.271911 80
+    ladder_lsj1_all     medium      GDP                 2 2.121056 80
+    ladder_lsj1_w12     medium      GDP                 2 2.155451 80
+    ladder_lsj1_w40     medium      GDP                 2 2.144264 80
+    ladder_lsj1_w60     medium      GDP                 2 2.098542 80
+    ladder_lsj1_w80     medium      GDP                 2 2.131561 80
+  ladder_lsj_h2_w12     medium      GDP                 2 2.084194 80
+  ladder_lsj_h2_w60     medium      GDP                 2 2.051113 80
+  ladder_lsj_h4_w12     medium      GDP                 2 2.146340 80
+  ladder_lsj_h4_w40     medium      GDP                 2 2.263830 80
+  ladder_lsj_h4_w60     medium      GDP                 2 2.280077 80
+  ladder_lsj_h4_w80     medium      GDP                 2 2.084106 80
+  ladder_lsj_h8_w12     medium      GDP                 2 2.249962 80
+  ladder_lsj_h8_w60     medium      GDP                 2 2.296476 80
+  ladder_lsm_h1_w12     medium      GDP                 2 2.139309 80
+  ladder_lsm_h1_w60     medium      GDP                 2 2.193424 80
+  ladder_lsm_h2_w12     medium      GDP                 2 2.162955 80
+  ladder_lsm_h2_w60     medium      GDP                 2 2.236104 80
+  ladder_lsm_h4_w12     medium      GDP                 2 2.477812 80
+  ladder_lsm_h4_w40     medium      GDP                 2 2.348821 80
+  ladder_lsm_h4_w60     medium      GDP                 2 2.355788 80
+  ladder_lsm_h4_w80     medium      GDP                 2 2.343753 80
+  ladder_lsm_h8_w12     medium      GDP                 2 2.445375 80
+  ladder_lsm_h8_w60     medium      GDP                 2 2.331138 80
+         ladder_mdd     medium      GDP                 2 2.182599 80
+ ladder_rmse_h4_w12     medium      GDP                 2 2.162204 80
+ ladder_rmse_h4_w40     medium      GDP                 2 2.287920 80
+ ladder_rmse_h4_w60     medium      GDP                 2 2.236896 80
+ ladder_rmse_h4_w80     medium      GDP                 2 2.188228 80
+ladder_rmsej_h4_w12     medium      GDP                 2 2.190135 80
+ladder_rmsej_h4_w40     medium      GDP                 2 2.237593 80
+ladder_rmsej_h4_w60     medium      GDP                 2 2.205746 80
+ladder_rmsej_h4_w80     medium      GDP                 2 2.199425 80
+              paper     medium      GDP                 2 2.187000 80
+       paper_plugin     medium      GDP                 2 2.182599 80
+    ladder_lsj1_all     medium      GDP                 3 2.713808 80
+    ladder_lsj1_w12     medium      GDP                 3 2.697972 80
+    ladder_lsj1_w40     medium      GDP                 3 2.717739 80
+    ladder_lsj1_w60     medium      GDP                 3 2.621781 80
+    ladder_lsj1_w80     medium      GDP                 3 2.685539 80
+  ladder_lsj_h2_w12     medium      GDP                 3 2.644869 80
+  ladder_lsj_h2_w60     medium      GDP                 3 2.640792 80
+  ladder_lsj_h4_w12     medium      GDP                 3 2.657727 80
+  ladder_lsj_h4_w40     medium      GDP                 3 2.784295 80
+  ladder_lsj_h4_w60     medium      GDP                 3 2.777042 80
+  ladder_lsj_h4_w80     medium      GDP                 3 2.657130 80
+  ladder_lsj_h8_w12     medium      GDP                 3 2.726291 80
+  ladder_lsj_h8_w60     medium      GDP                 3 2.816325 80
+  ladder_lsm_h1_w12     medium      GDP                 3 2.755122 80
+  ladder_lsm_h1_w60     medium      GDP                 3 2.765874 80
+  ladder_lsm_h2_w12     medium      GDP                 3 2.767535 80
+  ladder_lsm_h2_w60     medium      GDP                 3 2.759949 80
+  ladder_lsm_h4_w12     medium      GDP                 3 2.885339 80
+  ladder_lsm_h4_w40     medium      GDP                 3 2.742957 80
+  ladder_lsm_h4_w60     medium      GDP                 3 2.761834 80
+  ladder_lsm_h4_w80     medium      GDP                 3 2.753879 80
+  ladder_lsm_h8_w12     medium      GDP                 3 2.840748 80
+  ladder_lsm_h8_w60     medium      GDP                 3 2.729052 80
+         ladder_mdd     medium      GDP                 3 2.753834 80
+ ladder_rmse_h4_w12     medium      GDP                 3 2.721997 80
+ ladder_rmse_h4_w40     medium      GDP                 3 2.758307 80
+ ladder_rmse_h4_w60     medium      GDP                 3 2.712319 80
+ ladder_rmse_h4_w80     medium      GDP                 3 2.665396 80
+ladder_rmsej_h4_w12     medium      GDP                 3 2.721371 80
+ladder_rmsej_h4_w40     medium      GDP                 3 2.719254 80
+ladder_rmsej_h4_w60     medium      GDP                 3 2.689471 80
+ladder_rmsej_h4_w80     medium      GDP                 3 2.672002 80
+              paper     medium      GDP                 3 2.759263 80
+       paper_plugin     medium      GDP                 3 2.753834 80
+    ladder_lsj1_all     medium      GDP                 4 2.420665 80
+    ladder_lsj1_w12     medium      GDP                 4 2.388666 80
+    ladder_lsj1_w40     medium      GDP                 4 2.401046 80
+    ladder_lsj1_w60     medium      GDP                 4 2.341694 80
+    ladder_lsj1_w80     medium      GDP                 4 2.365117 80
+  ladder_lsj_h2_w12     medium      GDP                 4 2.323058 80
+  ladder_lsj_h2_w60     medium      GDP                 4 2.328621 80
+  ladder_lsj_h4_w12     medium      GDP                 4 2.309378 80
+  ladder_lsj_h4_w40     medium      GDP                 4 2.441675 80
+  ladder_lsj_h4_w60     medium      GDP                 4 2.449955 80
+  ladder_lsj_h4_w80     medium      GDP                 4 2.341158 80
+  ladder_lsj_h8_w12     medium      GDP                 4 2.372592 80
+  ladder_lsj_h8_w60     medium      GDP                 4 2.496233 80
+  ladder_lsm_h1_w12     medium      GDP                 4 2.457053 80
+  ladder_lsm_h1_w60     medium      GDP                 4 2.478690 80
+  ladder_lsm_h2_w12     medium      GDP                 4 2.520227 80
+  ladder_lsm_h2_w60     medium      GDP                 4 2.445210 80
+  ladder_lsm_h4_w12     medium      GDP                 4 2.591146 80
+  ladder_lsm_h4_w40     medium      GDP                 4 2.393767 80
+  ladder_lsm_h4_w60     medium      GDP                 4 2.403374 80
+  ladder_lsm_h4_w80     medium      GDP                 4 2.427320 80
+  ladder_lsm_h8_w12     medium      GDP                 4 2.504737 80
+  ladder_lsm_h8_w60     medium      GDP                 4 2.333240 80
+         ladder_mdd     medium      GDP                 4 2.453482 80
+ ladder_rmse_h4_w12     medium      GDP                 4 2.461951 80
+ ladder_rmse_h4_w40     medium      GDP                 4 2.436468 80
+ ladder_rmse_h4_w60     medium      GDP                 4 2.371175 80
+ ladder_rmse_h4_w80     medium      GDP                 4 2.329135 80
+ladder_rmsej_h4_w12     medium      GDP                 4 2.447998 80
+ladder_rmsej_h4_w40     medium      GDP                 4 2.385954 80
+ladder_rmsej_h4_w60     medium      GDP                 4 2.357681 80
+ladder_rmsej_h4_w80     medium      GDP                 4 2.324557 80
+              paper     medium      GDP                 4 2.457981 80
+       paper_plugin     medium      GDP                 4 2.453482 80
+    ladder_lsj1_all     medium      GDP                 5 2.204830 80
+    ladder_lsj1_w12     medium      GDP                 5 2.147259 80
+    ladder_lsj1_w40     medium      GDP                 5 2.135186 80
+    ladder_lsj1_w60     medium      GDP                 5 2.096203 80
+    ladder_lsj1_w80     medium      GDP                 5 2.110384 80
+  ladder_lsj_h2_w12     medium      GDP                 5 2.076601 80
+  ladder_lsj_h2_w60     medium      GDP                 5 2.076499 80
+  ladder_lsj_h4_w12     medium      GDP                 5 2.071654 80
+  ladder_lsj_h4_w40     medium      GDP                 5 2.213934 80
+  ladder_lsj_h4_w60     medium      GDP                 5 2.178919 80
+  ladder_lsj_h4_w80     medium      GDP                 5 2.086433 80
+  ladder_lsj_h8_w12     medium      GDP                 5 2.114797 80
+  ladder_lsj_h8_w60     medium      GDP                 5 2.169385 80
+  ladder_lsm_h1_w12     medium      GDP                 5 2.244423 80
+  ladder_lsm_h1_w60     medium      GDP                 5 2.241207 80
+  ladder_lsm_h2_w12     medium      GDP                 5 2.327380 80
+  ladder_lsm_h2_w60     medium      GDP                 5 2.193323 80
+  ladder_lsm_h4_w12     medium      GDP                 5 2.381832 80
+  ladder_lsm_h4_w40     medium      GDP                 5 2.135805 80
+  ladder_lsm_h4_w60     medium      GDP                 5 2.142017 80
+  ladder_lsm_h4_w80     medium      GDP                 5 2.163400 80
+  ladder_lsm_h8_w12     medium      GDP                 5 2.294676 80
+  ladder_lsm_h8_w60     medium      GDP                 5 2.103549 80
+         ladder_mdd     medium      GDP                 5 2.234288 80
+ ladder_rmse_h4_w12     medium      GDP                 5 2.285157 80
+ ladder_rmse_h4_w40     medium      GDP                 5 2.196849 80
+ ladder_rmse_h4_w60     medium      GDP                 5 2.111460 80
+ ladder_rmse_h4_w80     medium      GDP                 5 2.064838 80
+ladder_rmsej_h4_w12     medium      GDP                 5 2.264307 80
+ladder_rmsej_h4_w40     medium      GDP                 5 2.155773 80
+ladder_rmsej_h4_w60     medium      GDP                 5 2.100518 80
+ladder_rmsej_h4_w80     medium      GDP                 5 2.075192 80
+              paper     medium      GDP                 5 2.237048 80
+       paper_plugin     medium      GDP                 5 2.234288 80
+    ladder_lsj1_all     medium      GDP                 6 2.070729 80
+    ladder_lsj1_w12     medium      GDP                 6 2.011777 80
+    ladder_lsj1_w40     medium      GDP                 6 1.998253 80
+    ladder_lsj1_w60     medium      GDP                 6 1.947358 80
+    ladder_lsj1_w80     medium      GDP                 6 1.932363 80
+  ladder_lsj_h2_w12     medium      GDP                 6 1.938327 80
+  ladder_lsj_h2_w60     medium      GDP                 6 1.927293 80
+  ladder_lsj_h4_w12     medium      GDP                 6 1.929067 80
+  ladder_lsj_h4_w40     medium      GDP                 6 2.023693 80
+  ladder_lsj_h4_w60     medium      GDP                 6 2.017090 80
+  ladder_lsj_h4_w80     medium      GDP                 6 1.936550 80
+  ladder_lsj_h8_w12     medium      GDP                 6 1.968990 80
+  ladder_lsj_h8_w60     medium      GDP                 6 1.997562 80
+  ladder_lsm_h1_w12     medium      GDP                 6 2.074217 80
+  ladder_lsm_h1_w60     medium      GDP                 6 2.076021 80
+  ladder_lsm_h2_w12     medium      GDP                 6 2.156813 80
+  ladder_lsm_h2_w60     medium      GDP                 6 2.050812 80
+  ladder_lsm_h4_w12     medium      GDP                 6 2.209766 80
+  ladder_lsm_h4_w40     medium      GDP                 6 1.980282 80
+  ladder_lsm_h4_w60     medium      GDP                 6 1.985568 80
+  ladder_lsm_h4_w80     medium      GDP                 6 2.010842 80
+  ladder_lsm_h8_w12     medium      GDP                 6 2.125127 80
+  ladder_lsm_h8_w60     medium      GDP                 6 1.939555 80
+         ladder_mdd     medium      GDP                 6 2.089762 80
+ ladder_rmse_h4_w12     medium      GDP                 6 2.137435 80
+ ladder_rmse_h4_w40     medium      GDP                 6 2.043126 80
+ ladder_rmse_h4_w60     medium      GDP                 6 1.971038 80
+ ladder_rmse_h4_w80     medium      GDP                 6 1.908958 80
+ladder_rmsej_h4_w12     medium      GDP                 6 2.075261 80
+ladder_rmsej_h4_w40     medium      GDP                 6 1.995991 80
+ladder_rmsej_h4_w60     medium      GDP                 6 1.951087 80
+ladder_rmsej_h4_w80     medium      GDP                 6 1.915740 80
+              paper     medium      GDP                 6 2.092033 80
+       paper_plugin     medium      GDP                 6 2.089762 80
+    ladder_lsj1_all     medium      GDP                 7 1.960012 80
+    ladder_lsj1_w12     medium      GDP                 7 1.903121 80
+    ladder_lsj1_w40     medium      GDP                 7 1.918887 80
+    ladder_lsj1_w60     medium      GDP                 7 1.820115 80
+    ladder_lsj1_w80     medium      GDP                 7 1.810414 80
+  ladder_lsj_h2_w12     medium      GDP                 7 1.828714 80
+  ladder_lsj_h2_w60     medium      GDP                 7 1.800196 80
+  ladder_lsj_h4_w12     medium      GDP                 7 1.811887 80
+  ladder_lsj_h4_w40     medium      GDP                 7 1.931160 80
+  ladder_lsj_h4_w60     medium      GDP                 7 1.881483 80
+  ladder_lsj_h4_w80     medium      GDP                 7 1.815898 80
+  ladder_lsj_h8_w12     medium      GDP                 7 1.895787 80
+  ladder_lsj_h8_w60     medium      GDP                 7 1.904009 80
+  ladder_lsm_h1_w12     medium      GDP                 7 1.991120 80
+  ladder_lsm_h1_w60     medium      GDP                 7 1.950172 80
+  ladder_lsm_h2_w12     medium      GDP                 7 2.068220 80
+  ladder_lsm_h2_w60     medium      GDP                 7 1.923837 80
+  ladder_lsm_h4_w12     medium      GDP                 7 2.088409 80
+  ladder_lsm_h4_w40     medium      GDP                 7 1.851007 80
+  ladder_lsm_h4_w60     medium      GDP                 7 1.852389 80
+  ladder_lsm_h4_w80     medium      GDP                 7 1.874559 80
+  ladder_lsm_h8_w12     medium      GDP                 7 2.017344 80
+  ladder_lsm_h8_w60     medium      GDP                 7 1.801825 80
+         ladder_mdd     medium      GDP                 7 1.968956 80
+ ladder_rmse_h4_w12     medium      GDP                 7 2.046345 80
+ ladder_rmse_h4_w40     medium      GDP                 7 1.904599 80
+ ladder_rmse_h4_w60     medium      GDP                 7 1.850283 80
+ ladder_rmse_h4_w80     medium      GDP                 7 1.787759 80
+ladder_rmsej_h4_w12     medium      GDP                 7 1.981278 80
+ladder_rmsej_h4_w40     medium      GDP                 7 1.854668 80
+ladder_rmsej_h4_w60     medium      GDP                 7 1.822810 80
+ladder_rmsej_h4_w80     medium      GDP                 7 1.783447 80
+              paper     medium      GDP                 7 1.971836 80
+       paper_plugin     medium      GDP                 7 1.968956 80
+    ladder_lsj1_all     medium      GDP                 8 1.850912 80
+    ladder_lsj1_w12     medium      GDP                 8 1.786682 80
+    ladder_lsj1_w40     medium      GDP                 8 1.800287 80
+    ladder_lsj1_w60     medium      GDP                 8 1.671956 80
+    ladder_lsj1_w80     medium      GDP                 8 1.652404 80
+  ladder_lsj_h2_w12     medium      GDP                 8 1.719309 80
+  ladder_lsj_h2_w60     medium      GDP                 8 1.670125 80
+  ladder_lsj_h4_w12     medium      GDP                 8 1.701524 80
+  ladder_lsj_h4_w40     medium      GDP                 8 1.820587 80
+  ladder_lsj_h4_w60     medium      GDP                 8 1.749586 80
+  ladder_lsj_h4_w80     medium      GDP                 8 1.687820 80
+  ladder_lsj_h8_w12     medium      GDP                 8 1.800405 80
+  ladder_lsj_h8_w60     medium      GDP                 8 1.785886 80
+  ladder_lsm_h1_w12     medium      GDP                 8 1.857776 80
+  ladder_lsm_h1_w60     medium      GDP                 8 1.824132 80
+  ladder_lsm_h2_w12     medium      GDP                 8 1.928989 80
+  ladder_lsm_h2_w60     medium      GDP                 8 1.801059 80
+  ladder_lsm_h4_w12     medium      GDP                 8 1.968594 80
+  ladder_lsm_h4_w40     medium      GDP                 8 1.751443 80
+  ladder_lsm_h4_w60     medium      GDP                 8 1.736253 80
+  ladder_lsm_h4_w80     medium      GDP                 8 1.759287 80
+  ladder_lsm_h8_w12     medium      GDP                 8 1.907618 80
+  ladder_lsm_h8_w60     medium      GDP                 8 1.692601 80
+         ladder_mdd     medium      GDP                 8 1.852609 80
+ ladder_rmse_h4_w12     medium      GDP                 8 1.962484 80
+ ladder_rmse_h4_w40     medium      GDP                 8 1.792676 80
+ ladder_rmse_h4_w60     medium      GDP                 8 1.735549 80
+ ladder_rmse_h4_w80     medium      GDP                 8 1.669686 80
+ladder_rmsej_h4_w12     medium      GDP                 8 1.861000 80
+ladder_rmsej_h4_w40     medium      GDP                 8 1.729863 80
+ladder_rmsej_h4_w60     medium      GDP                 8 1.698934 80
+ladder_rmsej_h4_w80     medium      GDP                 8 1.662054 80
+              paper     medium      GDP                 8 1.854551 80
+       paper_plugin     medium      GDP                 8 1.852609 80

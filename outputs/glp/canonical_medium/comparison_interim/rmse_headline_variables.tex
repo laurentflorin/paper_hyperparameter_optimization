@@ -1,0 +1,289 @@
+         model model_size variable  horizon_quarters     rmse  n
+    L_lsj1_all     medium     DEFL                 1 0.931617 80
+    L_lsj1_w12     medium     DEFL                 1 0.922312 80
+    L_lsj1_w60     medium     DEFL                 1 0.936922 80
+  L_lsj_h4_w12     medium     DEFL                 1 0.910189 80
+  L_lsm_h4_w12     medium     DEFL                 1 1.083330 80
+  L_lsm_h4_w60     medium     DEFL                 1 1.248503 80
+ L_rmse_h4_w12     medium     DEFL                 1 1.088187 80
+ L_rmse_h4_w60     medium     DEFL                 1 1.050970 80
+L_rmsej_h4_w12     medium     DEFL                 1 1.004892 80
+L_rmsej_h4_w60     medium     DEFL                 1 0.963549 80
+         paper     medium     DEFL                 1 0.927845 80
+  paper_plugin     medium     DEFL                 1 0.927181 80
+    L_lsj1_all     medium     DEFL                 2 0.838929 80
+    L_lsj1_w12     medium     DEFL                 2 0.824188 80
+    L_lsj1_w60     medium     DEFL                 2 0.836602 80
+  L_lsj_h4_w12     medium     DEFL                 2 0.809381 80
+  L_lsm_h4_w12     medium     DEFL                 2 1.051908 80
+  L_lsm_h4_w60     medium     DEFL                 2 1.165907 80
+ L_rmse_h4_w12     medium     DEFL                 2 0.987835 80
+ L_rmse_h4_w60     medium     DEFL                 2 0.966397 80
+L_rmsej_h4_w12     medium     DEFL                 2 0.915103 80
+L_rmsej_h4_w60     medium     DEFL                 2 0.843158 80
+         paper     medium     DEFL                 2 0.834183 80
+  paper_plugin     medium     DEFL                 2 0.833168 80
+    L_lsj1_all     medium     DEFL                 3 0.801477 80
+    L_lsj1_w12     medium     DEFL                 3 0.788423 80
+    L_lsj1_w60     medium     DEFL                 3 0.795468 80
+  L_lsj_h4_w12     medium     DEFL                 3 0.786515 80
+  L_lsm_h4_w12     medium     DEFL                 3 1.059579 80
+  L_lsm_h4_w60     medium     DEFL                 3 1.158637 80
+ L_rmse_h4_w12     medium     DEFL                 3 0.982943 80
+ L_rmse_h4_w60     medium     DEFL                 3 0.948877 80
+L_rmsej_h4_w12     medium     DEFL                 3 0.917013 80
+L_rmsej_h4_w60     medium     DEFL                 3 0.815797 80
+         paper     medium     DEFL                 3 0.794418 80
+  paper_plugin     medium     DEFL                 3 0.792789 80
+    L_lsj1_all     medium     DEFL                 4 0.775462 80
+    L_lsj1_w12     medium     DEFL                 4 0.758242 80
+    L_lsj1_w60     medium     DEFL                 4 0.765925 80
+  L_lsj_h4_w12     medium     DEFL                 4 0.764159 80
+  L_lsm_h4_w12     medium     DEFL                 4 1.058241 80
+  L_lsm_h4_w60     medium     DEFL                 4 1.152680 80
+ L_rmse_h4_w12     medium     DEFL                 4 0.974283 80
+ L_rmse_h4_w60     medium     DEFL                 4 0.942428 80
+L_rmsej_h4_w12     medium     DEFL                 4 0.908223 80
+L_rmsej_h4_w60     medium     DEFL                 4 0.784076 80
+         paper     medium     DEFL                 4 0.767518 80
+  paper_plugin     medium     DEFL                 4 0.765089 80
+    L_lsj1_all     medium     DEFL                 5 0.764247 80
+    L_lsj1_w12     medium     DEFL                 5 0.745490 80
+    L_lsj1_w60     medium     DEFL                 5 0.754423 80
+  L_lsj_h4_w12     medium     DEFL                 5 0.755589 80
+  L_lsm_h4_w12     medium     DEFL                 5 1.064578 80
+  L_lsm_h4_w60     medium     DEFL                 5 1.151374 80
+ L_rmse_h4_w12     medium     DEFL                 5 0.965773 80
+ L_rmse_h4_w60     medium     DEFL                 5 0.921081 80
+L_rmsej_h4_w12     medium     DEFL                 5 0.911638 80
+L_rmsej_h4_w60     medium     DEFL                 5 0.758852 80
+         paper     medium     DEFL                 5 0.756145 80
+  paper_plugin     medium     DEFL                 5 0.753277 80
+    L_lsj1_all     medium     DEFL                 6 0.776968 80
+    L_lsj1_w12     medium     DEFL                 6 0.748477 80
+    L_lsj1_w60     medium     DEFL                 6 0.762373 80
+  L_lsj_h4_w12     medium     DEFL                 6 0.771197 80
+  L_lsm_h4_w12     medium     DEFL                 6 1.066699 80
+  L_lsm_h4_w60     medium     DEFL                 6 1.160706 80
+ L_rmse_h4_w12     medium     DEFL                 6 0.979838 80
+ L_rmse_h4_w60     medium     DEFL                 6 0.930936 80
+L_rmsej_h4_w12     medium     DEFL                 6 0.917675 80
+L_rmsej_h4_w60     medium     DEFL                 6 0.751780 80
+         paper     medium     DEFL                 6 0.770308 80
+  paper_plugin     medium     DEFL                 6 0.767202 80
+    L_lsj1_all     medium     DEFL                 7 0.793926 80
+    L_lsj1_w12     medium     DEFL                 7 0.753980 80
+    L_lsj1_w60     medium     DEFL                 7 0.776709 80
+  L_lsj_h4_w12     medium     DEFL                 7 0.783979 80
+  L_lsm_h4_w12     medium     DEFL                 7 1.078275 80
+  L_lsm_h4_w60     medium     DEFL                 7 1.167529 80
+ L_rmse_h4_w12     medium     DEFL                 7 0.992020 80
+ L_rmse_h4_w60     medium     DEFL                 7 0.942918 80
+L_rmsej_h4_w12     medium     DEFL                 7 0.925224 80
+L_rmsej_h4_w60     medium     DEFL                 7 0.756134 80
+         paper     medium     DEFL                 7 0.788667 80
+  paper_plugin     medium     DEFL                 7 0.785308 80
+    L_lsj1_all     medium     DEFL                 8 0.819212 80
+    L_lsj1_w12     medium     DEFL                 8 0.773753 80
+    L_lsj1_w60     medium     DEFL                 8 0.800781 80
+  L_lsj_h4_w12     medium     DEFL                 8 0.805128 80
+  L_lsm_h4_w12     medium     DEFL                 8 1.106536 80
+  L_lsm_h4_w60     medium     DEFL                 8 1.174626 80
+ L_rmse_h4_w12     medium     DEFL                 8 1.018379 80
+ L_rmse_h4_w60     medium     DEFL                 8 0.960174 80
+L_rmsej_h4_w12     medium     DEFL                 8 0.938300 80
+L_rmsej_h4_w60     medium     DEFL                 8 0.765239 80
+         paper     medium     DEFL                 8 0.814895 80
+  paper_plugin     medium     DEFL                 8 0.811587 80
+    L_lsj1_all     medium      FFR                 1 0.387440 80
+    L_lsj1_w12     medium      FFR                 1 0.390151 80
+    L_lsj1_w60     medium      FFR                 1 0.399830 80
+  L_lsj_h4_w12     medium      FFR                 1 0.409030 80
+  L_lsm_h4_w12     medium      FFR                 1 0.407384 80
+  L_lsm_h4_w60     medium      FFR                 1 0.419321 80
+ L_rmse_h4_w12     medium      FFR                 1 0.375626 80
+ L_rmse_h4_w60     medium      FFR                 1 0.384474 80
+L_rmsej_h4_w12     medium      FFR                 1 0.387203 80
+L_rmsej_h4_w60     medium      FFR                 1 0.358097 80
+         paper     medium      FFR                 1 0.386981 80
+  paper_plugin     medium      FFR                 1 0.387057 80
+    L_lsj1_all     medium      FFR                 2 0.724766 80
+    L_lsj1_w12     medium      FFR                 2 0.771408 80
+    L_lsj1_w60     medium      FFR                 2 0.766401 80
+  L_lsj_h4_w12     medium      FFR                 2 0.799756 80
+  L_lsm_h4_w12     medium      FFR                 2 0.782389 80
+  L_lsm_h4_w60     medium      FFR                 2 0.766552 80
+ L_rmse_h4_w12     medium      FFR                 2 0.739364 80
+ L_rmse_h4_w60     medium      FFR                 2 0.728496 80
+L_rmsej_h4_w12     medium      FFR                 2 0.747142 80
+L_rmsej_h4_w60     medium      FFR                 2 0.669764 80
+         paper     medium      FFR                 2 0.735960 80
+  paper_plugin     medium      FFR                 2 0.735274 80
+    L_lsj1_all     medium      FFR                 3 1.042400 80
+    L_lsj1_w12     medium      FFR                 3 1.089336 80
+    L_lsj1_w60     medium      FFR                 3 1.078309 80
+  L_lsj_h4_w12     medium      FFR                 3 1.124086 80
+  L_lsm_h4_w12     medium      FFR                 3 1.129026 80
+  L_lsm_h4_w60     medium      FFR                 3 1.105322 80
+ L_rmse_h4_w12     medium      FFR                 3 1.048806 80
+ L_rmse_h4_w60     medium      FFR                 3 1.074546 80
+L_rmsej_h4_w12     medium      FFR                 3 1.092052 80
+L_rmsej_h4_w60     medium      FFR                 3 0.992038 80
+         paper     medium      FFR                 3 1.054195 80
+  paper_plugin     medium      FFR                 3 1.047173 80
+    L_lsj1_all     medium      FFR                 4 1.312247 80
+    L_lsj1_w12     medium      FFR                 4 1.340080 80
+    L_lsj1_w60     medium      FFR                 4 1.340174 80
+  L_lsj_h4_w12     medium      FFR                 4 1.418710 80
+  L_lsm_h4_w12     medium      FFR                 4 1.451703 80
+  L_lsm_h4_w60     medium      FFR                 4 1.415600 80
+ L_rmse_h4_w12     medium      FFR                 4 1.345260 80
+ L_rmse_h4_w60     medium      FFR                 4 1.383290 80
+L_rmsej_h4_w12     medium      FFR                 4 1.403319 80
+L_rmsej_h4_w60     medium      FFR                 4 1.292226 80
+         paper     medium      FFR                 4 1.330361 80
+  paper_plugin     medium      FFR                 4 1.314216 80
+    L_lsj1_all     medium      FFR                 5 1.550993 80
+    L_lsj1_w12     medium      FFR                 5 1.553941 80
+    L_lsj1_w60     medium      FFR                 5 1.583472 80
+  L_lsj_h4_w12     medium      FFR                 5 1.680006 80
+  L_lsm_h4_w12     medium      FFR                 5 1.734036 80
+  L_lsm_h4_w60     medium      FFR                 5 1.687673 80
+ L_rmse_h4_w12     medium      FFR                 5 1.620457 80
+ L_rmse_h4_w60     medium      FFR                 5 1.656091 80
+L_rmsej_h4_w12     medium      FFR                 5 1.685274 80
+L_rmsej_h4_w60     medium      FFR                 5 1.558478 80
+         paper     medium      FFR                 5 1.578154 80
+  paper_plugin     medium      FFR                 5 1.556488 80
+    L_lsj1_all     medium      FFR                 6 1.776163 80
+    L_lsj1_w12     medium      FFR                 6 1.770994 80
+    L_lsj1_w60     medium      FFR                 6 1.814246 80
+  L_lsj_h4_w12     medium      FFR                 6 1.922236 80
+  L_lsm_h4_w12     medium      FFR                 6 1.993436 80
+  L_lsm_h4_w60     medium      FFR                 6 1.925298 80
+ L_rmse_h4_w12     medium      FFR                 6 1.872646 80
+ L_rmse_h4_w60     medium      FFR                 6 1.899528 80
+L_rmsej_h4_w12     medium      FFR                 6 1.932536 80
+L_rmsej_h4_w60     medium      FFR                 6 1.798124 80
+         paper     medium      FFR                 6 1.814136 80
+  paper_plugin     medium      FFR                 6 1.785702 80
+    L_lsj1_all     medium      FFR                 7 1.979720 80
+    L_lsj1_w12     medium      FFR                 7 1.973519 80
+    L_lsj1_w60     medium      FFR                 7 2.022147 80
+  L_lsj_h4_w12     medium      FFR                 7 2.134225 80
+  L_lsm_h4_w12     medium      FFR                 7 2.218239 80
+  L_lsm_h4_w60     medium      FFR                 7 2.126702 80
+ L_rmse_h4_w12     medium      FFR                 7 2.088351 80
+ L_rmse_h4_w60     medium      FFR                 7 2.101215 80
+L_rmsej_h4_w12     medium      FFR                 7 2.143570 80
+L_rmsej_h4_w60     medium      FFR                 7 1.996375 80
+         paper     medium      FFR                 7 2.023106 80
+  paper_plugin     medium      FFR                 7 1.992068 80
+    L_lsj1_all     medium      FFR                 8 2.152735 80
+    L_lsj1_w12     medium      FFR                 8 2.144257 80
+    L_lsj1_w60     medium      FFR                 8 2.187222 80
+  L_lsj_h4_w12     medium      FFR                 8 2.305592 80
+  L_lsm_h4_w12     medium      FFR                 8 2.403472 80
+  L_lsm_h4_w60     medium      FFR                 8 2.296309 80
+ L_rmse_h4_w12     medium      FFR                 8 2.286392 80
+ L_rmse_h4_w60     medium      FFR                 8 2.271178 80
+L_rmsej_h4_w12     medium      FFR                 8 2.318968 80
+L_rmsej_h4_w60     medium      FFR                 8 2.156416 80
+         paper     medium      FFR                 8 2.200062 80
+  paper_plugin     medium      FFR                 8 2.169742 80
+    L_lsj1_all     medium      GDP                 1 2.211339 80
+    L_lsj1_w12     medium      GDP                 1 2.193913 80
+    L_lsj1_w60     medium      GDP                 1 2.218192 80
+  L_lsj_h4_w12     medium      GDP                 1 2.278531 80
+  L_lsm_h4_w12     medium      GDP                 1 2.639675 80
+  L_lsm_h4_w60     medium      GDP                 1 2.651820 80
+ L_rmse_h4_w12     medium      GDP                 1 2.333892 80
+ L_rmse_h4_w60     medium      GDP                 1 2.420981 80
+L_rmsej_h4_w12     medium      GDP                 1 2.390460 80
+L_rmsej_h4_w60     medium      GDP                 1 2.408652 80
+         paper     medium      GDP                 1 2.280307 80
+  paper_plugin     medium      GDP                 1 2.271911 80
+    L_lsj1_all     medium      GDP                 2 2.121056 80
+    L_lsj1_w12     medium      GDP                 2 2.155451 80
+    L_lsj1_w60     medium      GDP                 2 2.098542 80
+  L_lsj_h4_w12     medium      GDP                 2 2.146340 80
+  L_lsm_h4_w12     medium      GDP                 2 2.477812 80
+  L_lsm_h4_w60     medium      GDP                 2 2.355788 80
+ L_rmse_h4_w12     medium      GDP                 2 2.162204 80
+ L_rmse_h4_w60     medium      GDP                 2 2.236896 80
+L_rmsej_h4_w12     medium      GDP                 2 2.190135 80
+L_rmsej_h4_w60     medium      GDP                 2 2.205746 80
+         paper     medium      GDP                 2 2.187000 80
+  paper_plugin     medium      GDP                 2 2.182599 80
+    L_lsj1_all     medium      GDP                 3 2.713808 80
+    L_lsj1_w12     medium      GDP                 3 2.697972 80
+    L_lsj1_w60     medium      GDP                 3 2.621781 80
+  L_lsj_h4_w12     medium      GDP                 3 2.657727 80
+  L_lsm_h4_w12     medium      GDP                 3 2.885339 80
+  L_lsm_h4_w60     medium      GDP                 3 2.761834 80
+ L_rmse_h4_w12     medium      GDP                 3 2.721997 80
+ L_rmse_h4_w60     medium      GDP                 3 2.712319 80
+L_rmsej_h4_w12     medium      GDP                 3 2.721371 80
+L_rmsej_h4_w60     medium      GDP                 3 2.689471 80
+         paper     medium      GDP                 3 2.759263 80
+  paper_plugin     medium      GDP                 3 2.753834 80
+    L_lsj1_all     medium      GDP                 4 2.420665 80
+    L_lsj1_w12     medium      GDP                 4 2.388666 80
+    L_lsj1_w60     medium      GDP                 4 2.341694 80
+  L_lsj_h4_w12     medium      GDP                 4 2.309378 80
+  L_lsm_h4_w12     medium      GDP                 4 2.591146 80
+  L_lsm_h4_w60     medium      GDP                 4 2.403374 80
+ L_rmse_h4_w12     medium      GDP                 4 2.461951 80
+ L_rmse_h4_w60     medium      GDP                 4 2.371175 80
+L_rmsej_h4_w12     medium      GDP                 4 2.447998 80
+L_rmsej_h4_w60     medium      GDP                 4 2.357681 80
+         paper     medium      GDP                 4 2.457981 80
+  paper_plugin     medium      GDP                 4 2.453482 80
+    L_lsj1_all     medium      GDP                 5 2.204830 80
+    L_lsj1_w12     medium      GDP                 5 2.147259 80
+    L_lsj1_w60     medium      GDP                 5 2.096203 80
+  L_lsj_h4_w12     medium      GDP                 5 2.071654 80
+  L_lsm_h4_w12     medium      GDP                 5 2.381832 80
+  L_lsm_h4_w60     medium      GDP                 5 2.142017 80
+ L_rmse_h4_w12     medium      GDP                 5 2.285157 80
+ L_rmse_h4_w60     medium      GDP                 5 2.111460 80
+L_rmsej_h4_w12     medium      GDP                 5 2.264307 80
+L_rmsej_h4_w60     medium      GDP                 5 2.100518 80
+         paper     medium      GDP                 5 2.237048 80
+  paper_plugin     medium      GDP                 5 2.234288 80
+    L_lsj1_all     medium      GDP                 6 2.070729 80
+    L_lsj1_w12     medium      GDP                 6 2.011777 80
+    L_lsj1_w60     medium      GDP                 6 1.947358 80
+  L_lsj_h4_w12     medium      GDP                 6 1.929067 80
+  L_lsm_h4_w12     medium      GDP                 6 2.209766 80
+  L_lsm_h4_w60     medium      GDP                 6 1.985568 80
+ L_rmse_h4_w12     medium      GDP                 6 2.137435 80
+ L_rmse_h4_w60     medium      GDP                 6 1.971038 80
+L_rmsej_h4_w12     medium      GDP                 6 2.075261 80
+L_rmsej_h4_w60     medium      GDP                 6 1.951087 80
+         paper     medium      GDP                 6 2.092033 80
+  paper_plugin     medium      GDP                 6 2.089762 80
+    L_lsj1_all     medium      GDP                 7 1.960012 80
+    L_lsj1_w12     medium      GDP                 7 1.903121 80
+    L_lsj1_w60     medium      GDP                 7 1.820115 80
+  L_lsj_h4_w12     medium      GDP                 7 1.811887 80
+  L_lsm_h4_w12     medium      GDP                 7 2.088409 80
+  L_lsm_h4_w60     medium      GDP                 7 1.852389 80
+ L_rmse_h4_w12     medium      GDP                 7 2.046345 80
+ L_rmse_h4_w60     medium      GDP                 7 1.850283 80
+L_rmsej_h4_w12     medium      GDP                 7 1.981278 80
+L_rmsej_h4_w60     medium      GDP                 7 1.822810 80
+         paper     medium      GDP                 7 1.971836 80
+  paper_plugin     medium      GDP                 7 1.968956 80
+    L_lsj1_all     medium      GDP                 8 1.850912 80
+    L_lsj1_w12     medium      GDP                 8 1.786682 80
+    L_lsj1_w60     medium      GDP                 8 1.671956 80
+  L_lsj_h4_w12     medium      GDP                 8 1.701524 80
+  L_lsm_h4_w12     medium      GDP                 8 1.968594 80
+  L_lsm_h4_w60     medium      GDP                 8 1.736253 80
+ L_rmse_h4_w12     medium      GDP                 8 1.962484 80
+ L_rmse_h4_w60     medium      GDP                 8 1.735549 80
+L_rmsej_h4_w12     medium      GDP                 8 1.861000 80
+L_rmsej_h4_w60     medium      GDP                 8 1.698934 80
+         paper     medium      GDP                 8 1.854551 80
+  paper_plugin     medium      GDP                 8 1.852609 80

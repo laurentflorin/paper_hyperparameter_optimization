@@ -32,148 +32,263 @@
       "code": "GDP",
       "label": "Real Gross Domestic Product",
       "frequency": "Q",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "GDPDEF",
       "code": "DEFL",
       "label": "GDP Deflator",
       "frequency": "Q",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "FEDFUNDS",
       "code": "FFR",
       "label": "Federal Funds Rate",
       "frequency": "M",
-      "transform": "lin"
+      "transform": "lin",
+      "continuation_id": null
     },
     {
       "series_id": "PCECC96",
       "code": "CONS",
       "label": "Real Personal Consumption Expenditures",
       "frequency": "Q",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "GPDIC1",
       "code": "INV",
       "label": "Real Gross Private Domestic Investment",
       "frequency": "Q",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "HOANBS",
       "code": "HOURS",
       "label": "Nonfarm Business Sector: Hours Worked",
       "frequency": "Q",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "COMPRNFB",
       "code": "WAGE",
       "label": "Nonfarm Business Sector: Real Compensation per Hour",
       "frequency": "Q",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "PAYEMS",
       "code": "EMP",
       "label": "Total Nonfarm Employment",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "UNRATE",
       "code": "UNR",
       "label": "Unemployment Rate",
       "frequency": "M",
-      "transform": "lin"
+      "transform": "lin",
+      "continuation_id": null
     },
     {
       "series_id": "AHETPI",
       "code": "AHE",
       "label": "Average Hourly Earnings (Production Workers)",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "CPIAUCSL",
       "code": "CPI",
       "label": "Consumer Price Index (All Urban)",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "PPIFGS",
       "code": "PPI",
       "label": "Producer Price Index (Finished Goods)",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": "WPSFD49207"
     },
     {
       "series_id": "PPIACO",
       "code": "COMM",
       "label": "Producer Price Index (All Commodities)",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "M1SL",
       "code": "M1",
       "label": "M1 Money Stock",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "M2SL",
       "code": "M2",
       "label": "M2 Money Stock",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "BOGMBASE",
       "code": "MBASE",
       "label": "Monetary Base",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "TOTRESNS",
       "code": "TOTRES",
       "label": "Total Reserves of Depository Institutions",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "NONBORRES",
       "code": "NBRES",
       "label": "Non-Borrowed Reserves",
       "frequency": "M",
-      "transform": "lin"
+      "transform": "lin",
+      "continuation_id": null
     },
     {
       "series_id": "SPASTT01USM661N",
       "code": "SP500",
       "label": "Financial Market: Share Prices for United States (proxy for S&P 500)",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     },
     {
       "series_id": "GS10",
       "code": "TB10",
       "label": "10-Year Treasury Bond Yield",
       "frequency": "M",
-      "transform": "lin"
+      "transform": "lin",
+      "continuation_id": null
     },
     {
       "series_id": "TWEXMMTH",
       "code": "REER",
       "label": "Trade-Weighted US Dollar Index (Major Currencies)",
       "frequency": "M",
-      "transform": "log"
+      "transform": "log",
+      "continuation_id": null
     }
   ],
-  "force_refresh": false
+  "force_refresh": false,
+  "panel_schema_version": 2,
+  "stale_observation_days": 185,
+  "substitutions": [
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2016-06-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2016-09-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2016-12-31",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2017-03-31",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2017-06-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2017-09-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2017-12-31",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2018-03-31",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2018-06-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2018-09-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2018-12-31",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2019-03-31",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2019-06-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2019-09-30",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2019-12-31",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "PPIFGS",
+      "vintage_date": "2023-01-01",
+      "source": "continuation:WPSFD49207"
+    },
+    {
+      "series_id": "SPASTT01USM661N",
+      "vintage_date": "2014-06-30",
+      "source": "latest_truncated"
+    },
+    {
+      "series_id": "SPASTT01USM661N",
+      "vintage_date": "2014-09-30",
+      "source": "latest_truncated"
+    }
+  ]
 }

@@ -1,0 +1,529 @@
+            model model_size variable  horizon_quarters optimization_horizon         rmse  n  baseline_rmse  relative_rmse_pct
+        mango_mdd      large      AHE                 1                  NaN 8.329313e-01 80   7.513040e-01          10.864752
+        mango_mdd      large      AHE                 2                  NaN 9.113123e-01 80   7.344598e-01          24.079262
+        mango_mdd      large      AHE                 3                  NaN 1.074145e+00 80   7.599950e-01          41.335834
+        mango_mdd      large      AHE                 4                  NaN 1.253223e+00 80   8.003227e-01          56.589692
+        mango_mdd      large      AHE                 5                  NaN 1.360037e+00 80   8.396178e-01          61.982826
+        mango_mdd      large      AHE                 6                  NaN 1.371263e+00 80   8.816203e-01          55.538995
+        mango_mdd      large      AHE                 7                  NaN 1.312665e+00 80   1.004671e+00          30.656143
+        mango_mdd      large      AHE                 8                  NaN 1.237798e+00 80   1.132445e+00           9.303071
+        mango_mdd      large     COMM                 1                  NaN 1.298181e+01 80   1.989345e+01         -34.743313
+        mango_mdd      large     COMM                 2                  NaN 1.449038e+01 80   2.105005e+01         -31.162252
+        mango_mdd      large     COMM                 3                  NaN 1.384581e+01 80   1.894286e+01         -26.907502
+        mango_mdd      large     COMM                 4                  NaN 1.182772e+01 80   1.655772e+01         -28.566748
+        mango_mdd      large     COMM                 5                  NaN 9.829685e+00 80   2.028439e+01         -51.540651
+        mango_mdd      large     COMM                 6                  NaN 8.753239e+00 80   2.213317e+01         -60.451947
+        mango_mdd      large     COMM                 7                  NaN 9.209232e+00 80   1.788762e+01         -48.516156
+        mango_mdd      large     COMM                 8                  NaN 9.844800e+00 80   2.823904e+01         -65.137622
+        mango_mdd      large     CONS                 1                  NaN 1.780470e+00 80   2.576408e+00         -30.893312
+        mango_mdd      large     CONS                 2                  NaN 1.909846e+00 80   3.300406e+00         -42.132998
+        mango_mdd      large     CONS                 3                  NaN 2.097302e+00 80   4.071043e+00         -48.482446
+        mango_mdd      large     CONS                 4                  NaN 2.326449e+00 80   4.248824e+00         -45.244870
+        mango_mdd      large     CONS                 5                  NaN 2.347383e+00 80   3.758810e+00         -37.549848
+        mango_mdd      large     CONS                 6                  NaN 2.275028e+00 80   3.732784e+00         -39.052766
+        mango_mdd      large     CONS                 7                  NaN 2.175520e+00 80   5.287704e+00         -58.857000
+        mango_mdd      large     CONS                 8                  NaN 2.128699e+00 80   6.281306e+00         -66.110565
+        mango_mdd      large      CPI                 1                  NaN 3.116971e+00 80   4.010114e+00         -22.272248
+        mango_mdd      large      CPI                 2                  NaN 3.447049e+00 80   4.496221e+00         -23.334541
+        mango_mdd      large      CPI                 3                  NaN 3.534191e+00 80   4.383412e+00         -19.373518
+        mango_mdd      large      CPI                 4                  NaN 3.292460e+00 80   4.094012e+00         -19.578660
+        mango_mdd      large      CPI                 5                  NaN 2.802024e+00 80   4.524668e+00         -38.072268
+        mango_mdd      large      CPI                 6                  NaN 2.368141e+00 80   4.677834e+00         -49.375261
+        mango_mdd      large      CPI                 7                  NaN 2.258483e+00 80   3.795110e+00         -40.489676
+        mango_mdd      large      CPI                 8                  NaN 2.311731e+00 80   5.522200e+00         -58.137489
+        mango_mdd      large     DEFL                 1                  NaN 1.262973e+00 80   1.500543e+00         -15.832278
+        mango_mdd      large     DEFL                 2                  NaN 1.057928e+00 80   1.624058e+00         -34.858969
+        mango_mdd      large     DEFL                 3                  NaN 1.076653e+00 80   1.837433e+00         -41.404481
+        mango_mdd      large     DEFL                 4                  NaN 1.116028e+00 80   1.827845e+00         -38.943000
+        mango_mdd      large     DEFL                 5                  NaN 1.144046e+00 80   1.652748e+00         -30.779166
+        mango_mdd      large     DEFL                 6                  NaN 1.164683e+00 80   1.704067e+00         -31.652762
+        mango_mdd      large     DEFL                 7                  NaN 1.181954e+00 80   2.044001e+00         -42.174483
+        mango_mdd      large     DEFL                 8                  NaN 1.217058e+00 80   2.165755e+00         -43.804435
+        mango_mdd      large      EMP                 1                  NaN 9.545963e-01 80   8.865198e-01           7.679072
+        mango_mdd      large      EMP                 2                  NaN 1.210398e+00 80   1.307976e+00          -7.460242
+        mango_mdd      large      EMP                 3                  NaN 1.575224e+00 80   2.016924e+00         -21.899725
+        mango_mdd      large      EMP                 4                  NaN 1.832698e+00 80   2.692252e+00         -31.926937
+        mango_mdd      large      EMP                 5                  NaN 2.009489e+00 80   3.139972e+00         -36.002950
+        mango_mdd      large      EMP                 6                  NaN 2.131307e+00 80   3.311735e+00         -35.643796
+        mango_mdd      large      EMP                 7                  NaN 2.253044e+00 80   3.472308e+00         -35.113923
+        mango_mdd      large      EMP                 8                  NaN 2.340889e+00 80   4.167727e+00         -43.832963
+        mango_mdd      large      FFR                 1                  NaN 6.362244e-01 80   8.327160e-01         -23.596466
+        mango_mdd      large      FFR                 2                  NaN 1.379590e+00 80   1.842248e+00         -25.113793
+        mango_mdd      large      FFR                 3                  NaN 1.997599e+00 80   2.604542e+00         -23.303278
+        mango_mdd      large      FFR                 4                  NaN 2.321958e+00 80   2.690804e+00         -13.707625
+        mango_mdd      large      FFR                 5                  NaN 2.589366e+00 80   2.584586e+00           0.184961
+        mango_mdd      large      FFR                 6                  NaN 3.198866e+00 80   3.731441e+00         -14.272648
+        mango_mdd      large      FFR                 7                  NaN 4.090137e+00 80   6.037842e+00         -32.258298
+        mango_mdd      large      FFR                 8                  NaN 4.783446e+00 80   7.935936e+00         -39.724235
+        mango_mdd      large      GDP                 1                  NaN 2.734203e+00 80   3.295600e+00         -17.034755
+        mango_mdd      large      GDP                 2                  NaN 2.966317e+00 80   3.642094e+00         -18.554632
+        mango_mdd      large      GDP                 3                  NaN 3.184656e+00 80   4.007575e+00         -20.534082
+        mango_mdd      large      GDP                 4                  NaN 3.100386e+00 80   4.373485e+00         -29.109496
+        mango_mdd      large      GDP                 5                  NaN 2.888003e+00 80   4.918918e+00         -41.287835
+        mango_mdd      large      GDP                 6                  NaN 2.800545e+00 80   4.953560e+00         -43.463985
+        mango_mdd      large      GDP                 7                  NaN 2.906877e+00 80   4.929319e+00         -41.028835
+        mango_mdd      large      GDP                 8                  NaN 2.994276e+00 80   6.612821e+00         -54.720147
+        mango_mdd      large    HOURS                 1                  NaN 2.001663e+00 80   2.258877e+00         -11.386776
+        mango_mdd      large    HOURS                 2                  NaN 2.412106e+00 80   2.933931e+00         -17.785840
+        mango_mdd      large    HOURS                 3                  NaN 2.865681e+00 80   3.816047e+00         -24.904455
+        mango_mdd      large    HOURS                 4                  NaN 3.112568e+00 80   4.551497e+00         -31.614415
+        mango_mdd      large    HOURS                 5                  NaN 3.269786e+00 80   5.089497e+00         -35.754239
+        mango_mdd      large    HOURS                 6                  NaN 3.417621e+00 80   5.236594e+00         -34.735791
+        mango_mdd      large    HOURS                 7                  NaN 3.594324e+00 80   5.463429e+00         -34.211214
+        mango_mdd      large    HOURS                 8                  NaN 3.633249e+00 80   6.762605e+00         -46.274408
+        mango_mdd      large      INV                 1                  NaN 1.102769e+01 80   1.211919e+01          -9.006394
+        mango_mdd      large      INV                 2                  NaN 1.273859e+01 80   1.545572e+01         -17.580114
+        mango_mdd      large      INV                 3                  NaN 1.576816e+01 80   1.965224e+01         -19.764058
+        mango_mdd      large      INV                 4                  NaN 1.720026e+01 80   2.277759e+01         -24.486035
+        mango_mdd      large      INV                 5                  NaN 1.643075e+01 80   2.503012e+01         -34.356092
+        mango_mdd      large      INV                 6                  NaN 1.553578e+01 80   2.647956e+01         -41.329166
+        mango_mdd      large      INV                 7                  NaN 1.568899e+01 80   2.525453e+01         -37.876520
+        mango_mdd      large      INV                 8                  NaN 1.623235e+01 80   2.871821e+01         -43.477154
+        mango_mdd      large       M1                 1                  NaN 7.681290e+00 80   1.022435e+01         -24.872556
+        mango_mdd      large       M1                 2                  NaN 8.620878e+00 80   1.116335e+01         -22.775172
+        mango_mdd      large       M1                 3                  NaN 8.729253e+00 80   1.191177e+01         -26.717397
+        mango_mdd      large       M1                 4                  NaN 8.032180e+00 80   1.163670e+01         -30.975460
+        mango_mdd      large       M1                 5                  NaN 7.273263e+00 80   1.174412e+01         -38.068904
+        mango_mdd      large       M1                 6                  NaN 7.127947e+00 80   1.187958e+01         -39.998322
+        mango_mdd      large       M1                 7                  NaN 7.843064e+00 80   1.369489e+01         -42.730001
+        mango_mdd      large       M1                 8                  NaN 8.760875e+00 80   1.796871e+01         -51.243715
+        mango_mdd      large       M2                 1                  NaN 3.277761e+00 80   3.908453e+00         -16.136601
+        mango_mdd      large       M2                 2                  NaN 3.386996e+00 80   4.305176e+00         -21.327360
+        mango_mdd      large       M2                 3                  NaN 3.226068e+00 80   3.901604e+00         -17.314313
+        mango_mdd      large       M2                 4                  NaN 2.945149e+00 80   3.600863e+00         -18.209916
+        mango_mdd      large       M2                 5                  NaN 2.772367e+00 80   4.268473e+00         -35.050142
+        mango_mdd      large       M2                 6                  NaN 2.953907e+00 80   4.582185e+00         -35.534967
+        mango_mdd      large       M2                 7                  NaN 3.314543e+00 80   3.511581e+00          -5.611097
+        mango_mdd      large       M2                 8                  NaN 3.499751e+00 80   4.473559e+00         -21.768081
+        mango_mdd      large    MBASE                 1                  NaN 3.868613e+01 80   5.337801e+01         -27.524217
+        mango_mdd      large    MBASE                 2                  NaN 4.133327e+01 80   5.761953e+01         -28.265169
+        mango_mdd      large    MBASE                 3                  NaN 3.969768e+01 80   5.812761e+01         -31.705976
+        mango_mdd      large    MBASE                 4                  NaN 3.234187e+01 80   5.559596e+01         -41.826950
+        mango_mdd      large    MBASE                 5                  NaN 2.526789e+01 80   5.807881e+01         -56.493796
+        mango_mdd      large    MBASE                 6                  NaN 2.255243e+01 80   5.480064e+01         -58.846421
+        mango_mdd      large    MBASE                 7                  NaN 2.289129e+01 80   5.652200e+01         -59.500207
+        mango_mdd      large    MBASE                 8                  NaN 2.267411e+01 80   9.204960e+01         -75.367512
+        mango_mdd      large    NBRES                 1                  NaN 6.336410e+05 80   6.330980e+05           0.085769
+        mango_mdd      large    NBRES                 2                  NaN 6.867316e+05 80   6.866341e+05           0.014207
+        mango_mdd      large    NBRES                 3                  NaN 7.507040e+05 80   7.528474e+05          -0.284706
+        mango_mdd      large    NBRES                 4                  NaN 8.346717e+05 80   8.443374e+05          -1.144768
+        mango_mdd      large    NBRES                 5                  NaN 8.788418e+05 80   8.976075e+05          -2.090635
+        mango_mdd      large    NBRES                 6                  NaN 9.347000e+05 80   9.655102e+05          -3.191082
+        mango_mdd      large    NBRES                 7                  NaN 9.797989e+05 80   1.023836e+06          -4.301219
+        mango_mdd      large    NBRES                 8                  NaN 1.028693e+06 80   1.091027e+06          -5.713268
+        mango_mdd      large      PPI                 1                  NaN 7.251627e+00 64   9.774532e+00         -25.811006
+        mango_mdd      large      PPI                 2                  NaN 8.116002e+00 63   1.088564e+01         -25.443039
+        mango_mdd      large      PPI                 3                  NaN 8.120377e+00 62   1.031908e+01         -21.307189
+        mango_mdd      large      PPI                 4                  NaN 7.408022e+00 61   9.369445e+00         -20.934246
+        mango_mdd      large      PPI                 5                  NaN 6.130455e+00 60   1.056834e+01         -41.992277
+        mango_mdd      large      PPI                 6                  NaN 4.945002e+00 59   1.134420e+01         -56.409423
+        mango_mdd      large      PPI                 7                  NaN 4.764833e+00 59   9.485686e+00         -49.768178
+        mango_mdd      large      PPI                 8                  NaN 5.014792e+00 59   1.413719e+01         -64.527650
+        mango_mdd      large     REER                 1                  NaN 1.337140e+01 80   2.158446e+01         -38.050808
+        mango_mdd      large     REER                 2                  NaN 1.431942e+01 80   2.233608e+01         -35.891074
+        mango_mdd      large     REER                 3                  NaN 1.375560e+01 80   2.233330e+01         -38.407662
+        mango_mdd      large     REER                 4                  NaN 1.399785e+01 80   2.089951e+01         -33.023084
+        mango_mdd      large     REER                 5                  NaN 1.471715e+01 80   2.075614e+01         -29.094958
+        mango_mdd      large     REER                 6                  NaN 1.414114e+01 80   1.887885e+01         -25.095359
+        mango_mdd      large     REER                 7                  NaN 1.202637e+01 80   2.194934e+01         -45.208515
+        mango_mdd      large     REER                 8                  NaN 9.220815e+00 80   3.332740e+01         -72.332634
+        mango_mdd      large    SP500                 1                  NaN 3.462270e+01 80   4.887855e+01         -29.165857
+        mango_mdd      large    SP500                 2                  NaN 3.442726e+01 80   5.326091e+01         -35.361104
+        mango_mdd      large    SP500                 3                  NaN 3.310303e+01 80   5.755284e+01         -42.482367
+        mango_mdd      large    SP500                 4                  NaN 2.965535e+01 80   5.958596e+01         -50.230973
+        mango_mdd      large    SP500                 5                  NaN 2.640891e+01 80   5.989957e+01         -55.911351
+        mango_mdd      large    SP500                 6                  NaN 2.538335e+01 80   5.663903e+01         -55.183999
+        mango_mdd      large    SP500                 7                  NaN 2.517618e+01 80   7.074556e+01         -64.413058
+        mango_mdd      large    SP500                 8                  NaN 2.354944e+01 80   9.819189e+01         -76.016918
+        mango_mdd      large     TB10                 1                  NaN 3.791688e-01 80   4.075131e-01          -6.955428
+        mango_mdd      large     TB10                 2                  NaN 7.827833e-01 80   8.550546e-01          -8.452252
+        mango_mdd      large     TB10                 3                  NaN 1.109410e+00 80   1.126385e+00          -1.507012
+        mango_mdd      large     TB10                 4                  NaN 1.330495e+00 80   1.319938e+00           0.799798
+        mango_mdd      large     TB10                 5                  NaN 1.539144e+00 80   1.725161e+00         -10.782583
+        mango_mdd      large     TB10                 6                  NaN 1.792293e+00 80   1.984087e+00          -9.666629
+        mango_mdd      large     TB10                 7                  NaN 2.213059e+00 80   1.845017e+00          19.947866
+        mango_mdd      large     TB10                 8                  NaN 2.493114e+00 80   3.297348e+00         -24.390315
+        mango_mdd      large   TOTRES                 1                  NaN 1.744408e+02 80   2.632129e+02         -33.726323
+        mango_mdd      large   TOTRES                 2                  NaN 1.804179e+02 80   2.702892e+02         -33.250042
+        mango_mdd      large   TOTRES                 3                  NaN 1.655266e+02 80   2.736447e+02         -39.510385
+        mango_mdd      large   TOTRES                 4                  NaN 1.301834e+02 80   2.581177e+02         -49.564328
+        mango_mdd      large   TOTRES                 5                  NaN 9.963417e+01 80   2.593929e+02         -61.589469
+        mango_mdd      large   TOTRES                 6                  NaN 9.211174e+01 80   2.485634e+02         -62.942362
+        mango_mdd      large   TOTRES                 7                  NaN 9.755897e+01 80   3.057410e+02         -68.090971
+        mango_mdd      large   TOTRES                 8                  NaN 9.699871e+01 80   4.557875e+02         -78.718433
+        mango_mdd      large      UNR                 1                  NaN 2.063133e-01 80   2.220054e-01          -7.068348
+        mango_mdd      large      UNR                 2                  NaN 4.684365e-01 80   6.047114e-01         -22.535521
+        mango_mdd      large      UNR                 3                  NaN 9.063181e-01 80   1.310311e+00         -30.831818
+        mango_mdd      large      UNR                 4                  NaN 1.355704e+00 80   2.037686e+00         -33.468422
+        mango_mdd      large      UNR                 5                  NaN 1.756498e+00 80   2.528588e+00         -30.534428
+        mango_mdd      large      UNR                 6                  NaN 2.143120e+00 80   2.929683e+00         -26.848057
+        mango_mdd      large      UNR                 7                  NaN 2.580675e+00 80   4.098830e+00         -37.038749
+        mango_mdd      large      UNR                 8                  NaN 2.994843e+00 80   6.211661e+00         -51.786756
+        mango_mdd      large     WAGE                 1                  NaN 5.951935e+00 80   6.629527e+00         -10.220822
+        mango_mdd      large     WAGE                 2                  NaN 4.555940e+00 80   4.956697e+00          -8.085162
+        mango_mdd      large     WAGE                 3                  NaN 4.104189e+00 80   4.033840e+00           1.743968
+        mango_mdd      large     WAGE                 4                  NaN 3.279961e+00 80   3.527173e+00          -7.008784
+        mango_mdd      large     WAGE                 5                  NaN 2.663080e+00 80   4.305095e+00         -38.141202
+        mango_mdd      large     WAGE                 6                  NaN 2.374988e+00 80   3.944293e+00         -39.786718
+        mango_mdd      large     WAGE                 7                  NaN 2.766615e+00 80   2.121440e+00          30.412090
+        mango_mdd      large     WAGE                 8                  NaN 3.086991e+00 80   5.031420e+00         -38.645731
+       mango_rmse      small     DEFL                 1                  h1q 1.110191e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 1                  h2q 1.195713e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 1                  h4q 1.105388e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 1                  h8q 1.036108e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 2                  h1q 1.031975e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 2                  h2q 1.099618e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 2                  h4q 1.018270e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 2                  h8q 9.124010e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 3                  h1q 1.007799e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 3                  h2q 1.068715e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 3                  h4q 9.874509e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 3                  h8q 8.943925e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 4                  h1q 9.814126e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 4                  h2q 1.039741e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 4                  h4q 9.672430e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 4                  h8q 8.868155e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 5                  h1q 9.617490e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 5                  h2q 1.039129e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 5                  h4q 9.482269e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 5                  h8q 8.913438e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 6                  h1q 9.701383e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 6                  h2q 1.031560e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 6                  h4q 9.506190e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 6                  h8q 9.181768e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 7                  h1q 9.741902e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 7                  h2q 1.031893e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 7                  h4q 9.671078e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 7                  h8q 9.430331e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 8                  h1q 9.870812e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 8                  h2q 1.037039e+00 80            NaN                NaN
+       mango_rmse      small     DEFL                 8                  h4q 9.859502e-01 80            NaN                NaN
+       mango_rmse      small     DEFL                 8                  h8q 9.851004e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 1                  h1q 3.767234e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 1                  h2q 3.539703e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 1                  h4q 3.804823e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 1                  h8q 4.142326e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 2                  h1q 7.310633e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 2                  h2q 6.954062e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 2                  h4q 7.448331e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 2                  h8q 7.981048e-01 80            NaN                NaN
+       mango_rmse      small      FFR                 3                  h1q 1.062259e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 3                  h2q 1.032458e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 3                  h4q 1.085698e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 3                  h8q 1.144364e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 4                  h1q 1.382370e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 4                  h2q 1.358555e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 4                  h4q 1.429148e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 4                  h8q 1.479313e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 5                  h1q 1.690232e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 5                  h2q 1.680468e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 5                  h4q 1.759518e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 5                  h8q 1.785851e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 6                  h1q 1.969437e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 6                  h2q 1.970279e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 6                  h4q 2.040727e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 6                  h8q 2.051717e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 7                  h1q 2.205642e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 7                  h2q 2.208824e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 7                  h4q 2.271116e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 7                  h8q 2.264160e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 8                  h1q 2.412565e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 8                  h2q 2.424927e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 8                  h4q 2.486601e+00 80            NaN                NaN
+       mango_rmse      small      FFR                 8                  h8q 2.458086e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 1                  h1q 2.531074e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 1                  h2q 2.486875e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 1                  h4q 2.594703e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 1                  h8q 2.563226e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 2                  h1q 2.322851e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 2                  h2q 2.249926e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 2                  h4q 2.354944e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 2                  h8q 2.372295e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 3                  h1q 2.749445e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 3                  h2q 2.691611e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 3                  h4q 2.774272e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 3                  h8q 2.809650e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 4                  h1q 2.474703e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 4                  h2q 2.401601e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 4                  h4q 2.490353e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 4                  h8q 2.501384e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 5                  h1q 2.308464e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 5                  h2q 2.223231e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 5                  h4q 2.275538e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 5                  h8q 2.273818e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 6                  h1q 2.145910e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 6                  h2q 2.068328e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 6                  h4q 2.107479e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 6                  h8q 2.100309e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 7                  h1q 2.012431e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 7                  h2q 1.942471e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 7                  h4q 1.980941e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 7                  h8q 1.955190e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 8                  h1q 1.867908e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 8                  h2q 1.819340e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 8                  h4q 1.837649e+00 80            NaN                NaN
+       mango_rmse      small      GDP                 8                  h8q 1.813713e+00 80            NaN                NaN
+mango_rmse_random      small     DEFL                 1                  h1q 9.776035e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 1                  h2q 1.023424e+00 80            NaN                NaN
+mango_rmse_random      small     DEFL                 1                  h4q 8.962652e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 1                  h8q 8.994972e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 2                  h1q 9.198753e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 2                  h2q 9.479868e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 2                  h4q 7.838109e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 2                  h8q 7.906329e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 3                  h1q 9.024567e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 3                  h2q 9.098341e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 3                  h4q 7.518628e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 3                  h8q 7.606743e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 4                  h1q 8.841722e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 4                  h2q 8.781843e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 4                  h4q 7.330868e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 4                  h8q 7.358141e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 5                  h1q 8.831607e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 5                  h2q 8.799480e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 5                  h4q 7.417595e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 5                  h8q 7.499304e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 6                  h1q 9.003860e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 6                  h2q 8.968486e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 6                  h4q 7.787482e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 6                  h8q 7.868520e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 7                  h1q 9.234354e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 7                  h2q 9.255185e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 7                  h4q 8.228276e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 7                  h8q 8.266372e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 8                  h1q 9.536071e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 8                  h2q 9.548863e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 8                  h4q 8.701987e-01 80            NaN                NaN
+mango_rmse_random      small     DEFL                 8                  h8q 8.728936e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 1                  h1q 4.172794e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 1                  h2q 4.001999e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 1                  h4q 4.145811e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 1                  h8q 4.144476e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 2                  h1q 7.698017e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 2                  h2q 7.654795e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 2                  h4q 8.029760e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 2                  h8q 7.956028e-01 80            NaN                NaN
+mango_rmse_random      small      FFR                 3                  h1q 1.105684e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 3                  h2q 1.092921e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 3                  h4q 1.134642e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 3                  h8q 1.124205e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 4                  h1q 1.424372e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 4                  h2q 1.406420e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 4                  h4q 1.448237e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 4                  h8q 1.446352e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 5                  h1q 1.705168e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 5                  h2q 1.703197e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 5                  h4q 1.756369e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 5                  h8q 1.755471e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 6                  h1q 1.947690e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 6                  h2q 1.950151e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 6                  h4q 2.014146e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 6                  h8q 2.013639e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 7                  h1q 2.157155e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 7                  h2q 2.150553e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 7                  h4q 2.220017e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 7                  h8q 2.222940e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 8                  h1q 2.345226e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 8                  h2q 2.334321e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 8                  h4q 2.414331e+00 80            NaN                NaN
+mango_rmse_random      small      FFR                 8                  h8q 2.418699e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 1                  h1q 2.539523e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 1                  h2q 2.699159e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 1                  h4q 2.646838e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 1                  h8q 2.632074e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 2                  h1q 2.258126e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 2                  h2q 2.491155e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 2                  h4q 2.449366e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 2                  h8q 2.436121e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 3                  h1q 2.678109e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 3                  h2q 2.837066e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 3                  h4q 2.815521e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 3                  h8q 2.797543e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 4                  h1q 2.377718e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 4                  h2q 2.532807e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 4                  h4q 2.483557e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 4                  h8q 2.477804e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 5                  h1q 2.189477e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 5                  h2q 2.302747e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 5                  h4q 2.222777e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 5                  h8q 2.216289e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 6                  h1q 1.986804e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 6                  h2q 2.102917e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 6                  h4q 2.003479e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 6                  h8q 2.000267e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 7                  h1q 1.883858e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 7                  h2q 1.990639e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 7                  h4q 1.857394e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 7                  h8q 1.858369e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 8                  h1q 1.817894e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 8                  h2q 1.865359e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 8                  h4q 1.694510e+00 80            NaN                NaN
+mango_rmse_random      small      GDP                 8                  h8q 1.689478e+00 80            NaN                NaN
+            paper      large      AHE                 1                  NaN 7.513040e-01 80   7.513040e-01           0.000000
+            paper      large      AHE                 2                  NaN 7.344598e-01 80   7.344598e-01           0.000000
+            paper      large      AHE                 3                  NaN 7.599950e-01 80   7.599950e-01           0.000000
+            paper      large      AHE                 4                  NaN 8.003227e-01 80   8.003227e-01           0.000000
+            paper      large      AHE                 5                  NaN 8.396178e-01 80   8.396178e-01           0.000000
+            paper      large      AHE                 6                  NaN 8.816203e-01 80   8.816203e-01           0.000000
+            paper      large      AHE                 7                  NaN 1.004671e+00 80   1.004671e+00           0.000000
+            paper      large      AHE                 8                  NaN 1.132445e+00 80   1.132445e+00           0.000000
+            paper      large     COMM                 1                  NaN 1.989345e+01 80   1.989345e+01           0.000000
+            paper      large     COMM                 2                  NaN 2.105005e+01 80   2.105005e+01           0.000000
+            paper      large     COMM                 3                  NaN 1.894286e+01 80   1.894286e+01           0.000000
+            paper      large     COMM                 4                  NaN 1.655772e+01 80   1.655772e+01           0.000000
+            paper      large     COMM                 5                  NaN 2.028439e+01 80   2.028439e+01           0.000000
+            paper      large     COMM                 6                  NaN 2.213317e+01 80   2.213317e+01           0.000000
+            paper      large     COMM                 7                  NaN 1.788762e+01 80   1.788762e+01           0.000000
+            paper      large     COMM                 8                  NaN 2.823904e+01 80   2.823904e+01           0.000000
+            paper      large     CONS                 1                  NaN 2.576408e+00 80   2.576408e+00           0.000000
+            paper      large     CONS                 2                  NaN 3.300406e+00 80   3.300406e+00           0.000000
+            paper      large     CONS                 3                  NaN 4.071043e+00 80   4.071043e+00           0.000000
+            paper      large     CONS                 4                  NaN 4.248824e+00 80   4.248824e+00           0.000000
+            paper      large     CONS                 5                  NaN 3.758810e+00 80   3.758810e+00           0.000000
+            paper      large     CONS                 6                  NaN 3.732784e+00 80   3.732784e+00           0.000000
+            paper      large     CONS                 7                  NaN 5.287704e+00 80   5.287704e+00           0.000000
+            paper      large     CONS                 8                  NaN 6.281306e+00 80   6.281306e+00           0.000000
+            paper      large      CPI                 1                  NaN 4.010114e+00 80   4.010114e+00           0.000000
+            paper      large      CPI                 2                  NaN 4.496221e+00 80   4.496221e+00           0.000000
+            paper      large      CPI                 3                  NaN 4.383412e+00 80   4.383412e+00           0.000000
+            paper      large      CPI                 4                  NaN 4.094012e+00 80   4.094012e+00           0.000000
+            paper      large      CPI                 5                  NaN 4.524668e+00 80   4.524668e+00           0.000000
+            paper      large      CPI                 6                  NaN 4.677834e+00 80   4.677834e+00           0.000000
+            paper      large      CPI                 7                  NaN 3.795110e+00 80   3.795110e+00           0.000000
+            paper      large      CPI                 8                  NaN 5.522200e+00 80   5.522200e+00           0.000000
+            paper      large     DEFL                 1                  NaN 1.500543e+00 80   1.500543e+00           0.000000
+            paper      large     DEFL                 2                  NaN 1.624058e+00 80   1.624058e+00           0.000000
+            paper      large     DEFL                 3                  NaN 1.837433e+00 80   1.837433e+00           0.000000
+            paper      large     DEFL                 4                  NaN 1.827845e+00 80   1.827845e+00           0.000000
+            paper      large     DEFL                 5                  NaN 1.652748e+00 80   1.652748e+00           0.000000
+            paper      large     DEFL                 6                  NaN 1.704067e+00 80   1.704067e+00           0.000000
+            paper      large     DEFL                 7                  NaN 2.044001e+00 80   2.044001e+00           0.000000
+            paper      large     DEFL                 8                  NaN 2.165755e+00 80   2.165755e+00           0.000000
+            paper      large      EMP                 1                  NaN 8.865198e-01 80   8.865198e-01           0.000000
+            paper      large      EMP                 2                  NaN 1.307976e+00 80   1.307976e+00           0.000000
+            paper      large      EMP                 3                  NaN 2.016924e+00 80   2.016924e+00           0.000000
+            paper      large      EMP                 4                  NaN 2.692252e+00 80   2.692252e+00           0.000000
+            paper      large      EMP                 5                  NaN 3.139972e+00 80   3.139972e+00           0.000000
+            paper      large      EMP                 6                  NaN 3.311735e+00 80   3.311735e+00           0.000000
+            paper      large      EMP                 7                  NaN 3.472308e+00 80   3.472308e+00           0.000000
+            paper      large      EMP                 8                  NaN 4.167727e+00 80   4.167727e+00           0.000000
+            paper      large      FFR                 1                  NaN 8.327160e-01 80   8.327160e-01           0.000000
+            paper      large      FFR                 2                  NaN 1.842248e+00 80   1.842248e+00           0.000000
+            paper      large      FFR                 3                  NaN 2.604542e+00 80   2.604542e+00           0.000000
+            paper      large      FFR                 4                  NaN 2.690804e+00 80   2.690804e+00           0.000000
+            paper      large      FFR                 5                  NaN 2.584586e+00 80   2.584586e+00           0.000000
+            paper      large      FFR                 6                  NaN 3.731441e+00 80   3.731441e+00           0.000000
+            paper      large      FFR                 7                  NaN 6.037842e+00 80   6.037842e+00           0.000000
+            paper      large      FFR                 8                  NaN 7.935936e+00 80   7.935936e+00           0.000000
+            paper      large      GDP                 1                  NaN 3.295600e+00 80   3.295600e+00           0.000000
+            paper      large      GDP                 2                  NaN 3.642094e+00 80   3.642094e+00           0.000000
+            paper      large      GDP                 3                  NaN 4.007575e+00 80   4.007575e+00           0.000000
+            paper      large      GDP                 4                  NaN 4.373485e+00 80   4.373485e+00           0.000000
+            paper      large      GDP                 5                  NaN 4.918918e+00 80   4.918918e+00           0.000000
+            paper      large      GDP                 6                  NaN 4.953560e+00 80   4.953560e+00           0.000000
+            paper      large      GDP                 7                  NaN 4.929319e+00 80   4.929319e+00           0.000000
+            paper      large      GDP                 8                  NaN 6.612821e+00 80   6.612821e+00           0.000000
+            paper      large    HOURS                 1                  NaN 2.258877e+00 80   2.258877e+00           0.000000
+            paper      large    HOURS                 2                  NaN 2.933931e+00 80   2.933931e+00           0.000000
+            paper      large    HOURS                 3                  NaN 3.816047e+00 80   3.816047e+00           0.000000
+            paper      large    HOURS                 4                  NaN 4.551497e+00 80   4.551497e+00           0.000000
+            paper      large    HOURS                 5                  NaN 5.089497e+00 80   5.089497e+00           0.000000
+            paper      large    HOURS                 6                  NaN 5.236594e+00 80   5.236594e+00           0.000000
+            paper      large    HOURS                 7                  NaN 5.463429e+00 80   5.463429e+00           0.000000
+            paper      large    HOURS                 8                  NaN 6.762605e+00 80   6.762605e+00           0.000000
+            paper      large      INV                 1                  NaN 1.211919e+01 80   1.211919e+01           0.000000
+            paper      large      INV                 2                  NaN 1.545572e+01 80   1.545572e+01           0.000000
+            paper      large      INV                 3                  NaN 1.965224e+01 80   1.965224e+01           0.000000
+            paper      large      INV                 4                  NaN 2.277759e+01 80   2.277759e+01           0.000000
+            paper      large      INV                 5                  NaN 2.503012e+01 80   2.503012e+01           0.000000
+            paper      large      INV                 6                  NaN 2.647956e+01 80   2.647956e+01           0.000000
+            paper      large      INV                 7                  NaN 2.525453e+01 80   2.525453e+01           0.000000
+            paper      large      INV                 8                  NaN 2.871821e+01 80   2.871821e+01           0.000000
+            paper      large       M1                 1                  NaN 1.022435e+01 80   1.022435e+01           0.000000
+            paper      large       M1                 2                  NaN 1.116335e+01 80   1.116335e+01           0.000000
+            paper      large       M1                 3                  NaN 1.191177e+01 80   1.191177e+01           0.000000
+            paper      large       M1                 4                  NaN 1.163670e+01 80   1.163670e+01           0.000000
+            paper      large       M1                 5                  NaN 1.174412e+01 80   1.174412e+01           0.000000
+            paper      large       M1                 6                  NaN 1.187958e+01 80   1.187958e+01           0.000000
+            paper      large       M1                 7                  NaN 1.369489e+01 80   1.369489e+01           0.000000
+            paper      large       M1                 8                  NaN 1.796871e+01 80   1.796871e+01           0.000000
+            paper      large       M2                 1                  NaN 3.908453e+00 80   3.908453e+00           0.000000
+            paper      large       M2                 2                  NaN 4.305176e+00 80   4.305176e+00           0.000000
+            paper      large       M2                 3                  NaN 3.901604e+00 80   3.901604e+00           0.000000
+            paper      large       M2                 4                  NaN 3.600863e+00 80   3.600863e+00           0.000000
+            paper      large       M2                 5                  NaN 4.268473e+00 80   4.268473e+00           0.000000
+            paper      large       M2                 6                  NaN 4.582185e+00 80   4.582185e+00           0.000000
+            paper      large       M2                 7                  NaN 3.511581e+00 80   3.511581e+00           0.000000
+            paper      large       M2                 8                  NaN 4.473559e+00 80   4.473559e+00           0.000000
+            paper      large    MBASE                 1                  NaN 5.337801e+01 80   5.337801e+01           0.000000
+            paper      large    MBASE                 2                  NaN 5.761953e+01 80   5.761953e+01           0.000000
+            paper      large    MBASE                 3                  NaN 5.812761e+01 80   5.812761e+01           0.000000
+            paper      large    MBASE                 4                  NaN 5.559596e+01 80   5.559596e+01           0.000000
+            paper      large    MBASE                 5                  NaN 5.807881e+01 80   5.807881e+01           0.000000
+            paper      large    MBASE                 6                  NaN 5.480064e+01 80   5.480064e+01           0.000000
+            paper      large    MBASE                 7                  NaN 5.652200e+01 80   5.652200e+01           0.000000
+            paper      large    MBASE                 8                  NaN 9.204960e+01 80   9.204960e+01           0.000000
+            paper      large    NBRES                 1                  NaN 6.330980e+05 80   6.330980e+05           0.000000
+            paper      large    NBRES                 2                  NaN 6.866341e+05 80   6.866341e+05           0.000000
+            paper      large    NBRES                 3                  NaN 7.528474e+05 80   7.528474e+05           0.000000
+            paper      large    NBRES                 4                  NaN 8.443374e+05 80   8.443374e+05           0.000000
+            paper      large    NBRES                 5                  NaN 8.976075e+05 80   8.976075e+05           0.000000
+            paper      large    NBRES                 6                  NaN 9.655102e+05 80   9.655102e+05           0.000000
+            paper      large    NBRES                 7                  NaN 1.023836e+06 80   1.023836e+06           0.000000
+            paper      large    NBRES                 8                  NaN 1.091027e+06 80   1.091027e+06           0.000000
+            paper      large      PPI                 1                  NaN 9.774532e+00 64   9.774532e+00           0.000000
+            paper      large      PPI                 2                  NaN 1.088564e+01 63   1.088564e+01           0.000000
+            paper      large      PPI                 3                  NaN 1.031908e+01 62   1.031908e+01           0.000000
+            paper      large      PPI                 4                  NaN 9.369445e+00 61   9.369445e+00           0.000000
+            paper      large      PPI                 5                  NaN 1.056834e+01 60   1.056834e+01           0.000000
+            paper      large      PPI                 6                  NaN 1.134420e+01 59   1.134420e+01           0.000000
+            paper      large      PPI                 7                  NaN 9.485686e+00 59   9.485686e+00           0.000000
+            paper      large      PPI                 8                  NaN 1.413719e+01 59   1.413719e+01           0.000000
+            paper      large     REER                 1                  NaN 2.158446e+01 80   2.158446e+01           0.000000
+            paper      large     REER                 2                  NaN 2.233608e+01 80   2.233608e+01           0.000000
+            paper      large     REER                 3                  NaN 2.233330e+01 80   2.233330e+01           0.000000
+            paper      large     REER                 4                  NaN 2.089951e+01 80   2.089951e+01           0.000000
+            paper      large     REER                 5                  NaN 2.075614e+01 80   2.075614e+01           0.000000
+            paper      large     REER                 6                  NaN 1.887885e+01 80   1.887885e+01           0.000000
+            paper      large     REER                 7                  NaN 2.194934e+01 80   2.194934e+01           0.000000
+            paper      large     REER                 8                  NaN 3.332740e+01 80   3.332740e+01           0.000000
+            paper      large    SP500                 1                  NaN 4.887855e+01 80   4.887855e+01           0.000000
+            paper      large    SP500                 2                  NaN 5.326091e+01 80   5.326091e+01           0.000000
+            paper      large    SP500                 3                  NaN 5.755284e+01 80   5.755284e+01           0.000000
+            paper      large    SP500                 4                  NaN 5.958596e+01 80   5.958596e+01           0.000000
+            paper      large    SP500                 5                  NaN 5.989957e+01 80   5.989957e+01           0.000000
+            paper      large    SP500                 6                  NaN 5.663903e+01 80   5.663903e+01           0.000000
+            paper      large    SP500                 7                  NaN 7.074556e+01 80   7.074556e+01           0.000000
+            paper      large    SP500                 8                  NaN 9.819189e+01 80   9.819189e+01           0.000000
+            paper      large     TB10                 1                  NaN 4.075131e-01 80   4.075131e-01           0.000000
+            paper      large     TB10                 2                  NaN 8.550546e-01 80   8.550546e-01           0.000000
+            paper      large     TB10                 3                  NaN 1.126385e+00 80   1.126385e+00           0.000000
+            paper      large     TB10                 4                  NaN 1.319938e+00 80   1.319938e+00           0.000000
+            paper      large     TB10                 5                  NaN 1.725161e+00 80   1.725161e+00           0.000000
+            paper      large     TB10                 6                  NaN 1.984087e+00 80   1.984087e+00           0.000000
+            paper      large     TB10                 7                  NaN 1.845017e+00 80   1.845017e+00           0.000000
+            paper      large     TB10                 8                  NaN 3.297348e+00 80   3.297348e+00           0.000000
+            paper      large   TOTRES                 1                  NaN 2.632129e+02 80   2.632129e+02           0.000000
+            paper      large   TOTRES                 2                  NaN 2.702892e+02 80   2.702892e+02           0.000000
+            paper      large   TOTRES                 3                  NaN 2.736447e+02 80   2.736447e+02           0.000000
+            paper      large   TOTRES                 4                  NaN 2.581177e+02 80   2.581177e+02           0.000000
+            paper      large   TOTRES                 5                  NaN 2.593929e+02 80   2.593929e+02           0.000000
+            paper      large   TOTRES                 6                  NaN 2.485634e+02 80   2.485634e+02           0.000000
+            paper      large   TOTRES                 7                  NaN 3.057410e+02 80   3.057410e+02           0.000000
+            paper      large   TOTRES                 8                  NaN 4.557875e+02 80   4.557875e+02           0.000000
+            paper      large      UNR                 1                  NaN 2.220054e-01 80   2.220054e-01           0.000000
+            paper      large      UNR                 2                  NaN 6.047114e-01 80   6.047114e-01           0.000000
+            paper      large      UNR                 3                  NaN 1.310311e+00 80   1.310311e+00           0.000000
+            paper      large      UNR                 4                  NaN 2.037686e+00 80   2.037686e+00           0.000000
+            paper      large      UNR                 5                  NaN 2.528588e+00 80   2.528588e+00           0.000000
+            paper      large      UNR                 6                  NaN 2.929683e+00 80   2.929683e+00           0.000000
+            paper      large      UNR                 7                  NaN 4.098830e+00 80   4.098830e+00           0.000000
+            paper      large      UNR                 8                  NaN 6.211661e+00 80   6.211661e+00           0.000000
+            paper      large     WAGE                 1                  NaN 6.629527e+00 80   6.629527e+00           0.000000
+            paper      large     WAGE                 2                  NaN 4.956697e+00 80   4.956697e+00           0.000000
+            paper      large     WAGE                 3                  NaN 4.033840e+00 80   4.033840e+00           0.000000
+            paper      large     WAGE                 4                  NaN 3.527173e+00 80   3.527173e+00           0.000000
+            paper      large     WAGE                 5                  NaN 4.305095e+00 80   4.305095e+00           0.000000
+            paper      large     WAGE                 6                  NaN 3.944293e+00 80   3.944293e+00           0.000000
+            paper      large     WAGE                 7                  NaN 2.121440e+00 80   2.121440e+00           0.000000
+            paper      large     WAGE                 8                  NaN 5.031420e+00 80   5.031420e+00           0.000000

@@ -1,0 +1,1905 @@
+              model model_size variable  horizon_quarters      rmse  n
+    ladder_lsj1_all     medium     CONS                 1  1.822619 80
+    ladder_lsj1_all     medium     CONS                 2  1.742277 80
+    ladder_lsj1_all     medium     CONS                 3  2.536495 80
+    ladder_lsj1_all     medium     CONS                 4  2.214970 80
+    ladder_lsj1_all     medium     CONS                 5  2.024990 80
+    ladder_lsj1_all     medium     CONS                 6  1.915586 80
+    ladder_lsj1_all     medium     CONS                 7  1.816434 80
+    ladder_lsj1_all     medium     CONS                 8  1.718794 80
+    ladder_lsj1_all     medium     DEFL                 1  0.931617 80
+    ladder_lsj1_all     medium     DEFL                 2  0.838929 80
+    ladder_lsj1_all     medium     DEFL                 3  0.801477 80
+    ladder_lsj1_all     medium     DEFL                 4  0.775462 80
+    ladder_lsj1_all     medium     DEFL                 5  0.764247 80
+    ladder_lsj1_all     medium     DEFL                 6  0.776968 80
+    ladder_lsj1_all     medium     DEFL                 7  0.793926 80
+    ladder_lsj1_all     medium     DEFL                 8  0.819212 80
+    ladder_lsj1_all     medium      FFR                 1  0.387440 80
+    ladder_lsj1_all     medium      FFR                 2  0.724766 80
+    ladder_lsj1_all     medium      FFR                 3  1.042400 80
+    ladder_lsj1_all     medium      FFR                 4  1.312247 80
+    ladder_lsj1_all     medium      FFR                 5  1.550993 80
+    ladder_lsj1_all     medium      FFR                 6  1.776163 80
+    ladder_lsj1_all     medium      FFR                 7  1.979720 80
+    ladder_lsj1_all     medium      FFR                 8  2.152735 80
+    ladder_lsj1_all     medium      GDP                 1  2.211339 80
+    ladder_lsj1_all     medium      GDP                 2  2.121056 80
+    ladder_lsj1_all     medium      GDP                 3  2.713808 80
+    ladder_lsj1_all     medium      GDP                 4  2.420665 80
+    ladder_lsj1_all     medium      GDP                 5  2.204830 80
+    ladder_lsj1_all     medium      GDP                 6  2.070729 80
+    ladder_lsj1_all     medium      GDP                 7  1.960012 80
+    ladder_lsj1_all     medium      GDP                 8  1.850912 80
+    ladder_lsj1_all     medium    HOURS                 1  2.189652 80
+    ladder_lsj1_all     medium    HOURS                 2  2.370783 80
+    ladder_lsj1_all     medium    HOURS                 3  3.616122 80
+    ladder_lsj1_all     medium    HOURS                 4  3.354204 80
+    ladder_lsj1_all     medium    HOURS                 5  3.140078 80
+    ladder_lsj1_all     medium    HOURS                 6  3.007423 80
+    ladder_lsj1_all     medium    HOURS                 7  2.867946 80
+    ladder_lsj1_all     medium    HOURS                 8  2.707481 80
+    ladder_lsj1_all     medium      INV                 1 10.190923 80
+    ladder_lsj1_all     medium      INV                 2  9.601696 80
+    ladder_lsj1_all     medium      INV                 3 10.161976 80
+    ladder_lsj1_all     medium      INV                 4  9.516897 80
+    ladder_lsj1_all     medium      INV                 5  8.749914 80
+    ladder_lsj1_all     medium      INV                 6  8.094487 80
+    ladder_lsj1_all     medium      INV                 7  7.511375 80
+    ladder_lsj1_all     medium      INV                 8  6.971186 80
+    ladder_lsj1_all     medium     WAGE                 1  4.304624 80
+    ladder_lsj1_all     medium     WAGE                 2  2.524482 80
+    ladder_lsj1_all     medium     WAGE                 3  2.374828 80
+    ladder_lsj1_all     medium     WAGE                 4  2.015340 80
+    ladder_lsj1_all     medium     WAGE                 5  1.831153 80
+    ladder_lsj1_all     medium     WAGE                 6  1.691437 80
+    ladder_lsj1_all     medium     WAGE                 7  1.533056 80
+    ladder_lsj1_all     medium     WAGE                 8  1.486254 80
+    ladder_lsj1_w12     medium     CONS                 1  1.863458 80
+    ladder_lsj1_w12     medium     CONS                 2  1.759588 80
+    ladder_lsj1_w12     medium     CONS                 3  2.499929 80
+    ladder_lsj1_w12     medium     CONS                 4  2.149499 80
+    ladder_lsj1_w12     medium     CONS                 5  1.947549 80
+    ladder_lsj1_w12     medium     CONS                 6  1.841181 80
+    ladder_lsj1_w12     medium     CONS                 7  1.755423 80
+    ladder_lsj1_w12     medium     CONS                 8  1.656432 80
+    ladder_lsj1_w12     medium     DEFL                 1  0.922312 80
+    ladder_lsj1_w12     medium     DEFL                 2  0.824188 80
+    ladder_lsj1_w12     medium     DEFL                 3  0.788423 80
+    ladder_lsj1_w12     medium     DEFL                 4  0.758242 80
+    ladder_lsj1_w12     medium     DEFL                 5  0.745490 80
+    ladder_lsj1_w12     medium     DEFL                 6  0.748477 80
+    ladder_lsj1_w12     medium     DEFL                 7  0.753980 80
+    ladder_lsj1_w12     medium     DEFL                 8  0.773753 80
+    ladder_lsj1_w12     medium      FFR                 1  0.390151 80
+    ladder_lsj1_w12     medium      FFR                 2  0.771408 80
+    ladder_lsj1_w12     medium      FFR                 3  1.089336 80
+    ladder_lsj1_w12     medium      FFR                 4  1.340080 80
+    ladder_lsj1_w12     medium      FFR                 5  1.553941 80
+    ladder_lsj1_w12     medium      FFR                 6  1.770994 80
+    ladder_lsj1_w12     medium      FFR                 7  1.973519 80
+    ladder_lsj1_w12     medium      FFR                 8  2.144257 80
+    ladder_lsj1_w12     medium      GDP                 1  2.193913 80
+    ladder_lsj1_w12     medium      GDP                 2  2.155451 80
+    ladder_lsj1_w12     medium      GDP                 3  2.697972 80
+    ladder_lsj1_w12     medium      GDP                 4  2.388666 80
+    ladder_lsj1_w12     medium      GDP                 5  2.147259 80
+    ladder_lsj1_w12     medium      GDP                 6  2.011777 80
+    ladder_lsj1_w12     medium      GDP                 7  1.903121 80
+    ladder_lsj1_w12     medium      GDP                 8  1.786682 80
+    ladder_lsj1_w12     medium    HOURS                 1  2.219396 80
+    ladder_lsj1_w12     medium    HOURS                 2  2.377990 80
+    ladder_lsj1_w12     medium    HOURS                 3  3.571303 80
+    ladder_lsj1_w12     medium    HOURS                 4  3.276240 80
+    ladder_lsj1_w12     medium    HOURS                 5  3.019653 80
+    ladder_lsj1_w12     medium    HOURS                 6  2.881935 80
+    ladder_lsj1_w12     medium    HOURS                 7  2.738832 80
+    ladder_lsj1_w12     medium    HOURS                 8  2.574610 80
+    ladder_lsj1_w12     medium      INV                 1 10.291464 80
+    ladder_lsj1_w12     medium      INV                 2  9.589050 80
+    ladder_lsj1_w12     medium      INV                 3 10.108727 80
+    ladder_lsj1_w12     medium      INV                 4  9.485866 80
+    ladder_lsj1_w12     medium      INV                 5  8.719485 80
+    ladder_lsj1_w12     medium      INV                 6  8.069214 80
+    ladder_lsj1_w12     medium      INV                 7  7.486804 80
+    ladder_lsj1_w12     medium      INV                 8  6.922613 80
+    ladder_lsj1_w12     medium     WAGE                 1  4.249758 80
+    ladder_lsj1_w12     medium     WAGE                 2  2.522389 80
+    ladder_lsj1_w12     medium     WAGE                 3  2.366863 80
+    ladder_lsj1_w12     medium     WAGE                 4  2.001260 80
+    ladder_lsj1_w12     medium     WAGE                 5  1.783131 80
+    ladder_lsj1_w12     medium     WAGE                 6  1.640308 80
+    ladder_lsj1_w12     medium     WAGE                 7  1.479198 80
+    ladder_lsj1_w12     medium     WAGE                 8  1.432767 80
+    ladder_lsj1_w40     medium     CONS                 1  1.880995 80
+    ladder_lsj1_w40     medium     CONS                 2  1.797793 80
+    ladder_lsj1_w40     medium     CONS                 3  2.538034 80
+    ladder_lsj1_w40     medium     CONS                 4  2.205007 80
+    ladder_lsj1_w40     medium     CONS                 5  1.989631 80
+    ladder_lsj1_w40     medium     CONS                 6  1.884449 80
+    ladder_lsj1_w40     medium     CONS                 7  1.820725 80
+    ladder_lsj1_w40     medium     CONS                 8  1.725578 80
+    ladder_lsj1_w40     medium     DEFL                 1  0.944235 80
+    ladder_lsj1_w40     medium     DEFL                 2  0.852744 80
+    ladder_lsj1_w40     medium     DEFL                 3  0.813398 80
+    ladder_lsj1_w40     medium     DEFL                 4  0.788922 80
+    ladder_lsj1_w40     medium     DEFL                 5  0.779094 80
+    ladder_lsj1_w40     medium     DEFL                 6  0.789306 80
+    ladder_lsj1_w40     medium     DEFL                 7  0.805417 80
+    ladder_lsj1_w40     medium     DEFL                 8  0.832350 80
+    ladder_lsj1_w40     medium      FFR                 1  0.412507 80
+    ladder_lsj1_w40     medium      FFR                 2  0.789163 80
+    ladder_lsj1_w40     medium      FFR                 3  1.116554 80
+    ladder_lsj1_w40     medium      FFR                 4  1.391897 80
+    ladder_lsj1_w40     medium      FFR                 5  1.634288 80
+    ladder_lsj1_w40     medium      FFR                 6  1.870611 80
+    ladder_lsj1_w40     medium      FFR                 7  2.088931 80
+    ladder_lsj1_w40     medium      FFR                 8  2.265882 80
+    ladder_lsj1_w40     medium      GDP                 1  2.213433 80
+    ladder_lsj1_w40     medium      GDP                 2  2.144264 80
+    ladder_lsj1_w40     medium      GDP                 3  2.717739 80
+    ladder_lsj1_w40     medium      GDP                 4  2.401046 80
+    ladder_lsj1_w40     medium      GDP                 5  2.135186 80
+    ladder_lsj1_w40     medium      GDP                 6  1.998253 80
+    ladder_lsj1_w40     medium      GDP                 7  1.918887 80
+    ladder_lsj1_w40     medium      GDP                 8  1.800287 80
+    ladder_lsj1_w40     medium    HOURS                 1  2.140485 80
+    ladder_lsj1_w40     medium    HOURS                 2  2.356535 80
+    ladder_lsj1_w40     medium    HOURS                 3  3.613308 80
+    ladder_lsj1_w40     medium    HOURS                 4  3.337604 80
+    ladder_lsj1_w40     medium    HOURS                 5  3.041620 80
+    ladder_lsj1_w40     medium    HOURS                 6  2.899386 80
+    ladder_lsj1_w40     medium    HOURS                 7  2.789379 80
+    ladder_lsj1_w40     medium    HOURS                 8  2.619860 80
+    ladder_lsj1_w40     medium      INV                 1 10.197493 80
+    ladder_lsj1_w40     medium      INV                 2  9.534096 80
+    ladder_lsj1_w40     medium      INV                 3 10.098562 80
+    ladder_lsj1_w40     medium      INV                 4  9.421488 80
+    ladder_lsj1_w40     medium      INV                 5  8.603125 80
+    ladder_lsj1_w40     medium      INV                 6  7.932804 80
+    ladder_lsj1_w40     medium      INV                 7  7.388802 80
+    ladder_lsj1_w40     medium      INV                 8  6.797318 80
+    ladder_lsj1_w40     medium     WAGE                 1  4.272658 80
+    ladder_lsj1_w40     medium     WAGE                 2  2.553255 80
+    ladder_lsj1_w40     medium     WAGE                 3  2.408782 80
+    ladder_lsj1_w40     medium     WAGE                 4  2.049272 80
+    ladder_lsj1_w40     medium     WAGE                 5  1.854528 80
+    ladder_lsj1_w40     medium     WAGE                 6  1.718225 80
+    ladder_lsj1_w40     medium     WAGE                 7  1.581382 80
+    ladder_lsj1_w40     medium     WAGE                 8  1.539725 80
+    ladder_lsj1_w60     medium     CONS                 1  1.847549 80
+    ladder_lsj1_w60     medium     CONS                 2  1.709206 80
+    ladder_lsj1_w60     medium     CONS                 3  2.436227 80
+    ladder_lsj1_w60     medium     CONS                 4  2.126280 80
+    ladder_lsj1_w60     medium     CONS                 5  1.919554 80
+    ladder_lsj1_w60     medium     CONS                 6  1.807760 80
+    ladder_lsj1_w60     medium     CONS                 7  1.701877 80
+    ladder_lsj1_w60     medium     CONS                 8  1.577674 80
+    ladder_lsj1_w60     medium     DEFL                 1  0.936922 80
+    ladder_lsj1_w60     medium     DEFL                 2  0.836602 80
+    ladder_lsj1_w60     medium     DEFL                 3  0.795468 80
+    ladder_lsj1_w60     medium     DEFL                 4  0.765925 80
+    ladder_lsj1_w60     medium     DEFL                 5  0.754423 80
+    ladder_lsj1_w60     medium     DEFL                 6  0.762373 80
+    ladder_lsj1_w60     medium     DEFL                 7  0.776709 80
+    ladder_lsj1_w60     medium     DEFL                 8  0.800781 80
+    ladder_lsj1_w60     medium      FFR                 1  0.399830 80
+    ladder_lsj1_w60     medium      FFR                 2  0.766401 80
+    ladder_lsj1_w60     medium      FFR                 3  1.078309 80
+    ladder_lsj1_w60     medium      FFR                 4  1.340174 80
+    ladder_lsj1_w60     medium      FFR                 5  1.583472 80
+    ladder_lsj1_w60     medium      FFR                 6  1.814246 80
+    ladder_lsj1_w60     medium      FFR                 7  2.022147 80
+    ladder_lsj1_w60     medium      FFR                 8  2.187222 80
+    ladder_lsj1_w60     medium      GDP                 1  2.218192 80
+    ladder_lsj1_w60     medium      GDP                 2  2.098542 80
+    ladder_lsj1_w60     medium      GDP                 3  2.621781 80
+    ladder_lsj1_w60     medium      GDP                 4  2.341694 80
+    ladder_lsj1_w60     medium      GDP                 5  2.096203 80
+    ladder_lsj1_w60     medium      GDP                 6  1.947358 80
+    ladder_lsj1_w60     medium      GDP                 7  1.820115 80
+    ladder_lsj1_w60     medium      GDP                 8  1.671956 80
+    ladder_lsj1_w60     medium    HOURS                 1  2.219460 80
+    ladder_lsj1_w60     medium    HOURS                 2  2.398247 80
+    ladder_lsj1_w60     medium    HOURS                 3  3.568247 80
+    ladder_lsj1_w60     medium    HOURS                 4  3.348198 80
+    ladder_lsj1_w60     medium    HOURS                 5  3.128040 80
+    ladder_lsj1_w60     medium    HOURS                 6  2.989532 80
+    ladder_lsj1_w60     medium    HOURS                 7  2.839508 80
+    ladder_lsj1_w60     medium    HOURS                 8  2.654798 80
+    ladder_lsj1_w60     medium      INV                 1 10.525168 80
+    ladder_lsj1_w60     medium      INV                 2  9.978629 80
+    ladder_lsj1_w60     medium      INV                 3 10.339789 80
+    ladder_lsj1_w60     medium      INV                 4  9.645332 80
+    ladder_lsj1_w60     medium      INV                 5  8.792021 80
+    ladder_lsj1_w60     medium      INV                 6  8.036574 80
+    ladder_lsj1_w60     medium      INV                 7  7.359824 80
+    ladder_lsj1_w60     medium      INV                 8  6.724961 80
+    ladder_lsj1_w60     medium     WAGE                 1  4.295158 80
+    ladder_lsj1_w60     medium     WAGE                 2  2.525183 80
+    ladder_lsj1_w60     medium     WAGE                 3  2.374517 80
+    ladder_lsj1_w60     medium     WAGE                 4  2.011656 80
+    ladder_lsj1_w60     medium     WAGE                 5  1.813714 80
+    ladder_lsj1_w60     medium     WAGE                 6  1.675256 80
+    ladder_lsj1_w60     medium     WAGE                 7  1.523165 80
+    ladder_lsj1_w60     medium     WAGE                 8  1.478362 80
+    ladder_lsj1_w80     medium     CONS                 1  1.819741 80
+    ladder_lsj1_w80     medium     CONS                 2  1.692889 80
+    ladder_lsj1_w80     medium     CONS                 3  2.449430 80
+    ladder_lsj1_w80     medium     CONS                 4  2.104047 80
+    ladder_lsj1_w80     medium     CONS                 5  1.887478 80
+    ladder_lsj1_w80     medium     CONS                 6  1.744513 80
+    ladder_lsj1_w80     medium     CONS                 7  1.650401 80
+    ladder_lsj1_w80     medium     CONS                 8  1.519834 80
+    ladder_lsj1_w80     medium     DEFL                 1  0.940507 80
+    ladder_lsj1_w80     medium     DEFL                 2  0.837239 80
+    ladder_lsj1_w80     medium     DEFL                 3  0.791921 80
+    ladder_lsj1_w80     medium     DEFL                 4  0.760695 80
+    ladder_lsj1_w80     medium     DEFL                 5  0.749587 80
+    ladder_lsj1_w80     medium     DEFL                 6  0.759658 80
+    ladder_lsj1_w80     medium     DEFL                 7  0.775318 80
+    ladder_lsj1_w80     medium     DEFL                 8  0.801305 80
+    ladder_lsj1_w80     medium      FFR                 1  0.405732 80
+    ladder_lsj1_w80     medium      FFR                 2  0.765011 80
+    ladder_lsj1_w80     medium      FFR                 3  1.080270 80
+    ladder_lsj1_w80     medium      FFR                 4  1.358394 80
+    ladder_lsj1_w80     medium      FFR                 5  1.614419 80
+    ladder_lsj1_w80     medium      FFR                 6  1.844880 80
+    ladder_lsj1_w80     medium      FFR                 7  2.054353 80
+    ladder_lsj1_w80     medium      FFR                 8  2.224996 80
+    ladder_lsj1_w80     medium      GDP                 1  2.229179 80
+    ladder_lsj1_w80     medium      GDP                 2  2.131561 80
+    ladder_lsj1_w80     medium      GDP                 3  2.685539 80
+    ladder_lsj1_w80     medium      GDP                 4  2.365117 80
+    ladder_lsj1_w80     medium      GDP                 5  2.110384 80
+    ladder_lsj1_w80     medium      GDP                 6  1.932363 80
+    ladder_lsj1_w80     medium      GDP                 7  1.810414 80
+    ladder_lsj1_w80     medium      GDP                 8  1.652404 80
+    ladder_lsj1_w80     medium    HOURS                 1  2.248130 80
+    ladder_lsj1_w80     medium    HOURS                 2  2.447641 80
+    ladder_lsj1_w80     medium    HOURS                 3  3.665823 80
+    ladder_lsj1_w80     medium    HOURS                 4  3.399332 80
+    ladder_lsj1_w80     medium    HOURS                 5  3.166796 80
+    ladder_lsj1_w80     medium    HOURS                 6  3.015023 80
+    ladder_lsj1_w80     medium    HOURS                 7  2.859685 80
+    ladder_lsj1_w80     medium    HOURS                 8  2.661309 80
+    ladder_lsj1_w80     medium      INV                 1 10.553876 80
+    ladder_lsj1_w80     medium      INV                 2 10.194459 80
+    ladder_lsj1_w80     medium      INV                 3 10.623026 80
+    ladder_lsj1_w80     medium      INV                 4  9.814179 80
+    ladder_lsj1_w80     medium      INV                 5  8.932997 80
+    ladder_lsj1_w80     medium      INV                 6  8.148962 80
+    ladder_lsj1_w80     medium      INV                 7  7.472421 80
+    ladder_lsj1_w80     medium      INV                 8  6.827316 80
+    ladder_lsj1_w80     medium     WAGE                 1  4.305046 80
+    ladder_lsj1_w80     medium     WAGE                 2  2.521628 80
+    ladder_lsj1_w80     medium     WAGE                 3  2.368055 80
+    ladder_lsj1_w80     medium     WAGE                 4  1.992777 80
+    ladder_lsj1_w80     medium     WAGE                 5  1.794752 80
+    ladder_lsj1_w80     medium     WAGE                 6  1.658906 80
+    ladder_lsj1_w80     medium     WAGE                 7  1.497957 80
+    ladder_lsj1_w80     medium     WAGE                 8  1.461144 80
+  ladder_lsj_h2_w12     medium     CONS                 1  1.824728 80
+  ladder_lsj_h2_w12     medium     CONS                 2  1.728908 80
+  ladder_lsj_h2_w12     medium     CONS                 3  2.467668 80
+  ladder_lsj_h2_w12     medium     CONS                 4  2.122376 80
+  ladder_lsj_h2_w12     medium     CONS                 5  1.917742 80
+  ladder_lsj_h2_w12     medium     CONS                 6  1.817265 80
+  ladder_lsj_h2_w12     medium     CONS                 7  1.728022 80
+  ladder_lsj_h2_w12     medium     CONS                 8  1.638341 80
+  ladder_lsj_h2_w12     medium     DEFL                 1  0.923985 80
+  ladder_lsj_h2_w12     medium     DEFL                 2  0.823480 80
+  ladder_lsj_h2_w12     medium     DEFL                 3  0.784725 80
+  ladder_lsj_h2_w12     medium     DEFL                 4  0.755743 80
+  ladder_lsj_h2_w12     medium     DEFL                 5  0.746053 80
+  ladder_lsj_h2_w12     medium     DEFL                 6  0.761492 80
+  ladder_lsj_h2_w12     medium     DEFL                 7  0.773308 80
+  ladder_lsj_h2_w12     medium     DEFL                 8  0.791376 80
+  ladder_lsj_h2_w12     medium      FFR                 1  0.406530 80
+  ladder_lsj_h2_w12     medium      FFR                 2  0.801117 80
+  ladder_lsj_h2_w12     medium      FFR                 3  1.137749 80
+  ladder_lsj_h2_w12     medium      FFR                 4  1.417341 80
+  ladder_lsj_h2_w12     medium      FFR                 5  1.670219 80
+  ladder_lsj_h2_w12     medium      FFR                 6  1.909957 80
+  ladder_lsj_h2_w12     medium      FFR                 7  2.120573 80
+  ladder_lsj_h2_w12     medium      FFR                 8  2.292837 80
+  ladder_lsj_h2_w12     medium      GDP                 1  2.200495 80
+  ladder_lsj_h2_w12     medium      GDP                 2  2.084194 80
+  ladder_lsj_h2_w12     medium      GDP                 3  2.644869 80
+  ladder_lsj_h2_w12     medium      GDP                 4  2.323058 80
+  ladder_lsj_h2_w12     medium      GDP                 5  2.076601 80
+  ladder_lsj_h2_w12     medium      GDP                 6  1.938327 80
+  ladder_lsj_h2_w12     medium      GDP                 7  1.828714 80
+  ladder_lsj_h2_w12     medium      GDP                 8  1.719309 80
+  ladder_lsj_h2_w12     medium    HOURS                 1  2.143250 80
+  ladder_lsj_h2_w12     medium    HOURS                 2  2.336554 80
+  ladder_lsj_h2_w12     medium    HOURS                 3  3.542778 80
+  ladder_lsj_h2_w12     medium    HOURS                 4  3.246968 80
+  ladder_lsj_h2_w12     medium    HOURS                 5  2.979243 80
+  ladder_lsj_h2_w12     medium    HOURS                 6  2.839175 80
+  ladder_lsj_h2_w12     medium    HOURS                 7  2.692177 80
+  ladder_lsj_h2_w12     medium    HOURS                 8  2.536575 80
+  ladder_lsj_h2_w12     medium      INV                 1 10.293844 80
+  ladder_lsj_h2_w12     medium      INV                 2  9.427239 80
+  ladder_lsj_h2_w12     medium      INV                 3  9.950732 80
+  ladder_lsj_h2_w12     medium      INV                 4  9.231877 80
+  ladder_lsj_h2_w12     medium      INV                 5  8.462066 80
+  ladder_lsj_h2_w12     medium      INV                 6  7.795543 80
+  ladder_lsj_h2_w12     medium      INV                 7  7.202328 80
+  ladder_lsj_h2_w12     medium      INV                 8  6.691812 80
+  ladder_lsj_h2_w12     medium     WAGE                 1  4.248676 80
+  ladder_lsj_h2_w12     medium     WAGE                 2  2.513102 80
+  ladder_lsj_h2_w12     medium     WAGE                 3  2.357198 80
+  ladder_lsj_h2_w12     medium     WAGE                 4  1.990880 80
+  ladder_lsj_h2_w12     medium     WAGE                 5  1.778670 80
+  ladder_lsj_h2_w12     medium     WAGE                 6  1.638209 80
+  ladder_lsj_h2_w12     medium     WAGE                 7  1.468960 80
+  ladder_lsj_h2_w12     medium     WAGE                 8  1.432408 80
+  ladder_lsj_h2_w60     medium     CONS                 1  1.818874 80
+  ladder_lsj_h2_w60     medium     CONS                 2  1.696353 80
+  ladder_lsj_h2_w60     medium     CONS                 3  2.468384 80
+  ladder_lsj_h2_w60     medium     CONS                 4  2.129067 80
+  ladder_lsj_h2_w60     medium     CONS                 5  1.909187 80
+  ladder_lsj_h2_w60     medium     CONS                 6  1.788599 80
+  ladder_lsj_h2_w60     medium     CONS                 7  1.677778 80
+  ladder_lsj_h2_w60     medium     CONS                 8  1.569246 80
+  ladder_lsj_h2_w60     medium     DEFL                 1  0.939035 80
+  ladder_lsj_h2_w60     medium     DEFL                 2  0.837260 80
+  ladder_lsj_h2_w60     medium     DEFL                 3  0.795506 80
+  ladder_lsj_h2_w60     medium     DEFL                 4  0.763874 80
+  ladder_lsj_h2_w60     medium     DEFL                 5  0.754327 80
+  ladder_lsj_h2_w60     medium     DEFL                 6  0.763553 80
+  ladder_lsj_h2_w60     medium     DEFL                 7  0.779224 80
+  ladder_lsj_h2_w60     medium     DEFL                 8  0.803743 80
+  ladder_lsj_h2_w60     medium      FFR                 1  0.401722 80
+  ladder_lsj_h2_w60     medium      FFR                 2  0.768783 80
+  ladder_lsj_h2_w60     medium      FFR                 3  1.101989 80
+  ladder_lsj_h2_w60     medium      FFR                 4  1.382828 80
+  ladder_lsj_h2_w60     medium      FFR                 5  1.633790 80
+  ladder_lsj_h2_w60     medium      FFR                 6  1.861660 80
+  ladder_lsj_h2_w60     medium      FFR                 7  2.066501 80
+  ladder_lsj_h2_w60     medium      FFR                 8  2.232850 80
+  ladder_lsj_h2_w60     medium      GDP                 1  2.155554 80
+  ladder_lsj_h2_w60     medium      GDP                 2  2.051113 80
+  ladder_lsj_h2_w60     medium      GDP                 3  2.640792 80
+  ladder_lsj_h2_w60     medium      GDP                 4  2.328621 80
+  ladder_lsj_h2_w60     medium      GDP                 5  2.076499 80
+  ladder_lsj_h2_w60     medium      GDP                 6  1.927293 80
+  ladder_lsj_h2_w60     medium      GDP                 7  1.800196 80
+  ladder_lsj_h2_w60     medium      GDP                 8  1.670125 80
+  ladder_lsj_h2_w60     medium    HOURS                 1  2.180029 80
+  ladder_lsj_h2_w60     medium    HOURS                 2  2.359834 80
+  ladder_lsj_h2_w60     medium    HOURS                 3  3.598462 80
+  ladder_lsj_h2_w60     medium    HOURS                 4  3.340945 80
+  ladder_lsj_h2_w60     medium    HOURS                 5  3.102975 80
+  ladder_lsj_h2_w60     medium    HOURS                 6  2.957129 80
+  ladder_lsj_h2_w60     medium    HOURS                 7  2.805957 80
+  ladder_lsj_h2_w60     medium    HOURS                 8  2.627458 80
+  ladder_lsj_h2_w60     medium      INV                 1 10.290862 80
+  ladder_lsj_h2_w60     medium      INV                 2  9.653948 80
+  ladder_lsj_h2_w60     medium      INV                 3 10.048483 80
+  ladder_lsj_h2_w60     medium      INV                 4  9.324487 80
+  ladder_lsj_h2_w60     medium      INV                 5  8.487132 80
+  ladder_lsj_h2_w60     medium      INV                 6  7.777528 80
+  ladder_lsj_h2_w60     medium      INV                 7  7.161225 80
+  ladder_lsj_h2_w60     medium      INV                 8  6.595132 80
+  ladder_lsj_h2_w60     medium     WAGE                 1  4.284594 80
+  ladder_lsj_h2_w60     medium     WAGE                 2  2.522361 80
+  ladder_lsj_h2_w60     medium     WAGE                 3  2.369704 80
+  ladder_lsj_h2_w60     medium     WAGE                 4  2.005862 80
+  ladder_lsj_h2_w60     medium     WAGE                 5  1.812957 80
+  ladder_lsj_h2_w60     medium     WAGE                 6  1.672954 80
+  ladder_lsj_h2_w60     medium     WAGE                 7  1.516901 80
+  ladder_lsj_h2_w60     medium     WAGE                 8  1.467665 80
+  ladder_lsj_h4_w12     medium     CONS                 1  1.932940 80
+  ladder_lsj_h4_w12     medium     CONS                 2  1.794333 80
+  ladder_lsj_h4_w12     medium     CONS                 3  2.509047 80
+  ladder_lsj_h4_w12     medium     CONS                 4  2.144832 80
+  ladder_lsj_h4_w12     medium     CONS                 5  1.941605 80
+  ladder_lsj_h4_w12     medium     CONS                 6  1.830233 80
+  ladder_lsj_h4_w12     medium     CONS                 7  1.734336 80
+  ladder_lsj_h4_w12     medium     CONS                 8  1.638429 80
+  ladder_lsj_h4_w12     medium     DEFL                 1  0.910189 80
+  ladder_lsj_h4_w12     medium     DEFL                 2  0.809381 80
+  ladder_lsj_h4_w12     medium     DEFL                 3  0.786515 80
+  ladder_lsj_h4_w12     medium     DEFL                 4  0.764159 80
+  ladder_lsj_h4_w12     medium     DEFL                 5  0.755589 80
+  ladder_lsj_h4_w12     medium     DEFL                 6  0.771197 80
+  ladder_lsj_h4_w12     medium     DEFL                 7  0.783979 80
+  ladder_lsj_h4_w12     medium     DEFL                 8  0.805128 80
+  ladder_lsj_h4_w12     medium      FFR                 1  0.409030 80
+  ladder_lsj_h4_w12     medium      FFR                 2  0.799756 80
+  ladder_lsj_h4_w12     medium      FFR                 3  1.124086 80
+  ladder_lsj_h4_w12     medium      FFR                 4  1.418710 80
+  ladder_lsj_h4_w12     medium      FFR                 5  1.680006 80
+  ladder_lsj_h4_w12     medium      FFR                 6  1.922236 80
+  ladder_lsj_h4_w12     medium      FFR                 7  2.134225 80
+  ladder_lsj_h4_w12     medium      FFR                 8  2.305592 80
+  ladder_lsj_h4_w12     medium      GDP                 1  2.278531 80
+  ladder_lsj_h4_w12     medium      GDP                 2  2.146340 80
+  ladder_lsj_h4_w12     medium      GDP                 3  2.657727 80
+  ladder_lsj_h4_w12     medium      GDP                 4  2.309378 80
+  ladder_lsj_h4_w12     medium      GDP                 5  2.071654 80
+  ladder_lsj_h4_w12     medium      GDP                 6  1.929067 80
+  ladder_lsj_h4_w12     medium      GDP                 7  1.811887 80
+  ladder_lsj_h4_w12     medium      GDP                 8  1.701524 80
+  ladder_lsj_h4_w12     medium    HOURS                 1  2.196239 80
+  ladder_lsj_h4_w12     medium    HOURS                 2  2.384062 80
+  ladder_lsj_h4_w12     medium    HOURS                 3  3.566519 80
+  ladder_lsj_h4_w12     medium    HOURS                 4  3.249926 80
+  ladder_lsj_h4_w12     medium    HOURS                 5  2.985008 80
+  ladder_lsj_h4_w12     medium    HOURS                 6  2.837558 80
+  ladder_lsj_h4_w12     medium    HOURS                 7  2.689239 80
+  ladder_lsj_h4_w12     medium    HOURS                 8  2.533565 80
+  ladder_lsj_h4_w12     medium      INV                 1 10.405047 80
+  ladder_lsj_h4_w12     medium      INV                 2  9.618762 80
+  ladder_lsj_h4_w12     medium      INV                 3 10.024347 80
+  ladder_lsj_h4_w12     medium      INV                 4  9.157119 80
+  ladder_lsj_h4_w12     medium      INV                 5  8.362439 80
+  ladder_lsj_h4_w12     medium      INV                 6  7.689729 80
+  ladder_lsj_h4_w12     medium      INV                 7  7.092867 80
+  ladder_lsj_h4_w12     medium      INV                 8  6.578283 80
+  ladder_lsj_h4_w12     medium     WAGE                 1  4.266826 80
+  ladder_lsj_h4_w12     medium     WAGE                 2  2.474433 80
+  ladder_lsj_h4_w12     medium     WAGE                 3  2.317158 80
+  ladder_lsj_h4_w12     medium     WAGE                 4  1.949566 80
+  ladder_lsj_h4_w12     medium     WAGE                 5  1.748100 80
+  ladder_lsj_h4_w12     medium     WAGE                 6  1.615635 80
+  ladder_lsj_h4_w12     medium     WAGE                 7  1.451267 80
+  ladder_lsj_h4_w12     medium     WAGE                 8  1.409401 80
+  ladder_lsj_h4_w40     medium     CONS                 1  1.954769 80
+  ladder_lsj_h4_w40     medium     CONS                 2  1.861834 80
+  ladder_lsj_h4_w40     medium     CONS                 3  2.589519 80
+  ladder_lsj_h4_w40     medium     CONS                 4  2.225894 80
+  ladder_lsj_h4_w40     medium     CONS                 5  2.033978 80
+  ladder_lsj_h4_w40     medium     CONS                 6  1.889603 80
+  ladder_lsj_h4_w40     medium     CONS                 7  1.814515 80
+  ladder_lsj_h4_w40     medium     CONS                 8  1.730003 80
+  ladder_lsj_h4_w40     medium     DEFL                 1  0.929566 80
+  ladder_lsj_h4_w40     medium     DEFL                 2  0.818683 80
+  ladder_lsj_h4_w40     medium     DEFL                 3  0.775505 80
+  ladder_lsj_h4_w40     medium     DEFL                 4  0.753656 80
+  ladder_lsj_h4_w40     medium     DEFL                 5  0.740746 80
+  ladder_lsj_h4_w40     medium     DEFL                 6  0.750300 80
+  ladder_lsj_h4_w40     medium     DEFL                 7  0.765096 80
+  ladder_lsj_h4_w40     medium     DEFL                 8  0.790549 80
+  ladder_lsj_h4_w40     medium      FFR                 1  0.396825 80
+  ladder_lsj_h4_w40     medium      FFR                 2  0.749705 80
+  ladder_lsj_h4_w40     medium      FFR                 3  1.072332 80
+  ladder_lsj_h4_w40     medium      FFR                 4  1.341775 80
+  ladder_lsj_h4_w40     medium      FFR                 5  1.585827 80
+  ladder_lsj_h4_w40     medium      FFR                 6  1.811555 80
+  ladder_lsj_h4_w40     medium      FFR                 7  2.021024 80
+  ladder_lsj_h4_w40     medium      FFR                 8  2.193370 80
+  ladder_lsj_h4_w40     medium      GDP                 1  2.361645 80
+  ladder_lsj_h4_w40     medium      GDP                 2  2.263830 80
+  ladder_lsj_h4_w40     medium      GDP                 3  2.784295 80
+  ladder_lsj_h4_w40     medium      GDP                 4  2.441675 80
+  ladder_lsj_h4_w40     medium      GDP                 5  2.213934 80
+  ladder_lsj_h4_w40     medium      GDP                 6  2.023693 80
+  ladder_lsj_h4_w40     medium      GDP                 7  1.931160 80
+  ladder_lsj_h4_w40     medium      GDP                 8  1.820587 80
+  ladder_lsj_h4_w40     medium    HOURS                 1  2.247881 80
+  ladder_lsj_h4_w40     medium    HOURS                 2  2.445713 80
+  ladder_lsj_h4_w40     medium    HOURS                 3  3.643074 80
+  ladder_lsj_h4_w40     medium    HOURS                 4  3.356328 80
+  ladder_lsj_h4_w40     medium    HOURS                 5  3.145404 80
+  ladder_lsj_h4_w40     medium    HOURS                 6  2.956656 80
+  ladder_lsj_h4_w40     medium    HOURS                 7  2.832063 80
+  ladder_lsj_h4_w40     medium    HOURS                 8  2.667901 80
+  ladder_lsj_h4_w40     medium      INV                 1 10.741140 80
+  ladder_lsj_h4_w40     medium      INV                 2 10.297168 80
+  ladder_lsj_h4_w40     medium      INV                 3 10.606979 80
+  ladder_lsj_h4_w40     medium      INV                 4  9.891382 80
+  ladder_lsj_h4_w40     medium      INV                 5  9.018848 80
+  ladder_lsj_h4_w40     medium      INV                 6  8.182752 80
+  ladder_lsj_h4_w40     medium      INV                 7  7.574357 80
+  ladder_lsj_h4_w40     medium      INV                 8  6.982134 80
+  ladder_lsj_h4_w40     medium     WAGE                 1  4.281779 80
+  ladder_lsj_h4_w40     medium     WAGE                 2  2.539846 80
+  ladder_lsj_h4_w40     medium     WAGE                 3  2.374630 80
+  ladder_lsj_h4_w40     medium     WAGE                 4  2.039224 80
+  ladder_lsj_h4_w40     medium     WAGE                 5  1.849288 80
+  ladder_lsj_h4_w40     medium     WAGE                 6  1.724579 80
+  ladder_lsj_h4_w40     medium     WAGE                 7  1.572017 80
+  ladder_lsj_h4_w40     medium     WAGE                 8  1.519102 80
+  ladder_lsj_h4_w60     medium     CONS                 1  1.933081 80
+  ladder_lsj_h4_w60     medium     CONS                 2  1.814725 80
+  ladder_lsj_h4_w60     medium     CONS                 3  2.557749 80
+  ladder_lsj_h4_w60     medium     CONS                 4  2.207058 80
+  ladder_lsj_h4_w60     medium     CONS                 5  1.985328 80
+  ladder_lsj_h4_w60     medium     CONS                 6  1.859059 80
+  ladder_lsj_h4_w60     medium     CONS                 7  1.741687 80
+  ladder_lsj_h4_w60     medium     CONS                 8  1.633355 80
+  ladder_lsj_h4_w60     medium     DEFL                 1  0.933425 80
+  ladder_lsj_h4_w60     medium     DEFL                 2  0.824139 80
+  ladder_lsj_h4_w60     medium     DEFL                 3  0.775479 80
+  ladder_lsj_h4_w60     medium     DEFL                 4  0.749891 80
+  ladder_lsj_h4_w60     medium     DEFL                 5  0.744763 80
+  ladder_lsj_h4_w60     medium     DEFL                 6  0.757328 80
+  ladder_lsj_h4_w60     medium     DEFL                 7  0.774870 80
+  ladder_lsj_h4_w60     medium     DEFL                 8  0.800353 80
+  ladder_lsj_h4_w60     medium      FFR                 1  0.414713 80
+  ladder_lsj_h4_w60     medium      FFR                 2  0.770846 80
+  ladder_lsj_h4_w60     medium      FFR                 3  1.099083 80
+  ladder_lsj_h4_w60     medium      FFR                 4  1.377500 80
+  ladder_lsj_h4_w60     medium      FFR                 5  1.622103 80
+  ladder_lsj_h4_w60     medium      FFR                 6  1.849291 80
+  ladder_lsj_h4_w60     medium      FFR                 7  2.055895 80
+  ladder_lsj_h4_w60     medium      FFR                 8  2.223382 80
+  ladder_lsj_h4_w60     medium      GDP                 1  2.418229 80
+  ladder_lsj_h4_w60     medium      GDP                 2  2.280077 80
+  ladder_lsj_h4_w60     medium      GDP                 3  2.777042 80
+  ladder_lsj_h4_w60     medium      GDP                 4  2.449955 80
+  ladder_lsj_h4_w60     medium      GDP                 5  2.178919 80
+  ladder_lsj_h4_w60     medium      GDP                 6  2.017090 80
+  ladder_lsj_h4_w60     medium      GDP                 7  1.881483 80
+  ladder_lsj_h4_w60     medium      GDP                 8  1.749586 80
+  ladder_lsj_h4_w60     medium    HOURS                 1  2.347067 80
+  ladder_lsj_h4_w60     medium    HOURS                 2  2.518448 80
+  ladder_lsj_h4_w60     medium    HOURS                 3  3.684819 80
+  ladder_lsj_h4_w60     medium    HOURS                 4  3.442675 80
+  ladder_lsj_h4_w60     medium    HOURS                 5  3.197499 80
+  ladder_lsj_h4_w60     medium    HOURS                 6  3.037062 80
+  ladder_lsj_h4_w60     medium    HOURS                 7  2.874531 80
+  ladder_lsj_h4_w60     medium    HOURS                 8  2.690860 80
+  ladder_lsj_h4_w60     medium      INV                 1 11.319152 80
+  ladder_lsj_h4_w60     medium      INV                 2 10.666235 80
+  ladder_lsj_h4_w60     medium      INV                 3 10.798045 80
+  ladder_lsj_h4_w60     medium      INV                 4 10.002968 80
+  ladder_lsj_h4_w60     medium      INV                 5  8.944206 80
+  ladder_lsj_h4_w60     medium      INV                 6  8.120861 80
+  ladder_lsj_h4_w60     medium      INV                 7  7.424859 80
+  ladder_lsj_h4_w60     medium      INV                 8  6.801824 80
+  ladder_lsj_h4_w60     medium     WAGE                 1  4.282751 80
+  ladder_lsj_h4_w60     medium     WAGE                 2  2.529767 80
+  ladder_lsj_h4_w60     medium     WAGE                 3  2.355695 80
+  ladder_lsj_h4_w60     medium     WAGE                 4  2.000831 80
+  ladder_lsj_h4_w60     medium     WAGE                 5  1.813199 80
+  ladder_lsj_h4_w60     medium     WAGE                 6  1.678489 80
+  ladder_lsj_h4_w60     medium     WAGE                 7  1.520911 80
+  ladder_lsj_h4_w60     medium     WAGE                 8  1.467453 80
+  ladder_lsj_h4_w80     medium     CONS                 1  1.798329 80
+  ladder_lsj_h4_w80     medium     CONS                 2  1.667781 80
+  ladder_lsj_h4_w80     medium     CONS                 3  2.456840 80
+  ladder_lsj_h4_w80     medium     CONS                 4  2.107167 80
+  ladder_lsj_h4_w80     medium     CONS                 5  1.890101 80
+  ladder_lsj_h4_w80     medium     CONS                 6  1.771857 80
+  ladder_lsj_h4_w80     medium     CONS                 7  1.664451 80
+  ladder_lsj_h4_w80     medium     CONS                 8  1.555590 80
+  ladder_lsj_h4_w80     medium     DEFL                 1  0.939342 80
+  ladder_lsj_h4_w80     medium     DEFL                 2  0.839923 80
+  ladder_lsj_h4_w80     medium     DEFL                 3  0.799968 80
+  ladder_lsj_h4_w80     medium     DEFL                 4  0.774717 80
+  ladder_lsj_h4_w80     medium     DEFL                 5  0.768593 80
+  ladder_lsj_h4_w80     medium     DEFL                 6  0.781264 80
+  ladder_lsj_h4_w80     medium     DEFL                 7  0.796667 80
+  ladder_lsj_h4_w80     medium     DEFL                 8  0.821082 80
+  ladder_lsj_h4_w80     medium      FFR                 1  0.408309 80
+  ladder_lsj_h4_w80     medium      FFR                 2  0.783003 80
+  ladder_lsj_h4_w80     medium      FFR                 3  1.121402 80
+  ladder_lsj_h4_w80     medium      FFR                 4  1.416814 80
+  ladder_lsj_h4_w80     medium      FFR                 5  1.673285 80
+  ladder_lsj_h4_w80     medium      FFR                 6  1.903819 80
+  ladder_lsj_h4_w80     medium      FFR                 7  2.111396 80
+  ladder_lsj_h4_w80     medium      FFR                 8  2.283613 80
+  ladder_lsj_h4_w80     medium      GDP                 1  2.193578 80
+  ladder_lsj_h4_w80     medium      GDP                 2  2.084106 80
+  ladder_lsj_h4_w80     medium      GDP                 3  2.657130 80
+  ladder_lsj_h4_w80     medium      GDP                 4  2.341158 80
+  ladder_lsj_h4_w80     medium      GDP                 5  2.086433 80
+  ladder_lsj_h4_w80     medium      GDP                 6  1.936550 80
+  ladder_lsj_h4_w80     medium      GDP                 7  1.815898 80
+  ladder_lsj_h4_w80     medium      GDP                 8  1.687820 80
+  ladder_lsj_h4_w80     medium    HOURS                 1  2.197755 80
+  ladder_lsj_h4_w80     medium    HOURS                 2  2.369193 80
+  ladder_lsj_h4_w80     medium    HOURS                 3  3.585301 80
+  ladder_lsj_h4_w80     medium    HOURS                 4  3.330905 80
+  ladder_lsj_h4_w80     medium    HOURS                 5  3.092246 80
+  ladder_lsj_h4_w80     medium    HOURS                 6  2.948481 80
+  ladder_lsj_h4_w80     medium    HOURS                 7  2.804726 80
+  ladder_lsj_h4_w80     medium    HOURS                 8  2.633694 80
+  ladder_lsj_h4_w80     medium      INV                 1 10.249808 80
+  ladder_lsj_h4_w80     medium      INV                 2  9.624816 80
+  ladder_lsj_h4_w80     medium      INV                 3  9.992232 80
+  ladder_lsj_h4_w80     medium      INV                 4  9.341021 80
+  ladder_lsj_h4_w80     medium      INV                 5  8.507431 80
+  ladder_lsj_h4_w80     medium      INV                 6  7.817330 80
+  ladder_lsj_h4_w80     medium      INV                 7  7.246812 80
+  ladder_lsj_h4_w80     medium      INV                 8  6.709758 80
+  ladder_lsj_h4_w80     medium     WAGE                 1  4.284892 80
+  ladder_lsj_h4_w80     medium     WAGE                 2  2.510213 80
+  ladder_lsj_h4_w80     medium     WAGE                 3  2.344854 80
+  ladder_lsj_h4_w80     medium     WAGE                 4  1.979952 80
+  ladder_lsj_h4_w80     medium     WAGE                 5  1.784855 80
+  ladder_lsj_h4_w80     medium     WAGE                 6  1.644620 80
+  ladder_lsj_h4_w80     medium     WAGE                 7  1.484791 80
+  ladder_lsj_h4_w80     medium     WAGE                 8  1.433211 80
+  ladder_lsj_h8_w12     medium     CONS                 1  1.938206 80
+  ladder_lsj_h8_w12     medium     CONS                 2  1.799605 80
+  ladder_lsj_h8_w12     medium     CONS                 3  2.524541 80
+  ladder_lsj_h8_w12     medium     CONS                 4  2.158896 80
+  ladder_lsj_h8_w12     medium     CONS                 5  1.933890 80
+  ladder_lsj_h8_w12     medium     CONS                 6  1.823012 80
+  ladder_lsj_h8_w12     medium     CONS                 7  1.761129 80
+  ladder_lsj_h8_w12     medium     CONS                 8  1.680098 80
+  ladder_lsj_h8_w12     medium     DEFL                 1  0.927850 80
+  ladder_lsj_h8_w12     medium     DEFL                 2  0.829000 80
+  ladder_lsj_h8_w12     medium     DEFL                 3  0.786905 80
+  ladder_lsj_h8_w12     medium     DEFL                 4  0.770190 80
+  ladder_lsj_h8_w12     medium     DEFL                 5  0.762550 80
+  ladder_lsj_h8_w12     medium     DEFL                 6  0.778854 80
+  ladder_lsj_h8_w12     medium     DEFL                 7  0.791988 80
+  ladder_lsj_h8_w12     medium     DEFL                 8  0.812014 80
+  ladder_lsj_h8_w12     medium      FFR                 1  0.407372 80
+  ladder_lsj_h8_w12     medium      FFR                 2  0.777003 80
+  ladder_lsj_h8_w12     medium      FFR                 3  1.112761 80
+  ladder_lsj_h8_w12     medium      FFR                 4  1.408397 80
+  ladder_lsj_h8_w12     medium      FFR                 5  1.681809 80
+  ladder_lsj_h8_w12     medium      FFR                 6  1.930178 80
+  ladder_lsj_h8_w12     medium      FFR                 7  2.145776 80
+  ladder_lsj_h8_w12     medium      FFR                 8  2.327660 80
+  ladder_lsj_h8_w12     medium      GDP                 1  2.358170 80
+  ladder_lsj_h8_w12     medium      GDP                 2  2.249962 80
+  ladder_lsj_h8_w12     medium      GDP                 3  2.726291 80
+  ladder_lsj_h8_w12     medium      GDP                 4  2.372592 80
+  ladder_lsj_h8_w12     medium      GDP                 5  2.114797 80
+  ladder_lsj_h8_w12     medium      GDP                 6  1.968990 80
+  ladder_lsj_h8_w12     medium      GDP                 7  1.895787 80
+  ladder_lsj_h8_w12     medium      GDP                 8  1.800405 80
+  ladder_lsj_h8_w12     medium    HOURS                 1  2.294302 80
+  ladder_lsj_h8_w12     medium    HOURS                 2  2.430209 80
+  ladder_lsj_h8_w12     medium    HOURS                 3  3.596732 80
+  ladder_lsj_h8_w12     medium    HOURS                 4  3.295252 80
+  ladder_lsj_h8_w12     medium    HOURS                 5  3.042655 80
+  ladder_lsj_h8_w12     medium    HOURS                 6  2.895714 80
+  ladder_lsj_h8_w12     medium    HOURS                 7  2.800796 80
+  ladder_lsj_h8_w12     medium    HOURS                 8  2.674562 80
+  ladder_lsj_h8_w12     medium      INV                 1 10.913529 80
+  ladder_lsj_h8_w12     medium      INV                 2 10.381501 80
+  ladder_lsj_h8_w12     medium      INV                 3 10.634971 80
+  ladder_lsj_h8_w12     medium      INV                 4  9.758278 80
+  ladder_lsj_h8_w12     medium      INV                 5  8.888055 80
+  ladder_lsj_h8_w12     medium      INV                 6  8.173585 80
+  ladder_lsj_h8_w12     medium      INV                 7  7.657423 80
+  ladder_lsj_h8_w12     medium      INV                 8  7.126538 80
+  ladder_lsj_h8_w12     medium     WAGE                 1  4.291856 80
+  ladder_lsj_h8_w12     medium     WAGE                 2  2.487769 80
+  ladder_lsj_h8_w12     medium     WAGE                 3  2.317491 80
+  ladder_lsj_h8_w12     medium     WAGE                 4  1.965849 80
+  ladder_lsj_h8_w12     medium     WAGE                 5  1.772438 80
+  ladder_lsj_h8_w12     medium     WAGE                 6  1.613700 80
+  ladder_lsj_h8_w12     medium     WAGE                 7  1.435785 80
+  ladder_lsj_h8_w12     medium     WAGE                 8  1.372353 80
+  ladder_lsj_h8_w60     medium     CONS                 1  1.899299 80
+  ladder_lsj_h8_w60     medium     CONS                 2  1.805906 80
+  ladder_lsj_h8_w60     medium     CONS                 3  2.588419 80
+  ladder_lsj_h8_w60     medium     CONS                 4  2.239849 80
+  ladder_lsj_h8_w60     medium     CONS                 5  1.951895 80
+  ladder_lsj_h8_w60     medium     CONS                 6  1.817581 80
+  ladder_lsj_h8_w60     medium     CONS                 7  1.739380 80
+  ladder_lsj_h8_w60     medium     CONS                 8  1.644370 80
+  ladder_lsj_h8_w60     medium     DEFL                 1  0.951483 80
+  ladder_lsj_h8_w60     medium     DEFL                 2  0.827088 80
+  ladder_lsj_h8_w60     medium     DEFL                 3  0.781323 80
+  ladder_lsj_h8_w60     medium     DEFL                 4  0.757923 80
+  ladder_lsj_h8_w60     medium     DEFL                 5  0.749875 80
+  ladder_lsj_h8_w60     medium     DEFL                 6  0.750016 80
+  ladder_lsj_h8_w60     medium     DEFL                 7  0.754398 80
+  ladder_lsj_h8_w60     medium     DEFL                 8  0.765060 80
+  ladder_lsj_h8_w60     medium      FFR                 1  0.418730 80
+  ladder_lsj_h8_w60     medium      FFR                 2  0.751471 80
+  ladder_lsj_h8_w60     medium      FFR                 3  1.045753 80
+  ladder_lsj_h8_w60     medium      FFR                 4  1.307711 80
+  ladder_lsj_h8_w60     medium      FFR                 5  1.545296 80
+  ladder_lsj_h8_w60     medium      FFR                 6  1.758371 80
+  ladder_lsj_h8_w60     medium      FFR                 7  1.951895 80
+  ladder_lsj_h8_w60     medium      FFR                 8  2.111886 80
+  ladder_lsj_h8_w60     medium      GDP                 1  2.411038 80
+  ladder_lsj_h8_w60     medium      GDP                 2  2.296476 80
+  ladder_lsj_h8_w60     medium      GDP                 3  2.816325 80
+  ladder_lsj_h8_w60     medium      GDP                 4  2.496233 80
+  ladder_lsj_h8_w60     medium      GDP                 5  2.169385 80
+  ladder_lsj_h8_w60     medium      GDP                 6  1.997562 80
+  ladder_lsj_h8_w60     medium      GDP                 7  1.904009 80
+  ladder_lsj_h8_w60     medium      GDP                 8  1.785886 80
+  ladder_lsj_h8_w60     medium    HOURS                 1  2.373527 80
+  ladder_lsj_h8_w60     medium    HOURS                 2  2.544231 80
+  ladder_lsj_h8_w60     medium    HOURS                 3  3.735049 80
+  ladder_lsj_h8_w60     medium    HOURS                 4  3.474063 80
+  ladder_lsj_h8_w60     medium    HOURS                 5  3.173888 80
+  ladder_lsj_h8_w60     medium    HOURS                 6  2.996651 80
+  ladder_lsj_h8_w60     medium    HOURS                 7  2.884793 80
+  ladder_lsj_h8_w60     medium    HOURS                 8  2.721776 80
+  ladder_lsj_h8_w60     medium      INV                 1 11.596466 80
+  ladder_lsj_h8_w60     medium      INV                 2 10.737548 80
+  ladder_lsj_h8_w60     medium      INV                 3 10.959643 80
+  ladder_lsj_h8_w60     medium      INV                 4 10.236724 80
+  ladder_lsj_h8_w60     medium      INV                 5  9.175364 80
+  ladder_lsj_h8_w60     medium      INV                 6  8.379773 80
+  ladder_lsj_h8_w60     medium      INV                 7  7.784620 80
+  ladder_lsj_h8_w60     medium      INV                 8  7.161549 80
+  ladder_lsj_h8_w60     medium     WAGE                 1  4.264722 80
+  ladder_lsj_h8_w60     medium     WAGE                 2  2.484886 80
+  ladder_lsj_h8_w60     medium     WAGE                 3  2.319192 80
+  ladder_lsj_h8_w60     medium     WAGE                 4  1.968746 80
+  ladder_lsj_h8_w60     medium     WAGE                 5  1.788471 80
+  ladder_lsj_h8_w60     medium     WAGE                 6  1.648637 80
+  ladder_lsj_h8_w60     medium     WAGE                 7  1.486175 80
+  ladder_lsj_h8_w60     medium     WAGE                 8  1.431413 80
+  ladder_lsm_h1_w12     medium     CONS                 1  1.889783 80
+  ladder_lsm_h1_w12     medium     CONS                 2  1.781967 80
+  ladder_lsm_h1_w12     medium     CONS                 3  2.553431 80
+  ladder_lsm_h1_w12     medium     CONS                 4  2.206024 80
+  ladder_lsm_h1_w12     medium     CONS                 5  2.004520 80
+  ladder_lsm_h1_w12     medium     CONS                 6  1.849010 80
+  ladder_lsm_h1_w12     medium     CONS                 7  1.787453 80
+  ladder_lsm_h1_w12     medium     CONS                 8  1.660242 80
+  ladder_lsm_h1_w12     medium     DEFL                 1  1.168318 80
+  ladder_lsm_h1_w12     medium     DEFL                 2  1.082074 80
+  ladder_lsm_h1_w12     medium     DEFL                 3  1.085318 80
+  ladder_lsm_h1_w12     medium     DEFL                 4  1.082914 80
+  ladder_lsm_h1_w12     medium     DEFL                 5  1.082415 80
+  ladder_lsm_h1_w12     medium     DEFL                 6  1.067083 80
+  ladder_lsm_h1_w12     medium     DEFL                 7  1.061168 80
+  ladder_lsm_h1_w12     medium     DEFL                 8  1.053314 80
+  ladder_lsm_h1_w12     medium      FFR                 1  0.434585 80
+  ladder_lsm_h1_w12     medium      FFR                 2  0.829385 80
+  ladder_lsm_h1_w12     medium      FFR                 3  1.148500 80
+  ladder_lsm_h1_w12     medium      FFR                 4  1.426406 80
+  ladder_lsm_h1_w12     medium      FFR                 5  1.681198 80
+  ladder_lsm_h1_w12     medium      FFR                 6  1.920821 80
+  ladder_lsm_h1_w12     medium      FFR                 7  2.138614 80
+  ladder_lsm_h1_w12     medium      FFR                 8  2.320723 80
+  ladder_lsm_h1_w12     medium      GDP                 1  2.161246 80
+  ladder_lsm_h1_w12     medium      GDP                 2  2.139309 80
+  ladder_lsm_h1_w12     medium      GDP                 3  2.755122 80
+  ladder_lsm_h1_w12     medium      GDP                 4  2.457053 80
+  ladder_lsm_h1_w12     medium      GDP                 5  2.244423 80
+  ladder_lsm_h1_w12     medium      GDP                 6  2.074217 80
+  ladder_lsm_h1_w12     medium      GDP                 7  1.991120 80
+  ladder_lsm_h1_w12     medium      GDP                 8  1.857776 80
+  ladder_lsm_h1_w12     medium    HOURS                 1  2.264136 80
+  ladder_lsm_h1_w12     medium    HOURS                 2  2.448449 80
+  ladder_lsm_h1_w12     medium    HOURS                 3  3.671505 80
+  ladder_lsm_h1_w12     medium    HOURS                 4  3.383031 80
+  ladder_lsm_h1_w12     medium    HOURS                 5  3.168080 80
+  ladder_lsm_h1_w12     medium    HOURS                 6  3.008932 80
+  ladder_lsm_h1_w12     medium    HOURS                 7  2.881928 80
+  ladder_lsm_h1_w12     medium    HOURS                 8  2.714397 80
+  ladder_lsm_h1_w12     medium      INV                 1 10.611172 80
+  ladder_lsm_h1_w12     medium      INV                 2  9.911115 80
+  ladder_lsm_h1_w12     medium      INV                 3 10.369656 80
+  ladder_lsm_h1_w12     medium      INV                 4  9.726845 80
+  ladder_lsm_h1_w12     medium      INV                 5  9.056203 80
+  ladder_lsm_h1_w12     medium      INV                 6  8.444338 80
+  ladder_lsm_h1_w12     medium      INV                 7  7.881635 80
+  ladder_lsm_h1_w12     medium      INV                 8  7.292895 80
+  ladder_lsm_h1_w12     medium     WAGE                 1  4.233416 80
+  ladder_lsm_h1_w12     medium     WAGE                 2  2.417225 80
+  ladder_lsm_h1_w12     medium     WAGE                 3  2.287960 80
+  ladder_lsm_h1_w12     medium     WAGE                 4  1.879123 80
+  ladder_lsm_h1_w12     medium     WAGE                 5  1.662489 80
+  ladder_lsm_h1_w12     medium     WAGE                 6  1.541240 80
+  ladder_lsm_h1_w12     medium     WAGE                 7  1.364814 80
+  ladder_lsm_h1_w12     medium     WAGE                 8  1.318126 80
+  ladder_lsm_h1_w60     medium     CONS                 1  1.985502 80
+  ladder_lsm_h1_w60     medium     CONS                 2  1.832447 80
+  ladder_lsm_h1_w60     medium     CONS                 3  2.576276 80
+  ladder_lsm_h1_w60     medium     CONS                 4  2.273554 80
+  ladder_lsm_h1_w60     medium     CONS                 5  2.069674 80
+  ladder_lsm_h1_w60     medium     CONS                 6  1.935329 80
+  ladder_lsm_h1_w60     medium     CONS                 7  1.837908 80
+  ladder_lsm_h1_w60     medium     CONS                 8  1.733444 80
+  ladder_lsm_h1_w60     medium     DEFL                 1  1.076797 80
+  ladder_lsm_h1_w60     medium     DEFL                 2  0.958169 80
+  ladder_lsm_h1_w60     medium     DEFL                 3  0.920919 80
+  ladder_lsm_h1_w60     medium     DEFL                 4  0.893039 80
+  ladder_lsm_h1_w60     medium     DEFL                 5  0.875896 80
+  ladder_lsm_h1_w60     medium     DEFL                 6  0.860829 80
+  ladder_lsm_h1_w60     medium     DEFL                 7  0.863396 80
+  ladder_lsm_h1_w60     medium     DEFL                 8  0.870622 80
+  ladder_lsm_h1_w60     medium      FFR                 1  0.426691 80
+  ladder_lsm_h1_w60     medium      FFR                 2  0.819949 80
+  ladder_lsm_h1_w60     medium      FFR                 3  1.109973 80
+  ladder_lsm_h1_w60     medium      FFR                 4  1.381533 80
+  ladder_lsm_h1_w60     medium      FFR                 5  1.657437 80
+  ladder_lsm_h1_w60     medium      FFR                 6  1.906616 80
+  ladder_lsm_h1_w60     medium      FFR                 7  2.108982 80
+  ladder_lsm_h1_w60     medium      FFR                 8  2.270354 80
+  ladder_lsm_h1_w60     medium      GDP                 1  2.254338 80
+  ladder_lsm_h1_w60     medium      GDP                 2  2.193424 80
+  ladder_lsm_h1_w60     medium      GDP                 3  2.765874 80
+  ladder_lsm_h1_w60     medium      GDP                 4  2.478690 80
+  ladder_lsm_h1_w60     medium      GDP                 5  2.241207 80
+  ladder_lsm_h1_w60     medium      GDP                 6  2.076021 80
+  ladder_lsm_h1_w60     medium      GDP                 7  1.950172 80
+  ladder_lsm_h1_w60     medium      GDP                 8  1.824132 80
+  ladder_lsm_h1_w60     medium    HOURS                 1  2.278999 80
+  ladder_lsm_h1_w60     medium    HOURS                 2  2.480035 80
+  ladder_lsm_h1_w60     medium    HOURS                 3  3.706698 80
+  ladder_lsm_h1_w60     medium    HOURS                 4  3.451248 80
+  ladder_lsm_h1_w60     medium    HOURS                 5  3.225163 80
+  ladder_lsm_h1_w60     medium    HOURS                 6  3.084148 80
+  ladder_lsm_h1_w60     medium    HOURS                 7  2.930441 80
+  ladder_lsm_h1_w60     medium    HOURS                 8  2.756903 80
+  ladder_lsm_h1_w60     medium      INV                 1 10.524266 80
+  ladder_lsm_h1_w60     medium      INV                 2 10.258299 80
+  ladder_lsm_h1_w60     medium      INV                 3 10.743730 80
+  ladder_lsm_h1_w60     medium      INV                 4 10.010147 80
+  ladder_lsm_h1_w60     medium      INV                 5  9.227527 80
+  ladder_lsm_h1_w60     medium      INV                 6  8.476687 80
+  ladder_lsm_h1_w60     medium      INV                 7  7.791428 80
+  ladder_lsm_h1_w60     medium      INV                 8  7.199313 80
+  ladder_lsm_h1_w60     medium     WAGE                 1  4.346395 80
+  ladder_lsm_h1_w60     medium     WAGE                 2  2.501225 80
+  ladder_lsm_h1_w60     medium     WAGE                 3  2.342866 80
+  ladder_lsm_h1_w60     medium     WAGE                 4  1.971999 80
+  ladder_lsm_h1_w60     medium     WAGE                 5  1.777290 80
+  ladder_lsm_h1_w60     medium     WAGE                 6  1.638237 80
+  ladder_lsm_h1_w60     medium     WAGE                 7  1.457012 80
+  ladder_lsm_h1_w60     medium     WAGE                 8  1.419985 80
+  ladder_lsm_h2_w12     medium     CONS                 1  1.888732 80
+  ladder_lsm_h2_w12     medium     CONS                 2  1.800067 80
+  ladder_lsm_h2_w12     medium     CONS                 3  2.553631 80
+  ladder_lsm_h2_w12     medium     CONS                 4  2.262683 80
+  ladder_lsm_h2_w12     medium     CONS                 5  2.082045 80
+  ladder_lsm_h2_w12     medium     CONS                 6  1.937429 80
+  ladder_lsm_h2_w12     medium     CONS                 7  1.865603 80
+  ladder_lsm_h2_w12     medium     CONS                 8  1.729069 80
+  ladder_lsm_h2_w12     medium     DEFL                 1  1.239306 80
+  ladder_lsm_h2_w12     medium     DEFL                 2  1.138191 80
+  ladder_lsm_h2_w12     medium     DEFL                 3  1.093747 80
+  ladder_lsm_h2_w12     medium     DEFL                 4  1.087687 80
+  ladder_lsm_h2_w12     medium     DEFL                 5  1.098841 80
+  ladder_lsm_h2_w12     medium     DEFL                 6  1.096595 80
+  ladder_lsm_h2_w12     medium     DEFL                 7  1.098286 80
+  ladder_lsm_h2_w12     medium     DEFL                 8  1.095339 80
+  ladder_lsm_h2_w12     medium      FFR                 1  0.388212 80
+  ladder_lsm_h2_w12     medium      FFR                 2  0.759709 80
+  ladder_lsm_h2_w12     medium      FFR                 3  1.100861 80
+  ladder_lsm_h2_w12     medium      FFR                 4  1.410176 80
+  ladder_lsm_h2_w12     medium      FFR                 5  1.694378 80
+  ladder_lsm_h2_w12     medium      FFR                 6  1.955352 80
+  ladder_lsm_h2_w12     medium      FFR                 7  2.177743 80
+  ladder_lsm_h2_w12     medium      FFR                 8  2.356554 80
+  ladder_lsm_h2_w12     medium      GDP                 1  2.235341 80
+  ladder_lsm_h2_w12     medium      GDP                 2  2.162955 80
+  ladder_lsm_h2_w12     medium      GDP                 3  2.767535 80
+  ladder_lsm_h2_w12     medium      GDP                 4  2.520227 80
+  ladder_lsm_h2_w12     medium      GDP                 5  2.327380 80
+  ladder_lsm_h2_w12     medium      GDP                 6  2.156813 80
+  ladder_lsm_h2_w12     medium      GDP                 7  2.068220 80
+  ladder_lsm_h2_w12     medium      GDP                 8  1.928989 80
+  ladder_lsm_h2_w12     medium    HOURS                 1  2.413155 80
+  ladder_lsm_h2_w12     medium    HOURS                 2  2.518143 80
+  ladder_lsm_h2_w12     medium    HOURS                 3  3.674247 80
+  ladder_lsm_h2_w12     medium    HOURS                 4  3.408684 80
+  ladder_lsm_h2_w12     medium    HOURS                 5  3.203658 80
+  ladder_lsm_h2_w12     medium    HOURS                 6  3.051247 80
+  ladder_lsm_h2_w12     medium    HOURS                 7  2.925387 80
+  ladder_lsm_h2_w12     medium    HOURS                 8  2.763656 80
+  ladder_lsm_h2_w12     medium      INV                 1 10.848901 80
+  ladder_lsm_h2_w12     medium      INV                 2  9.977228 80
+  ladder_lsm_h2_w12     medium      INV                 3 10.533849 80
+  ladder_lsm_h2_w12     medium      INV                 4  9.905347 80
+  ladder_lsm_h2_w12     medium      INV                 5  9.311731 80
+  ladder_lsm_h2_w12     medium      INV                 6  8.699139 80
+  ladder_lsm_h2_w12     medium      INV                 7  8.149467 80
+  ladder_lsm_h2_w12     medium      INV                 8  7.589540 80
+  ladder_lsm_h2_w12     medium     WAGE                 1  4.325150 80
+  ladder_lsm_h2_w12     medium     WAGE                 2  2.473049 80
+  ladder_lsm_h2_w12     medium     WAGE                 3  2.261526 80
+  ladder_lsm_h2_w12     medium     WAGE                 4  1.883998 80
+  ladder_lsm_h2_w12     medium     WAGE                 5  1.672197 80
+  ladder_lsm_h2_w12     medium     WAGE                 6  1.515691 80
+  ladder_lsm_h2_w12     medium     WAGE                 7  1.339976 80
+  ladder_lsm_h2_w12     medium     WAGE                 8  1.271908 80
+  ladder_lsm_h2_w60     medium     CONS                 1  1.984775 80
+  ladder_lsm_h2_w60     medium     CONS                 2  1.855726 80
+  ladder_lsm_h2_w60     medium     CONS                 3  2.559624 80
+  ladder_lsm_h2_w60     medium     CONS                 4  2.236761 80
+  ladder_lsm_h2_w60     medium     CONS                 5  2.007134 80
+  ladder_lsm_h2_w60     medium     CONS                 6  1.897112 80
+  ladder_lsm_h2_w60     medium     CONS                 7  1.784323 80
+  ladder_lsm_h2_w60     medium     CONS                 8  1.676214 80
+  ladder_lsm_h2_w60     medium     DEFL                 1  1.069470 80
+  ladder_lsm_h2_w60     medium     DEFL                 2  1.002966 80
+  ladder_lsm_h2_w60     medium     DEFL                 3  0.959871 80
+  ladder_lsm_h2_w60     medium     DEFL                 4  0.946208 80
+  ladder_lsm_h2_w60     medium     DEFL                 5  0.948590 80
+  ladder_lsm_h2_w60     medium     DEFL                 6  0.972484 80
+  ladder_lsm_h2_w60     medium     DEFL                 7  0.988931 80
+  ladder_lsm_h2_w60     medium     DEFL                 8  1.014808 80
+  ladder_lsm_h2_w60     medium      FFR                 1  0.392050 80
+  ladder_lsm_h2_w60     medium      FFR                 2  0.751674 80
+  ladder_lsm_h2_w60     medium      FFR                 3  1.082398 80
+  ladder_lsm_h2_w60     medium      FFR                 4  1.379201 80
+  ladder_lsm_h2_w60     medium      FFR                 5  1.666794 80
+  ladder_lsm_h2_w60     medium      FFR                 6  1.918421 80
+  ladder_lsm_h2_w60     medium      FFR                 7  2.117771 80
+  ladder_lsm_h2_w60     medium      FFR                 8  2.284250 80
+  ladder_lsm_h2_w60     medium      GDP                 1  2.341857 80
+  ladder_lsm_h2_w60     medium      GDP                 2  2.236104 80
+  ladder_lsm_h2_w60     medium      GDP                 3  2.759949 80
+  ladder_lsm_h2_w60     medium      GDP                 4  2.445210 80
+  ladder_lsm_h2_w60     medium      GDP                 5  2.193323 80
+  ladder_lsm_h2_w60     medium      GDP                 6  2.050812 80
+  ladder_lsm_h2_w60     medium      GDP                 7  1.923837 80
+  ladder_lsm_h2_w60     medium      GDP                 8  1.801059 80
+  ladder_lsm_h2_w60     medium    HOURS                 1  2.444008 80
+  ladder_lsm_h2_w60     medium    HOURS                 2  2.562027 80
+  ladder_lsm_h2_w60     medium    HOURS                 3  3.735593 80
+  ladder_lsm_h2_w60     medium    HOURS                 4  3.457945 80
+  ladder_lsm_h2_w60     medium    HOURS                 5  3.227474 80
+  ladder_lsm_h2_w60     medium    HOURS                 6  3.083841 80
+  ladder_lsm_h2_w60     medium    HOURS                 7  2.924941 80
+  ladder_lsm_h2_w60     medium    HOURS                 8  2.757712 80
+  ladder_lsm_h2_w60     medium      INV                 1 10.888399 80
+  ladder_lsm_h2_w60     medium      INV                 2 10.125614 80
+  ladder_lsm_h2_w60     medium      INV                 3 10.466961 80
+  ladder_lsm_h2_w60     medium      INV                 4  9.677612 80
+  ladder_lsm_h2_w60     medium      INV                 5  8.853946 80
+  ladder_lsm_h2_w60     medium      INV                 6  8.217136 80
+  ladder_lsm_h2_w60     medium      INV                 7  7.629187 80
+  ladder_lsm_h2_w60     medium      INV                 8  7.097403 80
+  ladder_lsm_h2_w60     medium     WAGE                 1  4.324678 80
+  ladder_lsm_h2_w60     medium     WAGE                 2  2.474388 80
+  ladder_lsm_h2_w60     medium     WAGE                 3  2.293140 80
+  ladder_lsm_h2_w60     medium     WAGE                 4  1.918202 80
+  ladder_lsm_h2_w60     medium     WAGE                 5  1.747526 80
+  ladder_lsm_h2_w60     medium     WAGE                 6  1.594771 80
+  ladder_lsm_h2_w60     medium     WAGE                 7  1.422713 80
+  ladder_lsm_h2_w60     medium     WAGE                 8  1.372186 80
+  ladder_lsm_h4_w12     medium     CONS                 1  2.116371 80
+  ladder_lsm_h4_w12     medium     CONS                 2  1.992574 80
+  ladder_lsm_h4_w12     medium     CONS                 3  2.661114 80
+  ladder_lsm_h4_w12     medium     CONS                 4  2.338310 80
+  ladder_lsm_h4_w12     medium     CONS                 5  2.142901 80
+  ladder_lsm_h4_w12     medium     CONS                 6  1.995955 80
+  ladder_lsm_h4_w12     medium     CONS                 7  1.887767 80
+  ladder_lsm_h4_w12     medium     CONS                 8  1.787736 80
+  ladder_lsm_h4_w12     medium     DEFL                 1  1.083330 80
+  ladder_lsm_h4_w12     medium     DEFL                 2  1.051908 80
+  ladder_lsm_h4_w12     medium     DEFL                 3  1.059579 80
+  ladder_lsm_h4_w12     medium     DEFL                 4  1.058241 80
+  ladder_lsm_h4_w12     medium     DEFL                 5  1.064578 80
+  ladder_lsm_h4_w12     medium     DEFL                 6  1.066699 80
+  ladder_lsm_h4_w12     medium     DEFL                 7  1.078275 80
+  ladder_lsm_h4_w12     medium     DEFL                 8  1.106536 80
+  ladder_lsm_h4_w12     medium      FFR                 1  0.407384 80
+  ladder_lsm_h4_w12     medium      FFR                 2  0.782389 80
+  ladder_lsm_h4_w12     medium      FFR                 3  1.129026 80
+  ladder_lsm_h4_w12     medium      FFR                 4  1.451703 80
+  ladder_lsm_h4_w12     medium      FFR                 5  1.734036 80
+  ladder_lsm_h4_w12     medium      FFR                 6  1.993436 80
+  ladder_lsm_h4_w12     medium      FFR                 7  2.218239 80
+  ladder_lsm_h4_w12     medium      FFR                 8  2.403472 80
+  ladder_lsm_h4_w12     medium      GDP                 1  2.639675 80
+  ladder_lsm_h4_w12     medium      GDP                 2  2.477812 80
+  ladder_lsm_h4_w12     medium      GDP                 3  2.885339 80
+  ladder_lsm_h4_w12     medium      GDP                 4  2.591146 80
+  ladder_lsm_h4_w12     medium      GDP                 5  2.381832 80
+  ladder_lsm_h4_w12     medium      GDP                 6  2.209766 80
+  ladder_lsm_h4_w12     medium      GDP                 7  2.088409 80
+  ladder_lsm_h4_w12     medium      GDP                 8  1.968594 80
+  ladder_lsm_h4_w12     medium    HOURS                 1  2.740621 80
+  ladder_lsm_h4_w12     medium    HOURS                 2  2.826283 80
+  ladder_lsm_h4_w12     medium    HOURS                 3  3.825548 80
+  ladder_lsm_h4_w12     medium    HOURS                 4  3.585948 80
+  ladder_lsm_h4_w12     medium    HOURS                 5  3.373725 80
+  ladder_lsm_h4_w12     medium    HOURS                 6  3.200248 80
+  ladder_lsm_h4_w12     medium    HOURS                 7  3.036196 80
+  ladder_lsm_h4_w12     medium    HOURS                 8  2.873453 80
+  ladder_lsm_h4_w12     medium      INV                 1 12.801799 80
+  ladder_lsm_h4_w12     medium      INV                 2 11.529808 80
+  ladder_lsm_h4_w12     medium      INV                 3 11.353901 80
+  ladder_lsm_h4_w12     medium      INV                 4 10.578046 80
+  ladder_lsm_h4_w12     medium      INV                 5  9.668054 80
+  ladder_lsm_h4_w12     medium      INV                 6  8.926249 80
+  ladder_lsm_h4_w12     medium      INV                 7  8.306640 80
+  ladder_lsm_h4_w12     medium      INV                 8  7.725886 80
+  ladder_lsm_h4_w12     medium     WAGE                 1  4.265116 80
+  ladder_lsm_h4_w12     medium     WAGE                 2  2.500148 80
+  ladder_lsm_h4_w12     medium     WAGE                 3  2.348311 80
+  ladder_lsm_h4_w12     medium     WAGE                 4  1.975817 80
+  ladder_lsm_h4_w12     medium     WAGE                 5  1.766652 80
+  ladder_lsm_h4_w12     medium     WAGE                 6  1.604977 80
+  ladder_lsm_h4_w12     medium     WAGE                 7  1.410316 80
+  ladder_lsm_h4_w12     medium     WAGE                 8  1.346989 80
+  ladder_lsm_h4_w40     medium     CONS                 1  2.053022 80
+  ladder_lsm_h4_w40     medium     CONS                 2  1.890135 80
+  ladder_lsm_h4_w40     medium     CONS                 3  2.567511 80
+  ladder_lsm_h4_w40     medium     CONS                 4  2.210568 80
+  ladder_lsm_h4_w40     medium     CONS                 5  1.977455 80
+  ladder_lsm_h4_w40     medium     CONS                 6  1.849807 80
+  ladder_lsm_h4_w40     medium     CONS                 7  1.730182 80
+  ladder_lsm_h4_w40     medium     CONS                 8  1.645578 80
+  ladder_lsm_h4_w40     medium     DEFL                 1  1.046828 80
+  ladder_lsm_h4_w40     medium     DEFL                 2  0.980018 80
+  ladder_lsm_h4_w40     medium     DEFL                 3  0.970940 80
+  ladder_lsm_h4_w40     medium     DEFL                 4  0.988271 80
+  ladder_lsm_h4_w40     medium     DEFL                 5  0.974973 80
+  ladder_lsm_h4_w40     medium     DEFL                 6  0.988559 80
+  ladder_lsm_h4_w40     medium     DEFL                 7  0.992848 80
+  ladder_lsm_h4_w40     medium     DEFL                 8  1.006069 80
+  ladder_lsm_h4_w40     medium      FFR                 1  0.409484 80
+  ladder_lsm_h4_w40     medium      FFR                 2  0.761527 80
+  ladder_lsm_h4_w40     medium      FFR                 3  1.102086 80
+  ladder_lsm_h4_w40     medium      FFR                 4  1.411065 80
+  ladder_lsm_h4_w40     medium      FFR                 5  1.687248 80
+  ladder_lsm_h4_w40     medium      FFR                 6  1.931013 80
+  ladder_lsm_h4_w40     medium      FFR                 7  2.136814 80
+  ladder_lsm_h4_w40     medium      FFR                 8  2.311322 80
+  ladder_lsm_h4_w40     medium      GDP                 1  2.610840 80
+  ladder_lsm_h4_w40     medium      GDP                 2  2.348821 80
+  ladder_lsm_h4_w40     medium      GDP                 3  2.742957 80
+  ladder_lsm_h4_w40     medium      GDP                 4  2.393767 80
+  ladder_lsm_h4_w40     medium      GDP                 5  2.135805 80
+  ladder_lsm_h4_w40     medium      GDP                 6  1.980282 80
+  ladder_lsm_h4_w40     medium      GDP                 7  1.851007 80
+  ladder_lsm_h4_w40     medium      GDP                 8  1.751443 80
+  ladder_lsm_h4_w40     medium    HOURS                 1  2.997586 80
+  ladder_lsm_h4_w40     medium    HOURS                 2  2.971175 80
+  ladder_lsm_h4_w40     medium    HOURS                 3  3.866611 80
+  ladder_lsm_h4_w40     medium    HOURS                 4  3.542854 80
+  ladder_lsm_h4_w40     medium    HOURS                 5  3.249899 80
+  ladder_lsm_h4_w40     medium    HOURS                 6  3.073863 80
+  ladder_lsm_h4_w40     medium    HOURS                 7  2.900525 80
+  ladder_lsm_h4_w40     medium    HOURS                 8  2.739057 80
+  ladder_lsm_h4_w40     medium      INV                 1 12.643268 80
+  ladder_lsm_h4_w40     medium      INV                 2 11.118140 80
+  ladder_lsm_h4_w40     medium      INV                 3 10.742701 80
+  ladder_lsm_h4_w40     medium      INV                 4  9.679051 80
+  ladder_lsm_h4_w40     medium      INV                 5  8.778895 80
+  ladder_lsm_h4_w40     medium      INV                 6  8.107963 80
+  ladder_lsm_h4_w40     medium      INV                 7  7.562282 80
+  ladder_lsm_h4_w40     medium      INV                 8  7.090636 80
+  ladder_lsm_h4_w40     medium     WAGE                 1  4.208761 80
+  ladder_lsm_h4_w40     medium     WAGE                 2  2.403986 80
+  ladder_lsm_h4_w40     medium     WAGE                 3  2.244807 80
+  ladder_lsm_h4_w40     medium     WAGE                 4  1.871603 80
+  ladder_lsm_h4_w40     medium     WAGE                 5  1.685301 80
+  ladder_lsm_h4_w40     medium     WAGE                 6  1.539059 80
+  ladder_lsm_h4_w40     medium     WAGE                 7  1.358649 80
+  ladder_lsm_h4_w40     medium     WAGE                 8  1.300283 80
+  ladder_lsm_h4_w60     medium     CONS                 1  2.082965 80
+  ladder_lsm_h4_w60     medium     CONS                 2  1.926679 80
+  ladder_lsm_h4_w60     medium     CONS                 3  2.607153 80
+  ladder_lsm_h4_w60     medium     CONS                 4  2.234358 80
+  ladder_lsm_h4_w60     medium     CONS                 5  2.003438 80
+  ladder_lsm_h4_w60     medium     CONS                 6  1.879690 80
+  ladder_lsm_h4_w60     medium     CONS                 7  1.758059 80
+  ladder_lsm_h4_w60     medium     CONS                 8  1.659331 80
+  ladder_lsm_h4_w60     medium     DEFL                 1  1.248503 80
+  ladder_lsm_h4_w60     medium     DEFL                 2  1.165907 80
+  ladder_lsm_h4_w60     medium     DEFL                 3  1.158637 80
+  ladder_lsm_h4_w60     medium     DEFL                 4  1.152680 80
+  ladder_lsm_h4_w60     medium     DEFL                 5  1.151374 80
+  ladder_lsm_h4_w60     medium     DEFL                 6  1.160706 80
+  ladder_lsm_h4_w60     medium     DEFL                 7  1.167529 80
+  ladder_lsm_h4_w60     medium     DEFL                 8  1.174626 80
+  ladder_lsm_h4_w60     medium      FFR                 1  0.419321 80
+  ladder_lsm_h4_w60     medium      FFR                 2  0.766552 80
+  ladder_lsm_h4_w60     medium      FFR                 3  1.105322 80
+  ladder_lsm_h4_w60     medium      FFR                 4  1.415600 80
+  ladder_lsm_h4_w60     medium      FFR                 5  1.687673 80
+  ladder_lsm_h4_w60     medium      FFR                 6  1.925298 80
+  ladder_lsm_h4_w60     medium      FFR                 7  2.126702 80
+  ladder_lsm_h4_w60     medium      FFR                 8  2.296309 80
+  ladder_lsm_h4_w60     medium      GDP                 1  2.651820 80
+  ladder_lsm_h4_w60     medium      GDP                 2  2.355788 80
+  ladder_lsm_h4_w60     medium      GDP                 3  2.761834 80
+  ladder_lsm_h4_w60     medium      GDP                 4  2.403374 80
+  ladder_lsm_h4_w60     medium      GDP                 5  2.142017 80
+  ladder_lsm_h4_w60     medium      GDP                 6  1.985568 80
+  ladder_lsm_h4_w60     medium      GDP                 7  1.852389 80
+  ladder_lsm_h4_w60     medium      GDP                 8  1.736253 80
+  ladder_lsm_h4_w60     medium    HOURS                 1  3.063450 80
+  ladder_lsm_h4_w60     medium    HOURS                 2  3.039089 80
+  ladder_lsm_h4_w60     medium    HOURS                 3  3.942056 80
+  ladder_lsm_h4_w60     medium    HOURS                 4  3.622864 80
+  ladder_lsm_h4_w60     medium    HOURS                 5  3.336403 80
+  ladder_lsm_h4_w60     medium    HOURS                 6  3.139517 80
+  ladder_lsm_h4_w60     medium    HOURS                 7  2.966249 80
+  ladder_lsm_h4_w60     medium    HOURS                 8  2.796569 80
+  ladder_lsm_h4_w60     medium      INV                 1 13.097296 80
+  ladder_lsm_h4_w60     medium      INV                 2 11.487336 80
+  ladder_lsm_h4_w60     medium      INV                 3 10.918350 80
+  ladder_lsm_h4_w60     medium      INV                 4  9.809096 80
+  ladder_lsm_h4_w60     medium      INV                 5  8.800711 80
+  ladder_lsm_h4_w60     medium      INV                 6  8.079747 80
+  ladder_lsm_h4_w60     medium      INV                 7  7.488804 80
+  ladder_lsm_h4_w60     medium      INV                 8  7.002699 80
+  ladder_lsm_h4_w60     medium     WAGE                 1  4.213883 80
+  ladder_lsm_h4_w60     medium     WAGE                 2  2.410369 80
+  ladder_lsm_h4_w60     medium     WAGE                 3  2.245235 80
+  ladder_lsm_h4_w60     medium     WAGE                 4  1.886425 80
+  ladder_lsm_h4_w60     medium     WAGE                 5  1.710352 80
+  ladder_lsm_h4_w60     medium     WAGE                 6  1.558820 80
+  ladder_lsm_h4_w60     medium     WAGE                 7  1.393013 80
+  ladder_lsm_h4_w60     medium     WAGE                 8  1.338408 80
+  ladder_lsm_h4_w80     medium     CONS                 1  2.022488 80
+  ladder_lsm_h4_w80     medium     CONS                 2  1.854726 80
+  ladder_lsm_h4_w80     medium     CONS                 3  2.549555 80
+  ladder_lsm_h4_w80     medium     CONS                 4  2.212286 80
+  ladder_lsm_h4_w80     medium     CONS                 5  1.992623 80
+  ladder_lsm_h4_w80     medium     CONS                 6  1.863552 80
+  ladder_lsm_h4_w80     medium     CONS                 7  1.747728 80
+  ladder_lsm_h4_w80     medium     CONS                 8  1.656617 80
+  ladder_lsm_h4_w80     medium     DEFL                 1  1.190246 80
+  ladder_lsm_h4_w80     medium     DEFL                 2  1.119470 80
+  ladder_lsm_h4_w80     medium     DEFL                 3  1.088811 80
+  ladder_lsm_h4_w80     medium     DEFL                 4  1.075022 80
+  ladder_lsm_h4_w80     medium     DEFL                 5  1.070324 80
+  ladder_lsm_h4_w80     medium     DEFL                 6  1.067810 80
+  ladder_lsm_h4_w80     medium     DEFL                 7  1.075416 80
+  ladder_lsm_h4_w80     medium     DEFL                 8  1.083832 80
+  ladder_lsm_h4_w80     medium      FFR                 1  0.378060 80
+  ladder_lsm_h4_w80     medium      FFR                 2  0.726681 80
+  ladder_lsm_h4_w80     medium      FFR                 3  1.086234 80
+  ladder_lsm_h4_w80     medium      FFR                 4  1.420574 80
+  ladder_lsm_h4_w80     medium      FFR                 5  1.721666 80
+  ladder_lsm_h4_w80     medium      FFR                 6  1.985108 80
+  ladder_lsm_h4_w80     medium      FFR                 7  2.213114 80
+  ladder_lsm_h4_w80     medium      FFR                 8  2.403665 80
+  ladder_lsm_h4_w80     medium      GDP                 1  2.582142 80
+  ladder_lsm_h4_w80     medium      GDP                 2  2.343753 80
+  ladder_lsm_h4_w80     medium      GDP                 3  2.753879 80
+  ladder_lsm_h4_w80     medium      GDP                 4  2.427320 80
+  ladder_lsm_h4_w80     medium      GDP                 5  2.163400 80
+  ladder_lsm_h4_w80     medium      GDP                 6  2.010842 80
+  ladder_lsm_h4_w80     medium      GDP                 7  1.874559 80
+  ladder_lsm_h4_w80     medium      GDP                 8  1.759287 80
+  ladder_lsm_h4_w80     medium    HOURS                 1  2.981173 80
+  ladder_lsm_h4_w80     medium    HOURS                 2  2.996920 80
+  ladder_lsm_h4_w80     medium    HOURS                 3  3.927819 80
+  ladder_lsm_h4_w80     medium    HOURS                 4  3.624451 80
+  ladder_lsm_h4_w80     medium    HOURS                 5  3.340131 80
+  ladder_lsm_h4_w80     medium    HOURS                 6  3.159505 80
+  ladder_lsm_h4_w80     medium    HOURS                 7  2.979420 80
+  ladder_lsm_h4_w80     medium    HOURS                 8  2.805425 80
+  ladder_lsm_h4_w80     medium      INV                 1 13.030609 80
+  ladder_lsm_h4_w80     medium      INV                 2 11.643987 80
+  ladder_lsm_h4_w80     medium      INV                 3 11.212158 80
+  ladder_lsm_h4_w80     medium      INV                 4 10.202795 80
+  ladder_lsm_h4_w80     medium      INV                 5  9.155111 80
+  ladder_lsm_h4_w80     medium      INV                 6  8.423816 80
+  ladder_lsm_h4_w80     medium      INV                 7  7.810527 80
+  ladder_lsm_h4_w80     medium      INV                 8  7.272048 80
+  ladder_lsm_h4_w80     medium     WAGE                 1  4.212409 80
+  ladder_lsm_h4_w80     medium     WAGE                 2  2.432364 80
+  ladder_lsm_h4_w80     medium     WAGE                 3  2.281048 80
+  ladder_lsm_h4_w80     medium     WAGE                 4  1.918880 80
+  ladder_lsm_h4_w80     medium     WAGE                 5  1.752978 80
+  ladder_lsm_h4_w80     medium     WAGE                 6  1.608048 80
+  ladder_lsm_h4_w80     medium     WAGE                 7  1.436096 80
+  ladder_lsm_h4_w80     medium     WAGE                 8  1.383138 80
+  ladder_lsm_h8_w12     medium     CONS                 1  2.050078 80
+  ladder_lsm_h8_w12     medium     CONS                 2  1.921523 80
+  ladder_lsm_h8_w12     medium     CONS                 3  2.593752 80
+  ladder_lsm_h8_w12     medium     CONS                 4  2.257382 80
+  ladder_lsm_h8_w12     medium     CONS                 5  2.057589 80
+  ladder_lsm_h8_w12     medium     CONS                 6  1.924427 80
+  ladder_lsm_h8_w12     medium     CONS                 7  1.812159 80
+  ladder_lsm_h8_w12     medium     CONS                 8  1.724055 80
+  ladder_lsm_h8_w12     medium     DEFL                 1  1.194662 80
+  ladder_lsm_h8_w12     medium     DEFL                 2  1.106719 80
+  ladder_lsm_h8_w12     medium     DEFL                 3  1.093533 80
+  ladder_lsm_h8_w12     medium     DEFL                 4  1.099667 80
+  ladder_lsm_h8_w12     medium     DEFL                 5  1.100295 80
+  ladder_lsm_h8_w12     medium     DEFL                 6  1.107983 80
+  ladder_lsm_h8_w12     medium     DEFL                 7  1.115307 80
+  ladder_lsm_h8_w12     medium     DEFL                 8  1.122044 80
+  ladder_lsm_h8_w12     medium      FFR                 1  0.451392 80
+  ladder_lsm_h8_w12     medium      FFR                 2  0.827764 80
+  ladder_lsm_h8_w12     medium      FFR                 3  1.147516 80
+  ladder_lsm_h8_w12     medium      FFR                 4  1.438728 80
+  ladder_lsm_h8_w12     medium      FFR                 5  1.719705 80
+  ladder_lsm_h8_w12     medium      FFR                 6  1.969084 80
+  ladder_lsm_h8_w12     medium      FFR                 7  2.174880 80
+  ladder_lsm_h8_w12     medium      FFR                 8  2.350598 80
+  ladder_lsm_h8_w12     medium      GDP                 1  2.701423 80
+  ladder_lsm_h8_w12     medium      GDP                 2  2.445375 80
+  ladder_lsm_h8_w12     medium      GDP                 3  2.840748 80
+  ladder_lsm_h8_w12     medium      GDP                 4  2.504737 80
+  ladder_lsm_h8_w12     medium      GDP                 5  2.294676 80
+  ladder_lsm_h8_w12     medium      GDP                 6  2.125127 80
+  ladder_lsm_h8_w12     medium      GDP                 7  2.017344 80
+  ladder_lsm_h8_w12     medium      GDP                 8  1.907618 80
+  ladder_lsm_h8_w12     medium    HOURS                 1  2.677222 80
+  ladder_lsm_h8_w12     medium    HOURS                 2  2.767836 80
+  ladder_lsm_h8_w12     medium    HOURS                 3  3.801178 80
+  ladder_lsm_h8_w12     medium    HOURS                 4  3.538124 80
+  ladder_lsm_h8_w12     medium    HOURS                 5  3.326482 80
+  ladder_lsm_h8_w12     medium    HOURS                 6  3.153404 80
+  ladder_lsm_h8_w12     medium    HOURS                 7  2.993599 80
+  ladder_lsm_h8_w12     medium    HOURS                 8  2.839261 80
+  ladder_lsm_h8_w12     medium      INV                 1 12.428734 80
+  ladder_lsm_h8_w12     medium      INV                 2 11.494836 80
+  ladder_lsm_h8_w12     medium      INV                 3 11.339251 80
+  ladder_lsm_h8_w12     medium      INV                 4 10.325332 80
+  ladder_lsm_h8_w12     medium      INV                 5  9.478879 80
+  ladder_lsm_h8_w12     medium      INV                 6  8.738200 80
+  ladder_lsm_h8_w12     medium      INV                 7  8.178340 80
+  ladder_lsm_h8_w12     medium      INV                 8  7.673189 80
+  ladder_lsm_h8_w12     medium     WAGE                 1  4.238507 80
+  ladder_lsm_h8_w12     medium     WAGE                 2  2.383683 80
+  ladder_lsm_h8_w12     medium     WAGE                 3  2.255517 80
+  ladder_lsm_h8_w12     medium     WAGE                 4  1.876036 80
+  ladder_lsm_h8_w12     medium     WAGE                 5  1.683625 80
+  ladder_lsm_h8_w12     medium     WAGE                 6  1.515134 80
+  ladder_lsm_h8_w12     medium     WAGE                 7  1.322666 80
+  ladder_lsm_h8_w12     medium     WAGE                 8  1.273102 80
+  ladder_lsm_h8_w60     medium     CONS                 1  2.043770 80
+  ladder_lsm_h8_w60     medium     CONS                 2  1.871387 80
+  ladder_lsm_h8_w60     medium     CONS                 3  2.566067 80
+  ladder_lsm_h8_w60     medium     CONS                 4  2.166037 80
+  ladder_lsm_h8_w60     medium     CONS                 5  1.957997 80
+  ladder_lsm_h8_w60     medium     CONS                 6  1.831756 80
+  ladder_lsm_h8_w60     medium     CONS                 7  1.703366 80
+  ladder_lsm_h8_w60     medium     CONS                 8  1.618497 80
+  ladder_lsm_h8_w60     medium     DEFL                 1  1.149402 80
+  ladder_lsm_h8_w60     medium     DEFL                 2  1.097060 80
+  ladder_lsm_h8_w60     medium     DEFL                 3  1.081585 80
+  ladder_lsm_h8_w60     medium     DEFL                 4  1.099877 80
+  ladder_lsm_h8_w60     medium     DEFL                 5  1.106662 80
+  ladder_lsm_h8_w60     medium     DEFL                 6  1.122365 80
+  ladder_lsm_h8_w60     medium     DEFL                 7  1.133056 80
+  ladder_lsm_h8_w60     medium     DEFL                 8  1.137012 80
+  ladder_lsm_h8_w60     medium      FFR                 1  0.418208 80
+  ladder_lsm_h8_w60     medium      FFR                 2  0.773956 80
+  ladder_lsm_h8_w60     medium      FFR                 3  1.115898 80
+  ladder_lsm_h8_w60     medium      FFR                 4  1.419834 80
+  ladder_lsm_h8_w60     medium      FFR                 5  1.685238 80
+  ladder_lsm_h8_w60     medium      FFR                 6  1.913212 80
+  ladder_lsm_h8_w60     medium      FFR                 7  2.104163 80
+  ladder_lsm_h8_w60     medium      FFR                 8  2.262601 80
+  ladder_lsm_h8_w60     medium      GDP                 1  2.638896 80
+  ladder_lsm_h8_w60     medium      GDP                 2  2.331138 80
+  ladder_lsm_h8_w60     medium      GDP                 3  2.729052 80
+  ladder_lsm_h8_w60     medium      GDP                 4  2.333240 80
+  ladder_lsm_h8_w60     medium      GDP                 5  2.103549 80
+  ladder_lsm_h8_w60     medium      GDP                 6  1.939555 80
+  ladder_lsm_h8_w60     medium      GDP                 7  1.801825 80
+  ladder_lsm_h8_w60     medium      GDP                 8  1.692601 80
+  ladder_lsm_h8_w60     medium    HOURS                 1  3.157929 80
+  ladder_lsm_h8_w60     medium    HOURS                 2  3.087694 80
+  ladder_lsm_h8_w60     medium    HOURS                 3  3.970072 80
+  ladder_lsm_h8_w60     medium    HOURS                 4  3.612381 80
+  ladder_lsm_h8_w60     medium    HOURS                 5  3.334931 80
+  ladder_lsm_h8_w60     medium    HOURS                 6  3.127466 80
+  ladder_lsm_h8_w60     medium    HOURS                 7  2.935555 80
+  ladder_lsm_h8_w60     medium    HOURS                 8  2.761878 80
+  ladder_lsm_h8_w60     medium      INV                 1 13.387612 80
+  ladder_lsm_h8_w60     medium      INV                 2 11.496812 80
+  ladder_lsm_h8_w60     medium      INV                 3 10.875522 80
+  ladder_lsm_h8_w60     medium      INV                 4  9.671134 80
+  ladder_lsm_h8_w60     medium      INV                 5  8.687292 80
+  ladder_lsm_h8_w60     medium      INV                 6  7.947533 80
+  ladder_lsm_h8_w60     medium      INV                 7  7.399386 80
+  ladder_lsm_h8_w60     medium      INV                 8  6.909651 80
+  ladder_lsm_h8_w60     medium     WAGE                 1  4.218371 80
+  ladder_lsm_h8_w60     medium     WAGE                 2  2.417957 80
+  ladder_lsm_h8_w60     medium     WAGE                 3  2.284313 80
+  ladder_lsm_h8_w60     medium     WAGE                 4  1.927984 80
+  ladder_lsm_h8_w60     medium     WAGE                 5  1.739167 80
+  ladder_lsm_h8_w60     medium     WAGE                 6  1.606465 80
+  ladder_lsm_h8_w60     medium     WAGE                 7  1.437149 80
+  ladder_lsm_h8_w60     medium     WAGE                 8  1.391588 80
+         ladder_mdd     medium     CONS                 1  1.877696 80
+         ladder_mdd     medium     CONS                 2  1.785098 80
+         ladder_mdd     medium     CONS                 3  2.558528 80
+         ladder_mdd     medium     CONS                 4  2.232659 80
+         ladder_mdd     medium     CONS                 5  2.037268 80
+         ladder_mdd     medium     CONS                 6  1.917517 80
+         ladder_mdd     medium     CONS                 7  1.809016 80
+         ladder_mdd     medium     CONS                 8  1.703312 80
+         ladder_mdd     medium     DEFL                 1  0.927181 80
+         ladder_mdd     medium     DEFL                 2  0.833168 80
+         ladder_mdd     medium     DEFL                 3  0.792789 80
+         ladder_mdd     medium     DEFL                 4  0.765089 80
+         ladder_mdd     medium     DEFL                 5  0.753277 80
+         ladder_mdd     medium     DEFL                 6  0.767202 80
+         ladder_mdd     medium     DEFL                 7  0.785308 80
+         ladder_mdd     medium     DEFL                 8  0.811587 80
+         ladder_mdd     medium      FFR                 1  0.387057 80
+         ladder_mdd     medium      FFR                 2  0.735274 80
+         ladder_mdd     medium      FFR                 3  1.047173 80
+         ladder_mdd     medium      FFR                 4  1.314216 80
+         ladder_mdd     medium      FFR                 5  1.556488 80
+         ladder_mdd     medium      FFR                 6  1.785702 80
+         ladder_mdd     medium      FFR                 7  1.992068 80
+         ladder_mdd     medium      FFR                 8  2.169742 80
+         ladder_mdd     medium      GDP                 1  2.271911 80
+         ladder_mdd     medium      GDP                 2  2.182599 80
+         ladder_mdd     medium      GDP                 3  2.753834 80
+         ladder_mdd     medium      GDP                 4  2.453482 80
+         ladder_mdd     medium      GDP                 5  2.234288 80
+         ladder_mdd     medium      GDP                 6  2.089762 80
+         ladder_mdd     medium      GDP                 7  1.968956 80
+         ladder_mdd     medium      GDP                 8  1.852609 80
+         ladder_mdd     medium    HOURS                 1  2.226984 80
+         ladder_mdd     medium    HOURS                 2  2.417829 80
+         ladder_mdd     medium    HOURS                 3  3.645059 80
+         ladder_mdd     medium    HOURS                 4  3.380517 80
+         ladder_mdd     medium    HOURS                 5  3.166437 80
+         ladder_mdd     medium    HOURS                 6  3.029492 80
+         ladder_mdd     medium    HOURS                 7  2.887377 80
+         ladder_mdd     medium    HOURS                 8  2.725073 80
+         ladder_mdd     medium      INV                 1 10.340138 80
+         ladder_mdd     medium      INV                 2  9.852010 80
+         ladder_mdd     medium      INV                 3 10.398633 80
+         ladder_mdd     medium      INV                 4  9.697189 80
+         ladder_mdd     medium      INV                 5  8.889588 80
+         ladder_mdd     medium      INV                 6  8.187671 80
+         ladder_mdd     medium      INV                 7  7.569063 80
+         ladder_mdd     medium      INV                 8  7.006496 80
+         ladder_mdd     medium     WAGE                 1  4.322236 80
+         ladder_mdd     medium     WAGE                 2  2.528961 80
+         ladder_mdd     medium     WAGE                 3  2.377978 80
+         ladder_mdd     medium     WAGE                 4  2.021919 80
+         ladder_mdd     medium     WAGE                 5  1.842772 80
+         ladder_mdd     medium     WAGE                 6  1.700854 80
+         ladder_mdd     medium     WAGE                 7  1.541529 80
+         ladder_mdd     medium     WAGE                 8  1.493211 80
+ ladder_rmse_h4_w12     medium     CONS                 1  1.833455 80
+ ladder_rmse_h4_w12     medium     CONS                 2  1.757890 80
+ ladder_rmse_h4_w12     medium     CONS                 3  2.514555 80
+ ladder_rmse_h4_w12     medium     CONS                 4  2.226944 80
+ ladder_rmse_h4_w12     medium     CONS                 5  2.037759 80
+ ladder_rmse_h4_w12     medium     CONS                 6  1.927919 80
+ ladder_rmse_h4_w12     medium     CONS                 7  1.847818 80
+ ladder_rmse_h4_w12     medium     CONS                 8  1.771734 80
+ ladder_rmse_h4_w12     medium     DEFL                 1  1.088187 80
+ ladder_rmse_h4_w12     medium     DEFL                 2  0.987835 80
+ ladder_rmse_h4_w12     medium     DEFL                 3  0.982943 80
+ ladder_rmse_h4_w12     medium     DEFL                 4  0.974283 80
+ ladder_rmse_h4_w12     medium     DEFL                 5  0.965773 80
+ ladder_rmse_h4_w12     medium     DEFL                 6  0.979838 80
+ ladder_rmse_h4_w12     medium     DEFL                 7  0.992020 80
+ ladder_rmse_h4_w12     medium     DEFL                 8  1.018379 80
+ ladder_rmse_h4_w12     medium      FFR                 1  0.375626 80
+ ladder_rmse_h4_w12     medium      FFR                 2  0.739364 80
+ ladder_rmse_h4_w12     medium      FFR                 3  1.048806 80
+ ladder_rmse_h4_w12     medium      FFR                 4  1.345260 80
+ ladder_rmse_h4_w12     medium      FFR                 5  1.620457 80
+ ladder_rmse_h4_w12     medium      FFR                 6  1.872646 80
+ ladder_rmse_h4_w12     medium      FFR                 7  2.088351 80
+ ladder_rmse_h4_w12     medium      FFR                 8  2.286392 80
+ ladder_rmse_h4_w12     medium      GDP                 1  2.333892 80
+ ladder_rmse_h4_w12     medium      GDP                 2  2.162204 80
+ ladder_rmse_h4_w12     medium      GDP                 3  2.721997 80
+ ladder_rmse_h4_w12     medium      GDP                 4  2.461951 80
+ ladder_rmse_h4_w12     medium      GDP                 5  2.285157 80
+ ladder_rmse_h4_w12     medium      GDP                 6  2.137435 80
+ ladder_rmse_h4_w12     medium      GDP                 7  2.046345 80
+ ladder_rmse_h4_w12     medium      GDP                 8  1.962484 80
+ ladder_rmse_h4_w12     medium    HOURS                 1  2.533965 80
+ ladder_rmse_h4_w12     medium    HOURS                 2  2.585359 80
+ ladder_rmse_h4_w12     medium    HOURS                 3  3.650196 80
+ ladder_rmse_h4_w12     medium    HOURS                 4  3.384905 80
+ ladder_rmse_h4_w12     medium    HOURS                 5  3.193040 80
+ ladder_rmse_h4_w12     medium    HOURS                 6  3.043682 80
+ ladder_rmse_h4_w12     medium    HOURS                 7  2.900317 80
+ ladder_rmse_h4_w12     medium    HOURS                 8  2.760845 80
+ ladder_rmse_h4_w12     medium      INV                 1 11.954645 80
+ ladder_rmse_h4_w12     medium      INV                 2 10.433856 80
+ ladder_rmse_h4_w12     medium      INV                 3 10.590278 80
+ ladder_rmse_h4_w12     medium      INV                 4  9.840027 80
+ ladder_rmse_h4_w12     medium      INV                 5  9.203339 80
+ ladder_rmse_h4_w12     medium      INV                 6  8.586003 80
+ ladder_rmse_h4_w12     medium      INV                 7  8.121909 80
+ ladder_rmse_h4_w12     medium      INV                 8  7.742073 80
+ ladder_rmse_h4_w12     medium     WAGE                 1  4.280548 80
+ ladder_rmse_h4_w12     medium     WAGE                 2  2.442373 80
+ ladder_rmse_h4_w12     medium     WAGE                 3  2.275926 80
+ ladder_rmse_h4_w12     medium     WAGE                 4  1.919559 80
+ ladder_rmse_h4_w12     medium     WAGE                 5  1.713755 80
+ ladder_rmse_h4_w12     medium     WAGE                 6  1.567146 80
+ ladder_rmse_h4_w12     medium     WAGE                 7  1.352702 80
+ ladder_rmse_h4_w12     medium     WAGE                 8  1.283771 80
+ ladder_rmse_h4_w40     medium     CONS                 1  1.907713 80
+ ladder_rmse_h4_w40     medium     CONS                 2  1.794493 80
+ ladder_rmse_h4_w40     medium     CONS                 3  2.534031 80
+ ladder_rmse_h4_w40     medium     CONS                 4  2.209555 80
+ ladder_rmse_h4_w40     medium     CONS                 5  1.995575 80
+ ladder_rmse_h4_w40     medium     CONS                 6  1.870254 80
+ ladder_rmse_h4_w40     medium     CONS                 7  1.751421 80
+ ladder_rmse_h4_w40     medium     CONS                 8  1.663001 80
+ ladder_rmse_h4_w40     medium     DEFL                 1  1.027365 80
+ ladder_rmse_h4_w40     medium     DEFL                 2  0.989795 80
+ ladder_rmse_h4_w40     medium     DEFL                 3  0.987320 80
+ ladder_rmse_h4_w40     medium     DEFL                 4  0.967643 80
+ ladder_rmse_h4_w40     medium     DEFL                 5  0.970514 80
+ ladder_rmse_h4_w40     medium     DEFL                 6  0.984778 80
+ ladder_rmse_h4_w40     medium     DEFL                 7  0.997277 80
+ ladder_rmse_h4_w40     medium     DEFL                 8  1.018737 80
+ ladder_rmse_h4_w40     medium      FFR                 1  0.369562 80
+ ladder_rmse_h4_w40     medium      FFR                 2  0.716877 80
+ ladder_rmse_h4_w40     medium      FFR                 3  1.045119 80
+ ladder_rmse_h4_w40     medium      FFR                 4  1.350401 80
+ ladder_rmse_h4_w40     medium      FFR                 5  1.637649 80
+ ladder_rmse_h4_w40     medium      FFR                 6  1.890552 80
+ ladder_rmse_h4_w40     medium      FFR                 7  2.104556 80
+ ladder_rmse_h4_w40     medium      FFR                 8  2.283622 80
+ ladder_rmse_h4_w40     medium      GDP                 1  2.462755 80
+ ladder_rmse_h4_w40     medium      GDP                 2  2.287920 80
+ ladder_rmse_h4_w40     medium      GDP                 3  2.758307 80
+ ladder_rmse_h4_w40     medium      GDP                 4  2.436468 80
+ ladder_rmse_h4_w40     medium      GDP                 5  2.196849 80
+ ladder_rmse_h4_w40     medium      GDP                 6  2.043126 80
+ ladder_rmse_h4_w40     medium      GDP                 7  1.904599 80
+ ladder_rmse_h4_w40     medium      GDP                 8  1.792676 80
+ ladder_rmse_h4_w40     medium    HOURS                 1  2.566583 80
+ ladder_rmse_h4_w40     medium    HOURS                 2  2.627467 80
+ ladder_rmse_h4_w40     medium    HOURS                 3  3.721562 80
+ ladder_rmse_h4_w40     medium    HOURS                 4  3.432698 80
+ ladder_rmse_h4_w40     medium    HOURS                 5  3.218096 80
+ ladder_rmse_h4_w40     medium    HOURS                 6  3.061477 80
+ ladder_rmse_h4_w40     medium    HOURS                 7  2.902932 80
+ ladder_rmse_h4_w40     medium    HOURS                 8  2.744096 80
+ ladder_rmse_h4_w40     medium      INV                 1 11.873237 80
+ ladder_rmse_h4_w40     medium      INV                 2 10.942593 80
+ ladder_rmse_h4_w40     medium      INV                 3 10.976398 80
+ ladder_rmse_h4_w40     medium      INV                 4 10.082155 80
+ ladder_rmse_h4_w40     medium      INV                 5  9.179141 80
+ ladder_rmse_h4_w40     medium      INV                 6  8.458748 80
+ ladder_rmse_h4_w40     medium      INV                 7  7.854215 80
+ ladder_rmse_h4_w40     medium      INV                 8  7.343306 80
+ ladder_rmse_h4_w40     medium     WAGE                 1  4.274737 80
+ ladder_rmse_h4_w40     medium     WAGE                 2  2.442066 80
+ ladder_rmse_h4_w40     medium     WAGE                 3  2.262767 80
+ ladder_rmse_h4_w40     medium     WAGE                 4  1.880567 80
+ ladder_rmse_h4_w40     medium     WAGE                 5  1.701501 80
+ ladder_rmse_h4_w40     medium     WAGE                 6  1.536035 80
+ ladder_rmse_h4_w40     medium     WAGE                 7  1.357987 80
+ ladder_rmse_h4_w40     medium     WAGE                 8  1.300067 80
+ ladder_rmse_h4_w60     medium     CONS                 1  1.860505 80
+ ladder_rmse_h4_w60     medium     CONS                 2  1.768271 80
+ ladder_rmse_h4_w60     medium     CONS                 3  2.510045 80
+ ladder_rmse_h4_w60     medium     CONS                 4  2.168081 80
+ ladder_rmse_h4_w60     medium     CONS                 5  1.932976 80
+ ladder_rmse_h4_w60     medium     CONS                 6  1.829666 80
+ ladder_rmse_h4_w60     medium     CONS                 7  1.727164 80
+ ladder_rmse_h4_w60     medium     CONS                 8  1.636586 80
+ ladder_rmse_h4_w60     medium     DEFL                 1  1.050970 80
+ ladder_rmse_h4_w60     medium     DEFL                 2  0.966397 80
+ ladder_rmse_h4_w60     medium     DEFL                 3  0.948877 80
+ ladder_rmse_h4_w60     medium     DEFL                 4  0.942428 80
+ ladder_rmse_h4_w60     medium     DEFL                 5  0.921081 80
+ ladder_rmse_h4_w60     medium     DEFL                 6  0.930936 80
+ ladder_rmse_h4_w60     medium     DEFL                 7  0.942918 80
+ ladder_rmse_h4_w60     medium     DEFL                 8  0.960174 80
+ ladder_rmse_h4_w60     medium      FFR                 1  0.384474 80
+ ladder_rmse_h4_w60     medium      FFR                 2  0.728496 80
+ ladder_rmse_h4_w60     medium      FFR                 3  1.074546 80
+ ladder_rmse_h4_w60     medium      FFR                 4  1.383290 80
+ ladder_rmse_h4_w60     medium      FFR                 5  1.656091 80
+ ladder_rmse_h4_w60     medium      FFR                 6  1.899528 80
+ ladder_rmse_h4_w60     medium      FFR                 7  2.101215 80
+ ladder_rmse_h4_w60     medium      FFR                 8  2.271178 80
+ ladder_rmse_h4_w60     medium      GDP                 1  2.420981 80
+ ladder_rmse_h4_w60     medium      GDP                 2  2.236896 80
+ ladder_rmse_h4_w60     medium      GDP                 3  2.712319 80
+ ladder_rmse_h4_w60     medium      GDP                 4  2.371175 80
+ ladder_rmse_h4_w60     medium      GDP                 5  2.111460 80
+ ladder_rmse_h4_w60     medium      GDP                 6  1.971038 80
+ ladder_rmse_h4_w60     medium      GDP                 7  1.850283 80
+ ladder_rmse_h4_w60     medium      GDP                 8  1.735549 80
+ ladder_rmse_h4_w60     medium    HOURS                 1  2.710429 80
+ ladder_rmse_h4_w60     medium    HOURS                 2  2.723377 80
+ ladder_rmse_h4_w60     medium    HOURS                 3  3.794957 80
+ ladder_rmse_h4_w60     medium    HOURS                 4  3.478025 80
+ ladder_rmse_h4_w60     medium    HOURS                 5  3.235780 80
+ ladder_rmse_h4_w60     medium    HOURS                 6  3.076834 80
+ ladder_rmse_h4_w60     medium    HOURS                 7  2.918907 80
+ ladder_rmse_h4_w60     medium    HOURS                 8  2.759586 80
+ ladder_rmse_h4_w60     medium      INV                 1 11.953365 80
+ ladder_rmse_h4_w60     medium      INV                 2 10.811544 80
+ ladder_rmse_h4_w60     medium      INV                 3 10.794881 80
+ ladder_rmse_h4_w60     medium      INV                 4  9.874589 80
+ ladder_rmse_h4_w60     medium      INV                 5  9.012045 80
+ ladder_rmse_h4_w60     medium      INV                 6  8.337054 80
+ ladder_rmse_h4_w60     medium      INV                 7  7.762943 80
+ ladder_rmse_h4_w60     medium      INV                 8  7.254934 80
+ ladder_rmse_h4_w60     medium     WAGE                 1  4.244938 80
+ ladder_rmse_h4_w60     medium     WAGE                 2  2.414149 80
+ ladder_rmse_h4_w60     medium     WAGE                 3  2.256134 80
+ ladder_rmse_h4_w60     medium     WAGE                 4  1.873057 80
+ ladder_rmse_h4_w60     medium     WAGE                 5  1.710473 80
+ ladder_rmse_h4_w60     medium     WAGE                 6  1.560477 80
+ ladder_rmse_h4_w60     medium     WAGE                 7  1.383761 80
+ ladder_rmse_h4_w60     medium     WAGE                 8  1.333203 80
+ ladder_rmse_h4_w80     medium     CONS                 1  1.810893 80
+ ladder_rmse_h4_w80     medium     CONS                 2  1.668792 80
+ ladder_rmse_h4_w80     medium     CONS                 3  2.439656 80
+ ladder_rmse_h4_w80     medium     CONS                 4  2.080287 80
+ ladder_rmse_h4_w80     medium     CONS                 5  1.835692 80
+ ladder_rmse_h4_w80     medium     CONS                 6  1.715908 80
+ ladder_rmse_h4_w80     medium     CONS                 7  1.613560 80
+ ladder_rmse_h4_w80     medium     CONS                 8  1.523340 80
+ ladder_rmse_h4_w80     medium     DEFL                 1  0.920298 80
+ ladder_rmse_h4_w80     medium     DEFL                 2  0.807541 80
+ ladder_rmse_h4_w80     medium     DEFL                 3  0.783661 80
+ ladder_rmse_h4_w80     medium     DEFL                 4  0.770721 80
+ ladder_rmse_h4_w80     medium     DEFL                 5  0.767031 80
+ ladder_rmse_h4_w80     medium     DEFL                 6  0.778090 80
+ ladder_rmse_h4_w80     medium     DEFL                 7  0.795420 80
+ ladder_rmse_h4_w80     medium     DEFL                 8  0.819635 80
+ ladder_rmse_h4_w80     medium      FFR                 1  0.362238 80
+ ladder_rmse_h4_w80     medium      FFR                 2  0.697827 80
+ ladder_rmse_h4_w80     medium      FFR                 3  1.051253 80
+ ladder_rmse_h4_w80     medium      FFR                 4  1.386151 80
+ ladder_rmse_h4_w80     medium      FFR                 5  1.689585 80
+ ladder_rmse_h4_w80     medium      FFR                 6  1.961593 80
+ ladder_rmse_h4_w80     medium      FFR                 7  2.193850 80
+ ladder_rmse_h4_w80     medium      FFR                 8  2.389321 80
+ ladder_rmse_h4_w80     medium      GDP                 1  2.437951 80
+ ladder_rmse_h4_w80     medium      GDP                 2  2.188228 80
+ ladder_rmse_h4_w80     medium      GDP                 3  2.665396 80
+ ladder_rmse_h4_w80     medium      GDP                 4  2.329135 80
+ ladder_rmse_h4_w80     medium      GDP                 5  2.064838 80
+ ladder_rmse_h4_w80     medium      GDP                 6  1.908958 80
+ ladder_rmse_h4_w80     medium      GDP                 7  1.787759 80
+ ladder_rmse_h4_w80     medium      GDP                 8  1.669686 80
+ ladder_rmse_h4_w80     medium    HOURS                 1  2.590780 80
+ ladder_rmse_h4_w80     medium    HOURS                 2  2.670494 80
+ ladder_rmse_h4_w80     medium    HOURS                 3  3.771274 80
+ ladder_rmse_h4_w80     medium    HOURS                 4  3.475484 80
+ ladder_rmse_h4_w80     medium    HOURS                 5  3.239703 80
+ ladder_rmse_h4_w80     medium    HOURS                 6  3.070729 80
+ ladder_rmse_h4_w80     medium    HOURS                 7  2.917260 80
+ ladder_rmse_h4_w80     medium    HOURS                 8  2.756402 80
+ ladder_rmse_h4_w80     medium      INV                 1 12.066622 80
+ ladder_rmse_h4_w80     medium      INV                 2 10.878912 80
+ ladder_rmse_h4_w80     medium      INV                 3 10.858915 80
+ ladder_rmse_h4_w80     medium      INV                 4  9.926012 80
+ ladder_rmse_h4_w80     medium      INV                 5  9.010192 80
+ ladder_rmse_h4_w80     medium      INV                 6  8.306996 80
+ ladder_rmse_h4_w80     medium      INV                 7  7.743078 80
+ ladder_rmse_h4_w80     medium      INV                 8  7.238302 80
+ ladder_rmse_h4_w80     medium     WAGE                 1  4.211657 80
+ ladder_rmse_h4_w80     medium     WAGE                 2  2.398601 80
+ ladder_rmse_h4_w80     medium     WAGE                 3  2.244966 80
+ ladder_rmse_h4_w80     medium     WAGE                 4  1.893321 80
+ ladder_rmse_h4_w80     medium     WAGE                 5  1.724603 80
+ ladder_rmse_h4_w80     medium     WAGE                 6  1.572325 80
+ ladder_rmse_h4_w80     medium     WAGE                 7  1.388602 80
+ ladder_rmse_h4_w80     medium     WAGE                 8  1.332662 80
+ladder_rmsej_h4_w12     medium     CONS                 1  1.819697 80
+ladder_rmsej_h4_w12     medium     CONS                 2  1.719784 80
+ladder_rmsej_h4_w12     medium     CONS                 3  2.523702 80
+ladder_rmsej_h4_w12     medium     CONS                 4  2.198038 80
+ladder_rmsej_h4_w12     medium     CONS                 5  2.025511 80
+ladder_rmsej_h4_w12     medium     CONS                 6  1.874706 80
+ladder_rmsej_h4_w12     medium     CONS                 7  1.794314 80
+ladder_rmsej_h4_w12     medium     CONS                 8  1.691718 80
+ladder_rmsej_h4_w12     medium     DEFL                 1  1.004892 80
+ladder_rmsej_h4_w12     medium     DEFL                 2  0.915103 80
+ladder_rmsej_h4_w12     medium     DEFL                 3  0.917013 80
+ladder_rmsej_h4_w12     medium     DEFL                 4  0.908223 80
+ladder_rmsej_h4_w12     medium     DEFL                 5  0.911638 80
+ladder_rmsej_h4_w12     medium     DEFL                 6  0.917675 80
+ladder_rmsej_h4_w12     medium     DEFL                 7  0.925224 80
+ladder_rmsej_h4_w12     medium     DEFL                 8  0.938300 80
+ladder_rmsej_h4_w12     medium      FFR                 1  0.387203 80
+ladder_rmsej_h4_w12     medium      FFR                 2  0.747142 80
+ladder_rmsej_h4_w12     medium      FFR                 3  1.092052 80
+ladder_rmsej_h4_w12     medium      FFR                 4  1.403319 80
+ladder_rmsej_h4_w12     medium      FFR                 5  1.685274 80
+ladder_rmsej_h4_w12     medium      FFR                 6  1.932536 80
+ladder_rmsej_h4_w12     medium      FFR                 7  2.143570 80
+ladder_rmsej_h4_w12     medium      FFR                 8  2.318968 80
+ladder_rmsej_h4_w12     medium      GDP                 1  2.390460 80
+ladder_rmsej_h4_w12     medium      GDP                 2  2.190135 80
+ladder_rmsej_h4_w12     medium      GDP                 3  2.721371 80
+ladder_rmsej_h4_w12     medium      GDP                 4  2.447998 80
+ladder_rmsej_h4_w12     medium      GDP                 5  2.264307 80
+ladder_rmsej_h4_w12     medium      GDP                 6  2.075261 80
+ladder_rmsej_h4_w12     medium      GDP                 7  1.981278 80
+ladder_rmsej_h4_w12     medium      GDP                 8  1.861000 80
+ladder_rmsej_h4_w12     medium    HOURS                 1  2.564501 80
+ladder_rmsej_h4_w12     medium    HOURS                 2  2.661343 80
+ladder_rmsej_h4_w12     medium    HOURS                 3  3.741125 80
+ladder_rmsej_h4_w12     medium    HOURS                 4  3.450017 80
+ladder_rmsej_h4_w12     medium    HOURS                 5  3.254365 80
+ladder_rmsej_h4_w12     medium    HOURS                 6  3.070015 80
+ladder_rmsej_h4_w12     medium    HOURS                 7  2.923914 80
+ladder_rmsej_h4_w12     medium    HOURS                 8  2.775212 80
+ladder_rmsej_h4_w12     medium      INV                 1 11.635404 80
+ladder_rmsej_h4_w12     medium      INV                 2 10.474928 80
+ladder_rmsej_h4_w12     medium      INV                 3 10.534518 80
+ladder_rmsej_h4_w12     medium      INV                 4  9.915692 80
+ladder_rmsej_h4_w12     medium      INV                 5  9.225208 80
+ladder_rmsej_h4_w12     medium      INV                 6  8.546558 80
+ladder_rmsej_h4_w12     medium      INV                 7  7.992481 80
+ladder_rmsej_h4_w12     medium      INV                 8  7.467205 80
+ladder_rmsej_h4_w12     medium     WAGE                 1  4.210928 80
+ladder_rmsej_h4_w12     medium     WAGE                 2  2.407740 80
+ladder_rmsej_h4_w12     medium     WAGE                 3  2.243751 80
+ladder_rmsej_h4_w12     medium     WAGE                 4  1.874502 80
+ladder_rmsej_h4_w12     medium     WAGE                 5  1.663294 80
+ladder_rmsej_h4_w12     medium     WAGE                 6  1.519576 80
+ladder_rmsej_h4_w12     medium     WAGE                 7  1.303599 80
+ladder_rmsej_h4_w12     medium     WAGE                 8  1.275358 80
+ladder_rmsej_h4_w40     medium     CONS                 1  1.859039 80
+ladder_rmsej_h4_w40     medium     CONS                 2  1.733812 80
+ladder_rmsej_h4_w40     medium     CONS                 3  2.493664 80
+ladder_rmsej_h4_w40     medium     CONS                 4  2.151363 80
+ladder_rmsej_h4_w40     medium     CONS                 5  1.933254 80
+ladder_rmsej_h4_w40     medium     CONS                 6  1.809022 80
+ladder_rmsej_h4_w40     medium     CONS                 7  1.686545 80
+ladder_rmsej_h4_w40     medium     CONS                 8  1.583269 80
+ladder_rmsej_h4_w40     medium     DEFL                 1  0.904345 80
+ladder_rmsej_h4_w40     medium     DEFL                 2  0.812331 80
+ladder_rmsej_h4_w40     medium     DEFL                 3  0.788882 80
+ladder_rmsej_h4_w40     medium     DEFL                 4  0.766551 80
+ladder_rmsej_h4_w40     medium     DEFL                 5  0.758944 80
+ladder_rmsej_h4_w40     medium     DEFL                 6  0.760477 80
+ladder_rmsej_h4_w40     medium     DEFL                 7  0.769119 80
+ladder_rmsej_h4_w40     medium     DEFL                 8  0.789533 80
+ladder_rmsej_h4_w40     medium      FFR                 1  0.393563 80
+ladder_rmsej_h4_w40     medium      FFR                 2  0.747099 80
+ladder_rmsej_h4_w40     medium      FFR                 3  1.082640 80
+ladder_rmsej_h4_w40     medium      FFR                 4  1.381639 80
+ladder_rmsej_h4_w40     medium      FFR                 5  1.661751 80
+ladder_rmsej_h4_w40     medium      FFR                 6  1.920822 80
+ladder_rmsej_h4_w40     medium      FFR                 7  2.139494 80
+ladder_rmsej_h4_w40     medium      FFR                 8  2.319427 80
+ladder_rmsej_h4_w40     medium      GDP                 1  2.438339 80
+ladder_rmsej_h4_w40     medium      GDP                 2  2.237593 80
+ladder_rmsej_h4_w40     medium      GDP                 3  2.719254 80
+ladder_rmsej_h4_w40     medium      GDP                 4  2.385954 80
+ladder_rmsej_h4_w40     medium      GDP                 5  2.155773 80
+ladder_rmsej_h4_w40     medium      GDP                 6  1.995991 80
+ladder_rmsej_h4_w40     medium      GDP                 7  1.854668 80
+ladder_rmsej_h4_w40     medium      GDP                 8  1.729863 80
+ladder_rmsej_h4_w40     medium    HOURS                 1  2.533463 80
+ladder_rmsej_h4_w40     medium    HOURS                 2  2.665445 80
+ladder_rmsej_h4_w40     medium    HOURS                 3  3.782106 80
+ladder_rmsej_h4_w40     medium    HOURS                 4  3.484144 80
+ladder_rmsej_h4_w40     medium    HOURS                 5  3.261856 80
+ladder_rmsej_h4_w40     medium    HOURS                 6  3.104974 80
+ladder_rmsej_h4_w40     medium    HOURS                 7  2.945770 80
+ladder_rmsej_h4_w40     medium    HOURS                 8  2.778249 80
+ladder_rmsej_h4_w40     medium      INV                 1 12.008405 80
+ladder_rmsej_h4_w40     medium      INV                 2 11.012652 80
+ladder_rmsej_h4_w40     medium      INV                 3 11.062010 80
+ladder_rmsej_h4_w40     medium      INV                 4 10.123186 80
+ladder_rmsej_h4_w40     medium      INV                 5  9.217392 80
+ladder_rmsej_h4_w40     medium      INV                 6  8.476540 80
+ladder_rmsej_h4_w40     medium      INV                 7  7.839648 80
+ladder_rmsej_h4_w40     medium      INV                 8  7.283739 80
+ladder_rmsej_h4_w40     medium     WAGE                 1  4.243235 80
+ladder_rmsej_h4_w40     medium     WAGE                 2  2.420831 80
+ladder_rmsej_h4_w40     medium     WAGE                 3  2.255329 80
+ladder_rmsej_h4_w40     medium     WAGE                 4  1.896865 80
+ladder_rmsej_h4_w40     medium     WAGE                 5  1.699065 80
+ladder_rmsej_h4_w40     medium     WAGE                 6  1.545265 80
+ladder_rmsej_h4_w40     medium     WAGE                 7  1.370333 80
+ladder_rmsej_h4_w40     medium     WAGE                 8  1.306620 80
+ladder_rmsej_h4_w60     medium     CONS                 1  1.851796 80
+ladder_rmsej_h4_w60     medium     CONS                 2  1.748691 80
+ladder_rmsej_h4_w60     medium     CONS                 3  2.500022 80
+ladder_rmsej_h4_w60     medium     CONS                 4  2.149791 80
+ladder_rmsej_h4_w60     medium     CONS                 5  1.921103 80
+ladder_rmsej_h4_w60     medium     CONS                 6  1.801234 80
+ladder_rmsej_h4_w60     medium     CONS                 7  1.692432 80
+ladder_rmsej_h4_w60     medium     CONS                 8  1.591261 80
+ladder_rmsej_h4_w60     medium     DEFL                 1  0.963549 80
+ladder_rmsej_h4_w60     medium     DEFL                 2  0.843158 80
+ladder_rmsej_h4_w60     medium     DEFL                 3  0.815797 80
+ladder_rmsej_h4_w60     medium     DEFL                 4  0.784076 80
+ladder_rmsej_h4_w60     medium     DEFL                 5  0.758852 80
+ladder_rmsej_h4_w60     medium     DEFL                 6  0.751780 80
+ladder_rmsej_h4_w60     medium     DEFL                 7  0.756134 80
+ladder_rmsej_h4_w60     medium     DEFL                 8  0.765239 80
+ladder_rmsej_h4_w60     medium      FFR                 1  0.358097 80
+ladder_rmsej_h4_w60     medium      FFR                 2  0.669764 80
+ladder_rmsej_h4_w60     medium      FFR                 3  0.992038 80
+ladder_rmsej_h4_w60     medium      FFR                 4  1.292226 80
+ladder_rmsej_h4_w60     medium      FFR                 5  1.558478 80
+ladder_rmsej_h4_w60     medium      FFR                 6  1.798124 80
+ladder_rmsej_h4_w60     medium      FFR                 7  1.996375 80
+ladder_rmsej_h4_w60     medium      FFR                 8  2.156416 80
+ladder_rmsej_h4_w60     medium      GDP                 1  2.408652 80
+ladder_rmsej_h4_w60     medium      GDP                 2  2.205746 80
+ladder_rmsej_h4_w60     medium      GDP                 3  2.689471 80
+ladder_rmsej_h4_w60     medium      GDP                 4  2.357681 80
+ladder_rmsej_h4_w60     medium      GDP                 5  2.100518 80
+ladder_rmsej_h4_w60     medium      GDP                 6  1.951087 80
+ladder_rmsej_h4_w60     medium      GDP                 7  1.822810 80
+ladder_rmsej_h4_w60     medium      GDP                 8  1.698934 80
+ladder_rmsej_h4_w60     medium    HOURS                 1  2.590407 80
+ladder_rmsej_h4_w60     medium    HOURS                 2  2.687734 80
+ladder_rmsej_h4_w60     medium    HOURS                 3  3.778678 80
+ladder_rmsej_h4_w60     medium    HOURS                 4  3.511612 80
+ladder_rmsej_h4_w60     medium    HOURS                 5  3.269675 80
+ladder_rmsej_h4_w60     medium    HOURS                 6  3.114421 80
+ladder_rmsej_h4_w60     medium    HOURS                 7  2.953860 80
+ladder_rmsej_h4_w60     medium    HOURS                 8  2.789937 80
+ladder_rmsej_h4_w60     medium      INV                 1 11.986873 80
+ladder_rmsej_h4_w60     medium      INV                 2 11.005125 80
+ladder_rmsej_h4_w60     medium      INV                 3 11.006293 80
+ladder_rmsej_h4_w60     medium      INV                 4 10.074423 80
+ladder_rmsej_h4_w60     medium      INV                 5  9.115458 80
+ladder_rmsej_h4_w60     medium      INV                 6  8.406698 80
+ladder_rmsej_h4_w60     medium      INV                 7  7.782909 80
+ladder_rmsej_h4_w60     medium      INV                 8  7.241440 80
+ladder_rmsej_h4_w60     medium     WAGE                 1  4.254319 80
+ladder_rmsej_h4_w60     medium     WAGE                 2  2.429840 80
+ladder_rmsej_h4_w60     medium     WAGE                 3  2.278315 80
+ladder_rmsej_h4_w60     medium     WAGE                 4  1.923245 80
+ladder_rmsej_h4_w60     medium     WAGE                 5  1.737997 80
+ladder_rmsej_h4_w60     medium     WAGE                 6  1.596410 80
+ladder_rmsej_h4_w60     medium     WAGE                 7  1.427532 80
+ladder_rmsej_h4_w60     medium     WAGE                 8  1.378390 80
+ladder_rmsej_h4_w80     medium     CONS                 1  1.834958 80
+ladder_rmsej_h4_w80     medium     CONS                 2  1.709454 80
+ladder_rmsej_h4_w80     medium     CONS                 3  2.459735 80
+ladder_rmsej_h4_w80     medium     CONS                 4  2.098695 80
+ladder_rmsej_h4_w80     medium     CONS                 5  1.868535 80
+ladder_rmsej_h4_w80     medium     CONS                 6  1.745741 80
+ladder_rmsej_h4_w80     medium     CONS                 7  1.637617 80
+ladder_rmsej_h4_w80     medium     CONS                 8  1.538765 80
+ladder_rmsej_h4_w80     medium     DEFL                 1  0.881712 80
+ladder_rmsej_h4_w80     medium     DEFL                 2  0.775830 80
+ladder_rmsej_h4_w80     medium     DEFL                 3  0.742641 80
+ladder_rmsej_h4_w80     medium     DEFL                 4  0.712781 80
+ladder_rmsej_h4_w80     medium     DEFL                 5  0.701073 80
+ladder_rmsej_h4_w80     medium     DEFL                 6  0.709673 80
+ladder_rmsej_h4_w80     medium     DEFL                 7  0.729207 80
+ladder_rmsej_h4_w80     medium     DEFL                 8  0.754555 80
+ladder_rmsej_h4_w80     medium      FFR                 1  0.372192 80
+ladder_rmsej_h4_w80     medium      FFR                 2  0.710266 80
+ladder_rmsej_h4_w80     medium      FFR                 3  1.046996 80
+ladder_rmsej_h4_w80     medium      FFR                 4  1.348645 80
+ladder_rmsej_h4_w80     medium      FFR                 5  1.618322 80
+ladder_rmsej_h4_w80     medium      FFR                 6  1.862331 80
+ladder_rmsej_h4_w80     medium      FFR                 7  2.077309 80
+ladder_rmsej_h4_w80     medium      FFR                 8  2.259080 80
+ladder_rmsej_h4_w80     medium      GDP                 1  2.412991 80
+ladder_rmsej_h4_w80     medium      GDP                 2  2.199425 80
+ladder_rmsej_h4_w80     medium      GDP                 3  2.672002 80
+ladder_rmsej_h4_w80     medium      GDP                 4  2.324557 80
+ladder_rmsej_h4_w80     medium      GDP                 5  2.075192 80
+ladder_rmsej_h4_w80     medium      GDP                 6  1.915740 80
+ladder_rmsej_h4_w80     medium      GDP                 7  1.783447 80
+ladder_rmsej_h4_w80     medium      GDP                 8  1.662054 80
+ladder_rmsej_h4_w80     medium    HOURS                 1  2.529731 80
+ladder_rmsej_h4_w80     medium    HOURS                 2  2.653282 80
+ladder_rmsej_h4_w80     medium    HOURS                 3  3.763398 80
+ladder_rmsej_h4_w80     medium    HOURS                 4  3.463313 80
+ladder_rmsej_h4_w80     medium    HOURS                 5  3.230755 80
+ladder_rmsej_h4_w80     medium    HOURS                 6  3.067936 80
+ladder_rmsej_h4_w80     medium    HOURS                 7  2.908848 80
+ladder_rmsej_h4_w80     medium    HOURS                 8  2.746726 80
+ladder_rmsej_h4_w80     medium      INV                 1 12.017192 80
+ladder_rmsej_h4_w80     medium      INV                 2 10.992991 80
+ladder_rmsej_h4_w80     medium      INV                 3 10.972377 80
+ladder_rmsej_h4_w80     medium      INV                 4  9.990926 80
+ladder_rmsej_h4_w80     medium      INV                 5  9.056479 80
+ladder_rmsej_h4_w80     medium      INV                 6  8.312143 80
+ladder_rmsej_h4_w80     medium      INV                 7  7.680483 80
+ladder_rmsej_h4_w80     medium      INV                 8  7.137737 80
+ladder_rmsej_h4_w80     medium     WAGE                 1  4.234408 80
+ladder_rmsej_h4_w80     medium     WAGE                 2  2.439676 80
+ladder_rmsej_h4_w80     medium     WAGE                 3  2.287107 80
+ladder_rmsej_h4_w80     medium     WAGE                 4  1.933957 80
+ladder_rmsej_h4_w80     medium     WAGE                 5  1.749595 80
+ladder_rmsej_h4_w80     medium     WAGE                 6  1.599992 80
+ladder_rmsej_h4_w80     medium     WAGE                 7  1.428955 80
+ladder_rmsej_h4_w80     medium     WAGE                 8  1.370750 80
+              paper     medium     CONS                 1  1.872435 80
+              paper     medium     CONS                 2  1.774439 80
+              paper     medium     CONS                 3  2.553154 80
+              paper     medium     CONS                 4  2.226990 80
+              paper     medium     CONS                 5  2.029450 80
+              paper     medium     CONS                 6  1.910196 80
+              paper     medium     CONS                 7  1.798534 80
+              paper     medium     CONS                 8  1.694685 80
+              paper     medium     DEFL                 1  0.927845 80
+              paper     medium     DEFL                 2  0.834183 80
+              paper     medium     DEFL                 3  0.794418 80
+              paper     medium     DEFL                 4  0.767518 80
+              paper     medium     DEFL                 5  0.756145 80
+              paper     medium     DEFL                 6  0.770308 80
+              paper     medium     DEFL                 7  0.788667 80
+              paper     medium     DEFL                 8  0.814895 80
+              paper     medium      FFR                 1  0.386981 80
+              paper     medium      FFR                 2  0.735960 80
+              paper     medium      FFR                 3  1.054195 80
+              paper     medium      FFR                 4  1.330361 80
+              paper     medium      FFR                 5  1.578154 80
+              paper     medium      FFR                 6  1.814136 80
+              paper     medium      FFR                 7  2.023106 80
+              paper     medium      FFR                 8  2.200062 80
+              paper     medium      GDP                 1  2.280307 80
+              paper     medium      GDP                 2  2.187000 80
+              paper     medium      GDP                 3  2.759263 80
+              paper     medium      GDP                 4  2.457981 80
+              paper     medium      GDP                 5  2.237048 80
+              paper     medium      GDP                 6  2.092033 80
+              paper     medium      GDP                 7  1.971836 80
+              paper     medium      GDP                 8  1.854551 80
+              paper     medium    HOURS                 1  2.249193 80
+              paper     medium    HOURS                 2  2.441505 80
+              paper     medium    HOURS                 3  3.664213 80
+              paper     medium    HOURS                 4  3.401493 80
+              paper     medium    HOURS                 5  3.187678 80
+              paper     medium    HOURS                 6  3.051657 80
+              paper     medium    HOURS                 7  2.910778 80
+              paper     medium    HOURS                 8  2.750550 80
+              paper     medium      INV                 1 10.386258 80
+              paper     medium      INV                 2  9.891182 80
+              paper     medium      INV                 3 10.445929 80
+              paper     medium      INV                 4  9.754181 80
+              paper     medium      INV                 5  8.949746 80
+              paper     medium      INV                 6  8.247319 80
+              paper     medium      INV                 7  7.644065 80
+              paper     medium      INV                 8  7.083499 80
+              paper     medium     WAGE                 1  4.313523 80
+              paper     medium     WAGE                 2  2.525281 80
+              paper     medium     WAGE                 3  2.375582 80
+              paper     medium     WAGE                 4  2.017365 80
+              paper     medium     WAGE                 5  1.837267 80
+              paper     medium     WAGE                 6  1.693073 80
+              paper     medium     WAGE                 7  1.533732 80
+              paper     medium     WAGE                 8  1.484929 80
+       paper_plugin     medium     CONS                 1  1.877696 80
+       paper_plugin     medium     CONS                 2  1.785098 80
+       paper_plugin     medium     CONS                 3  2.558528 80
+       paper_plugin     medium     CONS                 4  2.232659 80
+       paper_plugin     medium     CONS                 5  2.037268 80
+       paper_plugin     medium     CONS                 6  1.917517 80
+       paper_plugin     medium     CONS                 7  1.809016 80
+       paper_plugin     medium     CONS                 8  1.703312 80
+       paper_plugin     medium     DEFL                 1  0.927181 80
+       paper_plugin     medium     DEFL                 2  0.833168 80
+       paper_plugin     medium     DEFL                 3  0.792789 80
+       paper_plugin     medium     DEFL                 4  0.765089 80
+       paper_plugin     medium     DEFL                 5  0.753277 80
+       paper_plugin     medium     DEFL                 6  0.767202 80
+       paper_plugin     medium     DEFL                 7  0.785308 80
+       paper_plugin     medium     DEFL                 8  0.811587 80
+       paper_plugin     medium      FFR                 1  0.387057 80
+       paper_plugin     medium      FFR                 2  0.735274 80
+       paper_plugin     medium      FFR                 3  1.047173 80
+       paper_plugin     medium      FFR                 4  1.314216 80
+       paper_plugin     medium      FFR                 5  1.556488 80
+       paper_plugin     medium      FFR                 6  1.785702 80
+       paper_plugin     medium      FFR                 7  1.992068 80
+       paper_plugin     medium      FFR                 8  2.169742 80
+       paper_plugin     medium      GDP                 1  2.271911 80
+       paper_plugin     medium      GDP                 2  2.182599 80
+       paper_plugin     medium      GDP                 3  2.753834 80
+       paper_plugin     medium      GDP                 4  2.453482 80
+       paper_plugin     medium      GDP                 5  2.234288 80
+       paper_plugin     medium      GDP                 6  2.089762 80
+       paper_plugin     medium      GDP                 7  1.968956 80
+       paper_plugin     medium      GDP                 8  1.852609 80
+       paper_plugin     medium    HOURS                 1  2.226984 80
+       paper_plugin     medium    HOURS                 2  2.417829 80
+       paper_plugin     medium    HOURS                 3  3.645059 80
+       paper_plugin     medium    HOURS                 4  3.380517 80
+       paper_plugin     medium    HOURS                 5  3.166437 80
+       paper_plugin     medium    HOURS                 6  3.029492 80
+       paper_plugin     medium    HOURS                 7  2.887377 80
+       paper_plugin     medium    HOURS                 8  2.725073 80
+       paper_plugin     medium      INV                 1 10.340138 80
+       paper_plugin     medium      INV                 2  9.852010 80
+       paper_plugin     medium      INV                 3 10.398633 80
+       paper_plugin     medium      INV                 4  9.697189 80
+       paper_plugin     medium      INV                 5  8.889588 80
+       paper_plugin     medium      INV                 6  8.187671 80
+       paper_plugin     medium      INV                 7  7.569063 80
+       paper_plugin     medium      INV                 8  7.006496 80
+       paper_plugin     medium     WAGE                 1  4.322236 80
+       paper_plugin     medium     WAGE                 2  2.528961 80
+       paper_plugin     medium     WAGE                 3  2.377978 80
+       paper_plugin     medium     WAGE                 4  2.021919 80
+       paper_plugin     medium     WAGE                 5  1.842772 80
+       paper_plugin     medium     WAGE                 6  1.700854 80
+       paper_plugin     medium     WAGE                 7  1.541529 80
+       paper_plugin     medium     WAGE                 8  1.493211 80

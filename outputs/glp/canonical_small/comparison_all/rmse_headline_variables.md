@@ -1,0 +1,1489 @@
+         model model_size variable  horizon_quarters     rmse  n
+    L_lsj1_all      small     DEFL                 1 0.881658 80
+    L_lsj1_w12      small     DEFL                 1 0.908672 80
+    L_lsj1_w60      small     DEFL                 1 0.886749 80
+  L_lsj_h2_w12      small     DEFL                 1 0.912359 80
+  L_lsj_h2_w60      small     DEFL                 1 0.898460 80
+  L_lsj_h4_w12      small     DEFL                 1 0.922130 80
+  L_lsj_h4_w40      small     DEFL                 1 0.904795 80
+  L_lsj_h4_w60      small     DEFL                 1 0.903612 80
+  L_lsj_h8_w12      small     DEFL                 1 0.967855 80
+  L_lsj_h8_w60      small     DEFL                 1 0.900854 80
+  L_lsm_h1_w12      small     DEFL                 1 1.021005 80
+  L_lsm_h1_w60      small     DEFL                 1 1.072031 80
+  L_lsm_h2_w12      small     DEFL                 1 1.102572 80
+  L_lsm_h2_w60      small     DEFL                 1 1.193074 80
+  L_lsm_h4_all      small     DEFL                 1 1.467772 80
+  L_lsm_h4_w12      small     DEFL                 1 1.151424 80
+  L_lsm_h4_w40      small     DEFL                 1 1.081666 80
+  L_lsm_h4_w60      small     DEFL                 1 1.263719 80
+  L_lsm_h8_w12      small     DEFL                 1 1.176869 80
+  L_lsm_h8_w60      small     DEFL                 1 1.183611 80
+ L_rmse_h1_all      small     DEFL                 1 1.564810 80
+ L_rmse_h1_w12      small     DEFL                 1 1.112931 80
+ L_rmse_h1_w20      small     DEFL                 1 0.986019 80
+ L_rmse_h1_w40      small     DEFL                 1 1.004183 80
+ L_rmse_h1_w60      small     DEFL                 1 0.997962 80
+ L_rmse_h1_w80      small     DEFL                 1 1.094162 80
+ L_rmse_h2_all      small     DEFL                 1 1.599295 80
+ L_rmse_h2_w12      small     DEFL                 1 1.168250 80
+ L_rmse_h2_w20      small     DEFL                 1 1.081943 80
+ L_rmse_h2_w40      small     DEFL                 1 0.990365 80
+ L_rmse_h2_w60      small     DEFL                 1 1.010110 80
+ L_rmse_h2_w80      small     DEFL                 1 1.104461 80
+ L_rmse_h4_all      small     DEFL                 1 1.240902 80
+ L_rmse_h4_w12      small     DEFL                 1 1.186516 80
+ L_rmse_h4_w20      small     DEFL                 1 1.180619 80
+ L_rmse_h4_w40      small     DEFL                 1 0.899041 80
+ L_rmse_h4_w60      small     DEFL                 1 1.021387 80
+ L_rmse_h4_w80      small     DEFL                 1 1.001298 80
+ L_rmse_h8_all      small     DEFL                 1 1.137289 80
+ L_rmse_h8_w12      small     DEFL                 1 1.168628 80
+ L_rmse_h8_w20      small     DEFL                 1 1.041390 80
+ L_rmse_h8_w40      small     DEFL                 1 0.861107 80
+ L_rmse_h8_w60      small     DEFL                 1 1.020582 80
+ L_rmse_h8_w80      small     DEFL                 1 0.991436 80
+L_rmsej_h1_w12      small     DEFL                 1 0.879780 80
+L_rmsej_h1_w40      small     DEFL                 1 0.872477 80
+L_rmsej_h1_w60      small     DEFL                 1 0.911297 80
+L_rmsej_h1_w80      small     DEFL                 1 0.896759 80
+L_rmsej_h2_w12      small     DEFL                 1 0.915226 80
+L_rmsej_h2_w40      small     DEFL                 1 0.877234 80
+L_rmsej_h2_w60      small     DEFL                 1 0.900835 80
+L_rmsej_h2_w80      small     DEFL                 1 0.891302 80
+L_rmsej_h4_w12      small     DEFL                 1 0.983749 80
+L_rmsej_h4_w40      small     DEFL                 1 0.907246 80
+L_rmsej_h4_w60      small     DEFL                 1 0.905311 80
+L_rmsej_h4_w80      small     DEFL                 1 0.898189 80
+L_rmsej_h8_w12      small     DEFL                 1 0.964244 80
+L_rmsej_h8_w40      small     DEFL                 1 0.905694 80
+L_rmsej_h8_w60      small     DEFL                 1 0.905688 80
+L_rmsej_h8_w80      small     DEFL                 1 0.887478 80
+         paper      small     DEFL                 1 0.882828 80
+  paper_plugin      small     DEFL                 1 0.879307 80
+    L_lsj1_all      small     DEFL                 2 0.774428 80
+    L_lsj1_w12      small     DEFL                 2 0.814383 80
+    L_lsj1_w60      small     DEFL                 2 0.776783 80
+  L_lsj_h2_w12      small     DEFL                 2 0.817934 80
+  L_lsj_h2_w60      small     DEFL                 2 0.784581 80
+  L_lsj_h4_w12      small     DEFL                 2 0.808168 80
+  L_lsj_h4_w40      small     DEFL                 2 0.795983 80
+  L_lsj_h4_w60      small     DEFL                 2 0.787458 80
+  L_lsj_h8_w12      small     DEFL                 2 0.854238 80
+  L_lsj_h8_w60      small     DEFL                 2 0.787965 80
+  L_lsm_h1_w12      small     DEFL                 2 0.927268 80
+  L_lsm_h1_w60      small     DEFL                 2 0.966597 80
+  L_lsm_h2_w12      small     DEFL                 2 1.061933 80
+  L_lsm_h2_w60      small     DEFL                 2 1.125129 80
+  L_lsm_h4_all      small     DEFL                 2 1.401062 80
+  L_lsm_h4_w12      small     DEFL                 2 1.083150 80
+  L_lsm_h4_w40      small     DEFL                 2 0.999870 80
+  L_lsm_h4_w60      small     DEFL                 2 1.193120 80
+  L_lsm_h8_w12      small     DEFL                 2 1.093751 80
+  L_lsm_h8_w60      small     DEFL                 2 1.093411 80
+ L_rmse_h1_all      small     DEFL                 2 1.476169 80
+ L_rmse_h1_w12      small     DEFL                 2 1.063872 80
+ L_rmse_h1_w20      small     DEFL                 2 0.956863 80
+ L_rmse_h1_w40      small     DEFL                 2 0.914707 80
+ L_rmse_h1_w60      small     DEFL                 2 0.921087 80
+ L_rmse_h1_w80      small     DEFL                 2 1.010951 80
+ L_rmse_h2_all      small     DEFL                 2 1.497783 80
+ L_rmse_h2_w12      small     DEFL                 2 1.064726 80
+ L_rmse_h2_w20      small     DEFL                 2 0.988032 80
+ L_rmse_h2_w40      small     DEFL                 2 0.888960 80
+ L_rmse_h2_w60      small     DEFL                 2 0.932107 80
+ L_rmse_h2_w80      small     DEFL                 2 1.018423 80
+ L_rmse_h4_all      small     DEFL                 2 1.170025 80
+ L_rmse_h4_w12      small     DEFL                 2 1.105513 80
+ L_rmse_h4_w20      small     DEFL                 2 1.089882 80
+ L_rmse_h4_w40      small     DEFL                 2 0.781009 80
+ L_rmse_h4_w60      small     DEFL                 2 0.918479 80
+ L_rmse_h4_w80      small     DEFL                 2 0.911472 80
+ L_rmse_h8_all      small     DEFL                 2 1.062722 80
+ L_rmse_h8_w12      small     DEFL                 2 1.127478 80
+ L_rmse_h8_w20      small     DEFL                 2 0.916205 80
+ L_rmse_h8_w40      small     DEFL                 2 0.774553 80
+ L_rmse_h8_w60      small     DEFL                 2 0.909176 80
+ L_rmse_h8_w80      small     DEFL                 2 0.919786 80
+L_rmsej_h1_w12      small     DEFL                 2 0.775315 80
+L_rmsej_h1_w40      small     DEFL                 2 0.759051 80
+L_rmsej_h1_w60      small     DEFL                 2 0.816336 80
+L_rmsej_h1_w80      small     DEFL                 2 0.799165 80
+L_rmsej_h2_w12      small     DEFL                 2 0.846600 80
+L_rmsej_h2_w40      small     DEFL                 2 0.766079 80
+L_rmsej_h2_w60      small     DEFL                 2 0.800044 80
+L_rmsej_h2_w80      small     DEFL                 2 0.789391 80
+L_rmsej_h4_w12      small     DEFL                 2 0.910038 80
+L_rmsej_h4_w40      small     DEFL                 2 0.799889 80
+L_rmsej_h4_w60      small     DEFL                 2 0.799229 80
+L_rmsej_h4_w80      small     DEFL                 2 0.791676 80
+L_rmsej_h8_w12      small     DEFL                 2 0.865492 80
+L_rmsej_h8_w40      small     DEFL                 2 0.794494 80
+L_rmsej_h8_w60      small     DEFL                 2 0.799164 80
+L_rmsej_h8_w80      small     DEFL                 2 0.780950 80
+         paper      small     DEFL                 2 0.773654 80
+  paper_plugin      small     DEFL                 2 0.771452 80
+    L_lsj1_all      small     DEFL                 3 0.731257 80
+    L_lsj1_w12      small     DEFL                 3 0.769538 80
+    L_lsj1_w60      small     DEFL                 3 0.726800 80
+  L_lsj_h2_w12      small     DEFL                 3 0.774120 80
+  L_lsj_h2_w60      small     DEFL                 3 0.737168 80
+  L_lsj_h4_w12      small     DEFL                 3 0.775909 80
+  L_lsj_h4_w40      small     DEFL                 3 0.749661 80
+  L_lsj_h4_w60      small     DEFL                 3 0.732358 80
+  L_lsj_h8_w12      small     DEFL                 3 0.828855 80
+  L_lsj_h8_w60      small     DEFL                 3 0.744441 80
+  L_lsm_h1_w12      small     DEFL                 3 0.891809 80
+  L_lsm_h1_w60      small     DEFL                 3 0.950955 80
+  L_lsm_h2_w12      small     DEFL                 3 1.070887 80
+  L_lsm_h2_w60      small     DEFL                 3 1.115149 80
+  L_lsm_h4_all      small     DEFL                 3 1.389051 80
+  L_lsm_h4_w12      small     DEFL                 3 1.079312 80
+  L_lsm_h4_w40      small     DEFL                 3 0.989891 80
+  L_lsm_h4_w60      small     DEFL                 3 1.187625 80
+  L_lsm_h8_w12      small     DEFL                 3 1.077643 80
+  L_lsm_h8_w60      small     DEFL                 3 1.104503 80
+ L_rmse_h1_all      small     DEFL                 3 1.448661 80
+ L_rmse_h1_w12      small     DEFL                 3 1.089426 80
+ L_rmse_h1_w20      small     DEFL                 3 0.979863 80
+ L_rmse_h1_w40      small     DEFL                 3 0.873009 80
+ L_rmse_h1_w60      small     DEFL                 3 0.918048 80
+ L_rmse_h1_w80      small     DEFL                 3 0.997055 80
+ L_rmse_h2_all      small     DEFL                 3 1.462696 80
+ L_rmse_h2_w12      small     DEFL                 3 1.075063 80
+ L_rmse_h2_w20      small     DEFL                 3 0.986411 80
+ L_rmse_h2_w40      small     DEFL                 3 0.852628 80
+ L_rmse_h2_w60      small     DEFL                 3 0.908512 80
+ L_rmse_h2_w80      small     DEFL                 3 1.022246 80
+ L_rmse_h4_all      small     DEFL                 3 1.157138 80
+ L_rmse_h4_w12      small     DEFL                 3 1.085468 80
+ L_rmse_h4_w20      small     DEFL                 3 1.047825 80
+ L_rmse_h4_w40      small     DEFL                 3 0.763746 80
+ L_rmse_h4_w60      small     DEFL                 3 0.867158 80
+ L_rmse_h4_w80      small     DEFL                 3 0.880697 80
+ L_rmse_h8_all      small     DEFL                 3 1.064619 80
+ L_rmse_h8_w12      small     DEFL                 3 1.127988 80
+ L_rmse_h8_w20      small     DEFL                 3 0.870450 80
+ L_rmse_h8_w40      small     DEFL                 3 0.747858 80
+ L_rmse_h8_w60      small     DEFL                 3 0.867550 80
+ L_rmse_h8_w80      small     DEFL                 3 0.900952 80
+L_rmsej_h1_w12      small     DEFL                 3 0.740420 80
+L_rmsej_h1_w40      small     DEFL                 3 0.725461 80
+L_rmsej_h1_w60      small     DEFL                 3 0.772888 80
+L_rmsej_h1_w80      small     DEFL                 3 0.759139 80
+L_rmsej_h2_w12      small     DEFL                 3 0.831393 80
+L_rmsej_h2_w40      small     DEFL                 3 0.729428 80
+L_rmsej_h2_w60      small     DEFL                 3 0.761853 80
+L_rmsej_h2_w80      small     DEFL                 3 0.749506 80
+L_rmsej_h4_w12      small     DEFL                 3 0.903225 80
+L_rmsej_h4_w40      small     DEFL                 3 0.753569 80
+L_rmsej_h4_w60      small     DEFL                 3 0.755952 80
+L_rmsej_h4_w80      small     DEFL                 3 0.743034 80
+L_rmsej_h8_w12      small     DEFL                 3 0.834547 80
+L_rmsej_h8_w40      small     DEFL                 3 0.747918 80
+L_rmsej_h8_w60      small     DEFL                 3 0.756766 80
+L_rmsej_h8_w80      small     DEFL                 3 0.727724 80
+         paper      small     DEFL                 3 0.730557 80
+  paper_plugin      small     DEFL                 3 0.730032 80
+    L_lsj1_all      small     DEFL                 4 0.706791 80
+    L_lsj1_w12      small     DEFL                 4 0.747159 80
+    L_lsj1_w60      small     DEFL                 4 0.700964 80
+  L_lsj_h2_w12      small     DEFL                 4 0.748449 80
+  L_lsj_h2_w60      small     DEFL                 4 0.705775 80
+  L_lsj_h4_w12      small     DEFL                 4 0.744732 80
+  L_lsj_h4_w40      small     DEFL                 4 0.721908 80
+  L_lsj_h4_w60      small     DEFL                 4 0.700559 80
+  L_lsj_h8_w12      small     DEFL                 4 0.823614 80
+  L_lsj_h8_w60      small     DEFL                 4 0.717449 80
+  L_lsm_h1_w12      small     DEFL                 4 0.882588 80
+  L_lsm_h1_w60      small     DEFL                 4 0.951783 80
+  L_lsm_h2_w12      small     DEFL                 4 1.065017 80
+  L_lsm_h2_w60      small     DEFL                 4 1.125961 80
+  L_lsm_h4_all      small     DEFL                 4 1.379956 80
+  L_lsm_h4_w12      small     DEFL                 4 1.066443 80
+  L_lsm_h4_w40      small     DEFL                 4 0.986919 80
+  L_lsm_h4_w60      small     DEFL                 4 1.192330 80
+  L_lsm_h8_w12      small     DEFL                 4 1.074281 80
+  L_lsm_h8_w60      small     DEFL                 4 1.109336 80
+ L_rmse_h1_all      small     DEFL                 4 1.422248 80
+ L_rmse_h1_w12      small     DEFL                 4 1.068650 80
+ L_rmse_h1_w20      small     DEFL                 4 0.975490 80
+ L_rmse_h1_w40      small     DEFL                 4 0.830673 80
+ L_rmse_h1_w60      small     DEFL                 4 0.907865 80
+ L_rmse_h1_w80      small     DEFL                 4 0.987438 80
+ L_rmse_h2_all      small     DEFL                 4 1.432595 80
+ L_rmse_h2_w12      small     DEFL                 4 1.076497 80
+ L_rmse_h2_w20      small     DEFL                 4 1.005142 80
+ L_rmse_h2_w40      small     DEFL                 4 0.817191 80
+ L_rmse_h2_w60      small     DEFL                 4 0.880375 80
+ L_rmse_h2_w80      small     DEFL                 4 1.028528 80
+ L_rmse_h4_all      small     DEFL                 4 1.145267 80
+ L_rmse_h4_w12      small     DEFL                 4 1.082106 80
+ L_rmse_h4_w20      small     DEFL                 4 1.027205 80
+ L_rmse_h4_w40      small     DEFL                 4 0.755296 80
+ L_rmse_h4_w60      small     DEFL                 4 0.824437 80
+ L_rmse_h4_w80      small     DEFL                 4 0.880215 80
+ L_rmse_h8_all      small     DEFL                 4 1.056665 80
+ L_rmse_h8_w12      small     DEFL                 4 1.125868 80
+ L_rmse_h8_w20      small     DEFL                 4 0.844166 80
+ L_rmse_h8_w40      small     DEFL                 4 0.736050 80
+ L_rmse_h8_w60      small     DEFL                 4 0.857402 80
+ L_rmse_h8_w80      small     DEFL                 4 0.889603 80
+L_rmsej_h1_w12      small     DEFL                 4 0.715055 80
+L_rmsej_h1_w40      small     DEFL                 4 0.697858 80
+L_rmsej_h1_w60      small     DEFL                 4 0.743229 80
+L_rmsej_h1_w80      small     DEFL                 4 0.728225 80
+L_rmsej_h2_w12      small     DEFL                 4 0.823953 80
+L_rmsej_h2_w40      small     DEFL                 4 0.702806 80
+L_rmsej_h2_w60      small     DEFL                 4 0.735978 80
+L_rmsej_h2_w80      small     DEFL                 4 0.718644 80
+L_rmsej_h4_w12      small     DEFL                 4 0.902150 80
+L_rmsej_h4_w40      small     DEFL                 4 0.725413 80
+L_rmsej_h4_w60      small     DEFL                 4 0.733380 80
+L_rmsej_h4_w80      small     DEFL                 4 0.714443 80
+L_rmsej_h8_w12      small     DEFL                 4 0.823845 80
+L_rmsej_h8_w40      small     DEFL                 4 0.719724 80
+L_rmsej_h8_w60      small     DEFL                 4 0.735030 80
+L_rmsej_h8_w80      small     DEFL                 4 0.686851 80
+         paper      small     DEFL                 4 0.702882 80
+  paper_plugin      small     DEFL                 4 0.704242 80
+    L_lsj1_all      small     DEFL                 5 0.700975 80
+    L_lsj1_w12      small     DEFL                 5 0.746113 80
+    L_lsj1_w60      small     DEFL                 5 0.695818 80
+  L_lsj_h2_w12      small     DEFL                 5 0.739324 80
+  L_lsj_h2_w60      small     DEFL                 5 0.694673 80
+  L_lsj_h4_w12      small     DEFL                 5 0.730803 80
+  L_lsj_h4_w40      small     DEFL                 5 0.704542 80
+  L_lsj_h4_w60      small     DEFL                 5 0.689734 80
+  L_lsj_h8_w12      small     DEFL                 5 0.830177 80
+  L_lsj_h8_w60      small     DEFL                 5 0.704706 80
+  L_lsm_h1_w12      small     DEFL                 5 0.896883 80
+  L_lsm_h1_w60      small     DEFL                 5 0.953767 80
+  L_lsm_h2_w12      small     DEFL                 5 1.079732 80
+  L_lsm_h2_w60      small     DEFL                 5 1.137181 80
+  L_lsm_h4_all      small     DEFL                 5 1.369837 80
+  L_lsm_h4_w12      small     DEFL                 5 1.071114 80
+  L_lsm_h4_w40      small     DEFL                 5 0.988437 80
+  L_lsm_h4_w60      small     DEFL                 5 1.196448 80
+  L_lsm_h8_w12      small     DEFL                 5 1.086551 80
+  L_lsm_h8_w60      small     DEFL                 5 1.122565 80
+ L_rmse_h1_all      small     DEFL                 5 1.402111 80
+ L_rmse_h1_w12      small     DEFL                 5 1.081206 80
+ L_rmse_h1_w20      small     DEFL                 5 0.986876 80
+ L_rmse_h1_w40      small     DEFL                 5 0.821090 80
+ L_rmse_h1_w60      small     DEFL                 5 0.909201 80
+ L_rmse_h1_w80      small     DEFL                 5 0.988259 80
+ L_rmse_h2_all      small     DEFL                 5 1.409428 80
+ L_rmse_h2_w12      small     DEFL                 5 1.071123 80
+ L_rmse_h2_w20      small     DEFL                 5 1.003713 80
+ L_rmse_h2_w40      small     DEFL                 5 0.794004 80
+ L_rmse_h2_w60      small     DEFL                 5 0.868342 80
+ L_rmse_h2_w80      small     DEFL                 5 1.026820 80
+ L_rmse_h4_all      small     DEFL                 5 1.126472 80
+ L_rmse_h4_w12      small     DEFL                 5 1.071018 80
+ L_rmse_h4_w20      small     DEFL                 5 1.009022 80
+ L_rmse_h4_w40      small     DEFL                 5 0.751744 80
+ L_rmse_h4_w60      small     DEFL                 5 0.812575 80
+ L_rmse_h4_w80      small     DEFL                 5 0.871288 80
+ L_rmse_h8_all      small     DEFL                 5 1.047299 80
+ L_rmse_h8_w12      small     DEFL                 5 1.130637 80
+ L_rmse_h8_w20      small     DEFL                 5 0.825320 80
+ L_rmse_h8_w40      small     DEFL                 5 0.741021 80
+ L_rmse_h8_w60      small     DEFL                 5 0.836463 80
+ L_rmse_h8_w80      small     DEFL                 5 0.889090 80
+L_rmsej_h1_w12      small     DEFL                 5 0.718571 80
+L_rmsej_h1_w40      small     DEFL                 5 0.685939 80
+L_rmsej_h1_w60      small     DEFL                 5 0.736081 80
+L_rmsej_h1_w80      small     DEFL                 5 0.718664 80
+L_rmsej_h2_w12      small     DEFL                 5 0.825080 80
+L_rmsej_h2_w40      small     DEFL                 5 0.694280 80
+L_rmsej_h2_w60      small     DEFL                 5 0.729000 80
+L_rmsej_h2_w80      small     DEFL                 5 0.708864 80
+L_rmsej_h4_w12      small     DEFL                 5 0.905674 80
+L_rmsej_h4_w40      small     DEFL                 5 0.724495 80
+L_rmsej_h4_w60      small     DEFL                 5 0.727090 80
+L_rmsej_h4_w80      small     DEFL                 5 0.704888 80
+L_rmsej_h8_w12      small     DEFL                 5 0.824936 80
+L_rmsej_h8_w40      small     DEFL                 5 0.713682 80
+L_rmsej_h8_w60      small     DEFL                 5 0.728558 80
+L_rmsej_h8_w80      small     DEFL                 5 0.678183 80
+         paper      small     DEFL                 5 0.692566 80
+  paper_plugin      small     DEFL                 5 0.696541 80
+    L_lsj1_all      small     DEFL                 6 0.721090 80
+    L_lsj1_w12      small     DEFL                 6 0.766119 80
+    L_lsj1_w60      small     DEFL                 6 0.716714 80
+  L_lsj_h2_w12      small     DEFL                 6 0.748087 80
+  L_lsj_h2_w60      small     DEFL                 6 0.709386 80
+  L_lsj_h4_w12      small     DEFL                 6 0.734864 80
+  L_lsj_h4_w40      small     DEFL                 6 0.713409 80
+  L_lsj_h4_w60      small     DEFL                 6 0.705694 80
+  L_lsj_h8_w12      small     DEFL                 6 0.844581 80
+  L_lsj_h8_w60      small     DEFL                 6 0.706773 80
+  L_lsm_h1_w12      small     DEFL                 6 0.926428 80
+  L_lsm_h1_w60      small     DEFL                 6 0.971035 80
+  L_lsm_h2_w12      small     DEFL                 6 1.108553 80
+  L_lsm_h2_w60      small     DEFL                 6 1.160275 80
+  L_lsm_h4_all      small     DEFL                 6 1.369302 80
+  L_lsm_h4_w12      small     DEFL                 6 1.086850 80
+  L_lsm_h4_w40      small     DEFL                 6 0.992484 80
+  L_lsm_h4_w60      small     DEFL                 6 1.203365 80
+  L_lsm_h8_w12      small     DEFL                 6 1.107080 80
+  L_lsm_h8_w60      small     DEFL                 6 1.134688 80
+ L_rmse_h1_all      small     DEFL                 6 1.394469 80
+ L_rmse_h1_w12      small     DEFL                 6 1.101954 80
+ L_rmse_h1_w20      small     DEFL                 6 1.004033 80
+ L_rmse_h1_w40      small     DEFL                 6 0.823747 80
+ L_rmse_h1_w60      small     DEFL                 6 0.910964 80
+ L_rmse_h1_w80      small     DEFL                 6 0.993013 80
+ L_rmse_h2_all      small     DEFL                 6 1.401152 80
+ L_rmse_h2_w12      small     DEFL                 6 1.087695 80
+ L_rmse_h2_w20      small     DEFL                 6 1.023064 80
+ L_rmse_h2_w40      small     DEFL                 6 0.803108 80
+ L_rmse_h2_w60      small     DEFL                 6 0.874621 80
+ L_rmse_h2_w80      small     DEFL                 6 1.038827 80
+ L_rmse_h4_all      small     DEFL                 6 1.124528 80
+ L_rmse_h4_w12      small     DEFL                 6 1.091943 80
+ L_rmse_h4_w20      small     DEFL                 6 1.017332 80
+ L_rmse_h4_w40      small     DEFL                 6 0.758653 80
+ L_rmse_h4_w60      small     DEFL                 6 0.819441 80
+ L_rmse_h4_w80      small     DEFL                 6 0.883452 80
+ L_rmse_h8_all      small     DEFL                 6 1.054793 80
+ L_rmse_h8_w12      small     DEFL                 6 1.153595 80
+ L_rmse_h8_w20      small     DEFL                 6 0.832597 80
+ L_rmse_h8_w40      small     DEFL                 6 0.753807 80
+ L_rmse_h8_w60      small     DEFL                 6 0.842500 80
+ L_rmse_h8_w80      small     DEFL                 6 0.890426 80
+L_rmsej_h1_w12      small     DEFL                 6 0.730083 80
+L_rmsej_h1_w40      small     DEFL                 6 0.684150 80
+L_rmsej_h1_w60      small     DEFL                 6 0.740525 80
+L_rmsej_h1_w80      small     DEFL                 6 0.723372 80
+L_rmsej_h2_w12      small     DEFL                 6 0.847548 80
+L_rmsej_h2_w40      small     DEFL                 6 0.696090 80
+L_rmsej_h2_w60      small     DEFL                 6 0.734565 80
+L_rmsej_h2_w80      small     DEFL                 6 0.714635 80
+L_rmsej_h4_w12      small     DEFL                 6 0.912322 80
+L_rmsej_h4_w40      small     DEFL                 6 0.731762 80
+L_rmsej_h4_w60      small     DEFL                 6 0.731241 80
+L_rmsej_h4_w80      small     DEFL                 6 0.710784 80
+L_rmsej_h8_w12      small     DEFL                 6 0.836735 80
+L_rmsej_h8_w40      small     DEFL                 6 0.717482 80
+L_rmsej_h8_w60      small     DEFL                 6 0.731833 80
+L_rmsej_h8_w80      small     DEFL                 6 0.682872 80
+         paper      small     DEFL                 6 0.710939 80
+  paper_plugin      small     DEFL                 6 0.717223 80
+    L_lsj1_all      small     DEFL                 7 0.748119 80
+    L_lsj1_w12      small     DEFL                 7 0.791510 80
+    L_lsj1_w60      small     DEFL                 7 0.744007 80
+  L_lsj_h2_w12      small     DEFL                 7 0.765470 80
+  L_lsj_h2_w60      small     DEFL                 7 0.733374 80
+  L_lsj_h4_w12      small     DEFL                 7 0.745782 80
+  L_lsj_h4_w40      small     DEFL                 7 0.728753 80
+  L_lsj_h4_w60      small     DEFL                 7 0.729862 80
+  L_lsj_h8_w12      small     DEFL                 7 0.860744 80
+  L_lsj_h8_w60      small     DEFL                 7 0.717299 80
+  L_lsm_h1_w12      small     DEFL                 7 0.950218 80
+  L_lsm_h1_w60      small     DEFL                 7 0.993211 80
+  L_lsm_h2_w12      small     DEFL                 7 1.138265 80
+  L_lsm_h2_w60      small     DEFL                 7 1.177756 80
+  L_lsm_h4_all      small     DEFL                 7 1.371327 80
+  L_lsm_h4_w12      small     DEFL                 7 1.104973 80
+  L_lsm_h4_w40      small     DEFL                 7 0.997088 80
+  L_lsm_h4_w60      small     DEFL                 7 1.212569 80
+  L_lsm_h8_w12      small     DEFL                 7 1.123301 80
+  L_lsm_h8_w60      small     DEFL                 7 1.146071 80
+ L_rmse_h1_all      small     DEFL                 7 1.391895 80
+ L_rmse_h1_w12      small     DEFL                 7 1.132011 80
+ L_rmse_h1_w20      small     DEFL                 7 1.025896 80
+ L_rmse_h1_w40      small     DEFL                 7 0.820231 80
+ L_rmse_h1_w60      small     DEFL                 7 0.916171 80
+ L_rmse_h1_w80      small     DEFL                 7 0.999145 80
+ L_rmse_h2_all      small     DEFL                 7 1.395420 80
+ L_rmse_h2_w12      small     DEFL                 7 1.099809 80
+ L_rmse_h2_w20      small     DEFL                 7 1.041114 80
+ L_rmse_h2_w40      small     DEFL                 7 0.802035 80
+ L_rmse_h2_w60      small     DEFL                 7 0.881496 80
+ L_rmse_h2_w80      small     DEFL                 7 1.050155 80
+ L_rmse_h4_all      small     DEFL                 7 1.130746 80
+ L_rmse_h4_w12      small     DEFL                 7 1.113917 80
+ L_rmse_h4_w20      small     DEFL                 7 1.030837 80
+ L_rmse_h4_w40      small     DEFL                 7 0.772117 80
+ L_rmse_h4_w60      small     DEFL                 7 0.829370 80
+ L_rmse_h4_w80      small     DEFL                 7 0.903340 80
+ L_rmse_h8_all      small     DEFL                 7 1.064903 80
+ L_rmse_h8_w12      small     DEFL                 7 1.169615 80
+ L_rmse_h8_w20      small     DEFL                 7 0.840298 80
+ L_rmse_h8_w40      small     DEFL                 7 0.775135 80
+ L_rmse_h8_w60      small     DEFL                 7 0.846200 80
+ L_rmse_h8_w80      small     DEFL                 7 0.912923 80
+L_rmsej_h1_w12      small     DEFL                 7 0.761130 80
+L_rmsej_h1_w40      small     DEFL                 7 0.698209 80
+L_rmsej_h1_w60      small     DEFL                 7 0.754839 80
+L_rmsej_h1_w80      small     DEFL                 7 0.737627 80
+L_rmsej_h2_w12      small     DEFL                 7 0.874780 80
+L_rmsej_h2_w40      small     DEFL                 7 0.708657 80
+L_rmsej_h2_w60      small     DEFL                 7 0.749106 80
+L_rmsej_h2_w80      small     DEFL                 7 0.729504 80
+L_rmsej_h4_w12      small     DEFL                 7 0.925646 80
+L_rmsej_h4_w40      small     DEFL                 7 0.744879 80
+L_rmsej_h4_w60      small     DEFL                 7 0.745086 80
+L_rmsej_h4_w80      small     DEFL                 7 0.726749 80
+L_rmsej_h8_w12      small     DEFL                 7 0.856735 80
+L_rmsej_h8_w40      small     DEFL                 7 0.736553 80
+L_rmsej_h8_w60      small     DEFL                 7 0.745310 80
+L_rmsej_h8_w80      small     DEFL                 7 0.698897 80
+         paper      small     DEFL                 7 0.736877 80
+  paper_plugin      small     DEFL                 7 0.745813 80
+    L_lsj1_all      small     DEFL                 8 0.781238 80
+    L_lsj1_w12      small     DEFL                 8 0.820091 80
+    L_lsj1_w60      small     DEFL                 8 0.777514 80
+  L_lsj_h2_w12      small     DEFL                 8 0.781016 80
+  L_lsj_h2_w60      small     DEFL                 8 0.763779 80
+  L_lsj_h4_w12      small     DEFL                 8 0.757589 80
+  L_lsj_h4_w40      small     DEFL                 8 0.752107 80
+  L_lsj_h4_w60      small     DEFL                 8 0.760565 80
+  L_lsj_h8_w12      small     DEFL                 8 0.869595 80
+  L_lsj_h8_w60      small     DEFL                 8 0.733869 80
+  L_lsm_h1_w12      small     DEFL                 8 0.976182 80
+  L_lsm_h1_w60      small     DEFL                 8 1.016610 80
+  L_lsm_h2_w12      small     DEFL                 8 1.164019 80
+  L_lsm_h2_w60      small     DEFL                 8 1.196104 80
+  L_lsm_h4_all      small     DEFL                 8 1.372904 80
+  L_lsm_h4_w12      small     DEFL                 8 1.124040 80
+  L_lsm_h4_w40      small     DEFL                 8 0.994169 80
+  L_lsm_h4_w60      small     DEFL                 8 1.216637 80
+  L_lsm_h8_w12      small     DEFL                 8 1.136587 80
+  L_lsm_h8_w60      small     DEFL                 8 1.156778 80
+ L_rmse_h1_all      small     DEFL                 8 1.386908 80
+ L_rmse_h1_w12      small     DEFL                 8 1.150913 80
+ L_rmse_h1_w20      small     DEFL                 8 1.048960 80
+ L_rmse_h1_w40      small     DEFL                 8 0.829788 80
+ L_rmse_h1_w60      small     DEFL                 8 0.927001 80
+ L_rmse_h1_w80      small     DEFL                 8 1.004708 80
+ L_rmse_h2_all      small     DEFL                 8 1.390036 80
+ L_rmse_h2_w12      small     DEFL                 8 1.124139 80
+ L_rmse_h2_w20      small     DEFL                 8 1.060637 80
+ L_rmse_h2_w40      small     DEFL                 8 0.806788 80
+ L_rmse_h2_w60      small     DEFL                 8 0.892786 80
+ L_rmse_h2_w80      small     DEFL                 8 1.058387 80
+ L_rmse_h4_all      small     DEFL                 8 1.140358 80
+ L_rmse_h4_w12      small     DEFL                 8 1.143199 80
+ L_rmse_h4_w20      small     DEFL                 8 1.044501 80
+ L_rmse_h4_w40      small     DEFL                 8 0.788307 80
+ L_rmse_h4_w60      small     DEFL                 8 0.845105 80
+ L_rmse_h4_w80      small     DEFL                 8 0.912774 80
+ L_rmse_h8_all      small     DEFL                 8 1.074084 80
+ L_rmse_h8_w12      small     DEFL                 8 1.197860 80
+ L_rmse_h8_w20      small     DEFL                 8 0.848888 80
+ L_rmse_h8_w40      small     DEFL                 8 0.791430 80
+ L_rmse_h8_w60      small     DEFL                 8 0.853060 80
+ L_rmse_h8_w80      small     DEFL                 8 0.920071 80
+L_rmsej_h1_w12      small     DEFL                 8 0.784239 80
+L_rmsej_h1_w40      small     DEFL                 8 0.714786 80
+L_rmsej_h1_w60      small     DEFL                 8 0.771799 80
+L_rmsej_h1_w80      small     DEFL                 8 0.756153 80
+L_rmsej_h2_w12      small     DEFL                 8 0.891488 80
+L_rmsej_h2_w40      small     DEFL                 8 0.723967 80
+L_rmsej_h2_w60      small     DEFL                 8 0.766333 80
+L_rmsej_h2_w80      small     DEFL                 8 0.747814 80
+L_rmsej_h4_w12      small     DEFL                 8 0.940630 80
+L_rmsej_h4_w40      small     DEFL                 8 0.762073 80
+L_rmsej_h4_w60      small     DEFL                 8 0.761462 80
+L_rmsej_h4_w80      small     DEFL                 8 0.745802 80
+L_rmsej_h8_w12      small     DEFL                 8 0.876511 80
+L_rmsej_h8_w40      small     DEFL                 8 0.760844 80
+L_rmsej_h8_w60      small     DEFL                 8 0.760912 80
+L_rmsej_h8_w80      small     DEFL                 8 0.719638 80
+         paper      small     DEFL                 8 0.770440 80
+  paper_plugin      small     DEFL                 8 0.781124 80
+    L_lsj1_all      small      FFR                 1 0.392033 80
+    L_lsj1_w12      small      FFR                 1 0.387191 80
+    L_lsj1_w60      small      FFR                 1 0.390773 80
+  L_lsj_h2_w12      small      FFR                 1 0.381238 80
+  L_lsj_h2_w60      small      FFR                 1 0.383386 80
+  L_lsj_h4_w12      small      FFR                 1 0.396378 80
+  L_lsj_h4_w40      small      FFR                 1 0.386002 80
+  L_lsj_h4_w60      small      FFR                 1 0.395815 80
+  L_lsj_h8_w12      small      FFR                 1 0.414653 80
+  L_lsj_h8_w60      small      FFR                 1 0.415788 80
+  L_lsm_h1_w12      small      FFR                 1 0.375839 80
+  L_lsm_h1_w60      small      FFR                 1 0.359142 80
+  L_lsm_h2_w12      small      FFR                 1 0.394912 80
+  L_lsm_h2_w60      small      FFR                 1 0.418963 80
+  L_lsm_h4_all      small      FFR                 1 0.381775 80
+  L_lsm_h4_w12      small      FFR                 1 0.405754 80
+  L_lsm_h4_w40      small      FFR                 1 0.404165 80
+  L_lsm_h4_w60      small      FFR                 1 0.412205 80
+  L_lsm_h8_w12      small      FFR                 1 0.424565 80
+  L_lsm_h8_w60      small      FFR                 1 0.407601 80
+ L_rmse_h1_all      small      FFR                 1 0.379983 80
+ L_rmse_h1_w12      small      FFR                 1 0.400629 80
+ L_rmse_h1_w20      small      FFR                 1 0.386603 80
+ L_rmse_h1_w40      small      FFR                 1 0.389965 80
+ L_rmse_h1_w60      small      FFR                 1 0.373019 80
+ L_rmse_h1_w80      small      FFR                 1 0.364553 80
+ L_rmse_h2_all      small      FFR                 1 0.379869 80
+ L_rmse_h2_w12      small      FFR                 1 0.384184 80
+ L_rmse_h2_w20      small      FFR                 1 0.400118 80
+ L_rmse_h2_w40      small      FFR                 1 0.370155 80
+ L_rmse_h2_w60      small      FFR                 1 0.370216 80
+ L_rmse_h2_w80      small      FFR                 1 0.374119 80
+ L_rmse_h4_all      small      FFR                 1 0.387081 80
+ L_rmse_h4_w12      small      FFR                 1 0.374625 80
+ L_rmse_h4_w20      small      FFR                 1 0.383462 80
+ L_rmse_h4_w40      small      FFR                 1 0.382834 80
+ L_rmse_h4_w60      small      FFR                 1 0.373027 80
+ L_rmse_h4_w80      small      FFR                 1 0.382556 80
+ L_rmse_h8_all      small      FFR                 1 0.398260 80
+ L_rmse_h8_w12      small      FFR                 1 0.379542 80
+ L_rmse_h8_w20      small      FFR                 1 0.419367 80
+ L_rmse_h8_w40      small      FFR                 1 0.383086 80
+ L_rmse_h8_w60      small      FFR                 1 0.370868 80
+ L_rmse_h8_w80      small      FFR                 1 0.388992 80
+L_rmsej_h1_w12      small      FFR                 1 0.380667 80
+L_rmsej_h1_w40      small      FFR                 1 0.374526 80
+L_rmsej_h1_w60      small      FFR                 1 0.371953 80
+L_rmsej_h1_w80      small      FFR                 1 0.375094 80
+L_rmsej_h2_w12      small      FFR                 1 0.391866 80
+L_rmsej_h2_w40      small      FFR                 1 0.371375 80
+L_rmsej_h2_w60      small      FFR                 1 0.370491 80
+L_rmsej_h2_w80      small      FFR                 1 0.368563 80
+L_rmsej_h4_w12      small      FFR                 1 0.392096 80
+L_rmsej_h4_w40      small      FFR                 1 0.375831 80
+L_rmsej_h4_w60      small      FFR                 1 0.375464 80
+L_rmsej_h4_w80      small      FFR                 1 0.372186 80
+L_rmsej_h8_w12      small      FFR                 1 0.390912 80
+L_rmsej_h8_w40      small      FFR                 1 0.387975 80
+L_rmsej_h8_w60      small      FFR                 1 0.382462 80
+L_rmsej_h8_w80      small      FFR                 1 0.382043 80
+         paper      small      FFR                 1 0.384569 80
+  paper_plugin      small      FFR                 1 0.381104 80
+    L_lsj1_all      small      FFR                 2 0.757304 80
+    L_lsj1_w12      small      FFR                 2 0.771695 80
+    L_lsj1_w60      small      FFR                 2 0.764187 80
+  L_lsj_h2_w12      small      FFR                 2 0.759354 80
+  L_lsj_h2_w60      small      FFR                 2 0.740948 80
+  L_lsj_h4_w12      small      FFR                 2 0.759518 80
+  L_lsj_h4_w40      small      FFR                 2 0.749378 80
+  L_lsj_h4_w60      small      FFR                 2 0.763147 80
+  L_lsj_h8_w12      small      FFR                 2 0.778623 80
+  L_lsj_h8_w60      small      FFR                 2 0.773508 80
+  L_lsm_h1_w12      small      FFR                 2 0.762240 80
+  L_lsm_h1_w60      small      FFR                 2 0.726538 80
+  L_lsm_h2_w12      small      FFR                 2 0.802819 80
+  L_lsm_h2_w60      small      FFR                 2 0.788704 80
+  L_lsm_h4_all      small      FFR                 2 0.762208 80
+  L_lsm_h4_w12      small      FFR                 2 0.795750 80
+  L_lsm_h4_w40      small      FFR                 2 0.760034 80
+  L_lsm_h4_w60      small      FFR                 2 0.769956 80
+  L_lsm_h8_w12      small      FFR                 2 0.803932 80
+  L_lsm_h8_w60      small      FFR                 2 0.764302 80
+ L_rmse_h1_all      small      FFR                 2 0.766177 80
+ L_rmse_h1_w12      small      FFR                 2 0.790134 80
+ L_rmse_h1_w20      small      FFR                 2 0.765338 80
+ L_rmse_h1_w40      small      FFR                 2 0.734998 80
+ L_rmse_h1_w60      small      FFR                 2 0.712303 80
+ L_rmse_h1_w80      small      FFR                 2 0.716412 80
+ L_rmse_h2_all      small      FFR                 2 0.757670 80
+ L_rmse_h2_w12      small      FFR                 2 0.774640 80
+ L_rmse_h2_w20      small      FFR                 2 0.780063 80
+ L_rmse_h2_w40      small      FFR                 2 0.707921 80
+ L_rmse_h2_w60      small      FFR                 2 0.705454 80
+ L_rmse_h2_w80      small      FFR                 2 0.718927 80
+ L_rmse_h4_all      small      FFR                 2 0.765892 80
+ L_rmse_h4_w12      small      FFR                 2 0.744809 80
+ L_rmse_h4_w20      small      FFR                 2 0.736732 80
+ L_rmse_h4_w40      small      FFR                 2 0.725107 80
+ L_rmse_h4_w60      small      FFR                 2 0.703581 80
+ L_rmse_h4_w80      small      FFR                 2 0.725450 80
+ L_rmse_h8_all      small      FFR                 2 0.786356 80
+ L_rmse_h8_w12      small      FFR                 2 0.730604 80
+ L_rmse_h8_w20      small      FFR                 2 0.790265 80
+ L_rmse_h8_w40      small      FFR                 2 0.724336 80
+ L_rmse_h8_w60      small      FFR                 2 0.706328 80
+ L_rmse_h8_w80      small      FFR                 2 0.773357 80
+L_rmsej_h1_w12      small      FFR                 2 0.767235 80
+L_rmsej_h1_w40      small      FFR                 2 0.711766 80
+L_rmsej_h1_w60      small      FFR                 2 0.701253 80
+L_rmsej_h1_w80      small      FFR                 2 0.712462 80
+L_rmsej_h2_w12      small      FFR                 2 0.781340 80
+L_rmsej_h2_w40      small      FFR                 2 0.704542 80
+L_rmsej_h2_w60      small      FFR                 2 0.697080 80
+L_rmsej_h2_w80      small      FFR                 2 0.703209 80
+L_rmsej_h4_w12      small      FFR                 2 0.768421 80
+L_rmsej_h4_w40      small      FFR                 2 0.711473 80
+L_rmsej_h4_w60      small      FFR                 2 0.703259 80
+L_rmsej_h4_w80      small      FFR                 2 0.711047 80
+L_rmsej_h8_w12      small      FFR                 2 0.744762 80
+L_rmsej_h8_w40      small      FFR                 2 0.728980 80
+L_rmsej_h8_w60      small      FFR                 2 0.725200 80
+L_rmsej_h8_w80      small      FFR                 2 0.731140 80
+         paper      small      FFR                 2 0.746833 80
+  paper_plugin      small      FFR                 2 0.738714 80
+    L_lsj1_all      small      FFR                 3 1.078095 80
+    L_lsj1_w12      small      FFR                 3 1.099256 80
+    L_lsj1_w60      small      FFR                 3 1.073193 80
+  L_lsj_h2_w12      small      FFR                 3 1.097492 80
+  L_lsj_h2_w60      small      FFR                 3 1.063054 80
+  L_lsj_h4_w12      small      FFR                 3 1.089437 80
+  L_lsj_h4_w40      small      FFR                 3 1.059344 80
+  L_lsj_h4_w60      small      FFR                 3 1.070868 80
+  L_lsj_h8_w12      small      FFR                 3 1.127858 80
+  L_lsj_h8_w60      small      FFR                 3 1.110136 80
+  L_lsm_h1_w12      small      FFR                 3 1.118637 80
+  L_lsm_h1_w60      small      FFR                 3 1.062980 80
+  L_lsm_h2_w12      small      FFR                 3 1.180716 80
+  L_lsm_h2_w60      small      FFR                 3 1.142943 80
+  L_lsm_h4_all      small      FFR                 3 1.093984 80
+  L_lsm_h4_w12      small      FFR                 3 1.155346 80
+  L_lsm_h4_w40      small      FFR                 3 1.104482 80
+  L_lsm_h4_w60      small      FFR                 3 1.113719 80
+  L_lsm_h8_w12      small      FFR                 3 1.147931 80
+  L_lsm_h8_w60      small      FFR                 3 1.105031 80
+ L_rmse_h1_all      small      FFR                 3 1.109336 80
+ L_rmse_h1_w12      small      FFR                 3 1.146461 80
+ L_rmse_h1_w20      small      FFR                 3 1.110446 80
+ L_rmse_h1_w40      small      FFR                 3 1.081119 80
+ L_rmse_h1_w60      small      FFR                 3 1.059956 80
+ L_rmse_h1_w80      small      FFR                 3 1.057922 80
+ L_rmse_h2_all      small      FFR                 3 1.107426 80
+ L_rmse_h2_w12      small      FFR                 3 1.132736 80
+ L_rmse_h2_w20      small      FFR                 3 1.118093 80
+ L_rmse_h2_w40      small      FFR                 3 1.059709 80
+ L_rmse_h2_w60      small      FFR                 3 1.052096 80
+ L_rmse_h2_w80      small      FFR                 3 1.067805 80
+ L_rmse_h4_all      small      FFR                 3 1.093951 80
+ L_rmse_h4_w12      small      FFR                 3 1.095802 80
+ L_rmse_h4_w20      small      FFR                 3 1.080649 80
+ L_rmse_h4_w40      small      FFR                 3 1.064486 80
+ L_rmse_h4_w60      small      FFR                 3 1.042054 80
+ L_rmse_h4_w80      small      FFR                 3 1.065004 80
+ L_rmse_h8_all      small      FFR                 3 1.111752 80
+ L_rmse_h8_w12      small      FFR                 3 1.074269 80
+ L_rmse_h8_w20      small      FFR                 3 1.135972 80
+ L_rmse_h8_w40      small      FFR                 3 1.066181 80
+ L_rmse_h8_w60      small      FFR                 3 1.062340 80
+ L_rmse_h8_w80      small      FFR                 3 1.128251 80
+L_rmsej_h1_w12      small      FFR                 3 1.129040 80
+L_rmsej_h1_w40      small      FFR                 3 1.051112 80
+L_rmsej_h1_w60      small      FFR                 3 1.033229 80
+L_rmsej_h1_w80      small      FFR                 3 1.050586 80
+L_rmsej_h2_w12      small      FFR                 3 1.141348 80
+L_rmsej_h2_w40      small      FFR                 3 1.045445 80
+L_rmsej_h2_w60      small      FFR                 3 1.029567 80
+L_rmsej_h2_w80      small      FFR                 3 1.042414 80
+L_rmsej_h4_w12      small      FFR                 3 1.127731 80
+L_rmsej_h4_w40      small      FFR                 3 1.050001 80
+L_rmsej_h4_w60      small      FFR                 3 1.034661 80
+L_rmsej_h4_w80      small      FFR                 3 1.051243 80
+L_rmsej_h8_w12      small      FFR                 3 1.086886 80
+L_rmsej_h8_w40      small      FFR                 3 1.066900 80
+L_rmsej_h8_w60      small      FFR                 3 1.060920 80
+L_rmsej_h8_w80      small      FFR                 3 1.069169 80
+         paper      small      FFR                 3 1.070331 80
+  paper_plugin      small      FFR                 3 1.061574 80
+    L_lsj1_all      small      FFR                 4 1.360269 80
+    L_lsj1_w12      small      FFR                 4 1.397027 80
+    L_lsj1_w60      small      FFR                 4 1.355407 80
+  L_lsj_h2_w12      small      FFR                 4 1.390393 80
+  L_lsj_h2_w60      small      FFR                 4 1.345785 80
+  L_lsj_h4_w12      small      FFR                 4 1.391620 80
+  L_lsj_h4_w40      small      FFR                 4 1.333975 80
+  L_lsj_h4_w60      small      FFR                 4 1.345623 80
+  L_lsj_h8_w12      small      FFR                 4 1.428667 80
+  L_lsj_h8_w60      small      FFR                 4 1.403556 80
+  L_lsm_h1_w12      small      FFR                 4 1.440701 80
+  L_lsm_h1_w60      small      FFR                 4 1.360096 80
+  L_lsm_h2_w12      small      FFR                 4 1.521914 80
+  L_lsm_h2_w60      small      FFR                 4 1.447268 80
+  L_lsm_h4_all      small      FFR                 4 1.395926 80
+  L_lsm_h4_w12      small      FFR                 4 1.476100 80
+  L_lsm_h4_w40      small      FFR                 4 1.413650 80
+  L_lsm_h4_w60      small      FFR                 4 1.421671 80
+  L_lsm_h8_w12      small      FFR                 4 1.460059 80
+  L_lsm_h8_w60      small      FFR                 4 1.408603 80
+ L_rmse_h1_all      small      FFR                 4 1.419556 80
+ L_rmse_h1_w12      small      FFR                 4 1.458769 80
+ L_rmse_h1_w20      small      FFR                 4 1.400760 80
+ L_rmse_h1_w40      small      FFR                 4 1.387438 80
+ L_rmse_h1_w60      small      FFR                 4 1.362797 80
+ L_rmse_h1_w80      small      FFR                 4 1.355532 80
+ L_rmse_h2_all      small      FFR                 4 1.421441 80
+ L_rmse_h2_w12      small      FFR                 4 1.446224 80
+ L_rmse_h2_w20      small      FFR                 4 1.415277 80
+ L_rmse_h2_w40      small      FFR                 4 1.365319 80
+ L_rmse_h2_w60      small      FFR                 4 1.353992 80
+ L_rmse_h2_w80      small      FFR                 4 1.373000 80
+ L_rmse_h4_all      small      FFR                 4 1.391588 80
+ L_rmse_h4_w12      small      FFR                 4 1.412959 80
+ L_rmse_h4_w20      small      FFR                 4 1.392521 80
+ L_rmse_h4_w40      small      FFR                 4 1.362808 80
+ L_rmse_h4_w60      small      FFR                 4 1.343665 80
+ L_rmse_h4_w80      small      FFR                 4 1.377378 80
+ L_rmse_h8_all      small      FFR                 4 1.415188 80
+ L_rmse_h8_w12      small      FFR                 4 1.386283 80
+ L_rmse_h8_w20      small      FFR                 4 1.439877 80
+ L_rmse_h8_w40      small      FFR                 4 1.378283 80
+ L_rmse_h8_w60      small      FFR                 4 1.379212 80
+ L_rmse_h8_w80      small      FFR                 4 1.439538 80
+L_rmsej_h1_w12      small      FFR                 4 1.454082 80
+L_rmsej_h1_w40      small      FFR                 4 1.348604 80
+L_rmsej_h1_w60      small      FFR                 4 1.322011 80
+L_rmsej_h1_w80      small      FFR                 4 1.344605 80
+L_rmsej_h2_w12      small      FFR                 4 1.462589 80
+L_rmsej_h2_w40      small      FFR                 4 1.338548 80
+L_rmsej_h2_w60      small      FFR                 4 1.318791 80
+L_rmsej_h2_w80      small      FFR                 4 1.335053 80
+L_rmsej_h4_w12      small      FFR                 4 1.454244 80
+L_rmsej_h4_w40      small      FFR                 4 1.341443 80
+L_rmsej_h4_w60      small      FFR                 4 1.319766 80
+L_rmsej_h4_w80      small      FFR                 4 1.347894 80
+L_rmsej_h8_w12      small      FFR                 4 1.385855 80
+L_rmsej_h8_w40      small      FFR                 4 1.361916 80
+L_rmsej_h8_w60      small      FFR                 4 1.349478 80
+L_rmsej_h8_w80      small      FFR                 4 1.370897 80
+         paper      small      FFR                 4 1.359112 80
+  paper_plugin      small      FFR                 4 1.350348 80
+    L_lsj1_all      small      FFR                 5 1.617693 80
+    L_lsj1_w12      small      FFR                 5 1.683121 80
+    L_lsj1_w60      small      FFR                 5 1.620930 80
+  L_lsj_h2_w12      small      FFR                 5 1.668518 80
+  L_lsj_h2_w60      small      FFR                 5 1.600939 80
+  L_lsj_h4_w12      small      FFR                 5 1.664824 80
+  L_lsj_h4_w40      small      FFR                 5 1.586171 80
+  L_lsj_h4_w60      small      FFR                 5 1.601070 80
+  L_lsj_h8_w12      small      FFR                 5 1.697182 80
+  L_lsj_h8_w60      small      FFR                 5 1.662984 80
+  L_lsm_h1_w12      small      FFR                 5 1.733013 80
+  L_lsm_h1_w60      small      FFR                 5 1.638834 80
+  L_lsm_h2_w12      small      FFR                 5 1.837699 80
+  L_lsm_h2_w60      small      FFR                 5 1.716288 80
+  L_lsm_h4_all      small      FFR                 5 1.680689 80
+  L_lsm_h4_w12      small      FFR                 5 1.764925 80
+  L_lsm_h4_w40      small      FFR                 5 1.688664 80
+  L_lsm_h4_w60      small      FFR                 5 1.688189 80
+  L_lsm_h8_w12      small      FFR                 5 1.745515 80
+  L_lsm_h8_w60      small      FFR                 5 1.673652 80
+ L_rmse_h1_all      small      FFR                 5 1.714656 80
+ L_rmse_h1_w12      small      FFR                 5 1.740565 80
+ L_rmse_h1_w20      small      FFR                 5 1.664378 80
+ L_rmse_h1_w40      small      FFR                 5 1.656517 80
+ L_rmse_h1_w60      small      FFR                 5 1.631161 80
+ L_rmse_h1_w80      small      FFR                 5 1.627885 80
+ L_rmse_h2_all      small      FFR                 5 1.713030 80
+ L_rmse_h2_w12      small      FFR                 5 1.732841 80
+ L_rmse_h2_w20      small      FFR                 5 1.685102 80
+ L_rmse_h2_w40      small      FFR                 5 1.635115 80
+ L_rmse_h2_w60      small      FFR                 5 1.621479 80
+ L_rmse_h2_w80      small      FFR                 5 1.654736 80
+ L_rmse_h4_all      small      FFR                 5 1.675213 80
+ L_rmse_h4_w12      small      FFR                 5 1.708736 80
+ L_rmse_h4_w20      small      FFR                 5 1.670444 80
+ L_rmse_h4_w40      small      FFR                 5 1.634012 80
+ L_rmse_h4_w60      small      FFR                 5 1.607165 80
+ L_rmse_h4_w80      small      FFR                 5 1.660599 80
+ L_rmse_h8_all      small      FFR                 5 1.709746 80
+ L_rmse_h8_w12      small      FFR                 5 1.658263 80
+ L_rmse_h8_w20      small      FFR                 5 1.712190 80
+ L_rmse_h8_w40      small      FFR                 5 1.656714 80
+ L_rmse_h8_w60      small      FFR                 5 1.653129 80
+ L_rmse_h8_w80      small      FFR                 5 1.727912 80
+L_rmsej_h1_w12      small      FFR                 5 1.749166 80
+L_rmsej_h1_w40      small      FFR                 5 1.611703 80
+L_rmsej_h1_w60      small      FFR                 5 1.576807 80
+L_rmsej_h1_w80      small      FFR                 5 1.603451 80
+L_rmsej_h2_w12      small      FFR                 5 1.750434 80
+L_rmsej_h2_w40      small      FFR                 5 1.594218 80
+L_rmsej_h2_w60      small      FFR                 5 1.571635 80
+L_rmsej_h2_w80      small      FFR                 5 1.591110 80
+L_rmsej_h4_w12      small      FFR                 5 1.738572 80
+L_rmsej_h4_w40      small      FFR                 5 1.591885 80
+L_rmsej_h4_w60      small      FFR                 5 1.565820 80
+L_rmsej_h4_w80      small      FFR                 5 1.603520 80
+L_rmsej_h8_w12      small      FFR                 5 1.644371 80
+L_rmsej_h8_w40      small      FFR                 5 1.613865 80
+L_rmsej_h8_w60      small      FFR                 5 1.599749 80
+L_rmsej_h8_w80      small      FFR                 5 1.637671 80
+         paper      small      FFR                 5 1.624328 80
+  paper_plugin      small      FFR                 5 1.614296 80
+    L_lsj1_all      small      FFR                 6 1.857315 80
+    L_lsj1_w12      small      FFR                 6 1.942778 80
+    L_lsj1_w60      small      FFR                 6 1.864400 80
+  L_lsj_h2_w12      small      FFR                 6 1.920965 80
+  L_lsj_h2_w60      small      FFR                 6 1.838023 80
+  L_lsj_h4_w12      small      FFR                 6 1.913435 80
+  L_lsj_h4_w40      small      FFR                 6 1.816721 80
+  L_lsj_h4_w60      small      FFR                 6 1.837637 80
+  L_lsj_h8_w12      small      FFR                 6 1.942118 80
+  L_lsj_h8_w60      small      FFR                 6 1.896499 80
+  L_lsm_h1_w12      small      FFR                 6 1.991962 80
+  L_lsm_h1_w60      small      FFR                 6 1.882628 80
+  L_lsm_h2_w12      small      FFR                 6 2.112867 80
+  L_lsm_h2_w60      small      FFR                 6 1.952854 80
+  L_lsm_h4_all      small      FFR                 6 1.929910 80
+  L_lsm_h4_w12      small      FFR                 6 2.022115 80
+  L_lsm_h4_w40      small      FFR                 6 1.932434 80
+  L_lsm_h4_w60      small      FFR                 6 1.922165 80
+  L_lsm_h8_w12      small      FFR                 6 1.999764 80
+  L_lsm_h8_w60      small      FFR                 6 1.906748 80
+ L_rmse_h1_all      small      FFR                 6 1.969020 80
+ L_rmse_h1_w12      small      FFR                 6 1.988819 80
+ L_rmse_h1_w20      small      FFR                 6 1.901663 80
+ L_rmse_h1_w40      small      FFR                 6 1.900780 80
+ L_rmse_h1_w60      small      FFR                 6 1.869410 80
+ L_rmse_h1_w80      small      FFR                 6 1.873596 80
+ L_rmse_h2_all      small      FFR                 6 1.966103 80
+ L_rmse_h2_w12      small      FFR                 6 1.985181 80
+ L_rmse_h2_w20      small      FFR                 6 1.926377 80
+ L_rmse_h2_w40      small      FFR                 6 1.883023 80
+ L_rmse_h2_w60      small      FFR                 6 1.862409 80
+ L_rmse_h2_w80      small      FFR                 6 1.905948 80
+ L_rmse_h4_all      small      FFR                 6 1.922624 80
+ L_rmse_h4_w12      small      FFR                 6 1.972418 80
+ L_rmse_h4_w20      small      FFR                 6 1.915225 80
+ L_rmse_h4_w40      small      FFR                 6 1.877948 80
+ L_rmse_h4_w60      small      FFR                 6 1.842587 80
+ L_rmse_h4_w80      small      FFR                 6 1.915073 80
+ L_rmse_h8_all      small      FFR                 6 1.965261 80
+ L_rmse_h8_w12      small      FFR                 6 1.909637 80
+ L_rmse_h8_w20      small      FFR                 6 1.955950 80
+ L_rmse_h8_w40      small      FFR                 6 1.907818 80
+ L_rmse_h8_w60      small      FFR                 6 1.901513 80
+ L_rmse_h8_w80      small      FFR                 6 1.988666 80
+L_rmsej_h1_w12      small      FFR                 6 2.018168 80
+L_rmsej_h1_w40      small      FFR                 6 1.850044 80
+L_rmsej_h1_w60      small      FFR                 6 1.807279 80
+L_rmsej_h1_w80      small      FFR                 6 1.837089 80
+L_rmsej_h2_w12      small      FFR                 6 2.009796 80
+L_rmsej_h2_w40      small      FFR                 6 1.825677 80
+L_rmsej_h2_w60      small      FFR                 6 1.799667 80
+L_rmsej_h2_w80      small      FFR                 6 1.823070 80
+L_rmsej_h4_w12      small      FFR                 6 1.991669 80
+L_rmsej_h4_w40      small      FFR                 6 1.817510 80
+L_rmsej_h4_w60      small      FFR                 6 1.789157 80
+L_rmsej_h4_w80      small      FFR                 6 1.834426 80
+L_rmsej_h8_w12      small      FFR                 6 1.872081 80
+L_rmsej_h8_w40      small      FFR                 6 1.840107 80
+L_rmsej_h8_w60      small      FFR                 6 1.827155 80
+L_rmsej_h8_w80      small      FFR                 6 1.880075 80
+         paper      small      FFR                 6 1.868325 80
+  paper_plugin      small      FFR                 6 1.862267 80
+    L_lsj1_all      small      FFR                 7 2.068238 80
+    L_lsj1_w12      small      FFR                 7 2.158841 80
+    L_lsj1_w60      small      FFR                 7 2.075006 80
+  L_lsj_h2_w12      small      FFR                 7 2.133483 80
+  L_lsj_h2_w60      small      FFR                 7 2.044616 80
+  L_lsj_h4_w12      small      FFR                 7 2.121274 80
+  L_lsj_h4_w40      small      FFR                 7 2.014844 80
+  L_lsj_h4_w60      small      FFR                 7 2.041124 80
+  L_lsj_h8_w12      small      FFR                 7 2.148608 80
+  L_lsj_h8_w60      small      FFR                 7 2.098603 80
+  L_lsm_h1_w12      small      FFR                 7 2.204787 80
+  L_lsm_h1_w60      small      FFR                 7 2.079648 80
+  L_lsm_h2_w12      small      FFR                 7 2.345877 80
+  L_lsm_h2_w60      small      FFR                 7 2.151307 80
+  L_lsm_h4_all      small      FFR                 7 2.133981 80
+  L_lsm_h4_w12      small      FFR                 7 2.244204 80
+  L_lsm_h4_w40      small      FFR                 7 2.141106 80
+  L_lsm_h4_w60      small      FFR                 7 2.119325 80
+  L_lsm_h8_w12      small      FFR                 7 2.217459 80
+  L_lsm_h8_w60      small      FFR                 7 2.102745 80
+ L_rmse_h1_all      small      FFR                 7 2.171950 80
+ L_rmse_h1_w12      small      FFR                 7 2.201283 80
+ L_rmse_h1_w20      small      FFR                 7 2.106492 80
+ L_rmse_h1_w40      small      FFR                 7 2.111665 80
+ L_rmse_h1_w60      small      FFR                 7 2.068194 80
+ L_rmse_h1_w80      small      FFR                 7 2.081079 80
+ L_rmse_h2_all      small      FFR                 7 2.171814 80
+ L_rmse_h2_w12      small      FFR                 7 2.208737 80
+ L_rmse_h2_w20      small      FFR                 7 2.134781 80
+ L_rmse_h2_w40      small      FFR                 7 2.091335 80
+ L_rmse_h2_w60      small      FFR                 7 2.064090 80
+ L_rmse_h2_w80      small      FFR                 7 2.117308 80
+ L_rmse_h4_all      small      FFR                 7 2.123490 80
+ L_rmse_h4_w12      small      FFR                 7 2.194752 80
+ L_rmse_h4_w20      small      FFR                 7 2.132978 80
+ L_rmse_h4_w40      small      FFR                 7 2.085009 80
+ L_rmse_h4_w60      small      FFR                 7 2.038184 80
+ L_rmse_h4_w80      small      FFR                 7 2.130537 80
+ L_rmse_h8_all      small      FFR                 7 2.174856 80
+ L_rmse_h8_w12      small      FFR                 7 2.127064 80
+ L_rmse_h8_w20      small      FFR                 7 2.172083 80
+ L_rmse_h8_w40      small      FFR                 7 2.116539 80
+ L_rmse_h8_w60      small      FFR                 7 2.107631 80
+ L_rmse_h8_w80      small      FFR                 7 2.211893 80
+L_rmsej_h1_w12      small      FFR                 7 2.252077 80
+L_rmsej_h1_w40      small      FFR                 7 2.052036 80
+L_rmsej_h1_w60      small      FFR                 7 2.002353 80
+L_rmsej_h1_w80      small      FFR                 7 2.036623 80
+L_rmsej_h2_w12      small      FFR                 7 2.233914 80
+L_rmsej_h2_w40      small      FFR                 7 2.022377 80
+L_rmsej_h2_w60      small      FFR                 7 1.993931 80
+L_rmsej_h2_w80      small      FFR                 7 2.023337 80
+L_rmsej_h4_w12      small      FFR                 7 2.207723 80
+L_rmsej_h4_w40      small      FFR                 7 2.008776 80
+L_rmsej_h4_w60      small      FFR                 7 1.982611 80
+L_rmsej_h4_w80      small      FFR                 7 2.035226 80
+L_rmsej_h8_w12      small      FFR                 7 2.067007 80
+L_rmsej_h8_w40      small      FFR                 7 2.035066 80
+L_rmsej_h8_w60      small      FFR                 7 2.025918 80
+L_rmsej_h8_w80      small      FFR                 7 2.094048 80
+         paper      small      FFR                 7 2.078147 80
+  paper_plugin      small      FFR                 7 2.082181 80
+    L_lsj1_all      small      FFR                 8 2.244469 80
+    L_lsj1_w12      small      FFR                 8 2.336154 80
+    L_lsj1_w60      small      FFR                 8 2.250890 80
+  L_lsj_h2_w12      small      FFR                 8 2.301311 80
+  L_lsj_h2_w60      small      FFR                 8 2.214053 80
+  L_lsj_h4_w12      small      FFR                 8 2.283931 80
+  L_lsj_h4_w40      small      FFR                 8 2.175076 80
+  L_lsj_h4_w60      small      FFR                 8 2.207306 80
+  L_lsj_h8_w12      small      FFR                 8 2.311382 80
+  L_lsj_h8_w60      small      FFR                 8 2.262599 80
+  L_lsm_h1_w12      small      FFR                 8 2.373917 80
+  L_lsm_h1_w60      small      FFR                 8 2.237141 80
+  L_lsm_h2_w12      small      FFR                 8 2.536988 80
+  L_lsm_h2_w60      small      FFR                 8 2.311810 80
+  L_lsm_h4_all      small      FFR                 8 2.304556 80
+  L_lsm_h4_w12      small      FFR                 8 2.425475 80
+  L_lsm_h4_w40      small      FFR                 8 2.314709 80
+  L_lsm_h4_w60      small      FFR                 8 2.280502 80
+  L_lsm_h8_w12      small      FFR                 8 2.399869 80
+  L_lsm_h8_w60      small      FFR                 8 2.262050 80
+ L_rmse_h1_all      small      FFR                 8 2.339638 80
+ L_rmse_h1_w12      small      FFR                 8 2.377759 80
+ L_rmse_h1_w20      small      FFR                 8 2.279195 80
+ L_rmse_h1_w40      small      FFR                 8 2.285018 80
+ L_rmse_h1_w60      small      FFR                 8 2.227600 80
+ L_rmse_h1_w80      small      FFR                 8 2.257060 80
+ L_rmse_h2_all      small      FFR                 8 2.340536 80
+ L_rmse_h2_w12      small      FFR                 8 2.392174 80
+ L_rmse_h2_w20      small      FFR                 8 2.308737 80
+ L_rmse_h2_w40      small      FFR                 8 2.261444 80
+ L_rmse_h2_w60      small      FFR                 8 2.226736 80
+ L_rmse_h2_w80      small      FFR                 8 2.296737 80
+ L_rmse_h4_all      small      FFR                 8 2.287789 80
+ L_rmse_h4_w12      small      FFR                 8 2.373358 80
+ L_rmse_h4_w20      small      FFR                 8 2.313668 80
+ L_rmse_h4_w40      small      FFR                 8 2.254876 80
+ L_rmse_h4_w60      small      FFR                 8 2.197374 80
+ L_rmse_h4_w80      small      FFR                 8 2.313513 80
+ L_rmse_h8_all      small      FFR                 8 2.350554 80
+ L_rmse_h8_w12      small      FFR                 8 2.309761 80
+ L_rmse_h8_w20      small      FFR                 8 2.343297 80
+ L_rmse_h8_w40      small      FFR                 8 2.292712 80
+ L_rmse_h8_w60      small      FFR                 8 2.269308 80
+ L_rmse_h8_w80      small      FFR                 8 2.400303 80
+L_rmsej_h1_w12      small      FFR                 8 2.441330 80
+L_rmsej_h1_w40      small      FFR                 8 2.216630 80
+L_rmsej_h1_w60      small      FFR                 8 2.159999 80
+L_rmsej_h1_w80      small      FFR                 8 2.196397 80
+L_rmsej_h2_w12      small      FFR                 8 2.414317 80
+L_rmsej_h2_w40      small      FFR                 8 2.181014 80
+L_rmsej_h2_w60      small      FFR                 8 2.150496 80
+L_rmsej_h2_w80      small      FFR                 8 2.184399 80
+L_rmsej_h4_w12      small      FFR                 8 2.379198 80
+L_rmsej_h4_w40      small      FFR                 8 2.159468 80
+L_rmsej_h4_w60      small      FFR                 8 2.138594 80
+L_rmsej_h4_w80      small      FFR                 8 2.198101 80
+L_rmsej_h8_w12      small      FFR                 8 2.224441 80
+L_rmsej_h8_w40      small      FFR                 8 2.191154 80
+L_rmsej_h8_w60      small      FFR                 8 2.187150 80
+L_rmsej_h8_w80      small      FFR                 8 2.273918 80
+         paper      small      FFR                 8 2.257871 80
+  paper_plugin      small      FFR                 8 2.268553 80
+    L_lsj1_all      small      GDP                 1 2.652957 80
+    L_lsj1_w12      small      GDP                 1 2.659522 80
+    L_lsj1_w60      small      GDP                 1 2.673885 80
+  L_lsj_h2_w12      small      GDP                 1 2.630840 80
+  L_lsj_h2_w60      small      GDP                 1 2.632346 80
+  L_lsj_h4_w12      small      GDP                 1 2.633637 80
+  L_lsj_h4_w40      small      GDP                 1 2.619402 80
+  L_lsj_h4_w60      small      GDP                 1 2.640910 80
+  L_lsj_h8_w12      small      GDP                 1 2.659393 80
+  L_lsj_h8_w60      small      GDP                 1 2.617977 80
+  L_lsm_h1_w12      small      GDP                 1 2.604077 80
+  L_lsm_h1_w60      small      GDP                 1 2.632474 80
+  L_lsm_h2_w12      small      GDP                 1 2.711081 80
+  L_lsm_h2_w60      small      GDP                 1 2.605137 80
+  L_lsm_h4_all      small      GDP                 1 2.723282 80
+  L_lsm_h4_w12      small      GDP                 1 2.825375 80
+  L_lsm_h4_w40      small      GDP                 1 2.603259 80
+  L_lsm_h4_w60      small      GDP                 1 2.636200 80
+  L_lsm_h8_w12      small      GDP                 1 2.828836 80
+  L_lsm_h8_w60      small      GDP                 1 2.648449 80
+ L_rmse_h1_all      small      GDP                 1 2.601766 80
+ L_rmse_h1_w12      small      GDP                 1 2.528590 80
+ L_rmse_h1_w20      small      GDP                 1 2.522291 80
+ L_rmse_h1_w40      small      GDP                 1 2.405732 80
+ L_rmse_h1_w60      small      GDP                 1 2.353828 80
+ L_rmse_h1_w80      small      GDP                 1 2.326976 80
+ L_rmse_h2_all      small      GDP                 1 2.601395 80
+ L_rmse_h2_w12      small      GDP                 1 2.639186 80
+ L_rmse_h2_w20      small      GDP                 1 2.666379 80
+ L_rmse_h2_w40      small      GDP                 1 2.383425 80
+ L_rmse_h2_w60      small      GDP                 1 2.349679 80
+ L_rmse_h2_w80      small      GDP                 1 2.319849 80
+ L_rmse_h4_all      small      GDP                 1 2.622329 80
+ L_rmse_h4_w12      small      GDP                 1 2.605461 80
+ L_rmse_h4_w20      small      GDP                 1 2.761599 80
+ L_rmse_h4_w40      small      GDP                 1 2.394750 80
+ L_rmse_h4_w60      small      GDP                 1 2.374870 80
+ L_rmse_h4_w80      small      GDP                 1 2.357664 80
+ L_rmse_h8_all      small      GDP                 1 2.658561 80
+ L_rmse_h8_w12      small      GDP                 1 2.675725 80
+ L_rmse_h8_w20      small      GDP                 1 2.659447 80
+ L_rmse_h8_w40      small      GDP                 1 2.429219 80
+ L_rmse_h8_w60      small      GDP                 1 2.405742 80
+ L_rmse_h8_w80      small      GDP                 1 2.488426 80
+L_rmsej_h1_w12      small      GDP                 1 2.623154 80
+L_rmsej_h1_w40      small      GDP                 1 2.369364 80
+L_rmsej_h1_w60      small      GDP                 1 2.356211 80
+L_rmsej_h1_w80      small      GDP                 1 2.397117 80
+L_rmsej_h2_w12      small      GDP                 1 2.537656 80
+L_rmsej_h2_w40      small      GDP                 1 2.366481 80
+L_rmsej_h2_w60      small      GDP                 1 2.358665 80
+L_rmsej_h2_w80      small      GDP                 1 2.381408 80
+L_rmsej_h4_w12      small      GDP                 1 2.726388 80
+L_rmsej_h4_w40      small      GDP                 1 2.391749 80
+L_rmsej_h4_w60      small      GDP                 1 2.376004 80
+L_rmsej_h4_w80      small      GDP                 1 2.396502 80
+L_rmsej_h8_w12      small      GDP                 1 2.443667 80
+L_rmsej_h8_w40      small      GDP                 1 2.485547 80
+L_rmsej_h8_w60      small      GDP                 1 2.453280 80
+L_rmsej_h8_w80      small      GDP                 1 2.418939 80
+         paper      small      GDP                 1 2.658051 80
+  paper_plugin      small      GDP                 1 2.666606 80
+    L_lsj1_all      small      GDP                 2 2.437999 80
+    L_lsj1_w12      small      GDP                 2 2.478563 80
+    L_lsj1_w60      small      GDP                 2 2.482926 80
+  L_lsj_h2_w12      small      GDP                 2 2.446713 80
+  L_lsj_h2_w60      small      GDP                 2 2.430917 80
+  L_lsj_h4_w12      small      GDP                 2 2.442408 80
+  L_lsj_h4_w40      small      GDP                 2 2.419233 80
+  L_lsj_h4_w60      small      GDP                 2 2.435946 80
+  L_lsj_h8_w12      small      GDP                 2 2.469136 80
+  L_lsj_h8_w60      small      GDP                 2 2.382139 80
+  L_lsm_h1_w12      small      GDP                 2 2.449184 80
+  L_lsm_h1_w60      small      GDP                 2 2.423799 80
+  L_lsm_h2_w12      small      GDP                 2 2.528470 80
+  L_lsm_h2_w60      small      GDP                 2 2.329553 80
+  L_lsm_h4_all      small      GDP                 2 2.513002 80
+  L_lsm_h4_w12      small      GDP                 2 2.608300 80
+  L_lsm_h4_w40      small      GDP                 2 2.303566 80
+  L_lsm_h4_w60      small      GDP                 2 2.330531 80
+  L_lsm_h8_w12      small      GDP                 2 2.599589 80
+  L_lsm_h8_w60      small      GDP                 2 2.347177 80
+ L_rmse_h1_all      small      GDP                 2 2.416559 80
+ L_rmse_h1_w12      small      GDP                 2 2.373629 80
+ L_rmse_h1_w20      small      GDP                 2 2.380930 80
+ L_rmse_h1_w40      small      GDP                 2 2.142544 80
+ L_rmse_h1_w60      small      GDP                 2 2.094560 80
+ L_rmse_h1_w80      small      GDP                 2 2.091132 80
+ L_rmse_h2_all      small      GDP                 2 2.408619 80
+ L_rmse_h2_w12      small      GDP                 2 2.490201 80
+ L_rmse_h2_w20      small      GDP                 2 2.460910 80
+ L_rmse_h2_w40      small      GDP                 2 2.123909 80
+ L_rmse_h2_w60      small      GDP                 2 2.096625 80
+ L_rmse_h2_w80      small      GDP                 2 2.071265 80
+ L_rmse_h4_all      small      GDP                 2 2.427366 80
+ L_rmse_h4_w12      small      GDP                 2 2.414451 80
+ L_rmse_h4_w20      small      GDP                 2 2.550369 80
+ L_rmse_h4_w40      small      GDP                 2 2.138687 80
+ L_rmse_h4_w60      small      GDP                 2 2.090627 80
+ L_rmse_h4_w80      small      GDP                 2 2.109460 80
+ L_rmse_h8_all      small      GDP                 2 2.471364 80
+ L_rmse_h8_w12      small      GDP                 2 2.474808 80
+ L_rmse_h8_w20      small      GDP                 2 2.399688 80
+ L_rmse_h8_w40      small      GDP                 2 2.195617 80
+ L_rmse_h8_w60      small      GDP                 2 2.123452 80
+ L_rmse_h8_w80      small      GDP                 2 2.230169 80
+L_rmsej_h1_w12      small      GDP                 2 2.436718 80
+L_rmsej_h1_w40      small      GDP                 2 2.129661 80
+L_rmsej_h1_w60      small      GDP                 2 2.114512 80
+L_rmsej_h1_w80      small      GDP                 2 2.152528 80
+L_rmsej_h2_w12      small      GDP                 2 2.311904 80
+L_rmsej_h2_w40      small      GDP                 2 2.103910 80
+L_rmsej_h2_w60      small      GDP                 2 2.097657 80
+L_rmsej_h2_w80      small      GDP                 2 2.121278 80
+L_rmsej_h4_w12      small      GDP                 2 2.508359 80
+L_rmsej_h4_w40      small      GDP                 2 2.141142 80
+L_rmsej_h4_w60      small      GDP                 2 2.110894 80
+L_rmsej_h4_w80      small      GDP                 2 2.138250 80
+L_rmsej_h8_w12      small      GDP                 2 2.236352 80
+L_rmsej_h8_w40      small      GDP                 2 2.230023 80
+L_rmsej_h8_w60      small      GDP                 2 2.192843 80
+L_rmsej_h8_w80      small      GDP                 2 2.155770 80
+         paper      small      GDP                 2 2.444433 80
+  paper_plugin      small      GDP                 2 2.464150 80
+    L_lsj1_all      small      GDP                 3 2.862141 80
+    L_lsj1_w12      small      GDP                 3 2.873323 80
+    L_lsj1_w60      small      GDP                 3 2.860794 80
+  L_lsj_h2_w12      small      GDP                 3 2.831606 80
+  L_lsj_h2_w60      small      GDP                 3 2.839703 80
+  L_lsj_h4_w12      small      GDP                 3 2.839311 80
+  L_lsj_h4_w40      small      GDP                 3 2.815207 80
+  L_lsj_h4_w60      small      GDP                 3 2.819456 80
+  L_lsj_h8_w12      small      GDP                 3 2.856878 80
+  L_lsj_h8_w60      small      GDP                 3 2.777626 80
+  L_lsm_h1_w12      small      GDP                 3 2.882698 80
+  L_lsm_h1_w60      small      GDP                 3 2.827084 80
+  L_lsm_h2_w12      small      GDP                 3 2.925597 80
+  L_lsm_h2_w60      small      GDP                 3 2.708610 80
+  L_lsm_h4_all      small      GDP                 3 2.902590 80
+  L_lsm_h4_w12      small      GDP                 3 2.954584 80
+  L_lsm_h4_w40      small      GDP                 3 2.707143 80
+  L_lsm_h4_w60      small      GDP                 3 2.699242 80
+  L_lsm_h8_w12      small      GDP                 3 2.926138 80
+  L_lsm_h8_w60      small      GDP                 3 2.702578 80
+ L_rmse_h1_all      small      GDP                 3 2.836968 80
+ L_rmse_h1_w12      small      GDP                 3 2.845006 80
+ L_rmse_h1_w20      small      GDP                 3 2.852277 80
+ L_rmse_h1_w40      small      GDP                 3 2.612293 80
+ L_rmse_h1_w60      small      GDP                 3 2.563924 80
+ L_rmse_h1_w80      small      GDP                 3 2.545764 80
+ L_rmse_h2_all      small      GDP                 3 2.837894 80
+ L_rmse_h2_w12      small      GDP                 3 2.894924 80
+ L_rmse_h2_w20      small      GDP                 3 2.863448 80
+ L_rmse_h2_w40      small      GDP                 3 2.596158 80
+ L_rmse_h2_w60      small      GDP                 3 2.553848 80
+ L_rmse_h2_w80      small      GDP                 3 2.555158 80
+ L_rmse_h4_all      small      GDP                 3 2.861053 80
+ L_rmse_h4_w12      small      GDP                 3 2.838073 80
+ L_rmse_h4_w20      small      GDP                 3 2.925472 80
+ L_rmse_h4_w40      small      GDP                 3 2.594886 80
+ L_rmse_h4_w60      small      GDP                 3 2.543862 80
+ L_rmse_h4_w80      small      GDP                 3 2.568844 80
+ L_rmse_h8_all      small      GDP                 3 2.884097 80
+ L_rmse_h8_w12      small      GDP                 3 2.911855 80
+ L_rmse_h8_w20      small      GDP                 3 2.768546 80
+ L_rmse_h8_w40      small      GDP                 3 2.634127 80
+ L_rmse_h8_w60      small      GDP                 3 2.572474 80
+ L_rmse_h8_w80      small      GDP                 3 2.653417 80
+L_rmsej_h1_w12      small      GDP                 3 2.889511 80
+L_rmsej_h1_w40      small      GDP                 3 2.608700 80
+L_rmsej_h1_w60      small      GDP                 3 2.584963 80
+L_rmsej_h1_w80      small      GDP                 3 2.615624 80
+L_rmsej_h2_w12      small      GDP                 3 2.773880 80
+L_rmsej_h2_w40      small      GDP                 3 2.592643 80
+L_rmsej_h2_w60      small      GDP                 3 2.568845 80
+L_rmsej_h2_w80      small      GDP                 3 2.584643 80
+L_rmsej_h4_w12      small      GDP                 3 2.921954 80
+L_rmsej_h4_w40      small      GDP                 3 2.606837 80
+L_rmsej_h4_w60      small      GDP                 3 2.563314 80
+L_rmsej_h4_w80      small      GDP                 3 2.593560 80
+L_rmsej_h8_w12      small      GDP                 3 2.720886 80
+L_rmsej_h8_w40      small      GDP                 3 2.642277 80
+L_rmsej_h8_w60      small      GDP                 3 2.624788 80
+L_rmsej_h8_w80      small      GDP                 3 2.593313 80
+         paper      small      GDP                 3 2.847167 80
+  paper_plugin      small      GDP                 3 2.882250 80
+    L_lsj1_all      small      GDP                 4 2.552732 80
+    L_lsj1_w12      small      GDP                 4 2.560032 80
+    L_lsj1_w60      small      GDP                 4 2.537937 80
+  L_lsj_h2_w12      small      GDP                 4 2.507405 80
+  L_lsj_h2_w60      small      GDP                 4 2.533743 80
+  L_lsj_h4_w12      small      GDP                 4 2.512652 80
+  L_lsj_h4_w40      small      GDP                 4 2.501367 80
+  L_lsj_h4_w60      small      GDP                 4 2.503613 80
+  L_lsj_h8_w12      small      GDP                 4 2.529443 80
+  L_lsj_h8_w60      small      GDP                 4 2.457773 80
+  L_lsm_h1_w12      small      GDP                 4 2.602899 80
+  L_lsm_h1_w60      small      GDP                 4 2.502666 80
+  L_lsm_h2_w12      small      GDP                 4 2.637722 80
+  L_lsm_h2_w60      small      GDP                 4 2.394603 80
+  L_lsm_h4_all      small      GDP                 4 2.581815 80
+  L_lsm_h4_w12      small      GDP                 4 2.634473 80
+  L_lsm_h4_w40      small      GDP                 4 2.357749 80
+  L_lsm_h4_w60      small      GDP                 4 2.357293 80
+  L_lsm_h8_w12      small      GDP                 4 2.585808 80
+  L_lsm_h8_w60      small      GDP                 4 2.356765 80
+ L_rmse_h1_all      small      GDP                 4 2.520919 80
+ L_rmse_h1_w12      small      GDP                 4 2.557837 80
+ L_rmse_h1_w20      small      GDP                 4 2.568564 80
+ L_rmse_h1_w40      small      GDP                 4 2.313317 80
+ L_rmse_h1_w60      small      GDP                 4 2.251520 80
+ L_rmse_h1_w80      small      GDP                 4 2.242456 80
+ L_rmse_h2_all      small      GDP                 4 2.521611 80
+ L_rmse_h2_w12      small      GDP                 4 2.609331 80
+ L_rmse_h2_w20      small      GDP                 4 2.552379 80
+ L_rmse_h2_w40      small      GDP                 4 2.277220 80
+ L_rmse_h2_w60      small      GDP                 4 2.239086 80
+ L_rmse_h2_w80      small      GDP                 4 2.259027 80
+ L_rmse_h4_all      small      GDP                 4 2.561377 80
+ L_rmse_h4_w12      small      GDP                 4 2.555326 80
+ L_rmse_h4_w20      small      GDP                 4 2.600064 80
+ L_rmse_h4_w40      small      GDP                 4 2.261206 80
+ L_rmse_h4_w60      small      GDP                 4 2.223811 80
+ L_rmse_h4_w80      small      GDP                 4 2.255918 80
+ L_rmse_h8_all      small      GDP                 4 2.582590 80
+ L_rmse_h8_w12      small      GDP                 4 2.644887 80
+ L_rmse_h8_w20      small      GDP                 4 2.431586 80
+ L_rmse_h8_w40      small      GDP                 4 2.300580 80
+ L_rmse_h8_w60      small      GDP                 4 2.255546 80
+ L_rmse_h8_w80      small      GDP                 4 2.332662 80
+L_rmsej_h1_w12      small      GDP                 4 2.588474 80
+L_rmsej_h1_w40      small      GDP                 4 2.292544 80
+L_rmsej_h1_w60      small      GDP                 4 2.280323 80
+L_rmsej_h1_w80      small      GDP                 4 2.317628 80
+L_rmsej_h2_w12      small      GDP                 4 2.478935 80
+L_rmsej_h2_w40      small      GDP                 4 2.278279 80
+L_rmsej_h2_w60      small      GDP                 4 2.259017 80
+L_rmsej_h2_w80      small      GDP                 4 2.281397 80
+L_rmsej_h4_w12      small      GDP                 4 2.614045 80
+L_rmsej_h4_w40      small      GDP                 4 2.286223 80
+L_rmsej_h4_w60      small      GDP                 4 2.246827 80
+L_rmsej_h4_w80      small      GDP                 4 2.289842 80
+L_rmsej_h8_w12      small      GDP                 4 2.438529 80
+L_rmsej_h8_w40      small      GDP                 4 2.300335 80
+L_rmsej_h8_w60      small      GDP                 4 2.305883 80
+L_rmsej_h8_w80      small      GDP                 4 2.267630 80
+         paper      small      GDP                 4 2.530597 80
+  paper_plugin      small      GDP                 4 2.571940 80
+    L_lsj1_all      small      GDP                 5 2.336280 80
+    L_lsj1_w12      small      GDP                 5 2.314051 80
+    L_lsj1_w60      small      GDP                 5 2.298061 80
+  L_lsj_h2_w12      small      GDP                 5 2.281199 80
+  L_lsj_h2_w60      small      GDP                 5 2.314160 80
+  L_lsj_h4_w12      small      GDP                 5 2.277666 80
+  L_lsj_h4_w40      small      GDP                 5 2.269903 80
+  L_lsj_h4_w60      small      GDP                 5 2.270279 80
+  L_lsj_h8_w12      small      GDP                 5 2.292225 80
+  L_lsj_h8_w60      small      GDP                 5 2.232722 80
+  L_lsm_h1_w12      small      GDP                 5 2.403714 80
+  L_lsm_h1_w60      small      GDP                 5 2.301130 80
+  L_lsm_h2_w12      small      GDP                 5 2.423941 80
+  L_lsm_h2_w60      small      GDP                 5 2.168622 80
+  L_lsm_h4_all      small      GDP                 5 2.355925 80
+  L_lsm_h4_w12      small      GDP                 5 2.417229 80
+  L_lsm_h4_w40      small      GDP                 5 2.118075 80
+  L_lsm_h4_w60      small      GDP                 5 2.129571 80
+  L_lsm_h8_w12      small      GDP                 5 2.359887 80
+  L_lsm_h8_w60      small      GDP                 5 2.121260 80
+ L_rmse_h1_all      small      GDP                 5 2.299252 80
+ L_rmse_h1_w12      small      GDP                 5 2.367862 80
+ L_rmse_h1_w20      small      GDP                 5 2.356947 80
+ L_rmse_h1_w40      small      GDP                 5 2.122128 80
+ L_rmse_h1_w60      small      GDP                 5 2.056906 80
+ L_rmse_h1_w80      small      GDP                 5 2.053737 80
+ L_rmse_h2_all      small      GDP                 5 2.304217 80
+ L_rmse_h2_w12      small      GDP                 5 2.400390 80
+ L_rmse_h2_w20      small      GDP                 5 2.316939 80
+ L_rmse_h2_w40      small      GDP                 5 2.067073 80
+ L_rmse_h2_w60      small      GDP                 5 2.040348 80
+ L_rmse_h2_w80      small      GDP                 5 2.072361 80
+ L_rmse_h4_all      small      GDP                 5 2.355444 80
+ L_rmse_h4_w12      small      GDP                 5 2.352994 80
+ L_rmse_h4_w20      small      GDP                 5 2.372726 80
+ L_rmse_h4_w40      small      GDP                 5 2.047836 80
+ L_rmse_h4_w60      small      GDP                 5 2.018271 80
+ L_rmse_h4_w80      small      GDP                 5 2.055546 80
+ L_rmse_h8_all      small      GDP                 5 2.371704 80
+ L_rmse_h8_w12      small      GDP                 5 2.421982 80
+ L_rmse_h8_w20      small      GDP                 5 2.193401 80
+ L_rmse_h8_w40      small      GDP                 5 2.072718 80
+ L_rmse_h8_w60      small      GDP                 5 2.047245 80
+ L_rmse_h8_w80      small      GDP                 5 2.120276 80
+L_rmsej_h1_w12      small      GDP                 5 2.380085 80
+L_rmsej_h1_w40      small      GDP                 5 2.084169 80
+L_rmsej_h1_w60      small      GDP                 5 2.087203 80
+L_rmsej_h1_w80      small      GDP                 5 2.124553 80
+L_rmsej_h2_w12      small      GDP                 5 2.284938 80
+L_rmsej_h2_w40      small      GDP                 5 2.072478 80
+L_rmsej_h2_w60      small      GDP                 5 2.065638 80
+L_rmsej_h2_w80      small      GDP                 5 2.088684 80
+L_rmsej_h4_w12      small      GDP                 5 2.388396 80
+L_rmsej_h4_w40      small      GDP                 5 2.060940 80
+L_rmsej_h4_w60      small      GDP                 5 2.046747 80
+L_rmsej_h4_w80      small      GDP                 5 2.094565 80
+L_rmsej_h8_w12      small      GDP                 5 2.236519 80
+L_rmsej_h8_w40      small      GDP                 5 2.059906 80
+L_rmsej_h8_w60      small      GDP                 5 2.092512 80
+L_rmsej_h8_w80      small      GDP                 5 2.055470 80
+         paper      small      GDP                 5 2.309488 80
+  paper_plugin      small      GDP                 5 2.353907 80
+    L_lsj1_all      small      GDP                 6 2.157865 80
+    L_lsj1_w12      small      GDP                 6 2.107654 80
+    L_lsj1_w60      small      GDP                 6 2.100282 80
+  L_lsj_h2_w12      small      GDP                 6 2.083215 80
+  L_lsj_h2_w60      small      GDP                 6 2.133620 80
+  L_lsj_h4_w12      small      GDP                 6 2.084520 80
+  L_lsj_h4_w40      small      GDP                 6 2.080101 80
+  L_lsj_h4_w60      small      GDP                 6 2.085786 80
+  L_lsj_h8_w12      small      GDP                 6 2.104327 80
+  L_lsj_h8_w60      small      GDP                 6 2.054525 80
+  L_lsm_h1_w12      small      GDP                 6 2.222418 80
+  L_lsm_h1_w60      small      GDP                 6 2.118940 80
+  L_lsm_h2_w12      small      GDP                 6 2.253659 80
+  L_lsm_h2_w60      small      GDP                 6 2.003320 80
+  L_lsm_h4_all      small      GDP                 6 2.172874 80
+  L_lsm_h4_w12      small      GDP                 6 2.231436 80
+  L_lsm_h4_w40      small      GDP                 6 1.932404 80
+  L_lsm_h4_w60      small      GDP                 6 1.957435 80
+  L_lsm_h8_w12      small      GDP                 6 2.180963 80
+  L_lsm_h8_w60      small      GDP                 6 1.948178 80
+ L_rmse_h1_all      small      GDP                 6 2.112159 80
+ L_rmse_h1_w12      small      GDP                 6 2.202058 80
+ L_rmse_h1_w20      small      GDP                 6 2.183807 80
+ L_rmse_h1_w40      small      GDP                 6 1.965120 80
+ L_rmse_h1_w60      small      GDP                 6 1.893267 80
+ L_rmse_h1_w80      small      GDP                 6 1.900287 80
+ L_rmse_h2_all      small      GDP                 6 2.122758 80
+ L_rmse_h2_w12      small      GDP                 6 2.247716 80
+ L_rmse_h2_w20      small      GDP                 6 2.141226 80
+ L_rmse_h2_w40      small      GDP                 6 1.903723 80
+ L_rmse_h2_w60      small      GDP                 6 1.882704 80
+ L_rmse_h2_w80      small      GDP                 6 1.918221 80
+ L_rmse_h4_all      small      GDP                 6 2.187190 80
+ L_rmse_h4_w12      small      GDP                 6 2.203481 80
+ L_rmse_h4_w20      small      GDP                 6 2.189001 80
+ L_rmse_h4_w40      small      GDP                 6 1.871178 80
+ L_rmse_h4_w60      small      GDP                 6 1.860080 80
+ L_rmse_h4_w80      small      GDP                 6 1.889884 80
+ L_rmse_h8_all      small      GDP                 6 2.197909 80
+ L_rmse_h8_w12      small      GDP                 6 2.261139 80
+ L_rmse_h8_w20      small      GDP                 6 2.008161 80
+ L_rmse_h8_w40      small      GDP                 6 1.887669 80
+ L_rmse_h8_w60      small      GDP                 6 1.885996 80
+ L_rmse_h8_w80      small      GDP                 6 1.941239 80
+L_rmsej_h1_w12      small      GDP                 6 2.200746 80
+L_rmsej_h1_w40      small      GDP                 6 1.918526 80
+L_rmsej_h1_w60      small      GDP                 6 1.926749 80
+L_rmsej_h1_w80      small      GDP                 6 1.968732 80
+L_rmsej_h2_w12      small      GDP                 6 2.136969 80
+L_rmsej_h2_w40      small      GDP                 6 1.901532 80
+L_rmsej_h2_w60      small      GDP                 6 1.905966 80
+L_rmsej_h2_w80      small      GDP                 6 1.934843 80
+L_rmsej_h4_w12      small      GDP                 6 2.209787 80
+L_rmsej_h4_w40      small      GDP                 6 1.871671 80
+L_rmsej_h4_w60      small      GDP                 6 1.885684 80
+L_rmsej_h4_w80      small      GDP                 6 1.940486 80
+L_rmsej_h8_w12      small      GDP                 6 2.092192 80
+L_rmsej_h8_w40      small      GDP                 6 1.871998 80
+L_rmsej_h8_w60      small      GDP                 6 1.917870 80
+L_rmsej_h8_w80      small      GDP                 6 1.887659 80
+         paper      small      GDP                 6 2.125692 80
+  paper_plugin      small      GDP                 6 2.174285 80
+    L_lsj1_all      small      GDP                 7 2.029083 80
+    L_lsj1_w12      small      GDP                 7 1.950201 80
+    L_lsj1_w60      small      GDP                 7 1.952883 80
+  L_lsj_h2_w12      small      GDP                 7 1.937110 80
+  L_lsj_h2_w60      small      GDP                 7 2.003814 80
+  L_lsj_h4_w12      small      GDP                 7 1.936561 80
+  L_lsj_h4_w40      small      GDP                 7 1.938533 80
+  L_lsj_h4_w60      small      GDP                 7 1.947400 80
+  L_lsj_h8_w12      small      GDP                 7 1.966832 80
+  L_lsj_h8_w60      small      GDP                 7 1.926086 80
+  L_lsm_h1_w12      small      GDP                 7 2.081126 80
+  L_lsm_h1_w60      small      GDP                 7 1.979836 80
+  L_lsm_h2_w12      small      GDP                 7 2.125539 80
+  L_lsm_h2_w60      small      GDP                 7 1.893938 80
+  L_lsm_h4_all      small      GDP                 7 2.039854 80
+  L_lsm_h4_w12      small      GDP                 7 2.098609 80
+  L_lsm_h4_w40      small      GDP                 7 1.794938 80
+  L_lsm_h4_w60      small      GDP                 7 1.835333 80
+  L_lsm_h8_w12      small      GDP                 7 2.050288 80
+  L_lsm_h8_w60      small      GDP                 7 1.819502 80
+ L_rmse_h1_all      small      GDP                 7 1.972308 80
+ L_rmse_h1_w12      small      GDP                 7 2.110507 80
+ L_rmse_h1_w20      small      GDP                 7 2.062754 80
+ L_rmse_h1_w40      small      GDP                 7 1.834482 80
+ L_rmse_h1_w60      small      GDP                 7 1.783182 80
+ L_rmse_h1_w80      small      GDP                 7 1.786520 80
+ L_rmse_h2_all      small      GDP                 7 1.987429 80
+ L_rmse_h2_w12      small      GDP                 7 2.132194 80
+ L_rmse_h2_w20      small      GDP                 7 2.031606 80
+ L_rmse_h2_w40      small      GDP                 7 1.766921 80
+ L_rmse_h2_w60      small      GDP                 7 1.767296 80
+ L_rmse_h2_w80      small      GDP                 7 1.795813 80
+ L_rmse_h4_all      small      GDP                 7 2.055006 80
+ L_rmse_h4_w12      small      GDP                 7 2.091640 80
+ L_rmse_h4_w20      small      GDP                 7 2.040330 80
+ L_rmse_h4_w40      small      GDP                 7 1.727731 80
+ L_rmse_h4_w60      small      GDP                 7 1.746763 80
+ L_rmse_h4_w80      small      GDP                 7 1.768729 80
+ L_rmse_h8_all      small      GDP                 7 2.069931 80
+ L_rmse_h8_w12      small      GDP                 7 2.142664 80
+ L_rmse_h8_w20      small      GDP                 7 1.860599 80
+ L_rmse_h8_w40      small      GDP                 7 1.753503 80
+ L_rmse_h8_w60      small      GDP                 7 1.769830 80
+ L_rmse_h8_w80      small      GDP                 7 1.811851 80
+L_rmsej_h1_w12      small      GDP                 7 2.077979 80
+L_rmsej_h1_w40      small      GDP                 7 1.799406 80
+L_rmsej_h1_w60      small      GDP                 7 1.815928 80
+L_rmsej_h1_w80      small      GDP                 7 1.859514 80
+L_rmsej_h2_w12      small      GDP                 7 2.031467 80
+L_rmsej_h2_w40      small      GDP                 7 1.771402 80
+L_rmsej_h2_w60      small      GDP                 7 1.794132 80
+L_rmsej_h2_w80      small      GDP                 7 1.822811 80
+L_rmsej_h4_w12      small      GDP                 7 2.076467 80
+L_rmsej_h4_w40      small      GDP                 7 1.727476 80
+L_rmsej_h4_w60      small      GDP                 7 1.769284 80
+L_rmsej_h4_w80      small      GDP                 7 1.831578 80
+L_rmsej_h8_w12      small      GDP                 7 1.976229 80
+L_rmsej_h8_w40      small      GDP                 7 1.738199 80
+L_rmsej_h8_w60      small      GDP                 7 1.793442 80
+L_rmsej_h8_w80      small      GDP                 7 1.769873 80
+         paper      small      GDP                 7 1.989337 80
+  paper_plugin      small      GDP                 7 2.040836 80
+    L_lsj1_all      small      GDP                 8 1.907880 80
+    L_lsj1_w12      small      GDP                 8 1.799148 80
+    L_lsj1_w60      small      GDP                 8 1.822910 80
+  L_lsj_h2_w12      small      GDP                 8 1.809945 80
+  L_lsj_h2_w60      small      GDP                 8 1.885363 80
+  L_lsj_h4_w12      small      GDP                 8 1.814110 80
+  L_lsj_h4_w40      small      GDP                 8 1.816286 80
+  L_lsj_h4_w60      small      GDP                 8 1.827132 80
+  L_lsj_h8_w12      small      GDP                 8 1.857742 80
+  L_lsj_h8_w60      small      GDP                 8 1.809676 80
+  L_lsm_h1_w12      small      GDP                 8 1.943794 80
+  L_lsm_h1_w60      small      GDP                 8 1.851659 80
+  L_lsm_h2_w12      small      GDP                 8 2.010858 80
+  L_lsm_h2_w60      small      GDP                 8 1.783082 80
+  L_lsm_h4_all      small      GDP                 8 1.920537 80
+  L_lsm_h4_w12      small      GDP                 8 1.982292 80
+  L_lsm_h4_w40      small      GDP                 8 1.681858 80
+  L_lsm_h4_w60      small      GDP                 8 1.727956 80
+  L_lsm_h8_w12      small      GDP                 8 1.944870 80
+  L_lsm_h8_w60      small      GDP                 8 1.708062 80
+ L_rmse_h1_all      small      GDP                 8 1.845024 80
+ L_rmse_h1_w12      small      GDP                 8 1.987754 80
+ L_rmse_h1_w20      small      GDP                 8 1.940315 80
+ L_rmse_h1_w40      small      GDP                 8 1.714809 80
+ L_rmse_h1_w60      small      GDP                 8 1.674971 80
+ L_rmse_h1_w80      small      GDP                 8 1.676082 80
+ L_rmse_h2_all      small      GDP                 8 1.863635 80
+ L_rmse_h2_w12      small      GDP                 8 2.026082 80
+ L_rmse_h2_w20      small      GDP                 8 1.926954 80
+ L_rmse_h2_w40      small      GDP                 8 1.642256 80
+ L_rmse_h2_w60      small      GDP                 8 1.663425 80
+ L_rmse_h2_w80      small      GDP                 8 1.679450 80
+ L_rmse_h4_all      small      GDP                 8 1.936707 80
+ L_rmse_h4_w12      small      GDP                 8 1.998769 80
+ L_rmse_h4_w20      small      GDP                 8 1.939346 80
+ L_rmse_h4_w40      small      GDP                 8 1.606544 80
+ L_rmse_h4_w60      small      GDP                 8 1.638510 80
+ L_rmse_h4_w80      small      GDP                 8 1.652623 80
+ L_rmse_h8_all      small      GDP                 8 1.951924 80
+ L_rmse_h8_w12      small      GDP                 8 2.028839 80
+ L_rmse_h8_w20      small      GDP                 8 1.760634 80
+ L_rmse_h8_w40      small      GDP                 8 1.632075 80
+ L_rmse_h8_w60      small      GDP                 8 1.658132 80
+ L_rmse_h8_w80      small      GDP                 8 1.688322 80
+L_rmsej_h1_w12      small      GDP                 8 1.918640 80
+L_rmsej_h1_w40      small      GDP                 8 1.683453 80
+L_rmsej_h1_w60      small      GDP                 8 1.708834 80
+L_rmsej_h1_w80      small      GDP                 8 1.749280 80
+L_rmsej_h2_w12      small      GDP                 8 1.900147 80
+L_rmsej_h2_w40      small      GDP                 8 1.643038 80
+L_rmsej_h2_w60      small      GDP                 8 1.689247 80
+L_rmsej_h2_w80      small      GDP                 8 1.720460 80
+L_rmsej_h4_w12      small      GDP                 8 1.966580 80
+L_rmsej_h4_w40      small      GDP                 8 1.604200 80
+L_rmsej_h4_w60      small      GDP                 8 1.668404 80
+L_rmsej_h4_w80      small      GDP                 8 1.726090 80
+L_rmsej_h8_w12      small      GDP                 8 1.884872 80
+L_rmsej_h8_w40      small      GDP                 8 1.615812 80
+L_rmsej_h8_w60      small      GDP                 8 1.669828 80
+L_rmsej_h8_w80      small      GDP                 8 1.655745 80
+         paper      small      GDP                 8 1.865467 80
+  paper_plugin      small      GDP                 8 1.916312 80

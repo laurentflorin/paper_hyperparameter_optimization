@@ -1,0 +1,169 @@
+        model model_size variable  horizon_quarters     rmse  n
+   L_lsj1_all      small     DEFL                 1 0.881658 80
+   L_lsj1_all      small     DEFL                 2 0.774428 80
+   L_lsj1_all      small     DEFL                 3 0.731257 80
+   L_lsj1_all      small     DEFL                 4 0.706791 80
+   L_lsj1_all      small     DEFL                 5 0.700975 80
+   L_lsj1_all      small     DEFL                 6 0.721090 80
+   L_lsj1_all      small     DEFL                 7 0.748119 80
+   L_lsj1_all      small     DEFL                 8 0.781238 80
+   L_lsj1_all      small      FFR                 1 0.392033 80
+   L_lsj1_all      small      FFR                 2 0.757304 80
+   L_lsj1_all      small      FFR                 3 1.078095 80
+   L_lsj1_all      small      FFR                 4 1.360269 80
+   L_lsj1_all      small      FFR                 5 1.617693 80
+   L_lsj1_all      small      FFR                 6 1.857315 80
+   L_lsj1_all      small      FFR                 7 2.068238 80
+   L_lsj1_all      small      FFR                 8 2.244469 80
+   L_lsj1_all      small      GDP                 1 2.652957 80
+   L_lsj1_all      small      GDP                 2 2.437999 80
+   L_lsj1_all      small      GDP                 3 2.862141 80
+   L_lsj1_all      small      GDP                 4 2.552732 80
+   L_lsj1_all      small      GDP                 5 2.336280 80
+   L_lsj1_all      small      GDP                 6 2.157865 80
+   L_lsj1_all      small      GDP                 7 2.029083 80
+   L_lsj1_all      small      GDP                 8 1.907880 80
+ L_lsm_h4_w12      small     DEFL                 1 1.151424 80
+ L_lsm_h4_w12      small     DEFL                 2 1.083150 80
+ L_lsm_h4_w12      small     DEFL                 3 1.079312 80
+ L_lsm_h4_w12      small     DEFL                 4 1.066443 80
+ L_lsm_h4_w12      small     DEFL                 5 1.071114 80
+ L_lsm_h4_w12      small     DEFL                 6 1.086850 80
+ L_lsm_h4_w12      small     DEFL                 7 1.104973 80
+ L_lsm_h4_w12      small     DEFL                 8 1.124040 80
+ L_lsm_h4_w12      small      FFR                 1 0.405754 80
+ L_lsm_h4_w12      small      FFR                 2 0.795750 80
+ L_lsm_h4_w12      small      FFR                 3 1.155346 80
+ L_lsm_h4_w12      small      FFR                 4 1.476100 80
+ L_lsm_h4_w12      small      FFR                 5 1.764925 80
+ L_lsm_h4_w12      small      FFR                 6 2.022115 80
+ L_lsm_h4_w12      small      FFR                 7 2.244204 80
+ L_lsm_h4_w12      small      FFR                 8 2.425475 80
+ L_lsm_h4_w12      small      GDP                 1 2.825375 80
+ L_lsm_h4_w12      small      GDP                 2 2.608300 80
+ L_lsm_h4_w12      small      GDP                 3 2.954584 80
+ L_lsm_h4_w12      small      GDP                 4 2.634473 80
+ L_lsm_h4_w12      small      GDP                 5 2.417229 80
+ L_lsm_h4_w12      small      GDP                 6 2.231436 80
+ L_lsm_h4_w12      small      GDP                 7 2.098609 80
+ L_lsm_h4_w12      small      GDP                 8 1.982292 80
+ L_lsm_h4_w40      small     DEFL                 1 1.081666 80
+ L_lsm_h4_w40      small     DEFL                 2 0.999870 80
+ L_lsm_h4_w40      small     DEFL                 3 0.989891 80
+ L_lsm_h4_w40      small     DEFL                 4 0.986919 80
+ L_lsm_h4_w40      small     DEFL                 5 0.988437 80
+ L_lsm_h4_w40      small     DEFL                 6 0.992484 80
+ L_lsm_h4_w40      small     DEFL                 7 0.997088 80
+ L_lsm_h4_w40      small     DEFL                 8 0.994169 80
+ L_lsm_h4_w40      small      FFR                 1 0.404165 80
+ L_lsm_h4_w40      small      FFR                 2 0.760034 80
+ L_lsm_h4_w40      small      FFR                 3 1.104482 80
+ L_lsm_h4_w40      small      FFR                 4 1.413650 80
+ L_lsm_h4_w40      small      FFR                 5 1.688664 80
+ L_lsm_h4_w40      small      FFR                 6 1.932434 80
+ L_lsm_h4_w40      small      FFR                 7 2.141106 80
+ L_lsm_h4_w40      small      FFR                 8 2.314709 80
+ L_lsm_h4_w40      small      GDP                 1 2.603259 80
+ L_lsm_h4_w40      small      GDP                 2 2.303566 80
+ L_lsm_h4_w40      small      GDP                 3 2.707143 80
+ L_lsm_h4_w40      small      GDP                 4 2.357749 80
+ L_lsm_h4_w40      small      GDP                 5 2.118075 80
+ L_lsm_h4_w40      small      GDP                 6 1.932404 80
+ L_lsm_h4_w40      small      GDP                 7 1.794938 80
+ L_lsm_h4_w40      small      GDP                 8 1.681858 80
+L_rmse_h4_all      small     DEFL                 1 1.240902 80
+L_rmse_h4_all      small     DEFL                 2 1.170025 80
+L_rmse_h4_all      small     DEFL                 3 1.157138 80
+L_rmse_h4_all      small     DEFL                 4 1.145267 80
+L_rmse_h4_all      small     DEFL                 5 1.126472 80
+L_rmse_h4_all      small     DEFL                 6 1.124528 80
+L_rmse_h4_all      small     DEFL                 7 1.130746 80
+L_rmse_h4_all      small     DEFL                 8 1.140358 80
+L_rmse_h4_all      small      FFR                 1 0.387081 80
+L_rmse_h4_all      small      FFR                 2 0.765892 80
+L_rmse_h4_all      small      FFR                 3 1.093951 80
+L_rmse_h4_all      small      FFR                 4 1.391588 80
+L_rmse_h4_all      small      FFR                 5 1.675213 80
+L_rmse_h4_all      small      FFR                 6 1.922624 80
+L_rmse_h4_all      small      FFR                 7 2.123490 80
+L_rmse_h4_all      small      FFR                 8 2.287789 80
+L_rmse_h4_all      small      GDP                 1 2.622329 80
+L_rmse_h4_all      small      GDP                 2 2.427366 80
+L_rmse_h4_all      small      GDP                 3 2.861053 80
+L_rmse_h4_all      small      GDP                 4 2.561377 80
+L_rmse_h4_all      small      GDP                 5 2.355444 80
+L_rmse_h4_all      small      GDP                 6 2.187190 80
+L_rmse_h4_all      small      GDP                 7 2.055006 80
+L_rmse_h4_all      small      GDP                 8 1.936707 80
+L_rmse_h4_w12      small     DEFL                 1 1.186516 80
+L_rmse_h4_w12      small     DEFL                 2 1.105513 80
+L_rmse_h4_w12      small     DEFL                 3 1.085468 80
+L_rmse_h4_w12      small     DEFL                 4 1.082106 80
+L_rmse_h4_w12      small     DEFL                 5 1.071018 80
+L_rmse_h4_w12      small     DEFL                 6 1.091943 80
+L_rmse_h4_w12      small     DEFL                 7 1.113917 80
+L_rmse_h4_w12      small     DEFL                 8 1.143199 80
+L_rmse_h4_w12      small      FFR                 1 0.374625 80
+L_rmse_h4_w12      small      FFR                 2 0.744809 80
+L_rmse_h4_w12      small      FFR                 3 1.095802 80
+L_rmse_h4_w12      small      FFR                 4 1.412959 80
+L_rmse_h4_w12      small      FFR                 5 1.708736 80
+L_rmse_h4_w12      small      FFR                 6 1.972418 80
+L_rmse_h4_w12      small      FFR                 7 2.194752 80
+L_rmse_h4_w12      small      FFR                 8 2.373358 80
+L_rmse_h4_w12      small      GDP                 1 2.605461 80
+L_rmse_h4_w12      small      GDP                 2 2.414451 80
+L_rmse_h4_w12      small      GDP                 3 2.838073 80
+L_rmse_h4_w12      small      GDP                 4 2.555326 80
+L_rmse_h4_w12      small      GDP                 5 2.352994 80
+L_rmse_h4_w12      small      GDP                 6 2.203481 80
+L_rmse_h4_w12      small      GDP                 7 2.091640 80
+L_rmse_h4_w12      small      GDP                 8 1.998769 80
+L_rmse_h4_w40      small     DEFL                 1 0.899041 80
+L_rmse_h4_w40      small     DEFL                 2 0.781009 80
+L_rmse_h4_w40      small     DEFL                 3 0.763746 80
+L_rmse_h4_w40      small     DEFL                 4 0.755296 80
+L_rmse_h4_w40      small     DEFL                 5 0.751744 80
+L_rmse_h4_w40      small     DEFL                 6 0.758653 80
+L_rmse_h4_w40      small     DEFL                 7 0.772117 80
+L_rmse_h4_w40      small     DEFL                 8 0.788307 80
+L_rmse_h4_w40      small      FFR                 1 0.382834 80
+L_rmse_h4_w40      small      FFR                 2 0.725107 80
+L_rmse_h4_w40      small      FFR                 3 1.064486 80
+L_rmse_h4_w40      small      FFR                 4 1.362808 80
+L_rmse_h4_w40      small      FFR                 5 1.634012 80
+L_rmse_h4_w40      small      FFR                 6 1.877948 80
+L_rmse_h4_w40      small      FFR                 7 2.085009 80
+L_rmse_h4_w40      small      FFR                 8 2.254876 80
+L_rmse_h4_w40      small      GDP                 1 2.394750 80
+L_rmse_h4_w40      small      GDP                 2 2.138687 80
+L_rmse_h4_w40      small      GDP                 3 2.594886 80
+L_rmse_h4_w40      small      GDP                 4 2.261206 80
+L_rmse_h4_w40      small      GDP                 5 2.047836 80
+L_rmse_h4_w40      small      GDP                 6 1.871178 80
+L_rmse_h4_w40      small      GDP                 7 1.727731 80
+L_rmse_h4_w40      small      GDP                 8 1.606544 80
+        paper      small     DEFL                 1 0.882828 80
+        paper      small     DEFL                 2 0.773654 80
+        paper      small     DEFL                 3 0.730557 80
+        paper      small     DEFL                 4 0.702882 80
+        paper      small     DEFL                 5 0.692566 80
+        paper      small     DEFL                 6 0.710939 80
+        paper      small     DEFL                 7 0.736877 80
+        paper      small     DEFL                 8 0.770440 80
+        paper      small      FFR                 1 0.384569 80
+        paper      small      FFR                 2 0.746833 80
+        paper      small      FFR                 3 1.070331 80
+        paper      small      FFR                 4 1.359112 80
+        paper      small      FFR                 5 1.624328 80
+        paper      small      FFR                 6 1.868325 80
+        paper      small      FFR                 7 2.078147 80
+        paper      small      FFR                 8 2.257871 80
+        paper      small      GDP                 1 2.658051 80
+        paper      small      GDP                 2 2.444433 80
+        paper      small      GDP                 3 2.847167 80
+        paper      small      GDP                 4 2.530597 80
+        paper      small      GDP                 5 2.309488 80
+        paper      small      GDP                 6 2.125692 80
+        paper      small      GDP                 7 1.989337 80
+        paper      small      GDP                 8 1.865467 80

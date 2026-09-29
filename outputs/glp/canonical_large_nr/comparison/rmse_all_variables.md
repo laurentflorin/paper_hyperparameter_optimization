@@ -1,0 +1,2305 @@
+              model model_size variable  horizon_quarters      rmse  n
+    ladder_lsj1_w12   large_nr      AHE                 1  0.729996 80
+    ladder_lsj1_w12   large_nr      AHE                 2  0.726170 80
+    ladder_lsj1_w12   large_nr      AHE                 3  0.879024 80
+    ladder_lsj1_w12   large_nr      AHE                 4  0.856098 80
+    ladder_lsj1_w12   large_nr      AHE                 5  0.845747 80
+    ladder_lsj1_w12   large_nr      AHE                 6  0.837126 80
+    ladder_lsj1_w12   large_nr      AHE                 7  0.843437 80
+    ladder_lsj1_w12   large_nr      AHE                 8  0.860969 80
+    ladder_lsj1_w12   large_nr     COMM                 1  8.969581 80
+    ladder_lsj1_w12   large_nr     COMM                 2  8.258321 80
+    ladder_lsj1_w12   large_nr     COMM                 3  7.266431 80
+    ladder_lsj1_w12   large_nr     COMM                 4  6.439183 80
+    ladder_lsj1_w12   large_nr     COMM                 5  5.810639 80
+    ladder_lsj1_w12   large_nr     COMM                 6  5.307856 80
+    ladder_lsj1_w12   large_nr     COMM                 7  4.896167 80
+    ladder_lsj1_w12   large_nr     COMM                 8  4.587289 80
+    ladder_lsj1_w12   large_nr     CONS                 1  1.778025 80
+    ladder_lsj1_w12   large_nr     CONS                 2  1.680197 80
+    ladder_lsj1_w12   large_nr     CONS                 3  2.477980 80
+    ladder_lsj1_w12   large_nr     CONS                 4  2.114952 80
+    ladder_lsj1_w12   large_nr     CONS                 5  1.905666 80
+    ladder_lsj1_w12   large_nr     CONS                 6  1.746182 80
+    ladder_lsj1_w12   large_nr     CONS                 7  1.634445 80
+    ladder_lsj1_w12   large_nr     CONS                 8  1.531574 80
+    ladder_lsj1_w12   large_nr      CPI                 1  2.239921 80
+    ladder_lsj1_w12   large_nr      CPI                 2  1.967778 80
+    ladder_lsj1_w12   large_nr      CPI                 3  1.795311 80
+    ladder_lsj1_w12   large_nr      CPI                 4  1.660688 80
+    ladder_lsj1_w12   large_nr      CPI                 5  1.513169 80
+    ladder_lsj1_w12   large_nr      CPI                 6  1.444760 80
+    ladder_lsj1_w12   large_nr      CPI                 7  1.418545 80
+    ladder_lsj1_w12   large_nr      CPI                 8  1.391529 80
+    ladder_lsj1_w12   large_nr     DEFL                 1  1.019977 80
+    ladder_lsj1_w12   large_nr     DEFL                 2  0.981663 80
+    ladder_lsj1_w12   large_nr     DEFL                 3  0.990802 80
+    ladder_lsj1_w12   large_nr     DEFL                 4  1.000541 80
+    ladder_lsj1_w12   large_nr     DEFL                 5  0.990388 80
+    ladder_lsj1_w12   large_nr     DEFL                 6  0.998893 80
+    ladder_lsj1_w12   large_nr     DEFL                 7  1.007150 80
+    ladder_lsj1_w12   large_nr     DEFL                 8  1.018846 80
+    ladder_lsj1_w12   large_nr      EMP                 1  0.867823 80
+    ladder_lsj1_w12   large_nr      EMP                 2  1.013749 80
+    ladder_lsj1_w12   large_nr      EMP                 3  2.295978 80
+    ladder_lsj1_w12   large_nr      EMP                 4  2.185576 80
+    ladder_lsj1_w12   large_nr      EMP                 5  2.065118 80
+    ladder_lsj1_w12   large_nr      EMP                 6  1.974233 80
+    ladder_lsj1_w12   large_nr      EMP                 7  1.879660 80
+    ladder_lsj1_w12   large_nr      EMP                 8  1.792900 80
+    ladder_lsj1_w12   large_nr      FFR                 1  0.541680 80
+    ladder_lsj1_w12   large_nr      FFR                 2  1.021374 80
+    ladder_lsj1_w12   large_nr      FFR                 3  1.394799 80
+    ladder_lsj1_w12   large_nr      FFR                 4  1.662529 80
+    ladder_lsj1_w12   large_nr      FFR                 5  1.867700 80
+    ladder_lsj1_w12   large_nr      FFR                 6  2.064203 80
+    ladder_lsj1_w12   large_nr      FFR                 7  2.235014 80
+    ladder_lsj1_w12   large_nr      FFR                 8  2.389420 80
+    ladder_lsj1_w12   large_nr      GDP                 1  2.051178 80
+    ladder_lsj1_w12   large_nr      GDP                 2  1.856949 80
+    ladder_lsj1_w12   large_nr      GDP                 3  2.506916 80
+    ladder_lsj1_w12   large_nr      GDP                 4  2.187133 80
+    ladder_lsj1_w12   large_nr      GDP                 5  1.985178 80
+    ladder_lsj1_w12   large_nr      GDP                 6  1.815291 80
+    ladder_lsj1_w12   large_nr      GDP                 7  1.686371 80
+    ladder_lsj1_w12   large_nr      GDP                 8  1.575442 80
+    ladder_lsj1_w12   large_nr    HOURS                 1  1.941874 80
+    ladder_lsj1_w12   large_nr    HOURS                 2  2.114091 80
+    ladder_lsj1_w12   large_nr    HOURS                 3  3.413012 80
+    ladder_lsj1_w12   large_nr    HOURS                 4  3.164669 80
+    ladder_lsj1_w12   large_nr    HOURS                 5  2.959564 80
+    ladder_lsj1_w12   large_nr    HOURS                 6  2.816065 80
+    ladder_lsj1_w12   large_nr    HOURS                 7  2.654749 80
+    ladder_lsj1_w12   large_nr    HOURS                 8  2.500696 80
+    ladder_lsj1_w12   large_nr      INV                 1 10.029183 80
+    ladder_lsj1_w12   large_nr      INV                 2  9.129924 80
+    ladder_lsj1_w12   large_nr      INV                 3  9.670541 80
+    ladder_lsj1_w12   large_nr      INV                 4  9.066768 80
+    ladder_lsj1_w12   large_nr      INV                 5  8.538404 80
+    ladder_lsj1_w12   large_nr      INV                 6  8.018531 80
+    ladder_lsj1_w12   large_nr      INV                 7  7.529447 80
+    ladder_lsj1_w12   large_nr      INV                 8  7.112597 80
+    ladder_lsj1_w12   large_nr       M1                 1  5.196468 80
+    ladder_lsj1_w12   large_nr       M1                 2  4.923576 80
+    ladder_lsj1_w12   large_nr       M1                 3 17.466530 80
+    ladder_lsj1_w12   large_nr       M1                 4 20.900676 80
+    ladder_lsj1_w12   large_nr       M1                 5 21.497787 80
+    ladder_lsj1_w12   large_nr       M1                 6 21.322443 80
+    ladder_lsj1_w12   large_nr       M1                 7 20.883063 80
+    ladder_lsj1_w12   large_nr       M1                 8 20.337689 80
+    ladder_lsj1_w12   large_nr       M2                 1  2.670614 80
+    ladder_lsj1_w12   large_nr       M2                 2  2.556610 80
+    ladder_lsj1_w12   large_nr       M2                 3  2.973227 80
+    ladder_lsj1_w12   large_nr       M2                 4  3.189816 80
+    ladder_lsj1_w12   large_nr       M2                 5  3.308988 80
+    ladder_lsj1_w12   large_nr       M2                 6  3.392589 80
+    ladder_lsj1_w12   large_nr       M2                 7  3.443699 80
+    ladder_lsj1_w12   large_nr       M2                 8  3.472013 80
+    ladder_lsj1_w12   large_nr      PPI                 1  4.736627 80
+    ladder_lsj1_w12   large_nr      PPI                 2  4.292126 80
+    ladder_lsj1_w12   large_nr      PPI                 3  3.969127 80
+    ladder_lsj1_w12   large_nr      PPI                 4  3.698390 80
+    ladder_lsj1_w12   large_nr      PPI                 5  3.367446 80
+    ladder_lsj1_w12   large_nr      PPI                 6  3.117058 80
+    ladder_lsj1_w12   large_nr      PPI                 7  2.949942 80
+    ladder_lsj1_w12   large_nr      PPI                 8  2.818748 80
+    ladder_lsj1_w12   large_nr     REER                 1 12.791349 80
+    ladder_lsj1_w12   large_nr     REER                 2 11.242126 79
+    ladder_lsj1_w12   large_nr     REER                 3  9.809684 78
+    ladder_lsj1_w12   large_nr     REER                 4  8.703573 77
+    ladder_lsj1_w12   large_nr     REER                 5  7.752462 76
+    ladder_lsj1_w12   large_nr     REER                 6  6.991388 75
+    ladder_lsj1_w12   large_nr     REER                 7  6.543631 74
+    ladder_lsj1_w12   large_nr     REER                 8  6.242563 73
+    ladder_lsj1_w12   large_nr    SP500                 1 27.732757 80
+    ladder_lsj1_w12   large_nr    SP500                 2 24.752176 80
+    ladder_lsj1_w12   large_nr    SP500                 3 22.262663 80
+    ladder_lsj1_w12   large_nr    SP500                 4 19.951887 80
+    ladder_lsj1_w12   large_nr    SP500                 5 17.754610 80
+    ladder_lsj1_w12   large_nr    SP500                 6 15.974944 80
+    ladder_lsj1_w12   large_nr    SP500                 7 14.681436 80
+    ladder_lsj1_w12   large_nr    SP500                 8 13.632499 80
+    ladder_lsj1_w12   large_nr     TB10                 1  0.368066 80
+    ladder_lsj1_w12   large_nr     TB10                 2  0.613787 80
+    ladder_lsj1_w12   large_nr     TB10                 3  0.758386 80
+    ladder_lsj1_w12   large_nr     TB10                 4  0.876131 80
+    ladder_lsj1_w12   large_nr     TB10                 5  0.963858 80
+    ladder_lsj1_w12   large_nr     TB10                 6  1.028800 80
+    ladder_lsj1_w12   large_nr     TB10                 7  1.116362 80
+    ladder_lsj1_w12   large_nr     TB10                 8  1.156788 80
+    ladder_lsj1_w12   large_nr      UNR                 1  0.227199 80
+    ladder_lsj1_w12   large_nr      UNR                 2  0.414650 80
+    ladder_lsj1_w12   large_nr      UNR                 3  1.234908 80
+    ladder_lsj1_w12   large_nr      UNR                 4  1.493062 80
+    ladder_lsj1_w12   large_nr      UNR                 5  1.658025 80
+    ladder_lsj1_w12   large_nr      UNR                 6  1.824068 80
+    ladder_lsj1_w12   large_nr      UNR                 7  1.970266 80
+    ladder_lsj1_w12   large_nr      UNR                 8  2.084931 80
+    ladder_lsj1_w12   large_nr     WAGE                 1  4.441307 80
+    ladder_lsj1_w12   large_nr     WAGE                 2  2.478526 80
+    ladder_lsj1_w12   large_nr     WAGE                 3  2.295170 80
+    ladder_lsj1_w12   large_nr     WAGE                 4  1.907735 80
+    ladder_lsj1_w12   large_nr     WAGE                 5  1.681419 80
+    ladder_lsj1_w12   large_nr     WAGE                 6  1.525927 80
+    ladder_lsj1_w12   large_nr     WAGE                 7  1.315124 80
+    ladder_lsj1_w12   large_nr     WAGE                 8  1.259776 80
+    ladder_lsj1_w60   large_nr      AHE                 1  0.695084 80
+    ladder_lsj1_w60   large_nr      AHE                 2  0.681787 80
+    ladder_lsj1_w60   large_nr      AHE                 3  0.839792 80
+    ladder_lsj1_w60   large_nr      AHE                 4  0.813728 80
+    ladder_lsj1_w60   large_nr      AHE                 5  0.802994 80
+    ladder_lsj1_w60   large_nr      AHE                 6  0.794474 80
+    ladder_lsj1_w60   large_nr      AHE                 7  0.801692 80
+    ladder_lsj1_w60   large_nr      AHE                 8  0.820893 80
+    ladder_lsj1_w60   large_nr     COMM                 1  8.971942 80
+    ladder_lsj1_w60   large_nr     COMM                 2  8.261765 80
+    ladder_lsj1_w60   large_nr     COMM                 3  7.269896 80
+    ladder_lsj1_w60   large_nr     COMM                 4  6.438597 80
+    ladder_lsj1_w60   large_nr     COMM                 5  5.807096 80
+    ladder_lsj1_w60   large_nr     COMM                 6  5.304757 80
+    ladder_lsj1_w60   large_nr     COMM                 7  4.895137 80
+    ladder_lsj1_w60   large_nr     COMM                 8  4.588517 80
+    ladder_lsj1_w60   large_nr     CONS                 1  1.807199 80
+    ladder_lsj1_w60   large_nr     CONS                 2  1.719131 80
+    ladder_lsj1_w60   large_nr     CONS                 3  2.502639 80
+    ladder_lsj1_w60   large_nr     CONS                 4  2.142485 80
+    ladder_lsj1_w60   large_nr     CONS                 5  1.936059 80
+    ladder_lsj1_w60   large_nr     CONS                 6  1.779933 80
+    ladder_lsj1_w60   large_nr     CONS                 7  1.674302 80
+    ladder_lsj1_w60   large_nr     CONS                 8  1.574203 80
+    ladder_lsj1_w60   large_nr      CPI                 1  2.259299 80
+    ladder_lsj1_w60   large_nr      CPI                 2  1.974618 80
+    ladder_lsj1_w60   large_nr      CPI                 3  1.800040 80
+    ladder_lsj1_w60   large_nr      CPI                 4  1.664235 80
+    ladder_lsj1_w60   large_nr      CPI                 5  1.515769 80
+    ladder_lsj1_w60   large_nr      CPI                 6  1.446792 80
+    ladder_lsj1_w60   large_nr      CPI                 7  1.420199 80
+    ladder_lsj1_w60   large_nr      CPI                 8  1.393589 80
+    ladder_lsj1_w60   large_nr     DEFL                 1  1.028869 80
+    ladder_lsj1_w60   large_nr     DEFL                 2  0.987009 80
+    ladder_lsj1_w60   large_nr     DEFL                 3  0.992282 80
+    ladder_lsj1_w60   large_nr     DEFL                 4  1.000290 80
+    ladder_lsj1_w60   large_nr     DEFL                 5  0.988308 80
+    ladder_lsj1_w60   large_nr     DEFL                 6  0.995839 80
+    ladder_lsj1_w60   large_nr     DEFL                 7  1.003479 80
+    ladder_lsj1_w60   large_nr     DEFL                 8  1.014655 80
+    ladder_lsj1_w60   large_nr      EMP                 1  0.858352 80
+    ladder_lsj1_w60   large_nr      EMP                 2  1.005221 80
+    ladder_lsj1_w60   large_nr      EMP                 3  2.293244 80
+    ladder_lsj1_w60   large_nr      EMP                 4  2.182765 80
+    ladder_lsj1_w60   large_nr      EMP                 5  2.062971 80
+    ladder_lsj1_w60   large_nr      EMP                 6  1.972420 80
+    ladder_lsj1_w60   large_nr      EMP                 7  1.878509 80
+    ladder_lsj1_w60   large_nr      EMP                 8  1.792461 80
+    ladder_lsj1_w60   large_nr      FFR                 1  0.542896 80
+    ladder_lsj1_w60   large_nr      FFR                 2  1.020047 80
+    ladder_lsj1_w60   large_nr      FFR                 3  1.392559 80
+    ladder_lsj1_w60   large_nr      FFR                 4  1.660095 80
+    ladder_lsj1_w60   large_nr      FFR                 5  1.864620 80
+    ladder_lsj1_w60   large_nr      FFR                 6  2.059287 80
+    ladder_lsj1_w60   large_nr      FFR                 7  2.226529 80
+    ladder_lsj1_w60   large_nr      FFR                 8  2.378695 80
+    ladder_lsj1_w60   large_nr      GDP                 1  2.077970 80
+    ladder_lsj1_w60   large_nr      GDP                 2  1.892015 80
+    ladder_lsj1_w60   large_nr      GDP                 3  2.539356 80
+    ladder_lsj1_w60   large_nr      GDP                 4  2.223090 80
+    ladder_lsj1_w60   large_nr      GDP                 5  2.024746 80
+    ladder_lsj1_w60   large_nr      GDP                 6  1.861125 80
+    ladder_lsj1_w60   large_nr      GDP                 7  1.737366 80
+    ladder_lsj1_w60   large_nr      GDP                 8  1.630729 80
+    ladder_lsj1_w60   large_nr    HOURS                 1  1.941256 80
+    ladder_lsj1_w60   large_nr    HOURS                 2  2.110256 80
+    ladder_lsj1_w60   large_nr    HOURS                 3  3.410382 80
+    ladder_lsj1_w60   large_nr    HOURS                 4  3.162853 80
+    ladder_lsj1_w60   large_nr    HOURS                 5  2.957904 80
+    ladder_lsj1_w60   large_nr    HOURS                 6  2.815139 80
+    ladder_lsj1_w60   large_nr    HOURS                 7  2.655292 80
+    ladder_lsj1_w60   large_nr    HOURS                 8  2.501821 80
+    ladder_lsj1_w60   large_nr      INV                 1 10.050851 80
+    ladder_lsj1_w60   large_nr      INV                 2  9.123370 80
+    ladder_lsj1_w60   large_nr      INV                 3  9.679844 80
+    ladder_lsj1_w60   large_nr      INV                 4  9.087807 80
+    ladder_lsj1_w60   large_nr      INV                 5  8.578210 80
+    ladder_lsj1_w60   large_nr      INV                 6  8.075989 80
+    ladder_lsj1_w60   large_nr      INV                 7  7.594167 80
+    ladder_lsj1_w60   large_nr      INV                 8  7.183176 80
+    ladder_lsj1_w60   large_nr       M1                 1  5.167122 80
+    ladder_lsj1_w60   large_nr       M1                 2  4.896967 80
+    ladder_lsj1_w60   large_nr       M1                 3 17.458548 80
+    ladder_lsj1_w60   large_nr       M1                 4 20.893303 80
+    ladder_lsj1_w60   large_nr       M1                 5 21.490324 80
+    ladder_lsj1_w60   large_nr       M1                 6 21.315776 80
+    ladder_lsj1_w60   large_nr       M1                 7 20.876835 80
+    ladder_lsj1_w60   large_nr       M1                 8 20.331954 80
+    ladder_lsj1_w60   large_nr       M2                 1  2.648943 80
+    ladder_lsj1_w60   large_nr       M2                 2  2.530471 80
+    ladder_lsj1_w60   large_nr       M2                 3  2.951143 80
+    ladder_lsj1_w60   large_nr       M2                 4  3.171150 80
+    ladder_lsj1_w60   large_nr       M2                 5  3.293495 80
+    ladder_lsj1_w60   large_nr       M2                 6  3.377189 80
+    ladder_lsj1_w60   large_nr       M2                 7  3.426415 80
+    ladder_lsj1_w60   large_nr       M2                 8  3.453707 80
+    ladder_lsj1_w60   large_nr      PPI                 1  4.746535 80
+    ladder_lsj1_w60   large_nr      PPI                 2  4.294926 80
+    ladder_lsj1_w60   large_nr      PPI                 3  3.966764 80
+    ladder_lsj1_w60   large_nr      PPI                 4  3.694182 80
+    ladder_lsj1_w60   large_nr      PPI                 5  3.360861 80
+    ladder_lsj1_w60   large_nr      PPI                 6  3.109016 80
+    ladder_lsj1_w60   large_nr      PPI                 7  2.940998 80
+    ladder_lsj1_w60   large_nr      PPI                 8  2.809101 80
+    ladder_lsj1_w60   large_nr     REER                 1 12.836024 80
+    ladder_lsj1_w60   large_nr     REER                 2 11.344908 79
+    ladder_lsj1_w60   large_nr     REER                 3  9.912888 78
+    ladder_lsj1_w60   large_nr     REER                 4  8.810766 77
+    ladder_lsj1_w60   large_nr     REER                 5  7.859346 76
+    ladder_lsj1_w60   large_nr     REER                 6  7.093433 75
+    ladder_lsj1_w60   large_nr     REER                 7  6.640394 74
+    ladder_lsj1_w60   large_nr     REER                 8  6.327879 73
+    ladder_lsj1_w60   large_nr    SP500                 1 27.800645 80
+    ladder_lsj1_w60   large_nr    SP500                 2 24.767409 80
+    ladder_lsj1_w60   large_nr    SP500                 3 22.270811 80
+    ladder_lsj1_w60   large_nr    SP500                 4 19.961815 80
+    ladder_lsj1_w60   large_nr    SP500                 5 17.748385 80
+    ladder_lsj1_w60   large_nr    SP500                 6 15.966537 80
+    ladder_lsj1_w60   large_nr    SP500                 7 14.683976 80
+    ladder_lsj1_w60   large_nr    SP500                 8 13.638176 80
+    ladder_lsj1_w60   large_nr     TB10                 1  0.367594 80
+    ladder_lsj1_w60   large_nr     TB10                 2  0.610741 80
+    ladder_lsj1_w60   large_nr     TB10                 3  0.760373 80
+    ladder_lsj1_w60   large_nr     TB10                 4  0.878580 80
+    ladder_lsj1_w60   large_nr     TB10                 5  0.963070 80
+    ladder_lsj1_w60   large_nr     TB10                 6  1.030500 80
+    ladder_lsj1_w60   large_nr     TB10                 7  1.117252 80
+    ladder_lsj1_w60   large_nr     TB10                 8  1.157868 80
+    ladder_lsj1_w60   large_nr      UNR                 1  0.227492 80
+    ladder_lsj1_w60   large_nr      UNR                 2  0.414657 80
+    ladder_lsj1_w60   large_nr      UNR                 3  1.234501 80
+    ladder_lsj1_w60   large_nr      UNR                 4  1.491989 80
+    ladder_lsj1_w60   large_nr      UNR                 5  1.656752 80
+    ladder_lsj1_w60   large_nr      UNR                 6  1.823173 80
+    ladder_lsj1_w60   large_nr      UNR                 7  1.970184 80
+    ladder_lsj1_w60   large_nr      UNR                 8  2.085834 80
+    ladder_lsj1_w60   large_nr     WAGE                 1  4.458532 80
+    ladder_lsj1_w60   large_nr     WAGE                 2  2.493828 80
+    ladder_lsj1_w60   large_nr     WAGE                 3  2.313389 80
+    ladder_lsj1_w60   large_nr     WAGE                 4  1.929804 80
+    ladder_lsj1_w60   large_nr     WAGE                 5  1.700813 80
+    ladder_lsj1_w60   large_nr     WAGE                 6  1.546451 80
+    ladder_lsj1_w60   large_nr     WAGE                 7  1.334276 80
+    ladder_lsj1_w60   large_nr     WAGE                 8  1.271629 80
+    ladder_lsj1_w80   large_nr      AHE                 1  0.705326 80
+    ladder_lsj1_w80   large_nr      AHE                 2  0.696897 80
+    ladder_lsj1_w80   large_nr      AHE                 3  0.853444 80
+    ladder_lsj1_w80   large_nr      AHE                 4  0.829128 80
+    ladder_lsj1_w80   large_nr      AHE                 5  0.818690 80
+    ladder_lsj1_w80   large_nr      AHE                 6  0.809958 80
+    ladder_lsj1_w80   large_nr      AHE                 7  0.816462 80
+    ladder_lsj1_w80   large_nr      AHE                 8  0.834381 80
+    ladder_lsj1_w80   large_nr     COMM                 1  8.980720 80
+    ladder_lsj1_w80   large_nr     COMM                 2  8.262474 80
+    ladder_lsj1_w80   large_nr     COMM                 3  7.274026 80
+    ladder_lsj1_w80   large_nr     COMM                 4  6.449051 80
+    ladder_lsj1_w80   large_nr     COMM                 5  5.823851 80
+    ladder_lsj1_w80   large_nr     COMM                 6  5.325378 80
+    ladder_lsj1_w80   large_nr     COMM                 7  4.916116 80
+    ladder_lsj1_w80   large_nr     COMM                 8  4.609564 80
+    ladder_lsj1_w80   large_nr     CONS                 1  1.792400 80
+    ladder_lsj1_w80   large_nr     CONS                 2  1.693868 80
+    ladder_lsj1_w80   large_nr     CONS                 3  2.484856 80
+    ladder_lsj1_w80   large_nr     CONS                 4  2.122109 80
+    ladder_lsj1_w80   large_nr     CONS                 5  1.912037 80
+    ladder_lsj1_w80   large_nr     CONS                 6  1.752447 80
+    ladder_lsj1_w80   large_nr     CONS                 7  1.641171 80
+    ladder_lsj1_w80   large_nr     CONS                 8  1.537210 80
+    ladder_lsj1_w80   large_nr      CPI                 1  2.255869 80
+    ladder_lsj1_w80   large_nr      CPI                 2  1.970191 80
+    ladder_lsj1_w80   large_nr      CPI                 3  1.796149 80
+    ladder_lsj1_w80   large_nr      CPI                 4  1.661551 80
+    ladder_lsj1_w80   large_nr      CPI                 5  1.514616 80
+    ladder_lsj1_w80   large_nr      CPI                 6  1.447219 80
+    ladder_lsj1_w80   large_nr      CPI                 7  1.421357 80
+    ladder_lsj1_w80   large_nr      CPI                 8  1.395419 80
+    ladder_lsj1_w80   large_nr     DEFL                 1  1.022582 80
+    ladder_lsj1_w80   large_nr     DEFL                 2  0.981970 80
+    ladder_lsj1_w80   large_nr     DEFL                 3  0.991712 80
+    ladder_lsj1_w80   large_nr     DEFL                 4  1.003522 80
+    ladder_lsj1_w80   large_nr     DEFL                 5  0.995156 80
+    ladder_lsj1_w80   large_nr     DEFL                 6  1.005723 80
+    ladder_lsj1_w80   large_nr     DEFL                 7  1.015669 80
+    ladder_lsj1_w80   large_nr     DEFL                 8  1.028934 80
+    ladder_lsj1_w80   large_nr      EMP                 1  0.857278 80
+    ladder_lsj1_w80   large_nr      EMP                 2  1.006041 80
+    ladder_lsj1_w80   large_nr      EMP                 3  2.294724 80
+    ladder_lsj1_w80   large_nr      EMP                 4  2.184807 80
+    ladder_lsj1_w80   large_nr      EMP                 5  2.064815 80
+    ladder_lsj1_w80   large_nr      EMP                 6  1.973843 80
+    ladder_lsj1_w80   large_nr      EMP                 7  1.880129 80
+    ladder_lsj1_w80   large_nr      EMP                 8  1.793356 80
+    ladder_lsj1_w80   large_nr      FFR                 1  0.542942 80
+    ladder_lsj1_w80   large_nr      FFR                 2  1.019957 80
+    ladder_lsj1_w80   large_nr      FFR                 3  1.394226 80
+    ladder_lsj1_w80   large_nr      FFR                 4  1.663554 80
+    ladder_lsj1_w80   large_nr      FFR                 5  1.870784 80
+    ladder_lsj1_w80   large_nr      FFR                 6  2.070031 80
+    ladder_lsj1_w80   large_nr      FFR                 7  2.242343 80
+    ladder_lsj1_w80   large_nr      FFR                 8  2.398282 80
+    ladder_lsj1_w80   large_nr      GDP                 1  2.067173 80
+    ladder_lsj1_w80   large_nr      GDP                 2  1.867001 80
+    ladder_lsj1_w80   large_nr      GDP                 3  2.515209 80
+    ladder_lsj1_w80   large_nr      GDP                 4  2.194885 80
+    ladder_lsj1_w80   large_nr      GDP                 5  1.993645 80
+    ladder_lsj1_w80   large_nr      GDP                 6  1.824166 80
+    ladder_lsj1_w80   large_nr      GDP                 7  1.695033 80
+    ladder_lsj1_w80   large_nr      GDP                 8  1.583746 80
+    ladder_lsj1_w80   large_nr    HOURS                 1  1.954526 80
+    ladder_lsj1_w80   large_nr    HOURS                 2  2.124294 80
+    ladder_lsj1_w80   large_nr    HOURS                 3  3.417260 80
+    ladder_lsj1_w80   large_nr    HOURS                 4  3.168402 80
+    ladder_lsj1_w80   large_nr    HOURS                 5  2.962830 80
+    ladder_lsj1_w80   large_nr    HOURS                 6  2.819150 80
+    ladder_lsj1_w80   large_nr    HOURS                 7  2.658568 80
+    ladder_lsj1_w80   large_nr    HOURS                 8  2.503852 80
+    ladder_lsj1_w80   large_nr      INV                 1 10.042849 80
+    ladder_lsj1_w80   large_nr      INV                 2  9.110273 80
+    ladder_lsj1_w80   large_nr      INV                 3  9.650695 80
+    ladder_lsj1_w80   large_nr      INV                 4  9.048523 80
+    ladder_lsj1_w80   large_nr      INV                 5  8.533089 80
+    ladder_lsj1_w80   large_nr      INV                 6  8.011730 80
+    ladder_lsj1_w80   large_nr      INV                 7  7.524540 80
+    ladder_lsj1_w80   large_nr      INV                 8  7.109529 80
+    ladder_lsj1_w80   large_nr       M1                 1  5.196340 80
+    ladder_lsj1_w80   large_nr       M1                 2  4.927127 80
+    ladder_lsj1_w80   large_nr       M1                 3 17.467528 80
+    ladder_lsj1_w80   large_nr       M1                 4 20.901258 80
+    ladder_lsj1_w80   large_nr       M1                 5 21.497744 80
+    ladder_lsj1_w80   large_nr       M1                 6 21.322367 80
+    ladder_lsj1_w80   large_nr       M1                 7 20.881898 80
+    ladder_lsj1_w80   large_nr       M1                 8 20.335298 80
+    ladder_lsj1_w80   large_nr       M2                 1  2.667644 80
+    ladder_lsj1_w80   large_nr       M2                 2  2.550342 80
+    ladder_lsj1_w80   large_nr       M2                 3  2.962603 80
+    ladder_lsj1_w80   large_nr       M2                 4  3.177588 80
+    ladder_lsj1_w80   large_nr       M2                 5  3.299037 80
+    ladder_lsj1_w80   large_nr       M2                 6  3.383647 80
+    ladder_lsj1_w80   large_nr       M2                 7  3.433600 80
+    ladder_lsj1_w80   large_nr       M2                 8  3.460856 80
+    ladder_lsj1_w80   large_nr      PPI                 1  4.746935 80
+    ladder_lsj1_w80   large_nr      PPI                 2  4.292538 80
+    ladder_lsj1_w80   large_nr      PPI                 3  3.970642 80
+    ladder_lsj1_w80   large_nr      PPI                 4  3.703374 80
+    ladder_lsj1_w80   large_nr      PPI                 5  3.375250 80
+    ladder_lsj1_w80   large_nr      PPI                 6  3.128852 80
+    ladder_lsj1_w80   large_nr      PPI                 7  2.964305 80
+    ladder_lsj1_w80   large_nr      PPI                 8  2.836064 80
+    ladder_lsj1_w80   large_nr     REER                 1 12.955950 80
+    ladder_lsj1_w80   large_nr     REER                 2 11.454479 79
+    ladder_lsj1_w80   large_nr     REER                 3 10.025122 78
+    ladder_lsj1_w80   large_nr     REER                 4  8.920878 77
+    ladder_lsj1_w80   large_nr     REER                 5  7.953052 76
+    ladder_lsj1_w80   large_nr     REER                 6  7.175295 75
+    ladder_lsj1_w80   large_nr     REER                 7  6.718201 74
+    ladder_lsj1_w80   large_nr     REER                 8  6.397675 73
+    ladder_lsj1_w80   large_nr    SP500                 1 27.783556 80
+    ladder_lsj1_w80   large_nr    SP500                 2 24.771081 80
+    ladder_lsj1_w80   large_nr    SP500                 3 22.274422 80
+    ladder_lsj1_w80   large_nr    SP500                 4 19.979160 80
+    ladder_lsj1_w80   large_nr    SP500                 5 17.767285 80
+    ladder_lsj1_w80   large_nr    SP500                 6 15.972790 80
+    ladder_lsj1_w80   large_nr    SP500                 7 14.683284 80
+    ladder_lsj1_w80   large_nr    SP500                 8 13.638213 80
+    ladder_lsj1_w80   large_nr     TB10                 1  0.368642 80
+    ladder_lsj1_w80   large_nr     TB10                 2  0.612132 80
+    ladder_lsj1_w80   large_nr     TB10                 3  0.759401 80
+    ladder_lsj1_w80   large_nr     TB10                 4  0.878502 80
+    ladder_lsj1_w80   large_nr     TB10                 5  0.963356 80
+    ladder_lsj1_w80   large_nr     TB10                 6  1.029296 80
+    ladder_lsj1_w80   large_nr     TB10                 7  1.116617 80
+    ladder_lsj1_w80   large_nr     TB10                 8  1.156716 80
+    ladder_lsj1_w80   large_nr      UNR                 1  0.227986 80
+    ladder_lsj1_w80   large_nr      UNR                 2  0.416582 80
+    ladder_lsj1_w80   large_nr      UNR                 3  1.235999 80
+    ladder_lsj1_w80   large_nr      UNR                 4  1.494239 80
+    ladder_lsj1_w80   large_nr      UNR                 5  1.659203 80
+    ladder_lsj1_w80   large_nr      UNR                 6  1.825574 80
+    ladder_lsj1_w80   large_nr      UNR                 7  1.972495 80
+    ladder_lsj1_w80   large_nr      UNR                 8  2.087495 80
+    ladder_lsj1_w80   large_nr     WAGE                 1  4.458324 80
+    ladder_lsj1_w80   large_nr     WAGE                 2  2.490774 80
+    ladder_lsj1_w80   large_nr     WAGE                 3  2.307286 80
+    ladder_lsj1_w80   large_nr     WAGE                 4  1.917587 80
+    ladder_lsj1_w80   large_nr     WAGE                 5  1.689966 80
+    ladder_lsj1_w80   large_nr     WAGE                 6  1.534651 80
+    ladder_lsj1_w80   large_nr     WAGE                 7  1.322102 80
+    ladder_lsj1_w80   large_nr     WAGE                 8  1.264219 80
+  ladder_lsj_h4_w12   large_nr      AHE                 1  0.880156 80
+  ladder_lsj_h4_w12   large_nr      AHE                 2  0.874926 80
+  ladder_lsj_h4_w12   large_nr      AHE                 3  0.992486 80
+  ladder_lsj_h4_w12   large_nr      AHE                 4  0.960518 80
+  ladder_lsj_h4_w12   large_nr      AHE                 5  0.946420 80
+  ladder_lsj_h4_w12   large_nr      AHE                 6  0.931252 80
+  ladder_lsj_h4_w12   large_nr      AHE                 7  0.927395 80
+  ladder_lsj_h4_w12   large_nr      AHE                 8  0.938246 80
+  ladder_lsj_h4_w12   large_nr     COMM                 1  9.266615 80
+  ladder_lsj_h4_w12   large_nr     COMM                 2  8.410815 80
+  ladder_lsj_h4_w12   large_nr     COMM                 3  7.355358 80
+  ladder_lsj_h4_w12   large_nr     COMM                 4  6.527364 80
+  ladder_lsj_h4_w12   large_nr     COMM                 5  5.901238 80
+  ladder_lsj_h4_w12   large_nr     COMM                 6  5.408168 80
+  ladder_lsj_h4_w12   large_nr     COMM                 7  5.007509 80
+  ladder_lsj_h4_w12   large_nr     COMM                 8  4.727663 80
+  ladder_lsj_h4_w12   large_nr     CONS                 1  1.945011 80
+  ladder_lsj_h4_w12   large_nr     CONS                 2  1.769123 80
+  ladder_lsj_h4_w12   large_nr     CONS                 3  2.515935 80
+  ladder_lsj_h4_w12   large_nr     CONS                 4  2.150662 80
+  ladder_lsj_h4_w12   large_nr     CONS                 5  1.946958 80
+  ladder_lsj_h4_w12   large_nr     CONS                 6  1.803116 80
+  ladder_lsj_h4_w12   large_nr     CONS                 7  1.709183 80
+  ladder_lsj_h4_w12   large_nr     CONS                 8  1.631875 80
+  ladder_lsj_h4_w12   large_nr      CPI                 1  2.325394 80
+  ladder_lsj_h4_w12   large_nr      CPI                 2  2.044293 80
+  ladder_lsj_h4_w12   large_nr      CPI                 3  1.836684 80
+  ladder_lsj_h4_w12   large_nr      CPI                 4  1.694612 80
+  ladder_lsj_h4_w12   large_nr      CPI                 5  1.542178 80
+  ladder_lsj_h4_w12   large_nr      CPI                 6  1.475556 80
+  ladder_lsj_h4_w12   large_nr      CPI                 7  1.459192 80
+  ladder_lsj_h4_w12   large_nr      CPI                 8  1.440439 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 1  1.055537 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 2  1.021570 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 3  1.032016 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 4  1.048105 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 5  1.041710 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 6  1.053214 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 7  1.062245 80
+  ladder_lsj_h4_w12   large_nr     DEFL                 8  1.072134 80
+  ladder_lsj_h4_w12   large_nr      EMP                 1  1.090763 80
+  ladder_lsj_h4_w12   large_nr      EMP                 2  1.162555 80
+  ladder_lsj_h4_w12   large_nr      EMP                 3  2.341763 80
+  ladder_lsj_h4_w12   large_nr      EMP                 4  2.220398 80
+  ladder_lsj_h4_w12   large_nr      EMP                 5  2.089470 80
+  ladder_lsj_h4_w12   large_nr      EMP                 6  1.983308 80
+  ladder_lsj_h4_w12   large_nr      EMP                 7  1.909578 80
+  ladder_lsj_h4_w12   large_nr      EMP                 8  1.832443 80
+  ladder_lsj_h4_w12   large_nr      FFR                 1  0.642207 80
+  ladder_lsj_h4_w12   large_nr      FFR                 2  1.116973 80
+  ladder_lsj_h4_w12   large_nr      FFR                 3  1.446423 80
+  ladder_lsj_h4_w12   large_nr      FFR                 4  1.723034 80
+  ladder_lsj_h4_w12   large_nr      FFR                 5  1.985623 80
+  ladder_lsj_h4_w12   large_nr      FFR                 6  2.217057 80
+  ladder_lsj_h4_w12   large_nr      FFR                 7  2.420719 80
+  ladder_lsj_h4_w12   large_nr      FFR                 8  2.609122 80
+  ladder_lsj_h4_w12   large_nr      GDP                 1  2.240579 80
+  ladder_lsj_h4_w12   large_nr      GDP                 2  1.977567 80
+  ladder_lsj_h4_w12   large_nr      GDP                 3  2.539022 80
+  ladder_lsj_h4_w12   large_nr      GDP                 4  2.206305 80
+  ladder_lsj_h4_w12   large_nr      GDP                 5  1.994874 80
+  ladder_lsj_h4_w12   large_nr      GDP                 6  1.831966 80
+  ladder_lsj_h4_w12   large_nr      GDP                 7  1.730054 80
+  ladder_lsj_h4_w12   large_nr      GDP                 8  1.635361 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 1  2.177858 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 2  2.286612 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 3  3.452628 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 4  3.175347 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 5  2.953860 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 6  2.795274 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 7  2.658746 80
+  ladder_lsj_h4_w12   large_nr    HOURS                 8  2.515719 80
+  ladder_lsj_h4_w12   large_nr      INV                 1 11.445927 80
+  ladder_lsj_h4_w12   large_nr      INV                 2  9.942229 80
+  ladder_lsj_h4_w12   large_nr      INV                 3  9.850568 80
+  ladder_lsj_h4_w12   large_nr      INV                 4  9.092028 80
+  ladder_lsj_h4_w12   large_nr      INV                 5  8.528277 80
+  ladder_lsj_h4_w12   large_nr      INV                 6  7.915368 80
+  ladder_lsj_h4_w12   large_nr      INV                 7  7.435241 80
+  ladder_lsj_h4_w12   large_nr      INV                 8  7.040124 80
+  ladder_lsj_h4_w12   large_nr       M1                 1  5.232522 80
+  ladder_lsj_h4_w12   large_nr       M1                 2  5.056736 80
+  ladder_lsj_h4_w12   large_nr       M1                 3 17.567511 80
+  ladder_lsj_h4_w12   large_nr       M1                 4 21.016535 80
+  ladder_lsj_h4_w12   large_nr       M1                 5 21.612061 80
+  ladder_lsj_h4_w12   large_nr       M1                 6 21.432490 80
+  ladder_lsj_h4_w12   large_nr       M1                 7 20.935590 80
+  ladder_lsj_h4_w12   large_nr       M1                 8 20.333276 80
+  ladder_lsj_h4_w12   large_nr       M2                 1  2.839624 80
+  ladder_lsj_h4_w12   large_nr       M2                 2  2.661656 80
+  ladder_lsj_h4_w12   large_nr       M2                 3  3.036341 80
+  ladder_lsj_h4_w12   large_nr       M2                 4  3.218294 80
+  ladder_lsj_h4_w12   large_nr       M2                 5  3.311790 80
+  ladder_lsj_h4_w12   large_nr       M2                 6  3.369350 80
+  ladder_lsj_h4_w12   large_nr       M2                 7  3.392688 80
+  ladder_lsj_h4_w12   large_nr       M2                 8  3.400762 80
+  ladder_lsj_h4_w12   large_nr      PPI                 1  4.973963 80
+  ladder_lsj_h4_w12   large_nr      PPI                 2  4.430381 80
+  ladder_lsj_h4_w12   large_nr      PPI                 3  4.078525 80
+  ladder_lsj_h4_w12   large_nr      PPI                 4  3.817437 80
+  ladder_lsj_h4_w12   large_nr      PPI                 5  3.476860 80
+  ladder_lsj_h4_w12   large_nr      PPI                 6  3.224789 80
+  ladder_lsj_h4_w12   large_nr      PPI                 7  3.075367 80
+  ladder_lsj_h4_w12   large_nr      PPI                 8  2.960707 80
+  ladder_lsj_h4_w12   large_nr     REER                 1 13.480493 80
+  ladder_lsj_h4_w12   large_nr     REER                 2 11.591281 79
+  ladder_lsj_h4_w12   large_nr     REER                 3  9.995171 78
+  ladder_lsj_h4_w12   large_nr     REER                 4  8.868430 77
+  ladder_lsj_h4_w12   large_nr     REER                 5  7.992312 76
+  ladder_lsj_h4_w12   large_nr     REER                 6  7.245440 75
+  ladder_lsj_h4_w12   large_nr     REER                 7  6.761720 74
+  ladder_lsj_h4_w12   large_nr     REER                 8  6.433221 73
+  ladder_lsj_h4_w12   large_nr    SP500                 1 28.765673 80
+  ladder_lsj_h4_w12   large_nr    SP500                 2 25.034833 80
+  ladder_lsj_h4_w12   large_nr    SP500                 3 22.129128 80
+  ladder_lsj_h4_w12   large_nr    SP500                 4 19.747791 80
+  ladder_lsj_h4_w12   large_nr    SP500                 5 17.645415 80
+  ladder_lsj_h4_w12   large_nr    SP500                 6 16.152691 80
+  ladder_lsj_h4_w12   large_nr    SP500                 7 15.060098 80
+  ladder_lsj_h4_w12   large_nr    SP500                 8 14.042256 80
+  ladder_lsj_h4_w12   large_nr     TB10                 1  0.394584 80
+  ladder_lsj_h4_w12   large_nr     TB10                 2  0.623446 80
+  ladder_lsj_h4_w12   large_nr     TB10                 3  0.753642 80
+  ladder_lsj_h4_w12   large_nr     TB10                 4  0.882691 80
+  ladder_lsj_h4_w12   large_nr     TB10                 5  0.990758 80
+  ladder_lsj_h4_w12   large_nr     TB10                 6  1.039767 80
+  ladder_lsj_h4_w12   large_nr     TB10                 7  1.099994 80
+  ladder_lsj_h4_w12   large_nr     TB10                 8  1.151401 80
+  ladder_lsj_h4_w12   large_nr      UNR                 1  0.259472 80
+  ladder_lsj_h4_w12   large_nr      UNR                 2  0.460246 80
+  ladder_lsj_h4_w12   large_nr      UNR                 3  1.256363 80
+  ladder_lsj_h4_w12   large_nr      UNR                 4  1.515168 80
+  ladder_lsj_h4_w12   large_nr      UNR                 5  1.673997 80
+  ladder_lsj_h4_w12   large_nr      UNR                 6  1.830018 80
+  ladder_lsj_h4_w12   large_nr      UNR                 7  1.997887 80
+  ladder_lsj_h4_w12   large_nr      UNR                 8  2.128047 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 1  4.528852 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 2  2.530878 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 3  2.301957 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 4  1.906492 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 5  1.672445 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 6  1.544252 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 7  1.349450 80
+  ladder_lsj_h4_w12   large_nr     WAGE                 8  1.296187 80
+  ladder_lsj_h4_w60   large_nr      AHE                 1  0.643462 80
+  ladder_lsj_h4_w60   large_nr      AHE                 2  0.628454 80
+  ladder_lsj_h4_w60   large_nr      AHE                 3  0.782971 80
+  ladder_lsj_h4_w60   large_nr      AHE                 4  0.758506 80
+  ladder_lsj_h4_w60   large_nr      AHE                 5  0.746524 80
+  ladder_lsj_h4_w60   large_nr      AHE                 6  0.743210 80
+  ladder_lsj_h4_w60   large_nr      AHE                 7  0.756484 80
+  ladder_lsj_h4_w60   large_nr      AHE                 8  0.779020 80
+  ladder_lsj_h4_w60   large_nr     COMM                 1  9.040079 80
+  ladder_lsj_h4_w60   large_nr     COMM                 2  7.964862 80
+  ladder_lsj_h4_w60   large_nr     COMM                 3  6.853680 80
+  ladder_lsj_h4_w60   large_nr     COMM                 4  6.013146 80
+  ladder_lsj_h4_w60   large_nr     COMM                 5  5.440294 80
+  ladder_lsj_h4_w60   large_nr     COMM                 6  4.988982 80
+  ladder_lsj_h4_w60   large_nr     COMM                 7  4.598354 80
+  ladder_lsj_h4_w60   large_nr     COMM                 8  4.306592 80
+  ladder_lsj_h4_w60   large_nr     CONS                 1  1.848186 80
+  ladder_lsj_h4_w60   large_nr     CONS                 2  1.736955 80
+  ladder_lsj_h4_w60   large_nr     CONS                 3  2.513618 80
+  ladder_lsj_h4_w60   large_nr     CONS                 4  2.186977 80
+  ladder_lsj_h4_w60   large_nr     CONS                 5  1.968297 80
+  ladder_lsj_h4_w60   large_nr     CONS                 6  1.821990 80
+  ladder_lsj_h4_w60   large_nr     CONS                 7  1.728515 80
+  ladder_lsj_h4_w60   large_nr     CONS                 8  1.628364 80
+  ladder_lsj_h4_w60   large_nr      CPI                 1  2.273680 80
+  ladder_lsj_h4_w60   large_nr      CPI                 2  1.912656 80
+  ladder_lsj_h4_w60   large_nr      CPI                 3  1.700639 80
+  ladder_lsj_h4_w60   large_nr      CPI                 4  1.530875 80
+  ladder_lsj_h4_w60   large_nr      CPI                 5  1.383246 80
+  ladder_lsj_h4_w60   large_nr      CPI                 6  1.318630 80
+  ladder_lsj_h4_w60   large_nr      CPI                 7  1.279487 80
+  ladder_lsj_h4_w60   large_nr      CPI                 8  1.241673 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 1  1.021796 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 2  0.953811 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 3  0.941863 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 4  0.924512 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 5  0.904208 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 6  0.906277 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 7  0.909450 80
+  ladder_lsj_h4_w60   large_nr     DEFL                 8  0.917201 80
+  ladder_lsj_h4_w60   large_nr      EMP                 1  0.990227 80
+  ladder_lsj_h4_w60   large_nr      EMP                 2  1.137948 80
+  ladder_lsj_h4_w60   large_nr      EMP                 3  2.354418 80
+  ladder_lsj_h4_w60   large_nr      EMP                 4  2.230944 80
+  ladder_lsj_h4_w60   large_nr      EMP                 5  2.106923 80
+  ladder_lsj_h4_w60   large_nr      EMP                 6  2.017992 80
+  ladder_lsj_h4_w60   large_nr      EMP                 7  1.949513 80
+  ladder_lsj_h4_w60   large_nr      EMP                 8  1.882887 80
+  ladder_lsj_h4_w60   large_nr      FFR                 1  0.525133 80
+  ladder_lsj_h4_w60   large_nr      FFR                 2  0.964982 80
+  ladder_lsj_h4_w60   large_nr      FFR                 3  1.306846 80
+  ladder_lsj_h4_w60   large_nr      FFR                 4  1.560583 80
+  ladder_lsj_h4_w60   large_nr      FFR                 5  1.775902 80
+  ladder_lsj_h4_w60   large_nr      FFR                 6  1.984111 80
+  ladder_lsj_h4_w60   large_nr      FFR                 7  2.166218 80
+  ladder_lsj_h4_w60   large_nr      FFR                 8  2.330034 80
+  ladder_lsj_h4_w60   large_nr      GDP                 1  2.326945 80
+  ladder_lsj_h4_w60   large_nr      GDP                 2  2.035840 80
+  ladder_lsj_h4_w60   large_nr      GDP                 3  2.570194 80
+  ladder_lsj_h4_w60   large_nr      GDP                 4  2.248914 80
+  ladder_lsj_h4_w60   large_nr      GDP                 5  2.041066 80
+  ladder_lsj_h4_w60   large_nr      GDP                 6  1.882230 80
+  ladder_lsj_h4_w60   large_nr      GDP                 7  1.785851 80
+  ladder_lsj_h4_w60   large_nr      GDP                 8  1.686268 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 1  2.182158 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 2  2.342743 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 3  3.536103 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 4  3.263865 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 5  3.045711 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 6  2.896655 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 7  2.759497 80
+  ladder_lsj_h4_w60   large_nr    HOURS                 8  2.620060 80
+  ladder_lsj_h4_w60   large_nr      INV                 1 11.478023 80
+  ladder_lsj_h4_w60   large_nr      INV                 2 10.114465 80
+  ladder_lsj_h4_w60   large_nr      INV                 3 10.143552 80
+  ladder_lsj_h4_w60   large_nr      INV                 4  9.246862 80
+  ladder_lsj_h4_w60   large_nr      INV                 5  8.611268 80
+  ladder_lsj_h4_w60   large_nr      INV                 6  7.991954 80
+  ladder_lsj_h4_w60   large_nr      INV                 7  7.508212 80
+  ladder_lsj_h4_w60   large_nr      INV                 8  7.100276 80
+  ladder_lsj_h4_w60   large_nr       M1                 1  5.388947 80
+  ladder_lsj_h4_w60   large_nr       M1                 2  5.168274 80
+  ladder_lsj_h4_w60   large_nr       M1                 3 17.712957 80
+  ladder_lsj_h4_w60   large_nr       M1                 4 21.148681 80
+  ladder_lsj_h4_w60   large_nr       M1                 5 21.708659 80
+  ladder_lsj_h4_w60   large_nr       M1                 6 21.499010 80
+  ladder_lsj_h4_w60   large_nr       M1                 7 20.983310 80
+  ladder_lsj_h4_w60   large_nr       M1                 8 20.375224 80
+  ladder_lsj_h4_w60   large_nr       M2                 1  2.672861 80
+  ladder_lsj_h4_w60   large_nr       M2                 2  2.505621 80
+  ladder_lsj_h4_w60   large_nr       M2                 3  2.938890 80
+  ladder_lsj_h4_w60   large_nr       M2                 4  3.135532 80
+  ladder_lsj_h4_w60   large_nr       M2                 5  3.211655 80
+  ladder_lsj_h4_w60   large_nr       M2                 6  3.273347 80
+  ladder_lsj_h4_w60   large_nr       M2                 7  3.304433 80
+  ladder_lsj_h4_w60   large_nr       M2                 8  3.321261 80
+  ladder_lsj_h4_w60   large_nr      PPI                 1  4.739340 80
+  ladder_lsj_h4_w60   large_nr      PPI                 2  4.115387 80
+  ladder_lsj_h4_w60   large_nr      PPI                 3  3.728715 80
+  ladder_lsj_h4_w60   large_nr      PPI                 4  3.444994 80
+  ladder_lsj_h4_w60   large_nr      PPI                 5  3.131833 80
+  ladder_lsj_h4_w60   large_nr      PPI                 6  2.900786 80
+  ladder_lsj_h4_w60   large_nr      PPI                 7  2.735679 80
+  ladder_lsj_h4_w60   large_nr      PPI                 8  2.602212 80
+  ladder_lsj_h4_w60   large_nr     REER                 1 12.630409 80
+  ladder_lsj_h4_w60   large_nr     REER                 2 10.980833 79
+  ladder_lsj_h4_w60   large_nr     REER                 3  9.575927 78
+  ladder_lsj_h4_w60   large_nr     REER                 4  8.583559 77
+  ladder_lsj_h4_w60   large_nr     REER                 5  7.784452 76
+  ladder_lsj_h4_w60   large_nr     REER                 6  7.137464 75
+  ladder_lsj_h4_w60   large_nr     REER                 7  6.670609 74
+  ladder_lsj_h4_w60   large_nr     REER                 8  6.322992 73
+  ladder_lsj_h4_w60   large_nr    SP500                 1 28.323068 80
+  ladder_lsj_h4_w60   large_nr    SP500                 2 25.011533 80
+  ladder_lsj_h4_w60   large_nr    SP500                 3 22.197413 80
+  ladder_lsj_h4_w60   large_nr    SP500                 4 19.777076 80
+  ladder_lsj_h4_w60   large_nr    SP500                 5 17.647768 80
+  ladder_lsj_h4_w60   large_nr    SP500                 6 16.100893 80
+  ladder_lsj_h4_w60   large_nr    SP500                 7 14.935171 80
+  ladder_lsj_h4_w60   large_nr    SP500                 8 13.878742 80
+  ladder_lsj_h4_w60   large_nr     TB10                 1  0.358865 80
+  ladder_lsj_h4_w60   large_nr     TB10                 2  0.561345 80
+  ladder_lsj_h4_w60   large_nr     TB10                 3  0.675931 80
+  ladder_lsj_h4_w60   large_nr     TB10                 4  0.759183 80
+  ladder_lsj_h4_w60   large_nr     TB10                 5  0.833729 80
+  ladder_lsj_h4_w60   large_nr     TB10                 6  0.906768 80
+  ladder_lsj_h4_w60   large_nr     TB10                 7  0.989201 80
+  ladder_lsj_h4_w60   large_nr     TB10                 8  1.036258 80
+  ladder_lsj_h4_w60   large_nr      UNR                 1  0.232848 80
+  ladder_lsj_h4_w60   large_nr      UNR                 2  0.439840 80
+  ladder_lsj_h4_w60   large_nr      UNR                 3  1.253280 80
+  ladder_lsj_h4_w60   large_nr      UNR                 4  1.501047 80
+  ladder_lsj_h4_w60   large_nr      UNR                 5  1.660342 80
+  ladder_lsj_h4_w60   large_nr      UNR                 6  1.828477 80
+  ladder_lsj_h4_w60   large_nr      UNR                 7  2.007547 80
+  ladder_lsj_h4_w60   large_nr      UNR                 8  2.149673 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 1  4.423693 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 2  2.494018 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 3  2.309056 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 4  1.925812 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 5  1.706832 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 6  1.552627 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 7  1.340933 80
+  ladder_lsj_h4_w60   large_nr     WAGE                 8  1.270079 80
+  ladder_lsj_h4_w80   large_nr      AHE                 1  0.676254 80
+  ladder_lsj_h4_w80   large_nr      AHE                 2  0.652231 80
+  ladder_lsj_h4_w80   large_nr      AHE                 3  0.793642 80
+  ladder_lsj_h4_w80   large_nr      AHE                 4  0.760418 80
+  ladder_lsj_h4_w80   large_nr      AHE                 5  0.733719 80
+  ladder_lsj_h4_w80   large_nr      AHE                 6  0.711707 80
+  ladder_lsj_h4_w80   large_nr      AHE                 7  0.716635 80
+  ladder_lsj_h4_w80   large_nr      AHE                 8  0.729298 80
+  ladder_lsj_h4_w80   large_nr     COMM                 1  9.147273 80
+  ladder_lsj_h4_w80   large_nr     COMM                 2  8.044282 80
+  ladder_lsj_h4_w80   large_nr     COMM                 3  6.912904 80
+  ladder_lsj_h4_w80   large_nr     COMM                 4  6.055392 80
+  ladder_lsj_h4_w80   large_nr     COMM                 5  5.460061 80
+  ladder_lsj_h4_w80   large_nr     COMM                 6  4.994924 80
+  ladder_lsj_h4_w80   large_nr     COMM                 7  4.612201 80
+  ladder_lsj_h4_w80   large_nr     COMM                 8  4.326960 80
+  ladder_lsj_h4_w80   large_nr     CONS                 1  1.805571 80
+  ladder_lsj_h4_w80   large_nr     CONS                 2  1.677214 80
+  ladder_lsj_h4_w80   large_nr     CONS                 3  2.468078 80
+  ladder_lsj_h4_w80   large_nr     CONS                 4  2.131898 80
+  ladder_lsj_h4_w80   large_nr     CONS                 5  1.932476 80
+  ladder_lsj_h4_w80   large_nr     CONS                 6  1.783585 80
+  ladder_lsj_h4_w80   large_nr     CONS                 7  1.664329 80
+  ladder_lsj_h4_w80   large_nr     CONS                 8  1.558019 80
+  ladder_lsj_h4_w80   large_nr      CPI                 1  2.288961 80
+  ladder_lsj_h4_w80   large_nr      CPI                 2  1.936982 80
+  ladder_lsj_h4_w80   large_nr      CPI                 3  1.729930 80
+  ladder_lsj_h4_w80   large_nr      CPI                 4  1.557459 80
+  ladder_lsj_h4_w80   large_nr      CPI                 5  1.397493 80
+  ladder_lsj_h4_w80   large_nr      CPI                 6  1.329154 80
+  ladder_lsj_h4_w80   large_nr      CPI                 7  1.296941 80
+  ladder_lsj_h4_w80   large_nr      CPI                 8  1.258873 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 1  1.049086 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 2  0.992140 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 3  0.989502 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 4  0.973424 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 5  0.949045 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 6  0.947789 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 7  0.948698 80
+  ladder_lsj_h4_w80   large_nr     DEFL                 8  0.953348 80
+  ladder_lsj_h4_w80   large_nr      EMP                 1  0.980167 80
+  ladder_lsj_h4_w80   large_nr      EMP                 2  1.124709 80
+  ladder_lsj_h4_w80   large_nr      EMP                 3  2.357788 80
+  ladder_lsj_h4_w80   large_nr      EMP                 4  2.228442 80
+  ladder_lsj_h4_w80   large_nr      EMP                 5  2.091851 80
+  ladder_lsj_h4_w80   large_nr      EMP                 6  1.997454 80
+  ladder_lsj_h4_w80   large_nr      EMP                 7  1.914196 80
+  ladder_lsj_h4_w80   large_nr      EMP                 8  1.827620 80
+  ladder_lsj_h4_w80   large_nr      FFR                 1  0.493707 80
+  ladder_lsj_h4_w80   large_nr      FFR                 2  0.922749 80
+  ladder_lsj_h4_w80   large_nr      FFR                 3  1.263981 80
+  ladder_lsj_h4_w80   large_nr      FFR                 4  1.513882 80
+  ladder_lsj_h4_w80   large_nr      FFR                 5  1.728040 80
+  ladder_lsj_h4_w80   large_nr      FFR                 6  1.938677 80
+  ladder_lsj_h4_w80   large_nr      FFR                 7  2.124281 80
+  ladder_lsj_h4_w80   large_nr      FFR                 8  2.292697 80
+  ladder_lsj_h4_w80   large_nr      GDP                 1  2.183888 80
+  ladder_lsj_h4_w80   large_nr      GDP                 2  1.938028 80
+  ladder_lsj_h4_w80   large_nr      GDP                 3  2.532820 80
+  ladder_lsj_h4_w80   large_nr      GDP                 4  2.197349 80
+  ladder_lsj_h4_w80   large_nr      GDP                 5  1.995749 80
+  ladder_lsj_h4_w80   large_nr      GDP                 6  1.841033 80
+  ladder_lsj_h4_w80   large_nr      GDP                 7  1.721402 80
+  ladder_lsj_h4_w80   large_nr      GDP                 8  1.613378 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 1  2.121440 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 2  2.304399 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 3  3.526617 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 4  3.244249 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 5  3.009839 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 6  2.850406 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 7  2.698332 80
+  ladder_lsj_h4_w80   large_nr    HOURS                 8  2.541717 80
+  ladder_lsj_h4_w80   large_nr      INV                 1 10.750160 80
+  ladder_lsj_h4_w80   large_nr      INV                 2  9.559555 80
+  ladder_lsj_h4_w80   large_nr      INV                 3  9.808035 80
+  ladder_lsj_h4_w80   large_nr      INV                 4  8.908802 80
+  ladder_lsj_h4_w80   large_nr      INV                 5  8.268769 80
+  ladder_lsj_h4_w80   large_nr      INV                 6  7.680253 80
+  ladder_lsj_h4_w80   large_nr      INV                 7  7.193049 80
+  ladder_lsj_h4_w80   large_nr      INV                 8  6.792823 80
+  ladder_lsj_h4_w80   large_nr       M1                 1  5.215759 80
+  ladder_lsj_h4_w80   large_nr       M1                 2  4.993873 80
+  ladder_lsj_h4_w80   large_nr       M1                 3 17.577121 80
+  ladder_lsj_h4_w80   large_nr       M1                 4 20.985463 80
+  ladder_lsj_h4_w80   large_nr       M1                 5 21.504523 80
+  ladder_lsj_h4_w80   large_nr       M1                 6 21.272035 80
+  ladder_lsj_h4_w80   large_nr       M1                 7 20.775506 80
+  ladder_lsj_h4_w80   large_nr       M1                 8 20.195004 80
+  ladder_lsj_h4_w80   large_nr       M2                 1  2.854553 80
+  ladder_lsj_h4_w80   large_nr       M2                 2  2.678341 80
+  ladder_lsj_h4_w80   large_nr       M2                 3  3.073755 80
+  ladder_lsj_h4_w80   large_nr       M2                 4  3.249359 80
+  ladder_lsj_h4_w80   large_nr       M2                 5  3.305640 80
+  ladder_lsj_h4_w80   large_nr       M2                 6  3.335106 80
+  ladder_lsj_h4_w80   large_nr       M2                 7  3.349268 80
+  ladder_lsj_h4_w80   large_nr       M2                 8  3.351030 80
+  ladder_lsj_h4_w80   large_nr      PPI                 1  4.720015 80
+  ladder_lsj_h4_w80   large_nr      PPI                 2  4.117348 80
+  ladder_lsj_h4_w80   large_nr      PPI                 3  3.742785 80
+  ladder_lsj_h4_w80   large_nr      PPI                 4  3.460828 80
+  ladder_lsj_h4_w80   large_nr      PPI                 5  3.132673 80
+  ladder_lsj_h4_w80   large_nr      PPI                 6  2.895617 80
+  ladder_lsj_h4_w80   large_nr      PPI                 7  2.742778 80
+  ladder_lsj_h4_w80   large_nr      PPI                 8  2.609546 80
+  ladder_lsj_h4_w80   large_nr     REER                 1 12.678248 80
+  ladder_lsj_h4_w80   large_nr     REER                 2 10.852692 79
+  ladder_lsj_h4_w80   large_nr     REER                 3  9.351127 78
+  ladder_lsj_h4_w80   large_nr     REER                 4  8.293524 77
+  ladder_lsj_h4_w80   large_nr     REER                 5  7.410044 76
+  ladder_lsj_h4_w80   large_nr     REER                 6  6.752532 75
+  ladder_lsj_h4_w80   large_nr     REER                 7  6.380172 74
+  ladder_lsj_h4_w80   large_nr     REER                 8  6.096738 73
+  ladder_lsj_h4_w80   large_nr    SP500                 1 28.924898 80
+  ladder_lsj_h4_w80   large_nr    SP500                 2 25.124290 80
+  ladder_lsj_h4_w80   large_nr    SP500                 3 22.042077 80
+  ladder_lsj_h4_w80   large_nr    SP500                 4 19.444776 80
+  ladder_lsj_h4_w80   large_nr    SP500                 5 17.276463 80
+  ladder_lsj_h4_w80   large_nr    SP500                 6 15.633476 80
+  ladder_lsj_h4_w80   large_nr    SP500                 7 14.354401 80
+  ladder_lsj_h4_w80   large_nr    SP500                 8 13.259654 80
+  ladder_lsj_h4_w80   large_nr     TB10                 1  0.363942 80
+  ladder_lsj_h4_w80   large_nr     TB10                 2  0.578722 80
+  ladder_lsj_h4_w80   large_nr     TB10                 3  0.692465 80
+  ladder_lsj_h4_w80   large_nr     TB10                 4  0.792232 80
+  ladder_lsj_h4_w80   large_nr     TB10                 5  0.874103 80
+  ladder_lsj_h4_w80   large_nr     TB10                 6  0.943791 80
+  ladder_lsj_h4_w80   large_nr     TB10                 7  1.035670 80
+  ladder_lsj_h4_w80   large_nr     TB10                 8  1.092822 80
+  ladder_lsj_h4_w80   large_nr      UNR                 1  0.238167 80
+  ladder_lsj_h4_w80   large_nr      UNR                 2  0.445904 80
+  ladder_lsj_h4_w80   large_nr      UNR                 3  1.256360 80
+  ladder_lsj_h4_w80   large_nr      UNR                 4  1.511499 80
+  ladder_lsj_h4_w80   large_nr      UNR                 5  1.669377 80
+  ladder_lsj_h4_w80   large_nr      UNR                 6  1.834127 80
+  ladder_lsj_h4_w80   large_nr      UNR                 7  2.001100 80
+  ladder_lsj_h4_w80   large_nr      UNR                 8  2.130031 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 1  4.313891 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 2  2.421895 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 3  2.275078 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 4  1.895811 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 5  1.698818 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 6  1.521686 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 7  1.317036 80
+  ladder_lsj_h4_w80   large_nr     WAGE                 8  1.250896 80
+  ladder_lsm_h4_w12   large_nr      AHE                 1  1.124646 80
+  ladder_lsm_h4_w12   large_nr      AHE                 2  1.067089 80
+  ladder_lsm_h4_w12   large_nr      AHE                 3  1.178905 80
+  ladder_lsm_h4_w12   large_nr      AHE                 4  1.139153 80
+  ladder_lsm_h4_w12   large_nr      AHE                 5  1.066727 80
+  ladder_lsm_h4_w12   large_nr      AHE                 6  1.027616 80
+  ladder_lsm_h4_w12   large_nr      AHE                 7  1.047238 80
+  ladder_lsm_h4_w12   large_nr      AHE                 8  1.059454 80
+  ladder_lsm_h4_w12   large_nr     COMM                 1  9.295780 80
+  ladder_lsm_h4_w12   large_nr     COMM                 2  8.024050 80
+  ladder_lsm_h4_w12   large_nr     COMM                 3  6.806394 80
+  ladder_lsm_h4_w12   large_nr     COMM                 4  5.972659 80
+  ladder_lsm_h4_w12   large_nr     COMM                 5  5.435139 80
+  ladder_lsm_h4_w12   large_nr     COMM                 6  5.048383 80
+  ladder_lsm_h4_w12   large_nr     COMM                 7  4.730301 80
+  ladder_lsm_h4_w12   large_nr     COMM                 8  4.474366 80
+  ladder_lsm_h4_w12   large_nr     CONS                 1  2.365443 80
+  ladder_lsm_h4_w12   large_nr     CONS                 2  2.175897 80
+  ladder_lsm_h4_w12   large_nr     CONS                 3  2.750929 80
+  ladder_lsm_h4_w12   large_nr     CONS                 4  2.387793 80
+  ladder_lsm_h4_w12   large_nr     CONS                 5  2.167734 80
+  ladder_lsm_h4_w12   large_nr     CONS                 6  2.002070 80
+  ladder_lsm_h4_w12   large_nr     CONS                 7  1.822032 80
+  ladder_lsm_h4_w12   large_nr     CONS                 8  1.719771 80
+  ladder_lsm_h4_w12   large_nr      CPI                 1  2.529051 80
+  ladder_lsm_h4_w12   large_nr      CPI                 2  2.155733 80
+  ladder_lsm_h4_w12   large_nr      CPI                 3  1.930155 80
+  ladder_lsm_h4_w12   large_nr      CPI                 4  1.813432 80
+  ladder_lsm_h4_w12   large_nr      CPI                 5  1.718907 80
+  ladder_lsm_h4_w12   large_nr      CPI                 6  1.682889 80
+  ladder_lsm_h4_w12   large_nr      CPI                 7  1.668453 80
+  ladder_lsm_h4_w12   large_nr      CPI                 8  1.650744 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 1  1.214631 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 2  1.169909 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 3  1.165182 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 4  1.178053 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 5  1.189505 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 6  1.211115 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 7  1.228512 80
+  ladder_lsm_h4_w12   large_nr     DEFL                 8  1.242642 80
+  ladder_lsm_h4_w12   large_nr      EMP                 1  1.436004 80
+  ladder_lsm_h4_w12   large_nr      EMP                 2  1.602014 80
+  ladder_lsm_h4_w12   large_nr      EMP                 3  2.602904 80
+  ladder_lsm_h4_w12   large_nr      EMP                 4  2.492845 80
+  ladder_lsm_h4_w12   large_nr      EMP                 5  2.341752 80
+  ladder_lsm_h4_w12   large_nr      EMP                 6  2.242737 80
+  ladder_lsm_h4_w12   large_nr      EMP                 7  2.106913 80
+  ladder_lsm_h4_w12   large_nr      EMP                 8  1.998263 80
+  ladder_lsm_h4_w12   large_nr      FFR                 1  0.481433 80
+  ladder_lsm_h4_w12   large_nr      FFR                 2  0.771213 80
+  ladder_lsm_h4_w12   large_nr      FFR                 3  1.087923 80
+  ladder_lsm_h4_w12   large_nr      FFR                 4  1.375318 80
+  ladder_lsm_h4_w12   large_nr      FFR                 5  1.644094 80
+  ladder_lsm_h4_w12   large_nr      FFR                 6  1.903550 80
+  ladder_lsm_h4_w12   large_nr      FFR                 7  2.123865 80
+  ladder_lsm_h4_w12   large_nr      FFR                 8  2.304457 80
+  ladder_lsm_h4_w12   large_nr      GDP                 1  2.802537 80
+  ladder_lsm_h4_w12   large_nr      GDP                 2  2.604488 80
+  ladder_lsm_h4_w12   large_nr      GDP                 3  2.994321 80
+  ladder_lsm_h4_w12   large_nr      GDP                 4  2.638418 80
+  ladder_lsm_h4_w12   large_nr      GDP                 5  2.367570 80
+  ladder_lsm_h4_w12   large_nr      GDP                 6  2.175516 80
+  ladder_lsm_h4_w12   large_nr      GDP                 7  1.981633 80
+  ladder_lsm_h4_w12   large_nr      GDP                 8  1.864740 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 1  2.685389 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 2  2.845169 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 3  3.850856 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 4  3.577914 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 5  3.299504 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 6  3.102564 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 7  2.867264 80
+  ladder_lsm_h4_w12   large_nr    HOURS                 8  2.670040 80
+  ladder_lsm_h4_w12   large_nr      INV                 1 12.399132 80
+  ladder_lsm_h4_w12   large_nr      INV                 2 11.882485 80
+  ladder_lsm_h4_w12   large_nr      INV                 3 11.664410 80
+  ladder_lsm_h4_w12   large_nr      INV                 4 10.639740 80
+  ladder_lsm_h4_w12   large_nr      INV                 5  9.582802 80
+  ladder_lsm_h4_w12   large_nr      INV                 6  8.711905 80
+  ladder_lsm_h4_w12   large_nr      INV                 7  7.941956 80
+  ladder_lsm_h4_w12   large_nr      INV                 8  7.387862 80
+  ladder_lsm_h4_w12   large_nr       M1                 1  7.006059 80
+  ladder_lsm_h4_w12   large_nr       M1                 2  6.616550 80
+  ladder_lsm_h4_w12   large_nr       M1                 3 17.888109 80
+  ladder_lsm_h4_w12   large_nr       M1                 4 21.102372 80
+  ladder_lsm_h4_w12   large_nr       M1                 5 21.507198 80
+  ladder_lsm_h4_w12   large_nr       M1                 6 21.249310 80
+  ladder_lsm_h4_w12   large_nr       M1                 7 20.800526 80
+  ladder_lsm_h4_w12   large_nr       M1                 8 20.253526 80
+  ladder_lsm_h4_w12   large_nr       M2                 1  3.360135 80
+  ladder_lsm_h4_w12   large_nr       M2                 2  3.129469 80
+  ladder_lsm_h4_w12   large_nr       M2                 3  3.428780 80
+  ladder_lsm_h4_w12   large_nr       M2                 4  3.544745 80
+  ladder_lsm_h4_w12   large_nr       M2                 5  3.544098 80
+  ladder_lsm_h4_w12   large_nr       M2                 6  3.552528 80
+  ladder_lsm_h4_w12   large_nr       M2                 7  3.577549 80
+  ladder_lsm_h4_w12   large_nr       M2                 8  3.564049 80
+  ladder_lsm_h4_w12   large_nr      PPI                 1  4.933877 80
+  ladder_lsm_h4_w12   large_nr      PPI                 2  4.251201 80
+  ladder_lsm_h4_w12   large_nr      PPI                 3  3.781409 80
+  ladder_lsm_h4_w12   large_nr      PPI                 4  3.497076 80
+  ladder_lsm_h4_w12   large_nr      PPI                 5  3.231108 80
+  ladder_lsm_h4_w12   large_nr      PPI                 6  3.041042 80
+  ladder_lsm_h4_w12   large_nr      PPI                 7  2.910703 80
+  ladder_lsm_h4_w12   large_nr      PPI                 8  2.790584 80
+  ladder_lsm_h4_w12   large_nr     REER                 1 12.472297 80
+  ladder_lsm_h4_w12   large_nr     REER                 2 10.894008 79
+  ladder_lsm_h4_w12   large_nr     REER                 3  9.213191 78
+  ladder_lsm_h4_w12   large_nr     REER                 4  7.973831 77
+  ladder_lsm_h4_w12   large_nr     REER                 5  7.012747 76
+  ladder_lsm_h4_w12   large_nr     REER                 6  6.308918 75
+  ladder_lsm_h4_w12   large_nr     REER                 7  5.847735 74
+  ladder_lsm_h4_w12   large_nr     REER                 8  5.558041 73
+  ladder_lsm_h4_w12   large_nr    SP500                 1 29.131523 80
+  ladder_lsm_h4_w12   large_nr    SP500                 2 24.932273 80
+  ladder_lsm_h4_w12   large_nr    SP500                 3 21.829436 80
+  ladder_lsm_h4_w12   large_nr    SP500                 4 19.275198 80
+  ladder_lsm_h4_w12   large_nr    SP500                 5 17.312584 80
+  ladder_lsm_h4_w12   large_nr    SP500                 6 15.831609 80
+  ladder_lsm_h4_w12   large_nr    SP500                 7 14.611524 80
+  ladder_lsm_h4_w12   large_nr    SP500                 8 13.584892 80
+  ladder_lsm_h4_w12   large_nr     TB10                 1  0.367593 80
+  ladder_lsm_h4_w12   large_nr     TB10                 2  0.582942 80
+  ladder_lsm_h4_w12   large_nr     TB10                 3  0.708113 80
+  ladder_lsm_h4_w12   large_nr     TB10                 4  0.802364 80
+  ladder_lsm_h4_w12   large_nr     TB10                 5  0.871212 80
+  ladder_lsm_h4_w12   large_nr     TB10                 6  0.945821 80
+  ladder_lsm_h4_w12   large_nr     TB10                 7  1.012731 80
+  ladder_lsm_h4_w12   large_nr     TB10                 8  1.044421 80
+  ladder_lsm_h4_w12   large_nr      UNR                 1  0.296099 80
+  ladder_lsm_h4_w12   large_nr      UNR                 2  0.578627 80
+  ladder_lsm_h4_w12   large_nr      UNR                 3  1.362010 80
+  ladder_lsm_h4_w12   large_nr      UNR                 4  1.662512 80
+  ladder_lsm_h4_w12   large_nr      UNR                 5  1.826701 80
+  ladder_lsm_h4_w12   large_nr      UNR                 6  1.990791 80
+  ladder_lsm_h4_w12   large_nr      UNR                 7  2.132984 80
+  ladder_lsm_h4_w12   large_nr      UNR                 8  2.249980 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 1  4.309641 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 2  2.428943 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 3  2.259294 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 4  1.894545 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 5  1.679734 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 6  1.539455 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 7  1.334888 80
+  ladder_lsm_h4_w12   large_nr     WAGE                 8  1.248447 80
+  ladder_lsm_h4_w60   large_nr      AHE                 1  0.718240 80
+  ladder_lsm_h4_w60   large_nr      AHE                 2  0.709973 80
+  ladder_lsm_h4_w60   large_nr      AHE                 3  0.906287 80
+  ladder_lsm_h4_w60   large_nr      AHE                 4  0.877512 80
+  ladder_lsm_h4_w60   large_nr      AHE                 5  0.877753 80
+  ladder_lsm_h4_w60   large_nr      AHE                 6  0.870215 80
+  ladder_lsm_h4_w60   large_nr      AHE                 7  0.886429 80
+  ladder_lsm_h4_w60   large_nr      AHE                 8  0.931920 80
+  ladder_lsm_h4_w60   large_nr     COMM                 1  9.217991 80
+  ladder_lsm_h4_w60   large_nr     COMM                 2  7.884460 80
+  ladder_lsm_h4_w60   large_nr     COMM                 3  6.603729 80
+  ladder_lsm_h4_w60   large_nr     COMM                 4  5.697758 80
+  ladder_lsm_h4_w60   large_nr     COMM                 5  5.098159 80
+  ladder_lsm_h4_w60   large_nr     COMM                 6  4.634300 80
+  ladder_lsm_h4_w60   large_nr     COMM                 7  4.251734 80
+  ladder_lsm_h4_w60   large_nr     COMM                 8  3.959773 80
+  ladder_lsm_h4_w60   large_nr     CONS                 1  1.916840 80
+  ladder_lsm_h4_w60   large_nr     CONS                 2  1.803428 80
+  ladder_lsm_h4_w60   large_nr     CONS                 3  2.539426 80
+  ladder_lsm_h4_w60   large_nr     CONS                 4  2.153968 80
+  ladder_lsm_h4_w60   large_nr     CONS                 5  1.943869 80
+  ladder_lsm_h4_w60   large_nr     CONS                 6  1.816578 80
+  ladder_lsm_h4_w60   large_nr     CONS                 7  1.717707 80
+  ladder_lsm_h4_w60   large_nr     CONS                 8  1.646368 80
+  ladder_lsm_h4_w60   large_nr      CPI                 1  2.346398 80
+  ladder_lsm_h4_w60   large_nr      CPI                 2  1.975985 80
+  ladder_lsm_h4_w60   large_nr      CPI                 3  1.732313 80
+  ladder_lsm_h4_w60   large_nr      CPI                 4  1.575583 80
+  ladder_lsm_h4_w60   large_nr      CPI                 5  1.419663 80
+  ladder_lsm_h4_w60   large_nr      CPI                 6  1.329295 80
+  ladder_lsm_h4_w60   large_nr      CPI                 7  1.271480 80
+  ladder_lsm_h4_w60   large_nr      CPI                 8  1.212106 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 1  1.384668 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 2  1.326977 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 3  1.252654 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 4  1.191015 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 5  1.144687 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 6  1.117945 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 7  1.102465 80
+  ladder_lsm_h4_w60   large_nr     DEFL                 8  1.086891 80
+  ladder_lsm_h4_w60   large_nr      EMP                 1  1.326817 80
+  ladder_lsm_h4_w60   large_nr      EMP                 2  1.472355 80
+  ladder_lsm_h4_w60   large_nr      EMP                 3  2.558038 80
+  ladder_lsm_h4_w60   large_nr      EMP                 4  2.441270 80
+  ladder_lsm_h4_w60   large_nr      EMP                 5  2.311769 80
+  ladder_lsm_h4_w60   large_nr      EMP                 6  2.190132 80
+  ladder_lsm_h4_w60   large_nr      EMP                 7  2.088102 80
+  ladder_lsm_h4_w60   large_nr      EMP                 8  1.985030 80
+  ladder_lsm_h4_w60   large_nr      FFR                 1  0.519235 80
+  ladder_lsm_h4_w60   large_nr      FFR                 2  0.945764 80
+  ladder_lsm_h4_w60   large_nr      FFR                 3  1.323431 80
+  ladder_lsm_h4_w60   large_nr      FFR                 4  1.655480 80
+  ladder_lsm_h4_w60   large_nr      FFR                 5  1.960916 80
+  ladder_lsm_h4_w60   large_nr      FFR                 6  2.226339 80
+  ladder_lsm_h4_w60   large_nr      FFR                 7  2.438266 80
+  ladder_lsm_h4_w60   large_nr      FFR                 8  2.623216 80
+  ladder_lsm_h4_w60   large_nr      GDP                 1  2.415861 80
+  ladder_lsm_h4_w60   large_nr      GDP                 2  2.217254 80
+  ladder_lsm_h4_w60   large_nr      GDP                 3  2.706876 80
+  ladder_lsm_h4_w60   large_nr      GDP                 4  2.325438 80
+  ladder_lsm_h4_w60   large_nr      GDP                 5  2.055443 80
+  ladder_lsm_h4_w60   large_nr      GDP                 6  1.875973 80
+  ladder_lsm_h4_w60   large_nr      GDP                 7  1.759770 80
+  ladder_lsm_h4_w60   large_nr      GDP                 8  1.659912 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 1  2.447177 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 2  2.592991 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 3  3.758457 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 4  3.493445 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 5  3.258271 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 6  3.056851 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 7  2.874543 80
+  ladder_lsm_h4_w60   large_nr    HOURS                 8  2.686548 80
+  ladder_lsm_h4_w60   large_nr      INV                 1 11.210534 80
+  ladder_lsm_h4_w60   large_nr      INV                 2 10.580085 80
+  ladder_lsm_h4_w60   large_nr      INV                 3 10.850650 80
+  ladder_lsm_h4_w60   large_nr      INV                 4  9.931755 80
+  ladder_lsm_h4_w60   large_nr      INV                 5  8.924912 80
+  ladder_lsm_h4_w60   large_nr      INV                 6  8.132405 80
+  ladder_lsm_h4_w60   large_nr      INV                 7  7.494038 80
+  ladder_lsm_h4_w60   large_nr      INV                 8  6.931891 80
+  ladder_lsm_h4_w60   large_nr       M1                 1  6.127323 80
+  ladder_lsm_h4_w60   large_nr       M1                 2  5.661679 80
+  ladder_lsm_h4_w60   large_nr       M1                 3 17.788829 80
+  ladder_lsm_h4_w60   large_nr       M1                 4 21.168728 80
+  ladder_lsm_h4_w60   large_nr       M1                 5 21.723624 80
+  ladder_lsm_h4_w60   large_nr       M1                 6 21.483658 80
+  ladder_lsm_h4_w60   large_nr       M1                 7 21.013187 80
+  ladder_lsm_h4_w60   large_nr       M1                 8 20.465266 80
+  ladder_lsm_h4_w60   large_nr       M2                 1  2.997631 80
+  ladder_lsm_h4_w60   large_nr       M2                 2  2.790725 80
+  ladder_lsm_h4_w60   large_nr       M2                 3  3.268655 80
+  ladder_lsm_h4_w60   large_nr       M2                 4  3.489643 80
+  ladder_lsm_h4_w60   large_nr       M2                 5  3.580946 80
+  ladder_lsm_h4_w60   large_nr       M2                 6  3.618044 80
+  ladder_lsm_h4_w60   large_nr       M2                 7  3.633674 80
+  ladder_lsm_h4_w60   large_nr       M2                 8  3.611728 80
+  ladder_lsm_h4_w60   large_nr      PPI                 1  4.840159 80
+  ladder_lsm_h4_w60   large_nr      PPI                 2  4.024969 80
+  ladder_lsm_h4_w60   large_nr      PPI                 3  3.500078 80
+  ladder_lsm_h4_w60   large_nr      PPI                 4  3.160158 80
+  ladder_lsm_h4_w60   large_nr      PPI                 5  2.839022 80
+  ladder_lsm_h4_w60   large_nr      PPI                 6  2.617247 80
+  ladder_lsm_h4_w60   large_nr      PPI                 7  2.469717 80
+  ladder_lsm_h4_w60   large_nr      PPI                 8  2.333753 80
+  ladder_lsm_h4_w60   large_nr     REER                 1 12.698176 80
+  ladder_lsm_h4_w60   large_nr     REER                 2 10.770096 79
+  ladder_lsm_h4_w60   large_nr     REER                 3  9.156402 78
+  ladder_lsm_h4_w60   large_nr     REER                 4  7.950774 77
+  ladder_lsm_h4_w60   large_nr     REER                 5  6.943746 76
+  ladder_lsm_h4_w60   large_nr     REER                 6  6.234656 75
+  ladder_lsm_h4_w60   large_nr     REER                 7  5.863261 74
+  ladder_lsm_h4_w60   large_nr     REER                 8  5.649829 73
+  ladder_lsm_h4_w60   large_nr    SP500                 1 27.586438 80
+  ladder_lsm_h4_w60   large_nr    SP500                 2 23.941998 80
+  ladder_lsm_h4_w60   large_nr    SP500                 3 21.125207 80
+  ladder_lsm_h4_w60   large_nr    SP500                 4 18.838503 80
+  ladder_lsm_h4_w60   large_nr    SP500                 5 16.658154 80
+  ladder_lsm_h4_w60   large_nr    SP500                 6 14.940135 80
+  ladder_lsm_h4_w60   large_nr    SP500                 7 13.754536 80
+  ladder_lsm_h4_w60   large_nr    SP500                 8 12.916920 80
+  ladder_lsm_h4_w60   large_nr     TB10                 1  0.358448 80
+  ladder_lsm_h4_w60   large_nr     TB10                 2  0.590541 80
+  ladder_lsm_h4_w60   large_nr     TB10                 3  0.715368 80
+  ladder_lsm_h4_w60   large_nr     TB10                 4  0.819549 80
+  ladder_lsm_h4_w60   large_nr     TB10                 5  0.902950 80
+  ladder_lsm_h4_w60   large_nr     TB10                 6  0.955630 80
+  ladder_lsm_h4_w60   large_nr     TB10                 7  1.038096 80
+  ladder_lsm_h4_w60   large_nr     TB10                 8  1.112940 80
+  ladder_lsm_h4_w60   large_nr      UNR                 1  0.244592 80
+  ladder_lsm_h4_w60   large_nr      UNR                 2  0.478490 80
+  ladder_lsm_h4_w60   large_nr      UNR                 3  1.308189 80
+  ladder_lsm_h4_w60   large_nr      UNR                 4  1.587000 80
+  ladder_lsm_h4_w60   large_nr      UNR                 5  1.775025 80
+  ladder_lsm_h4_w60   large_nr      UNR                 6  1.929480 80
+  ladder_lsm_h4_w60   large_nr      UNR                 7  2.087910 80
+  ladder_lsm_h4_w60   large_nr      UNR                 8  2.211800 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 1  4.277037 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 2  2.438954 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 3  2.325803 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 4  1.998781 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 5  1.801612 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 6  1.657319 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 7  1.480557 80
+  ladder_lsm_h4_w60   large_nr     WAGE                 8  1.420636 80
+ ladder_rmse_h4_w12   large_nr      AHE                 1  1.174691 80
+ ladder_rmse_h4_w12   large_nr      AHE                 2  1.136672 80
+ ladder_rmse_h4_w12   large_nr      AHE                 3  1.228546 80
+ ladder_rmse_h4_w12   large_nr      AHE                 4  1.168813 80
+ ladder_rmse_h4_w12   large_nr      AHE                 5  1.125484 80
+ ladder_rmse_h4_w12   large_nr      AHE                 6  1.088609 80
+ ladder_rmse_h4_w12   large_nr      AHE                 7  1.074641 80
+ ladder_rmse_h4_w12   large_nr      AHE                 8  1.074393 80
+ ladder_rmse_h4_w12   large_nr     COMM                 1  9.109110 80
+ ladder_rmse_h4_w12   large_nr     COMM                 2  8.078304 80
+ ladder_rmse_h4_w12   large_nr     COMM                 3  7.048110 80
+ ladder_rmse_h4_w12   large_nr     COMM                 4  6.162971 80
+ ladder_rmse_h4_w12   large_nr     COMM                 5  5.541021 80
+ ladder_rmse_h4_w12   large_nr     COMM                 6  5.072146 80
+ ladder_rmse_h4_w12   large_nr     COMM                 7  4.652723 80
+ ladder_rmse_h4_w12   large_nr     COMM                 8  4.349005 80
+ ladder_rmse_h4_w12   large_nr     CONS                 1  2.024901 80
+ ladder_rmse_h4_w12   large_nr     CONS                 2  1.935275 80
+ ladder_rmse_h4_w12   large_nr     CONS                 3  2.620128 80
+ ladder_rmse_h4_w12   large_nr     CONS                 4  2.330420 80
+ ladder_rmse_h4_w12   large_nr     CONS                 5  2.174407 80
+ ladder_rmse_h4_w12   large_nr     CONS                 6  2.055845 80
+ ladder_rmse_h4_w12   large_nr     CONS                 7  1.943205 80
+ ladder_rmse_h4_w12   large_nr     CONS                 8  1.867935 80
+ ladder_rmse_h4_w12   large_nr      CPI                 1  2.396158 80
+ ladder_rmse_h4_w12   large_nr      CPI                 2  2.091940 80
+ ladder_rmse_h4_w12   large_nr      CPI                 3  1.897222 80
+ ladder_rmse_h4_w12   large_nr      CPI                 4  1.727465 80
+ ladder_rmse_h4_w12   large_nr      CPI                 5  1.570784 80
+ ladder_rmse_h4_w12   large_nr      CPI                 6  1.492730 80
+ ladder_rmse_h4_w12   large_nr      CPI                 7  1.437420 80
+ ladder_rmse_h4_w12   large_nr      CPI                 8  1.393909 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 1  1.105738 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 2  1.027230 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 3  0.982725 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 4  0.952823 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 5  0.937429 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 6  0.941880 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 7  0.949547 80
+ ladder_rmse_h4_w12   large_nr     DEFL                 8  0.960012 80
+ ladder_rmse_h4_w12   large_nr      EMP                 1  1.118312 80
+ ladder_rmse_h4_w12   large_nr      EMP                 2  1.147507 80
+ ladder_rmse_h4_w12   large_nr      EMP                 3  2.291162 80
+ ladder_rmse_h4_w12   large_nr      EMP                 4  2.149148 80
+ ladder_rmse_h4_w12   large_nr      EMP                 5  2.026809 80
+ ladder_rmse_h4_w12   large_nr      EMP                 6  1.946213 80
+ ladder_rmse_h4_w12   large_nr      EMP                 7  1.848396 80
+ ladder_rmse_h4_w12   large_nr      EMP                 8  1.767567 80
+ ladder_rmse_h4_w12   large_nr      FFR                 1  0.638412 80
+ ladder_rmse_h4_w12   large_nr      FFR                 2  0.960659 80
+ ladder_rmse_h4_w12   large_nr      FFR                 3  1.247629 80
+ ladder_rmse_h4_w12   large_nr      FFR                 4  1.483666 80
+ ladder_rmse_h4_w12   large_nr      FFR                 5  1.740400 80
+ ladder_rmse_h4_w12   large_nr      FFR                 6  1.994399 80
+ ladder_rmse_h4_w12   large_nr      FFR                 7  2.207389 80
+ ladder_rmse_h4_w12   large_nr      FFR                 8  2.369537 80
+ ladder_rmse_h4_w12   large_nr      GDP                 1  2.331874 80
+ ladder_rmse_h4_w12   large_nr      GDP                 2  2.203207 80
+ ladder_rmse_h4_w12   large_nr      GDP                 3  2.712244 80
+ ladder_rmse_h4_w12   large_nr      GDP                 4  2.429955 80
+ ladder_rmse_h4_w12   large_nr      GDP                 5  2.272259 80
+ ladder_rmse_h4_w12   large_nr      GDP                 6  2.118409 80
+ ladder_rmse_h4_w12   large_nr      GDP                 7  1.987214 80
+ ladder_rmse_h4_w12   large_nr      GDP                 8  1.896888 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 1  2.167663 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 2  2.208324 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 3  3.355595 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 4  3.068195 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 5  2.875260 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 6  2.734275 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 7  2.549958 80
+ ladder_rmse_h4_w12   large_nr    HOURS                 8  2.394943 80
+ ladder_rmse_h4_w12   large_nr      INV                 1 12.458949 80
+ ladder_rmse_h4_w12   large_nr      INV                 2 10.527831 80
+ ladder_rmse_h4_w12   large_nr      INV                 3 10.211529 80
+ ladder_rmse_h4_w12   large_nr      INV                 4  9.321499 80
+ ladder_rmse_h4_w12   large_nr      INV                 5  8.805740 80
+ ladder_rmse_h4_w12   large_nr      INV                 6  8.161364 80
+ ladder_rmse_h4_w12   large_nr      INV                 7  7.566338 80
+ ladder_rmse_h4_w12   large_nr      INV                 8  7.159314 80
+ ladder_rmse_h4_w12   large_nr       M1                 1  5.817036 80
+ ladder_rmse_h4_w12   large_nr       M1                 2  5.683825 80
+ ladder_rmse_h4_w12   large_nr       M1                 3 17.837936 80
+ ladder_rmse_h4_w12   large_nr       M1                 4 21.169238 80
+ ladder_rmse_h4_w12   large_nr       M1                 5 21.641030 80
+ ladder_rmse_h4_w12   large_nr       M1                 6 21.385043 80
+ ladder_rmse_h4_w12   large_nr       M1                 7 20.941228 80
+ ladder_rmse_h4_w12   large_nr       M1                 8 20.404454 80
+ ladder_rmse_h4_w12   large_nr       M2                 1  3.491486 80
+ ladder_rmse_h4_w12   large_nr       M2                 2  3.264514 80
+ ladder_rmse_h4_w12   large_nr       M2                 3  3.598200 80
+ ladder_rmse_h4_w12   large_nr       M2                 4  3.700103 80
+ ladder_rmse_h4_w12   large_nr       M2                 5  3.713572 80
+ ladder_rmse_h4_w12   large_nr       M2                 6  3.743762 80
+ ladder_rmse_h4_w12   large_nr       M2                 7  3.770727 80
+ ladder_rmse_h4_w12   large_nr       M2                 8  3.767239 80
+ ladder_rmse_h4_w12   large_nr      PPI                 1  4.697620 80
+ ladder_rmse_h4_w12   large_nr      PPI                 2  4.156195 80
+ ladder_rmse_h4_w12   large_nr      PPI                 3  3.776366 80
+ ladder_rmse_h4_w12   large_nr      PPI                 4  3.441522 80
+ ladder_rmse_h4_w12   large_nr      PPI                 5  3.099126 80
+ ladder_rmse_h4_w12   large_nr      PPI                 6  2.856945 80
+ ladder_rmse_h4_w12   large_nr      PPI                 7  2.666423 80
+ ladder_rmse_h4_w12   large_nr      PPI                 8  2.528038 80
+ ladder_rmse_h4_w12   large_nr     REER                 1 13.461388 80
+ ladder_rmse_h4_w12   large_nr     REER                 2 11.166283 79
+ ladder_rmse_h4_w12   large_nr     REER                 3  9.180285 78
+ ladder_rmse_h4_w12   large_nr     REER                 4  7.971845 77
+ ladder_rmse_h4_w12   large_nr     REER                 5  7.109925 76
+ ladder_rmse_h4_w12   large_nr     REER                 6  6.525398 75
+ ladder_rmse_h4_w12   large_nr     REER                 7  6.262181 74
+ ladder_rmse_h4_w12   large_nr     REER                 8  6.062909 73
+ ladder_rmse_h4_w12   large_nr    SP500                 1 27.658584 80
+ ladder_rmse_h4_w12   large_nr    SP500                 2 24.374059 80
+ ladder_rmse_h4_w12   large_nr    SP500                 3 21.681840 80
+ ladder_rmse_h4_w12   large_nr    SP500                 4 19.191183 80
+ ladder_rmse_h4_w12   large_nr    SP500                 5 17.157647 80
+ ladder_rmse_h4_w12   large_nr    SP500                 6 15.506046 80
+ ladder_rmse_h4_w12   large_nr    SP500                 7 14.402326 80
+ ladder_rmse_h4_w12   large_nr    SP500                 8 13.435127 80
+ ladder_rmse_h4_w12   large_nr     TB10                 1  0.387713 80
+ ladder_rmse_h4_w12   large_nr     TB10                 2  0.637501 80
+ ladder_rmse_h4_w12   large_nr     TB10                 3  0.789859 80
+ ladder_rmse_h4_w12   large_nr     TB10                 4  0.899676 80
+ ladder_rmse_h4_w12   large_nr     TB10                 5  0.985113 80
+ ladder_rmse_h4_w12   large_nr     TB10                 6  1.055757 80
+ ladder_rmse_h4_w12   large_nr     TB10                 7  1.120314 80
+ ladder_rmse_h4_w12   large_nr     TB10                 8  1.152392 80
+ ladder_rmse_h4_w12   large_nr      UNR                 1  0.279406 80
+ ladder_rmse_h4_w12   large_nr      UNR                 2  0.487542 80
+ ladder_rmse_h4_w12   large_nr      UNR                 3  1.279929 80
+ ladder_rmse_h4_w12   large_nr      UNR                 4  1.545846 80
+ ladder_rmse_h4_w12   large_nr      UNR                 5  1.740022 80
+ ladder_rmse_h4_w12   large_nr      UNR                 6  1.930655 80
+ ladder_rmse_h4_w12   large_nr      UNR                 7  2.065581 80
+ ladder_rmse_h4_w12   large_nr      UNR                 8  2.184368 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 1  4.186156 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 2  2.504924 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 3  2.327607 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 4  1.978017 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 5  1.783680 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 6  1.655241 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 7  1.449412 80
+ ladder_rmse_h4_w12   large_nr     WAGE                 8  1.357366 80
+ ladder_rmse_h4_w60   large_nr      AHE                 1  1.048532 80
+ ladder_rmse_h4_w60   large_nr      AHE                 2  1.033967 80
+ ladder_rmse_h4_w60   large_nr      AHE                 3  1.161975 80
+ ladder_rmse_h4_w60   large_nr      AHE                 4  1.114523 80
+ ladder_rmse_h4_w60   large_nr      AHE                 5  1.071708 80
+ ladder_rmse_h4_w60   large_nr      AHE                 6  1.024766 80
+ ladder_rmse_h4_w60   large_nr      AHE                 7  1.011387 80
+ ladder_rmse_h4_w60   large_nr      AHE                 8  1.011320 80
+ ladder_rmse_h4_w60   large_nr     COMM                 1  9.290785 80
+ ladder_rmse_h4_w60   large_nr     COMM                 2  8.091634 80
+ ladder_rmse_h4_w60   large_nr     COMM                 3  6.900464 80
+ ladder_rmse_h4_w60   large_nr     COMM                 4  6.040357 80
+ ladder_rmse_h4_w60   large_nr     COMM                 5  5.483538 80
+ ladder_rmse_h4_w60   large_nr     COMM                 6  5.058535 80
+ ladder_rmse_h4_w60   large_nr     COMM                 7  4.695618 80
+ ladder_rmse_h4_w60   large_nr     COMM                 8  4.393964 80
+ ladder_rmse_h4_w60   large_nr     CONS                 1  1.882739 80
+ ladder_rmse_h4_w60   large_nr     CONS                 2  1.785614 80
+ ladder_rmse_h4_w60   large_nr     CONS                 3  2.526932 80
+ ladder_rmse_h4_w60   large_nr     CONS                 4  2.173529 80
+ ladder_rmse_h4_w60   large_nr     CONS                 5  1.983285 80
+ ladder_rmse_h4_w60   large_nr     CONS                 6  1.865207 80
+ ladder_rmse_h4_w60   large_nr     CONS                 7  1.778270 80
+ ladder_rmse_h4_w60   large_nr     CONS                 8  1.710299 80
+ ladder_rmse_h4_w60   large_nr      CPI                 1  2.414618 80
+ ladder_rmse_h4_w60   large_nr      CPI                 2  2.119602 80
+ ladder_rmse_h4_w60   large_nr      CPI                 3  1.923326 80
+ ladder_rmse_h4_w60   large_nr      CPI                 4  1.789820 80
+ ladder_rmse_h4_w60   large_nr      CPI                 5  1.650681 80
+ ladder_rmse_h4_w60   large_nr      CPI                 6  1.593434 80
+ ladder_rmse_h4_w60   large_nr      CPI                 7  1.570262 80
+ ladder_rmse_h4_w60   large_nr      CPI                 8  1.530126 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 1  1.113466 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 2  1.054766 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 3  1.043949 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 4  1.061671 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 5  1.053436 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 6  1.078037 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 7  1.108882 80
+ ladder_rmse_h4_w60   large_nr     DEFL                 8  1.134128 80
+ ladder_rmse_h4_w60   large_nr      EMP                 1  1.037888 80
+ ladder_rmse_h4_w60   large_nr      EMP                 2  1.200297 80
+ ladder_rmse_h4_w60   large_nr      EMP                 3  2.397106 80
+ ladder_rmse_h4_w60   large_nr      EMP                 4  2.267587 80
+ ladder_rmse_h4_w60   large_nr      EMP                 5  2.154628 80
+ ladder_rmse_h4_w60   large_nr      EMP                 6  2.050721 80
+ ladder_rmse_h4_w60   large_nr      EMP                 7  1.967048 80
+ ladder_rmse_h4_w60   large_nr      EMP                 8  1.885023 80
+ ladder_rmse_h4_w60   large_nr      FFR                 1  0.501555 80
+ ladder_rmse_h4_w60   large_nr      FFR                 2  0.879973 80
+ ladder_rmse_h4_w60   large_nr      FFR                 3  1.232939 80
+ ladder_rmse_h4_w60   large_nr      FFR                 4  1.524521 80
+ ladder_rmse_h4_w60   large_nr      FFR                 5  1.765314 80
+ ladder_rmse_h4_w60   large_nr      FFR                 6  1.994476 80
+ ladder_rmse_h4_w60   large_nr      FFR                 7  2.199494 80
+ ladder_rmse_h4_w60   large_nr      FFR                 8  2.375043 80
+ ladder_rmse_h4_w60   large_nr      GDP                 1  2.304496 80
+ ladder_rmse_h4_w60   large_nr      GDP                 2  2.084155 80
+ ladder_rmse_h4_w60   large_nr      GDP                 3  2.612703 80
+ ladder_rmse_h4_w60   large_nr      GDP                 4  2.246703 80
+ ladder_rmse_h4_w60   large_nr      GDP                 5  2.016770 80
+ ladder_rmse_h4_w60   large_nr      GDP                 6  1.855894 80
+ ladder_rmse_h4_w60   large_nr      GDP                 7  1.752543 80
+ ladder_rmse_h4_w60   large_nr      GDP                 8  1.655196 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 1  2.178492 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 2  2.312503 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 3  3.562806 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 4  3.293604 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 5  3.090751 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 6  2.914579 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 7  2.762795 80
+ ladder_rmse_h4_w60   large_nr    HOURS                 8  2.607626 80
+ ladder_rmse_h4_w60   large_nr      INV                 1 10.550178 80
+ ladder_rmse_h4_w60   large_nr      INV                 2 10.001770 80
+ ladder_rmse_h4_w60   large_nr      INV                 3 10.541761 80
+ ladder_rmse_h4_w60   large_nr      INV                 4  9.790035 80
+ ladder_rmse_h4_w60   large_nr      INV                 5  8.950334 80
+ ladder_rmse_h4_w60   large_nr      INV                 6  8.207620 80
+ ladder_rmse_h4_w60   large_nr      INV                 7  7.645102 80
+ ladder_rmse_h4_w60   large_nr      INV                 8  7.083308 80
+ ladder_rmse_h4_w60   large_nr       M1                 1  6.446958 80
+ ladder_rmse_h4_w60   large_nr       M1                 2  5.954779 80
+ ladder_rmse_h4_w60   large_nr       M1                 3 17.857632 80
+ ladder_rmse_h4_w60   large_nr       M1                 4 21.224961 80
+ ladder_rmse_h4_w60   large_nr       M1                 5 21.808690 80
+ ladder_rmse_h4_w60   large_nr       M1                 6 21.607296 80
+ ladder_rmse_h4_w60   large_nr       M1                 7 21.157057 80
+ ladder_rmse_h4_w60   large_nr       M1                 8 20.627797 80
+ ladder_rmse_h4_w60   large_nr       M2                 1  3.228487 80
+ ladder_rmse_h4_w60   large_nr       M2                 2  2.909824 80
+ ladder_rmse_h4_w60   large_nr       M2                 3  3.307038 80
+ ladder_rmse_h4_w60   large_nr       M2                 4  3.501496 80
+ ladder_rmse_h4_w60   large_nr       M2                 5  3.591627 80
+ ladder_rmse_h4_w60   large_nr       M2                 6  3.650033 80
+ ladder_rmse_h4_w60   large_nr       M2                 7  3.691002 80
+ ladder_rmse_h4_w60   large_nr       M2                 8  3.708194 80
+ ladder_rmse_h4_w60   large_nr      PPI                 1  4.946232 80
+ ladder_rmse_h4_w60   large_nr      PPI                 2  4.247503 80
+ ladder_rmse_h4_w60   large_nr      PPI                 3  3.842066 80
+ ladder_rmse_h4_w60   large_nr      PPI                 4  3.573529 80
+ ladder_rmse_h4_w60   large_nr      PPI                 5  3.281666 80
+ ladder_rmse_h4_w60   large_nr      PPI                 6  3.067141 80
+ ladder_rmse_h4_w60   large_nr      PPI                 7  2.927723 80
+ ladder_rmse_h4_w60   large_nr      PPI                 8  2.799242 80
+ ladder_rmse_h4_w60   large_nr     REER                 1 13.043943 80
+ ladder_rmse_h4_w60   large_nr     REER                 2 11.252892 79
+ ladder_rmse_h4_w60   large_nr     REER                 3  9.762815 78
+ ladder_rmse_h4_w60   large_nr     REER                 4  8.697035 77
+ ladder_rmse_h4_w60   large_nr     REER                 5  7.774055 76
+ ladder_rmse_h4_w60   large_nr     REER                 6  7.046211 75
+ ladder_rmse_h4_w60   large_nr     REER                 7  6.492906 74
+ ladder_rmse_h4_w60   large_nr     REER                 8  6.108655 73
+ ladder_rmse_h4_w60   large_nr    SP500                 1 27.014065 80
+ ladder_rmse_h4_w60   large_nr    SP500                 2 23.975714 80
+ ladder_rmse_h4_w60   large_nr    SP500                 3 21.383259 80
+ ladder_rmse_h4_w60   large_nr    SP500                 4 19.135385 80
+ ladder_rmse_h4_w60   large_nr    SP500                 5 17.177918 80
+ ladder_rmse_h4_w60   large_nr    SP500                 6 15.629861 80
+ ladder_rmse_h4_w60   large_nr    SP500                 7 14.515804 80
+ ladder_rmse_h4_w60   large_nr    SP500                 8 13.566229 80
+ ladder_rmse_h4_w60   large_nr     TB10                 1  0.338837 80
+ ladder_rmse_h4_w60   large_nr     TB10                 2  0.560329 80
+ ladder_rmse_h4_w60   large_nr     TB10                 3  0.693679 80
+ ladder_rmse_h4_w60   large_nr     TB10                 4  0.798892 80
+ ladder_rmse_h4_w60   large_nr     TB10                 5  0.867823 80
+ ladder_rmse_h4_w60   large_nr     TB10                 6  0.905411 80
+ ladder_rmse_h4_w60   large_nr     TB10                 7  0.970824 80
+ ladder_rmse_h4_w60   large_nr     TB10                 8  1.015128 80
+ ladder_rmse_h4_w60   large_nr      UNR                 1  0.230295 80
+ ladder_rmse_h4_w60   large_nr      UNR                 2  0.439732 80
+ ladder_rmse_h4_w60   large_nr      UNR                 3  1.275869 80
+ ladder_rmse_h4_w60   large_nr      UNR                 4  1.542768 80
+ ladder_rmse_h4_w60   large_nr      UNR                 5  1.732527 80
+ ladder_rmse_h4_w60   large_nr      UNR                 6  1.891122 80
+ ladder_rmse_h4_w60   large_nr      UNR                 7  2.053291 80
+ ladder_rmse_h4_w60   large_nr      UNR                 8  2.175337 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 1  4.556012 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 2  2.584958 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 3  2.406901 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 4  2.047299 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 5  1.851778 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 6  1.710272 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 7  1.516712 80
+ ladder_rmse_h4_w60   large_nr     WAGE                 8  1.462766 80
+ ladder_rmse_h4_w80   large_nr      AHE                 1  1.146394 80
+ ladder_rmse_h4_w80   large_nr      AHE                 2  1.176148 80
+ ladder_rmse_h4_w80   large_nr      AHE                 3  1.333672 80
+ ladder_rmse_h4_w80   large_nr      AHE                 4  1.323983 80
+ ladder_rmse_h4_w80   large_nr      AHE                 5  1.318485 80
+ ladder_rmse_h4_w80   large_nr      AHE                 6  1.289745 80
+ ladder_rmse_h4_w80   large_nr      AHE                 7  1.271596 80
+ ladder_rmse_h4_w80   large_nr      AHE                 8  1.272254 80
+ ladder_rmse_h4_w80   large_nr     COMM                 1  9.234831 80
+ ladder_rmse_h4_w80   large_nr     COMM                 2  8.232738 80
+ ladder_rmse_h4_w80   large_nr     COMM                 3  7.159172 80
+ ladder_rmse_h4_w80   large_nr     COMM                 4  6.317468 80
+ ladder_rmse_h4_w80   large_nr     COMM                 5  5.647502 80
+ ladder_rmse_h4_w80   large_nr     COMM                 6  5.125294 80
+ ladder_rmse_h4_w80   large_nr     COMM                 7  4.724065 80
+ ladder_rmse_h4_w80   large_nr     COMM                 8  4.416372 80
+ ladder_rmse_h4_w80   large_nr     CONS                 1  1.916902 80
+ ladder_rmse_h4_w80   large_nr     CONS                 2  1.790716 80
+ ladder_rmse_h4_w80   large_nr     CONS                 3  2.508698 80
+ ladder_rmse_h4_w80   large_nr     CONS                 4  2.134615 80
+ ladder_rmse_h4_w80   large_nr     CONS                 5  1.920407 80
+ ladder_rmse_h4_w80   large_nr     CONS                 6  1.790197 80
+ ladder_rmse_h4_w80   large_nr     CONS                 7  1.700049 80
+ ladder_rmse_h4_w80   large_nr     CONS                 8  1.626215 80
+ ladder_rmse_h4_w80   large_nr      CPI                 1  2.566276 80
+ ladder_rmse_h4_w80   large_nr      CPI                 2  2.383029 80
+ ladder_rmse_h4_w80   large_nr      CPI                 3  2.229124 80
+ ladder_rmse_h4_w80   large_nr      CPI                 4  2.091185 80
+ ladder_rmse_h4_w80   large_nr      CPI                 5  1.920275 80
+ ladder_rmse_h4_w80   large_nr      CPI                 6  1.829407 80
+ ladder_rmse_h4_w80   large_nr      CPI                 7  1.794856 80
+ ladder_rmse_h4_w80   large_nr      CPI                 8  1.752100 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 1  1.311007 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 2  1.254601 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 3  1.252191 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 4  1.254918 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 5  1.232636 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 6  1.225327 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 7  1.214078 80
+ ladder_rmse_h4_w80   large_nr     DEFL                 8  1.204016 80
+ ladder_rmse_h4_w80   large_nr      EMP                 1  1.172835 80
+ ladder_rmse_h4_w80   large_nr      EMP                 2  1.262344 80
+ ladder_rmse_h4_w80   large_nr      EMP                 3  2.406375 80
+ ladder_rmse_h4_w80   large_nr      EMP                 4  2.282368 80
+ ladder_rmse_h4_w80   large_nr      EMP                 5  2.127699 80
+ ladder_rmse_h4_w80   large_nr      EMP                 6  2.020346 80
+ ladder_rmse_h4_w80   large_nr      EMP                 7  1.932979 80
+ ladder_rmse_h4_w80   large_nr      EMP                 8  1.840628 80
+ ladder_rmse_h4_w80   large_nr      FFR                 1  0.509849 80
+ ladder_rmse_h4_w80   large_nr      FFR                 2  0.925051 80
+ ladder_rmse_h4_w80   large_nr      FFR                 3  1.281747 80
+ ladder_rmse_h4_w80   large_nr      FFR                 4  1.584844 80
+ ladder_rmse_h4_w80   large_nr      FFR                 5  1.832977 80
+ ladder_rmse_h4_w80   large_nr      FFR                 6  2.050420 80
+ ladder_rmse_h4_w80   large_nr      FFR                 7  2.234324 80
+ ladder_rmse_h4_w80   large_nr      FFR                 8  2.387908 80
+ ladder_rmse_h4_w80   large_nr      GDP                 1  2.292616 80
+ ladder_rmse_h4_w80   large_nr      GDP                 2  2.067682 80
+ ladder_rmse_h4_w80   large_nr      GDP                 3  2.569794 80
+ ladder_rmse_h4_w80   large_nr      GDP                 4  2.192803 80
+ ladder_rmse_h4_w80   large_nr      GDP                 5  1.945668 80
+ ladder_rmse_h4_w80   large_nr      GDP                 6  1.801749 80
+ ladder_rmse_h4_w80   large_nr      GDP                 7  1.705307 80
+ ladder_rmse_h4_w80   large_nr      GDP                 8  1.622814 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 1  2.168395 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 2  2.278324 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 3  3.518692 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 4  3.250607 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 5  3.012376 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 6  2.838860 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 7  2.679896 80
+ ladder_rmse_h4_w80   large_nr    HOURS                 8  2.516048 80
+ ladder_rmse_h4_w80   large_nr      INV                 1 10.902910 80
+ ladder_rmse_h4_w80   large_nr      INV                 2 10.145956 80
+ ladder_rmse_h4_w80   large_nr      INV                 3 10.246779 80
+ ladder_rmse_h4_w80   large_nr      INV                 4  9.263481 80
+ ladder_rmse_h4_w80   large_nr      INV                 5  8.411577 80
+ ladder_rmse_h4_w80   large_nr      INV                 6  7.821239 80
+ ladder_rmse_h4_w80   large_nr      INV                 7  7.335403 80
+ ladder_rmse_h4_w80   large_nr      INV                 8  6.908936 80
+ ladder_rmse_h4_w80   large_nr       M1                 1  6.326662 80
+ ladder_rmse_h4_w80   large_nr       M1                 2  5.941342 80
+ ladder_rmse_h4_w80   large_nr       M1                 3 17.877810 80
+ ladder_rmse_h4_w80   large_nr       M1                 4 21.270310 80
+ ladder_rmse_h4_w80   large_nr       M1                 5 21.818473 80
+ ladder_rmse_h4_w80   large_nr       M1                 6 21.593868 80
+ ladder_rmse_h4_w80   large_nr       M1                 7 21.132964 80
+ ladder_rmse_h4_w80   large_nr       M1                 8 20.577102 80
+ ladder_rmse_h4_w80   large_nr       M2                 1  2.799953 80
+ ladder_rmse_h4_w80   large_nr       M2                 2  2.553124 80
+ ladder_rmse_h4_w80   large_nr       M2                 3  3.050505 80
+ ladder_rmse_h4_w80   large_nr       M2                 4  3.301846 80
+ ladder_rmse_h4_w80   large_nr       M2                 5  3.426299 80
+ ladder_rmse_h4_w80   large_nr       M2                 6  3.513474 80
+ ladder_rmse_h4_w80   large_nr       M2                 7  3.574345 80
+ ladder_rmse_h4_w80   large_nr       M2                 8  3.602433 80
+ ladder_rmse_h4_w80   large_nr      PPI                 1  4.944947 80
+ ladder_rmse_h4_w80   large_nr      PPI                 2  4.432663 80
+ ladder_rmse_h4_w80   large_nr      PPI                 3  4.080294 80
+ ladder_rmse_h4_w80   large_nr      PPI                 4  3.788456 80
+ ladder_rmse_h4_w80   large_nr      PPI                 5  3.418572 80
+ ladder_rmse_h4_w80   large_nr      PPI                 6  3.155009 80
+ ladder_rmse_h4_w80   large_nr      PPI                 7  3.003911 80
+ ladder_rmse_h4_w80   large_nr      PPI                 8  2.873126 80
+ ladder_rmse_h4_w80   large_nr     REER                 1 11.839923 80
+ ladder_rmse_h4_w80   large_nr     REER                 2  9.934411 79
+ ladder_rmse_h4_w80   large_nr     REER                 3  8.430261 78
+ ladder_rmse_h4_w80   large_nr     REER                 4  7.458014 77
+ ladder_rmse_h4_w80   large_nr     REER                 5  6.755756 76
+ ladder_rmse_h4_w80   large_nr     REER                 6  6.170831 75
+ ladder_rmse_h4_w80   large_nr     REER                 7  5.770361 74
+ ladder_rmse_h4_w80   large_nr     REER                 8  5.550622 73
+ ladder_rmse_h4_w80   large_nr    SP500                 1 27.673359 80
+ ladder_rmse_h4_w80   large_nr    SP500                 2 24.027870 80
+ ladder_rmse_h4_w80   large_nr    SP500                 3 21.160478 80
+ ladder_rmse_h4_w80   large_nr    SP500                 4 18.690481 80
+ ladder_rmse_h4_w80   large_nr    SP500                 5 16.568817 80
+ ladder_rmse_h4_w80   large_nr    SP500                 6 14.971518 80
+ ladder_rmse_h4_w80   large_nr    SP500                 7 13.805274 80
+ ladder_rmse_h4_w80   large_nr    SP500                 8 12.911959 80
+ ladder_rmse_h4_w80   large_nr     TB10                 1  0.362528 80
+ ladder_rmse_h4_w80   large_nr     TB10                 2  0.593918 80
+ ladder_rmse_h4_w80   large_nr     TB10                 3  0.740536 80
+ ladder_rmse_h4_w80   large_nr     TB10                 4  0.881832 80
+ ladder_rmse_h4_w80   large_nr     TB10                 5  0.992068 80
+ ladder_rmse_h4_w80   large_nr     TB10                 6  1.055276 80
+ ladder_rmse_h4_w80   large_nr     TB10                 7  1.152681 80
+ ladder_rmse_h4_w80   large_nr     TB10                 8  1.235987 80
+ ladder_rmse_h4_w80   large_nr      UNR                 1  0.239604 80
+ ladder_rmse_h4_w80   large_nr      UNR                 2  0.439804 80
+ ladder_rmse_h4_w80   large_nr      UNR                 3  1.266257 80
+ ladder_rmse_h4_w80   large_nr      UNR                 4  1.531949 80
+ ladder_rmse_h4_w80   large_nr      UNR                 5  1.697360 80
+ ladder_rmse_h4_w80   large_nr      UNR                 6  1.855002 80
+ ladder_rmse_h4_w80   large_nr      UNR                 7  2.010017 80
+ ladder_rmse_h4_w80   large_nr      UNR                 8  2.141362 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 1  4.383679 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 2  2.494169 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 3  2.347061 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 4  2.011985 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 5  1.808544 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 6  1.647991 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 7  1.453025 80
+ ladder_rmse_h4_w80   large_nr     WAGE                 8  1.380466 80
+ladder_rmsej_h4_w12   large_nr      AHE                 1  0.715166 80
+ladder_rmsej_h4_w12   large_nr      AHE                 2  0.649879 80
+ladder_rmsej_h4_w12   large_nr      AHE                 3  0.773760 80
+ladder_rmsej_h4_w12   large_nr      AHE                 4  0.739109 80
+ladder_rmsej_h4_w12   large_nr      AHE                 5  0.715978 80
+ladder_rmsej_h4_w12   large_nr      AHE                 6  0.709667 80
+ladder_rmsej_h4_w12   large_nr      AHE                 7  0.729175 80
+ladder_rmsej_h4_w12   large_nr      AHE                 8  0.760876 80
+ladder_rmsej_h4_w12   large_nr     COMM                 1  8.921212 80
+ladder_rmsej_h4_w12   large_nr     COMM                 2  8.183326 80
+ladder_rmsej_h4_w12   large_nr     COMM                 3  7.260294 80
+ladder_rmsej_h4_w12   large_nr     COMM                 4  6.475870 80
+ladder_rmsej_h4_w12   large_nr     COMM                 5  5.921258 80
+ladder_rmsej_h4_w12   large_nr     COMM                 6  5.404581 80
+ladder_rmsej_h4_w12   large_nr     COMM                 7  4.963364 80
+ladder_rmsej_h4_w12   large_nr     COMM                 8  4.673171 80
+ladder_rmsej_h4_w12   large_nr     CONS                 1  1.715789 80
+ladder_rmsej_h4_w12   large_nr     CONS                 2  1.641465 80
+ladder_rmsej_h4_w12   large_nr     CONS                 3  2.443752 80
+ladder_rmsej_h4_w12   large_nr     CONS                 4  2.107989 80
+ladder_rmsej_h4_w12   large_nr     CONS                 5  1.900248 80
+ladder_rmsej_h4_w12   large_nr     CONS                 6  1.773036 80
+ladder_rmsej_h4_w12   large_nr     CONS                 7  1.674831 80
+ladder_rmsej_h4_w12   large_nr     CONS                 8  1.593073 80
+ladder_rmsej_h4_w12   large_nr      CPI                 1  2.260664 80
+ladder_rmsej_h4_w12   large_nr      CPI                 2  2.032164 80
+ladder_rmsej_h4_w12   large_nr      CPI                 3  1.910977 80
+ladder_rmsej_h4_w12   large_nr      CPI                 4  1.795969 80
+ladder_rmsej_h4_w12   large_nr      CPI                 5  1.674762 80
+ladder_rmsej_h4_w12   large_nr      CPI                 6  1.602234 80
+ladder_rmsej_h4_w12   large_nr      CPI                 7  1.563321 80
+ladder_rmsej_h4_w12   large_nr      CPI                 8  1.549051 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 1  1.141838 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 2  1.123963 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 3  1.180048 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 4  1.209097 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 5  1.215451 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 6  1.234069 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 7  1.235995 80
+ladder_rmsej_h4_w12   large_nr     DEFL                 8  1.237291 80
+ladder_rmsej_h4_w12   large_nr      EMP                 1  1.081567 80
+ladder_rmsej_h4_w12   large_nr      EMP                 2  1.252067 80
+ladder_rmsej_h4_w12   large_nr      EMP                 3  2.433754 80
+ladder_rmsej_h4_w12   large_nr      EMP                 4  2.331163 80
+ladder_rmsej_h4_w12   large_nr      EMP                 5  2.216509 80
+ladder_rmsej_h4_w12   large_nr      EMP                 6  2.146928 80
+ladder_rmsej_h4_w12   large_nr      EMP                 7  2.061411 80
+ladder_rmsej_h4_w12   large_nr      EMP                 8  1.990935 80
+ladder_rmsej_h4_w12   large_nr      FFR                 1  0.670122 80
+ladder_rmsej_h4_w12   large_nr      FFR                 2  1.162251 80
+ladder_rmsej_h4_w12   large_nr      FFR                 3  1.480150 80
+ladder_rmsej_h4_w12   large_nr      FFR                 4  1.725029 80
+ladder_rmsej_h4_w12   large_nr      FFR                 5  1.943940 80
+ladder_rmsej_h4_w12   large_nr      FFR                 6  2.164801 80
+ladder_rmsej_h4_w12   large_nr      FFR                 7  2.365974 80
+ladder_rmsej_h4_w12   large_nr      FFR                 8  2.552700 80
+ladder_rmsej_h4_w12   large_nr      GDP                 1  2.265856 80
+ladder_rmsej_h4_w12   large_nr      GDP                 2  2.076883 80
+ladder_rmsej_h4_w12   large_nr      GDP                 3  2.632142 80
+ladder_rmsej_h4_w12   large_nr      GDP                 4  2.305985 80
+ladder_rmsej_h4_w12   large_nr      GDP                 5  2.072550 80
+ladder_rmsej_h4_w12   large_nr      GDP                 6  1.920555 80
+ladder_rmsej_h4_w12   large_nr      GDP                 7  1.791354 80
+ladder_rmsej_h4_w12   large_nr      GDP                 8  1.693542 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 1  2.082532 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 2  2.352422 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 3  3.594800 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 4  3.358745 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 5  3.151352 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 6  3.021543 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 7  2.860224 80
+ladder_rmsej_h4_w12   large_nr    HOURS                 8  2.719953 80
+ladder_rmsej_h4_w12   large_nr      INV                 1 11.196293 80
+ladder_rmsej_h4_w12   large_nr      INV                 2 10.534433 80
+ladder_rmsej_h4_w12   large_nr      INV                 3 10.624765 80
+ladder_rmsej_h4_w12   large_nr      INV                 4  9.641633 80
+ladder_rmsej_h4_w12   large_nr      INV                 5  8.953822 80
+ladder_rmsej_h4_w12   large_nr      INV                 6  8.301067 80
+ladder_rmsej_h4_w12   large_nr      INV                 7  7.745940 80
+ladder_rmsej_h4_w12   large_nr      INV                 8  7.351781 80
+ladder_rmsej_h4_w12   large_nr       M1                 1  5.976614 80
+ladder_rmsej_h4_w12   large_nr       M1                 2  5.728365 80
+ladder_rmsej_h4_w12   large_nr       M1                 3 17.816849 80
+ladder_rmsej_h4_w12   large_nr       M1                 4 21.220994 80
+ladder_rmsej_h4_w12   large_nr       M1                 5 21.740510 80
+ladder_rmsej_h4_w12   large_nr       M1                 6 21.508654 80
+ladder_rmsej_h4_w12   large_nr       M1                 7 21.002198 80
+ladder_rmsej_h4_w12   large_nr       M1                 8 20.407625 80
+ladder_rmsej_h4_w12   large_nr       M2                 1  2.938202 80
+ladder_rmsej_h4_w12   large_nr       M2                 2  2.745746 80
+ladder_rmsej_h4_w12   large_nr       M2                 3  3.126888 80
+ladder_rmsej_h4_w12   large_nr       M2                 4  3.265716 80
+ladder_rmsej_h4_w12   large_nr       M2                 5  3.296704 80
+ladder_rmsej_h4_w12   large_nr       M2                 6  3.305858 80
+ladder_rmsej_h4_w12   large_nr       M2                 7  3.309504 80
+ladder_rmsej_h4_w12   large_nr       M2                 8  3.314706 80
+ladder_rmsej_h4_w12   large_nr      PPI                 1  4.616165 80
+ladder_rmsej_h4_w12   large_nr      PPI                 2  4.255589 80
+ladder_rmsej_h4_w12   large_nr      PPI                 3  4.042868 80
+ladder_rmsej_h4_w12   large_nr      PPI                 4  3.808386 80
+ladder_rmsej_h4_w12   large_nr      PPI                 5  3.539102 80
+ladder_rmsej_h4_w12   large_nr      PPI                 6  3.301902 80
+ladder_rmsej_h4_w12   large_nr      PPI                 7  3.121212 80
+ladder_rmsej_h4_w12   large_nr      PPI                 8  2.987532 80
+ladder_rmsej_h4_w12   large_nr     REER                 1 13.334223 80
+ladder_rmsej_h4_w12   large_nr     REER                 2 11.394474 79
+ladder_rmsej_h4_w12   large_nr     REER                 3  9.611832 78
+ladder_rmsej_h4_w12   large_nr     REER                 4  8.554368 77
+ladder_rmsej_h4_w12   large_nr     REER                 5  7.689477 76
+ladder_rmsej_h4_w12   large_nr     REER                 6  6.897278 75
+ladder_rmsej_h4_w12   large_nr     REER                 7  6.457443 74
+ladder_rmsej_h4_w12   large_nr     REER                 8  6.224774 73
+ladder_rmsej_h4_w12   large_nr    SP500                 1 32.024765 80
+ladder_rmsej_h4_w12   large_nr    SP500                 2 27.736127 80
+ladder_rmsej_h4_w12   large_nr    SP500                 3 24.144197 80
+ladder_rmsej_h4_w12   large_nr    SP500                 4 21.466939 80
+ladder_rmsej_h4_w12   large_nr    SP500                 5 19.057139 80
+ladder_rmsej_h4_w12   large_nr    SP500                 6 17.217868 80
+ladder_rmsej_h4_w12   large_nr    SP500                 7 15.943964 80
+ladder_rmsej_h4_w12   large_nr    SP500                 8 14.869105 80
+ladder_rmsej_h4_w12   large_nr     TB10                 1  0.399619 80
+ladder_rmsej_h4_w12   large_nr     TB10                 2  0.652079 80
+ladder_rmsej_h4_w12   large_nr     TB10                 3  0.775602 80
+ladder_rmsej_h4_w12   large_nr     TB10                 4  0.869169 80
+ladder_rmsej_h4_w12   large_nr     TB10                 5  0.945027 80
+ladder_rmsej_h4_w12   large_nr     TB10                 6  1.002361 80
+ladder_rmsej_h4_w12   large_nr     TB10                 7  1.078621 80
+ladder_rmsej_h4_w12   large_nr     TB10                 8  1.119279 80
+ladder_rmsej_h4_w12   large_nr      UNR                 1  0.252758 80
+ladder_rmsej_h4_w12   large_nr      UNR                 2  0.471640 80
+ladder_rmsej_h4_w12   large_nr      UNR                 3  1.279899 80
+ladder_rmsej_h4_w12   large_nr      UNR                 4  1.547171 80
+ladder_rmsej_h4_w12   large_nr      UNR                 5  1.720910 80
+ladder_rmsej_h4_w12   large_nr      UNR                 6  1.900449 80
+ladder_rmsej_h4_w12   large_nr      UNR                 7  2.063415 80
+ladder_rmsej_h4_w12   large_nr      UNR                 8  2.203355 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 1  4.396096 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 2  2.572554 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 3  2.399595 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 4  2.044517 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 5  1.821060 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 6  1.657517 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 7  1.440715 80
+ladder_rmsej_h4_w12   large_nr     WAGE                 8  1.372607 80
+ladder_rmsej_h4_w60   large_nr      AHE                 1  0.678743 80
+ladder_rmsej_h4_w60   large_nr      AHE                 2  0.654498 80
+ladder_rmsej_h4_w60   large_nr      AHE                 3  0.825410 80
+ladder_rmsej_h4_w60   large_nr      AHE                 4  0.809777 80
+ladder_rmsej_h4_w60   large_nr      AHE                 5  0.808832 80
+ladder_rmsej_h4_w60   large_nr      AHE                 6  0.808982 80
+ladder_rmsej_h4_w60   large_nr      AHE                 7  0.830473 80
+ladder_rmsej_h4_w60   large_nr      AHE                 8  0.867325 80
+ladder_rmsej_h4_w60   large_nr     COMM                 1  9.352846 80
+ladder_rmsej_h4_w60   large_nr     COMM                 2  8.148074 80
+ladder_rmsej_h4_w60   large_nr     COMM                 3  7.061288 80
+ladder_rmsej_h4_w60   large_nr     COMM                 4  6.255458 80
+ladder_rmsej_h4_w60   large_nr     COMM                 5  5.665945 80
+ladder_rmsej_h4_w60   large_nr     COMM                 6  5.197199 80
+ladder_rmsej_h4_w60   large_nr     COMM                 7  4.818216 80
+ladder_rmsej_h4_w60   large_nr     COMM                 8  4.535664 80
+ladder_rmsej_h4_w60   large_nr     CONS                 1  1.739959 80
+ladder_rmsej_h4_w60   large_nr     CONS                 2  1.640388 80
+ladder_rmsej_h4_w60   large_nr     CONS                 3  2.448953 80
+ladder_rmsej_h4_w60   large_nr     CONS                 4  2.098034 80
+ladder_rmsej_h4_w60   large_nr     CONS                 5  1.880636 80
+ladder_rmsej_h4_w60   large_nr     CONS                 6  1.757081 80
+ladder_rmsej_h4_w60   large_nr     CONS                 7  1.655383 80
+ladder_rmsej_h4_w60   large_nr     CONS                 8  1.563940 80
+ladder_rmsej_h4_w60   large_nr      CPI                 1  2.210981 80
+ladder_rmsej_h4_w60   large_nr      CPI                 2  1.794103 80
+ladder_rmsej_h4_w60   large_nr      CPI                 3  1.572875 80
+ladder_rmsej_h4_w60   large_nr      CPI                 4  1.408012 80
+ladder_rmsej_h4_w60   large_nr      CPI                 5  1.281017 80
+ladder_rmsej_h4_w60   large_nr      CPI                 6  1.246567 80
+ladder_rmsej_h4_w60   large_nr      CPI                 7  1.246660 80
+ladder_rmsej_h4_w60   large_nr      CPI                 8  1.239277 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 1  1.003776 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 2  0.909032 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 3  0.885942 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 4  0.870635 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 5  0.860316 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 6  0.869314 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 7  0.877489 80
+ladder_rmsej_h4_w60   large_nr     DEFL                 8  0.891359 80
+ladder_rmsej_h4_w60   large_nr      EMP                 1  1.048181 80
+ladder_rmsej_h4_w60   large_nr      EMP                 2  1.171084 80
+ladder_rmsej_h4_w60   large_nr      EMP                 3  2.372293 80
+ladder_rmsej_h4_w60   large_nr      EMP                 4  2.269017 80
+ladder_rmsej_h4_w60   large_nr      EMP                 5  2.126960 80
+ladder_rmsej_h4_w60   large_nr      EMP                 6  2.041183 80
+ladder_rmsej_h4_w60   large_nr      EMP                 7  1.977577 80
+ladder_rmsej_h4_w60   large_nr      EMP                 8  1.896079 80
+ladder_rmsej_h4_w60   large_nr      FFR                 1  0.508825 80
+ladder_rmsej_h4_w60   large_nr      FFR                 2  0.982971 80
+ladder_rmsej_h4_w60   large_nr      FFR                 3  1.379236 80
+ladder_rmsej_h4_w60   large_nr      FFR                 4  1.723897 80
+ladder_rmsej_h4_w60   large_nr      FFR                 5  2.023695 80
+ladder_rmsej_h4_w60   large_nr      FFR                 6  2.291835 80
+ladder_rmsej_h4_w60   large_nr      FFR                 7  2.511614 80
+ladder_rmsej_h4_w60   large_nr      FFR                 8  2.693146 80
+ladder_rmsej_h4_w60   large_nr      GDP                 1  2.223914 80
+ladder_rmsej_h4_w60   large_nr      GDP                 2  2.031411 80
+ladder_rmsej_h4_w60   large_nr      GDP                 3  2.590548 80
+ladder_rmsej_h4_w60   large_nr      GDP                 4  2.279325 80
+ladder_rmsej_h4_w60   large_nr      GDP                 5  2.050527 80
+ladder_rmsej_h4_w60   large_nr      GDP                 6  1.900508 80
+ladder_rmsej_h4_w60   large_nr      GDP                 7  1.771574 80
+ladder_rmsej_h4_w60   large_nr      GDP                 8  1.642563 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 1  2.143472 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 2  2.224229 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 3  3.467859 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 4  3.224837 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 5  2.996869 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 6  2.857055 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 7  2.725371 80
+ladder_rmsej_h4_w60   large_nr    HOURS                 8  2.570877 80
+ladder_rmsej_h4_w60   large_nr      INV                 1 10.300067 80
+ladder_rmsej_h4_w60   large_nr      INV                 2  9.082180 80
+ladder_rmsej_h4_w60   large_nr      INV                 3  9.462682 80
+ladder_rmsej_h4_w60   large_nr      INV                 4  8.888285 80
+ladder_rmsej_h4_w60   large_nr      INV                 5  8.258123 80
+ladder_rmsej_h4_w60   large_nr      INV                 6  7.704048 80
+ladder_rmsej_h4_w60   large_nr      INV                 7  7.203618 80
+ladder_rmsej_h4_w60   large_nr      INV                 8  6.677572 80
+ladder_rmsej_h4_w60   large_nr       M1                 1  5.048248 80
+ladder_rmsej_h4_w60   large_nr       M1                 2  4.868962 80
+ladder_rmsej_h4_w60   large_nr       M1                 3 17.572774 80
+ladder_rmsej_h4_w60   large_nr       M1                 4 21.030333 80
+ladder_rmsej_h4_w60   large_nr       M1                 5 21.588438 80
+ladder_rmsej_h4_w60   large_nr       M1                 6 21.383516 80
+ladder_rmsej_h4_w60   large_nr       M1                 7 20.856722 80
+ladder_rmsej_h4_w60   large_nr       M1                 8 20.223442 80
+ladder_rmsej_h4_w60   large_nr       M2                 1  2.793264 80
+ladder_rmsej_h4_w60   large_nr       M2                 2  2.537125 80
+ladder_rmsej_h4_w60   large_nr       M2                 3  2.926767 80
+ladder_rmsej_h4_w60   large_nr       M2                 4  3.109291 80
+ladder_rmsej_h4_w60   large_nr       M2                 5  3.179621 80
+ladder_rmsej_h4_w60   large_nr       M2                 6  3.212645 80
+ladder_rmsej_h4_w60   large_nr       M2                 7  3.215480 80
+ladder_rmsej_h4_w60   large_nr       M2                 8  3.207315 80
+ladder_rmsej_h4_w60   large_nr      PPI                 1  4.846927 80
+ladder_rmsej_h4_w60   large_nr      PPI                 2  4.104550 80
+ladder_rmsej_h4_w60   large_nr      PPI                 3  3.708473 80
+ladder_rmsej_h4_w60   large_nr      PPI                 4  3.418487 80
+ladder_rmsej_h4_w60   large_nr      PPI                 5  3.100786 80
+ladder_rmsej_h4_w60   large_nr      PPI                 6  2.874273 80
+ladder_rmsej_h4_w60   large_nr      PPI                 7  2.732212 80
+ladder_rmsej_h4_w60   large_nr      PPI                 8  2.615249 80
+ladder_rmsej_h4_w60   large_nr     REER                 1 12.807129 80
+ladder_rmsej_h4_w60   large_nr     REER                 2 11.034214 79
+ladder_rmsej_h4_w60   large_nr     REER                 3  9.517787 78
+ladder_rmsej_h4_w60   large_nr     REER                 4  8.375917 77
+ladder_rmsej_h4_w60   large_nr     REER                 5  7.377890 76
+ladder_rmsej_h4_w60   large_nr     REER                 6  6.654297 75
+ladder_rmsej_h4_w60   large_nr     REER                 7  6.270505 74
+ladder_rmsej_h4_w60   large_nr     REER                 8  6.054881 73
+ladder_rmsej_h4_w60   large_nr    SP500                 1 28.368239 80
+ladder_rmsej_h4_w60   large_nr    SP500                 2 25.286367 80
+ladder_rmsej_h4_w60   large_nr    SP500                 3 22.773893 80
+ladder_rmsej_h4_w60   large_nr    SP500                 4 20.456412 80
+ladder_rmsej_h4_w60   large_nr    SP500                 5 18.268608 80
+ladder_rmsej_h4_w60   large_nr    SP500                 6 16.579346 80
+ladder_rmsej_h4_w60   large_nr    SP500                 7 15.394683 80
+ladder_rmsej_h4_w60   large_nr    SP500                 8 14.429680 80
+ladder_rmsej_h4_w60   large_nr     TB10                 1  0.350429 80
+ladder_rmsej_h4_w60   large_nr     TB10                 2  0.558739 80
+ladder_rmsej_h4_w60   large_nr     TB10                 3  0.671957 80
+ladder_rmsej_h4_w60   large_nr     TB10                 4  0.802114 80
+ladder_rmsej_h4_w60   large_nr     TB10                 5  0.911841 80
+ladder_rmsej_h4_w60   large_nr     TB10                 6  0.977961 80
+ladder_rmsej_h4_w60   large_nr     TB10                 7  1.058051 80
+ladder_rmsej_h4_w60   large_nr     TB10                 8  1.108782 80
+ladder_rmsej_h4_w60   large_nr      UNR                 1  0.223461 80
+ladder_rmsej_h4_w60   large_nr      UNR                 2  0.414246 80
+ladder_rmsej_h4_w60   large_nr      UNR                 3  1.242080 80
+ladder_rmsej_h4_w60   large_nr      UNR                 4  1.511739 80
+ladder_rmsej_h4_w60   large_nr      UNR                 5  1.673121 80
+ladder_rmsej_h4_w60   large_nr      UNR                 6  1.843797 80
+ladder_rmsej_h4_w60   large_nr      UNR                 7  2.039344 80
+ladder_rmsej_h4_w60   large_nr      UNR                 8  2.179186 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 1  4.276886 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 2  2.435976 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 3  2.283533 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 4  1.929023 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 5  1.745331 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 6  1.600271 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 7  1.428366 80
+ladder_rmsej_h4_w60   large_nr     WAGE                 8  1.362888 80
+ladder_rmsej_h4_w80   large_nr      AHE                 1  0.706294 80
+ladder_rmsej_h4_w80   large_nr      AHE                 2  0.680680 80
+ladder_rmsej_h4_w80   large_nr      AHE                 3  0.844692 80
+ladder_rmsej_h4_w80   large_nr      AHE                 4  0.816867 80
+ladder_rmsej_h4_w80   large_nr      AHE                 5  0.792680 80
+ladder_rmsej_h4_w80   large_nr      AHE                 6  0.769554 80
+ladder_rmsej_h4_w80   large_nr      AHE                 7  0.776741 80
+ladder_rmsej_h4_w80   large_nr      AHE                 8  0.795004 80
+ladder_rmsej_h4_w80   large_nr     COMM                 1  9.455930 80
+ladder_rmsej_h4_w80   large_nr     COMM                 2  8.250386 80
+ladder_rmsej_h4_w80   large_nr     COMM                 3  7.094968 80
+ladder_rmsej_h4_w80   large_nr     COMM                 4  6.211311 80
+ladder_rmsej_h4_w80   large_nr     COMM                 5  5.609282 80
+ladder_rmsej_h4_w80   large_nr     COMM                 6  5.143726 80
+ladder_rmsej_h4_w80   large_nr     COMM                 7  4.774215 80
+ladder_rmsej_h4_w80   large_nr     COMM                 8  4.504320 80
+ladder_rmsej_h4_w80   large_nr     CONS                 1  1.728757 80
+ladder_rmsej_h4_w80   large_nr     CONS                 2  1.612635 80
+ladder_rmsej_h4_w80   large_nr     CONS                 3  2.426144 80
+ladder_rmsej_h4_w80   large_nr     CONS                 4  2.108704 80
+ladder_rmsej_h4_w80   large_nr     CONS                 5  1.918399 80
+ladder_rmsej_h4_w80   large_nr     CONS                 6  1.800089 80
+ladder_rmsej_h4_w80   large_nr     CONS                 7  1.698459 80
+ladder_rmsej_h4_w80   large_nr     CONS                 8  1.613895 80
+ladder_rmsej_h4_w80   large_nr      CPI                 1  2.273611 80
+ladder_rmsej_h4_w80   large_nr      CPI                 2  1.913276 80
+ladder_rmsej_h4_w80   large_nr      CPI                 3  1.685165 80
+ladder_rmsej_h4_w80   large_nr      CPI                 4  1.495048 80
+ladder_rmsej_h4_w80   large_nr      CPI                 5  1.351879 80
+ladder_rmsej_h4_w80   large_nr      CPI                 6  1.305350 80
+ladder_rmsej_h4_w80   large_nr      CPI                 7  1.297712 80
+ladder_rmsej_h4_w80   large_nr      CPI                 8  1.285503 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 1  1.004891 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 2  0.936868 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 3  0.927586 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 4  0.914644 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 5  0.903252 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 6  0.908547 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 7  0.915523 80
+ladder_rmsej_h4_w80   large_nr     DEFL                 8  0.925712 80
+ladder_rmsej_h4_w80   large_nr      EMP                 1  1.008670 80
+ladder_rmsej_h4_w80   large_nr      EMP                 2  1.120711 80
+ladder_rmsej_h4_w80   large_nr      EMP                 3  2.315230 80
+ladder_rmsej_h4_w80   large_nr      EMP                 4  2.208846 80
+ladder_rmsej_h4_w80   large_nr      EMP                 5  2.097221 80
+ladder_rmsej_h4_w80   large_nr      EMP                 6  2.019357 80
+ladder_rmsej_h4_w80   large_nr      EMP                 7  1.930026 80
+ladder_rmsej_h4_w80   large_nr      EMP                 8  1.839989 80
+ladder_rmsej_h4_w80   large_nr      FFR                 1  0.483222 80
+ladder_rmsej_h4_w80   large_nr      FFR                 2  0.908996 80
+ladder_rmsej_h4_w80   large_nr      FFR                 3  1.274679 80
+ladder_rmsej_h4_w80   large_nr      FFR                 4  1.571275 80
+ladder_rmsej_h4_w80   large_nr      FFR                 5  1.828105 80
+ladder_rmsej_h4_w80   large_nr      FFR                 6  2.051911 80
+ladder_rmsej_h4_w80   large_nr      FFR                 7  2.223658 80
+ladder_rmsej_h4_w80   large_nr      FFR                 8  2.371042 80
+ladder_rmsej_h4_w80   large_nr      GDP                 1  2.073744 80
+ladder_rmsej_h4_w80   large_nr      GDP                 2  1.822314 80
+ladder_rmsej_h4_w80   large_nr      GDP                 3  2.424672 80
+ladder_rmsej_h4_w80   large_nr      GDP                 4  2.125104 80
+ladder_rmsej_h4_w80   large_nr      GDP                 5  1.938852 80
+ladder_rmsej_h4_w80   large_nr      GDP                 6  1.812258 80
+ladder_rmsej_h4_w80   large_nr      GDP                 7  1.684108 80
+ladder_rmsej_h4_w80   large_nr      GDP                 8  1.570868 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 1  2.049613 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 2  2.116963 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 3  3.376517 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 4  3.130770 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 5  2.934448 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 6  2.801670 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 7  2.637030 80
+ladder_rmsej_h4_w80   large_nr    HOURS                 8  2.473032 80
+ladder_rmsej_h4_w80   large_nr      INV                 1  9.957747 80
+ladder_rmsej_h4_w80   large_nr      INV                 2  8.585935 80
+ladder_rmsej_h4_w80   large_nr      INV                 3  8.981307 80
+ladder_rmsej_h4_w80   large_nr      INV                 4  8.377471 80
+ladder_rmsej_h4_w80   large_nr      INV                 5  7.854776 80
+ladder_rmsej_h4_w80   large_nr      INV                 6  7.341186 80
+ladder_rmsej_h4_w80   large_nr      INV                 7  6.810506 80
+ladder_rmsej_h4_w80   large_nr      INV                 8  6.315745 80
+ladder_rmsej_h4_w80   large_nr       M1                 1  4.947514 80
+ladder_rmsej_h4_w80   large_nr       M1                 2  4.728911 80
+ladder_rmsej_h4_w80   large_nr       M1                 3 17.488936 80
+ladder_rmsej_h4_w80   large_nr       M1                 4 20.893852 80
+ladder_rmsej_h4_w80   large_nr       M1                 5 21.395580 80
+ladder_rmsej_h4_w80   large_nr       M1                 6 21.134998 80
+ladder_rmsej_h4_w80   large_nr       M1                 7 20.570109 80
+ladder_rmsej_h4_w80   large_nr       M1                 8 19.892410 80
+ladder_rmsej_h4_w80   large_nr       M2                 1  2.752453 80
+ladder_rmsej_h4_w80   large_nr       M2                 2  2.562799 80
+ladder_rmsej_h4_w80   large_nr       M2                 3  2.975914 80
+ladder_rmsej_h4_w80   large_nr       M2                 4  3.117905 80
+ladder_rmsej_h4_w80   large_nr       M2                 5  3.134681 80
+ladder_rmsej_h4_w80   large_nr       M2                 6  3.120609 80
+ladder_rmsej_h4_w80   large_nr       M2                 7  3.057132 80
+ladder_rmsej_h4_w80   large_nr       M2                 8  2.979859 80
+ladder_rmsej_h4_w80   large_nr      PPI                 1  4.934162 80
+ladder_rmsej_h4_w80   large_nr      PPI                 2  4.258520 80
+ladder_rmsej_h4_w80   large_nr      PPI                 3  3.842215 80
+ladder_rmsej_h4_w80   large_nr      PPI                 4  3.516209 80
+ladder_rmsej_h4_w80   large_nr      PPI                 5  3.196947 80
+ladder_rmsej_h4_w80   large_nr      PPI                 6  2.967831 80
+ladder_rmsej_h4_w80   large_nr      PPI                 7  2.821668 80
+ladder_rmsej_h4_w80   large_nr      PPI                 8  2.699177 80
+ladder_rmsej_h4_w80   large_nr     REER                 1 12.421607 80
+ladder_rmsej_h4_w80   large_nr     REER                 2 10.600883 79
+ladder_rmsej_h4_w80   large_nr     REER                 3  9.126778 78
+ladder_rmsej_h4_w80   large_nr     REER                 4  8.056032 77
+ladder_rmsej_h4_w80   large_nr     REER                 5  7.222191 76
+ladder_rmsej_h4_w80   large_nr     REER                 6  6.632426 75
+ladder_rmsej_h4_w80   large_nr     REER                 7  6.283461 74
+ladder_rmsej_h4_w80   large_nr     REER                 8  6.046269 73
+ladder_rmsej_h4_w80   large_nr    SP500                 1 28.238193 80
+ladder_rmsej_h4_w80   large_nr    SP500                 2 24.668617 80
+ladder_rmsej_h4_w80   large_nr    SP500                 3 21.877622 80
+ladder_rmsej_h4_w80   large_nr    SP500                 4 19.521909 80
+ladder_rmsej_h4_w80   large_nr    SP500                 5 17.495368 80
+ladder_rmsej_h4_w80   large_nr    SP500                 6 15.986248 80
+ladder_rmsej_h4_w80   large_nr    SP500                 7 14.834661 80
+ladder_rmsej_h4_w80   large_nr    SP500                 8 13.882390 80
+ladder_rmsej_h4_w80   large_nr     TB10                 1  0.345472 80
+ladder_rmsej_h4_w80   large_nr     TB10                 2  0.572638 80
+ladder_rmsej_h4_w80   large_nr     TB10                 3  0.694953 80
+ladder_rmsej_h4_w80   large_nr     TB10                 4  0.806088 80
+ladder_rmsej_h4_w80   large_nr     TB10                 5  0.897821 80
+ladder_rmsej_h4_w80   large_nr     TB10                 6  0.946288 80
+ladder_rmsej_h4_w80   large_nr     TB10                 7  1.005810 80
+ladder_rmsej_h4_w80   large_nr     TB10                 8  1.034668 80
+ladder_rmsej_h4_w80   large_nr      UNR                 1  0.219783 80
+ladder_rmsej_h4_w80   large_nr      UNR                 2  0.400009 80
+ladder_rmsej_h4_w80   large_nr      UNR                 3  1.218467 80
+ladder_rmsej_h4_w80   large_nr      UNR                 4  1.475593 80
+ladder_rmsej_h4_w80   large_nr      UNR                 5  1.642556 80
+ladder_rmsej_h4_w80   large_nr      UNR                 6  1.811331 80
+ladder_rmsej_h4_w80   large_nr      UNR                 7  1.970029 80
+ladder_rmsej_h4_w80   large_nr      UNR                 8  2.085155 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 1  4.299464 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 2  2.454025 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 3  2.299983 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 4  1.950901 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 5  1.751273 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 6  1.583457 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 7  1.404777 80
+ladder_rmsej_h4_w80   large_nr     WAGE                 8  1.350219 80
+              paper   large_nr      AHE                 1  0.695699 80
+              paper   large_nr      AHE                 2  0.672979 80
+              paper   large_nr      AHE                 3  0.822882 80
+              paper   large_nr      AHE                 4  0.794280 80
+              paper   large_nr      AHE                 5  0.775587 80
+              paper   large_nr      AHE                 6  0.760782 80
+              paper   large_nr      AHE                 7  0.770323 80
+              paper   large_nr      AHE                 8  0.784127 80
+              paper   large_nr     COMM                 1  9.015473 80
+              paper   large_nr     COMM                 2  8.313922 80
+              paper   large_nr     COMM                 3  7.343572 80
+              paper   large_nr     COMM                 4  6.545145 80
+              paper   large_nr     COMM                 5  5.940269 80
+              paper   large_nr     COMM                 6  5.459827 80
+              paper   large_nr     COMM                 7  5.056807 80
+              paper   large_nr     COMM                 8  4.764975 80
+              paper   large_nr     CONS                 1  1.795354 80
+              paper   large_nr     CONS                 2  1.708053 80
+              paper   large_nr     CONS                 3  2.506121 80
+              paper   large_nr     CONS                 4  2.135551 80
+              paper   large_nr     CONS                 5  1.934625 80
+              paper   large_nr     CONS                 6  1.802852 80
+              paper   large_nr     CONS                 7  1.678504 80
+              paper   large_nr     CONS                 8  1.593487 80
+              paper   large_nr      CPI                 1  2.258685 80
+              paper   large_nr      CPI                 2  1.978752 80
+              paper   large_nr      CPI                 3  1.808859 80
+              paper   large_nr      CPI                 4  1.680239 80
+              paper   large_nr      CPI                 5  1.529590 80
+              paper   large_nr      CPI                 6  1.462682 80
+              paper   large_nr      CPI                 7  1.436500 80
+              paper   large_nr      CPI                 8  1.412376 80
+              paper   large_nr     DEFL                 1  1.016288 80
+              paper   large_nr     DEFL                 2  0.970579 80
+              paper   large_nr     DEFL                 3  0.972565 80
+              paper   large_nr     DEFL                 4  0.980922 80
+              paper   large_nr     DEFL                 5  0.967137 80
+              paper   large_nr     DEFL                 6  0.977962 80
+              paper   large_nr     DEFL                 7  0.988019 80
+              paper   large_nr     DEFL                 8  1.003464 80
+              paper   large_nr      EMP                 1  0.834563 80
+              paper   large_nr      EMP                 2  0.982342 80
+              paper   large_nr      EMP                 3  2.269172 80
+              paper   large_nr      EMP                 4  2.149854 80
+              paper   large_nr      EMP                 5  1.986956 80
+              paper   large_nr      EMP                 6  1.900852 80
+              paper   large_nr      EMP                 7  1.793593 80
+              paper   large_nr      EMP                 8  1.704776 80
+              paper   large_nr      FFR                 1  0.535000 80
+              paper   large_nr      FFR                 2  1.009732 80
+              paper   large_nr      FFR                 3  1.379278 80
+              paper   large_nr      FFR                 4  1.641217 80
+              paper   large_nr      FFR                 5  1.835012 80
+              paper   large_nr      FFR                 6  2.019259 80
+              paper   large_nr      FFR                 7  2.173092 80
+              paper   large_nr      FFR                 8  2.308604 80
+              paper   large_nr      GDP                 1  2.097901 80
+              paper   large_nr      GDP                 2  1.889044 80
+              paper   large_nr      GDP                 3  2.516927 80
+              paper   large_nr      GDP                 4  2.187146 80
+              paper   large_nr      GDP                 5  1.968705 80
+              paper   large_nr      GDP                 6  1.829880 80
+              paper   large_nr      GDP                 7  1.692659 80
+              paper   large_nr      GDP                 8  1.600873 80
+              paper   large_nr    HOURS                 1  1.883920 80
+              paper   large_nr    HOURS                 2  2.032115 80
+              paper   large_nr    HOURS                 3  3.338886 80
+              paper   large_nr    HOURS                 4  3.078968 80
+              paper   large_nr    HOURS                 5  2.816243 80
+              paper   large_nr    HOURS                 6  2.684461 80
+              paper   large_nr    HOURS                 7  2.512443 80
+              paper   large_nr    HOURS                 8  2.362321 80
+              paper   large_nr      INV                 1  9.840949 80
+              paper   large_nr      INV                 2  8.928200 80
+              paper   large_nr      INV                 3  9.438347 80
+              paper   large_nr      INV                 4  8.788180 80
+              paper   large_nr      INV                 5  8.168948 80
+              paper   large_nr      INV                 6  7.674012 80
+              paper   large_nr      INV                 7  7.146144 80
+              paper   large_nr      INV                 8  6.730652 80
+              paper   large_nr       M1                 1  5.117602 80
+              paper   large_nr       M1                 2  4.821993 80
+              paper   large_nr       M1                 3 17.401635 80
+              paper   large_nr       M1                 4 20.812489 80
+              paper   large_nr       M1                 5 21.396616 80
+              paper   large_nr       M1                 6 21.189240 80
+              paper   large_nr       M1                 7 20.746804 80
+              paper   large_nr       M1                 8 20.195420 80
+              paper   large_nr       M2                 1  2.616985 80
+              paper   large_nr       M2                 2  2.464238 80
+              paper   large_nr       M2                 3  2.836513 80
+              paper   large_nr       M2                 4  3.010078 80
+              paper   large_nr       M2                 5  3.077940 80
+              paper   large_nr       M2                 6  3.111752 80
+              paper   large_nr       M2                 7  3.126270 80
+              paper   large_nr       M2                 8  3.120333 80
+              paper   large_nr      PPI                 1  4.759199 80
+              paper   large_nr      PPI                 2  4.325516 80
+              paper   large_nr      PPI                 3  4.016541 80
+              paper   large_nr      PPI                 4  3.770181 80
+              paper   large_nr      PPI                 5  3.457434 80
+              paper   large_nr      PPI                 6  3.219768 80
+              paper   large_nr      PPI                 7  3.058999 80
+              paper   large_nr      PPI                 8  2.934515 80
+              paper   large_nr     REER                 1 12.925610 80
+              paper   large_nr     REER                 2 11.477030 79
+              paper   large_nr     REER                 3 10.107622 78
+              paper   large_nr     REER                 4  9.037421 77
+              paper   large_nr     REER                 5  8.118901 76
+              paper   large_nr     REER                 6  7.393623 75
+              paper   large_nr     REER                 7  6.977397 74
+              paper   large_nr     REER                 8  6.692721 73
+              paper   large_nr    SP500                 1 27.389564 80
+              paper   large_nr    SP500                 2 24.354416 80
+              paper   large_nr    SP500                 3 21.827261 80
+              paper   large_nr    SP500                 4 19.454033 80
+              paper   large_nr    SP500                 5 17.291327 80
+              paper   large_nr    SP500                 6 15.659043 80
+              paper   large_nr    SP500                 7 14.516103 80
+              paper   large_nr    SP500                 8 13.540580 80
+              paper   large_nr     TB10                 1  0.372063 80
+              paper   large_nr     TB10                 2  0.615764 80
+              paper   large_nr     TB10                 3  0.759310 80
+              paper   large_nr     TB10                 4  0.879527 80
+              paper   large_nr     TB10                 5  0.962542 80
+              paper   large_nr     TB10                 6  1.013241 80
+              paper   large_nr     TB10                 7  1.083155 80
+              paper   large_nr     TB10                 8  1.098844 80
+              paper   large_nr      UNR                 1  0.223367 80
+              paper   large_nr      UNR                 2  0.406078 80
+              paper   large_nr      UNR                 3  1.224749 80
+              paper   large_nr      UNR                 4  1.475791 80
+              paper   large_nr      UNR                 5  1.610440 80
+              paper   large_nr      UNR                 6  1.772633 80
+              paper   large_nr      UNR                 7  1.911141 80
+              paper   large_nr      UNR                 8  2.020541 80
+              paper   large_nr     WAGE                 1  4.467918 80
+              paper   large_nr     WAGE                 2  2.502274 80
+              paper   large_nr     WAGE                 3  2.316759 80
+              paper   large_nr     WAGE                 4  1.961544 80
+              paper   large_nr     WAGE                 5  1.742272 80
+              paper   large_nr     WAGE                 6  1.585202 80
+              paper   large_nr     WAGE                 7  1.371059 80
+              paper   large_nr     WAGE                 8  1.325009 80
+       paper_plugin   large_nr      AHE                 1  0.707425 80
+       paper_plugin   large_nr      AHE                 2  0.697924 80
+       paper_plugin   large_nr      AHE                 3  0.856743 80
+       paper_plugin   large_nr      AHE                 4  0.831707 80
+       paper_plugin   large_nr      AHE                 5  0.810984 80
+       paper_plugin   large_nr      AHE                 6  0.805708 80
+       paper_plugin   large_nr      AHE                 7  0.813742 80
+       paper_plugin   large_nr      AHE                 8  0.828049 80
+       paper_plugin   large_nr     COMM                 1  9.006058 80
+       paper_plugin   large_nr     COMM                 2  8.275214 80
+       paper_plugin   large_nr     COMM                 3  7.281187 80
+       paper_plugin   large_nr     COMM                 4  6.464509 80
+       paper_plugin   large_nr     COMM                 5  5.847684 80
+       paper_plugin   large_nr     COMM                 6  5.354566 80
+       paper_plugin   large_nr     COMM                 7  4.941009 80
+       paper_plugin   large_nr     COMM                 8  4.629824 80
+       paper_plugin   large_nr     CONS                 1  1.781853 80
+       paper_plugin   large_nr     CONS                 2  1.686491 80
+       paper_plugin   large_nr     CONS                 3  2.487708 80
+       paper_plugin   large_nr     CONS                 4  2.121708 80
+       paper_plugin   large_nr     CONS                 5  1.934186 80
+       paper_plugin   large_nr     CONS                 6  1.778800 80
+       paper_plugin   large_nr     CONS                 7  1.672362 80
+       paper_plugin   large_nr     CONS                 8  1.587416 80
+       paper_plugin   large_nr      CPI                 1  2.266279 80
+       paper_plugin   large_nr      CPI                 2  1.975624 80
+       paper_plugin   large_nr      CPI                 3  1.799185 80
+       paper_plugin   large_nr      CPI                 4  1.663494 80
+       paper_plugin   large_nr      CPI                 5  1.509198 80
+       paper_plugin   large_nr      CPI                 6  1.439447 80
+       paper_plugin   large_nr      CPI                 7  1.409292 80
+       paper_plugin   large_nr      CPI                 8  1.384186 80
+       paper_plugin   large_nr     DEFL                 1  1.018945 80
+       paper_plugin   large_nr     DEFL                 2  0.968505 80
+       paper_plugin   large_nr     DEFL                 3  0.970513 80
+       paper_plugin   large_nr     DEFL                 4  0.975431 80
+       paper_plugin   large_nr     DEFL                 5  0.961965 80
+       paper_plugin   large_nr     DEFL                 6  0.971454 80
+       paper_plugin   large_nr     DEFL                 7  0.979272 80
+       paper_plugin   large_nr     DEFL                 8  0.993320 80
+       paper_plugin   large_nr      EMP                 1  0.849312 80
+       paper_plugin   large_nr      EMP                 2  1.001142 80
+       paper_plugin   large_nr      EMP                 3  2.289240 80
+       paper_plugin   large_nr      EMP                 4  2.174172 80
+       paper_plugin   large_nr      EMP                 5  2.017328 80
+       paper_plugin   large_nr      EMP                 6  1.933208 80
+       paper_plugin   large_nr      EMP                 7  1.831967 80
+       paper_plugin   large_nr      EMP                 8  1.745845 80
+       paper_plugin   large_nr      FFR                 1  0.539523 80
+       paper_plugin   large_nr      FFR                 2  1.009489 80
+       paper_plugin   large_nr      FFR                 3  1.369469 80
+       paper_plugin   large_nr      FFR                 4  1.628255 80
+       paper_plugin   large_nr      FFR                 5  1.826926 80
+       paper_plugin   large_nr      FFR                 6  2.019179 80
+       paper_plugin   large_nr      FFR                 7  2.181428 80
+       paper_plugin   large_nr      FFR                 8  2.322454 80
+       paper_plugin   large_nr      GDP                 1  2.064623 80
+       paper_plugin   large_nr      GDP                 2  1.865735 80
+       paper_plugin   large_nr      GDP                 3  2.505920 80
+       paper_plugin   large_nr      GDP                 4  2.177427 80
+       paper_plugin   large_nr      GDP                 5  1.970801 80
+       paper_plugin   large_nr      GDP                 6  1.814947 80
+       paper_plugin   large_nr      GDP                 7  1.684066 80
+       paper_plugin   large_nr      GDP                 8  1.595333 80
+       paper_plugin   large_nr    HOURS                 1  1.921830 80
+       paper_plugin   large_nr    HOURS                 2  2.091353 80
+       paper_plugin   large_nr    HOURS                 3  3.393264 80
+       paper_plugin   large_nr    HOURS                 4  3.137575 80
+       paper_plugin   large_nr    HOURS                 5  2.877955 80
+       paper_plugin   large_nr    HOURS                 6  2.749026 80
+       paper_plugin   large_nr    HOURS                 7  2.583025 80
+       paper_plugin   large_nr    HOURS                 8  2.432779 80
+       paper_plugin   large_nr      INV                 1  9.949120 80
+       paper_plugin   large_nr      INV                 2  9.020394 80
+       paper_plugin   large_nr      INV                 3  9.529175 80
+       paper_plugin   large_nr      INV                 4  8.881018 80
+       paper_plugin   large_nr      INV                 5  8.277282 80
+       paper_plugin   large_nr      INV                 6  7.795789 80
+       paper_plugin   large_nr      INV                 7  7.284655 80
+       paper_plugin   large_nr      INV                 8  6.876197 80
+       paper_plugin   large_nr       M1                 1  5.134323 80
+       paper_plugin   large_nr       M1                 2  4.874309 80
+       paper_plugin   large_nr       M1                 3 17.451764 80
+       paper_plugin   large_nr       M1                 4 20.885391 80
+       paper_plugin   large_nr       M1                 5 21.467827 80
+       paper_plugin   large_nr       M1                 6 21.290886 80
+       paper_plugin   large_nr       M1                 7 20.854618 80
+       paper_plugin   large_nr       M1                 8 20.304444 80
+       paper_plugin   large_nr       M2                 1  2.656987 80
+       paper_plugin   large_nr       M2                 2  2.542453 80
+       paper_plugin   large_nr       M2                 3  2.947857 80
+       paper_plugin   large_nr       M2                 4  3.157484 80
+       paper_plugin   large_nr       M2                 5  3.253125 80
+       paper_plugin   large_nr       M2                 6  3.325673 80
+       paper_plugin   large_nr       M2                 7  3.369543 80
+       paper_plugin   large_nr       M2                 8  3.389180 80
+       paper_plugin   large_nr      PPI                 1  4.733674 80
+       paper_plugin   large_nr      PPI                 2  4.281126 80
+       paper_plugin   large_nr      PPI                 3  3.960884 80
+       paper_plugin   large_nr      PPI                 4  3.700248 80
+       paper_plugin   large_nr      PPI                 5  3.375270 80
+       paper_plugin   large_nr      PPI                 6  3.129079 80
+       paper_plugin   large_nr      PPI                 7  2.959739 80
+       paper_plugin   large_nr      PPI                 8  2.828065 80
+       paper_plugin   large_nr     REER                 1 12.896184 80
+       paper_plugin   large_nr     REER                 2 11.401025 79
+       paper_plugin   large_nr     REER                 3  9.981140 78
+       paper_plugin   large_nr     REER                 4  8.870005 77
+       paper_plugin   large_nr     REER                 5  7.908355 76
+       paper_plugin   large_nr     REER                 6  7.169875 75
+       paper_plugin   large_nr     REER                 7  6.728654 74
+       paper_plugin   large_nr     REER                 8  6.408054 73
+       paper_plugin   large_nr    SP500                 1 27.725392 80
+       paper_plugin   large_nr    SP500                 2 24.677058 80
+       paper_plugin   large_nr    SP500                 3 22.153106 80
+       paper_plugin   large_nr    SP500                 4 19.829216 80
+       paper_plugin   large_nr    SP500                 5 17.628806 80
+       paper_plugin   large_nr    SP500                 6 15.893361 80
+       paper_plugin   large_nr    SP500                 7 14.657016 80
+       paper_plugin   large_nr    SP500                 8 13.625910 80
+       paper_plugin   large_nr     TB10                 1  0.374647 80
+       paper_plugin   large_nr     TB10                 2  0.622261 80
+       paper_plugin   large_nr     TB10                 3  0.766692 80
+       paper_plugin   large_nr     TB10                 4  0.887534 80
+       paper_plugin   large_nr     TB10                 5  0.970733 80
+       paper_plugin   large_nr     TB10                 6  1.025256 80
+       paper_plugin   large_nr     TB10                 7  1.105647 80
+       paper_plugin   large_nr     TB10                 8  1.131360 80
+       paper_plugin   large_nr      UNR                 1  0.224231 80
+       paper_plugin   large_nr      UNR                 2  0.409956 80
+       paper_plugin   large_nr      UNR                 3  1.231828 80
+       paper_plugin   large_nr      UNR                 4  1.488390 80
+       paper_plugin   large_nr      UNR                 5  1.626751 80
+       paper_plugin   large_nr      UNR                 6  1.796409 80
+       paper_plugin   large_nr      UNR                 7  1.944766 80
+       paper_plugin   large_nr      UNR                 8  2.058668 80
+       paper_plugin   large_nr     WAGE                 1  4.466524 80
+       paper_plugin   large_nr     WAGE                 2  2.507694 80
+       paper_plugin   large_nr     WAGE                 3  2.318827 80
+       paper_plugin   large_nr     WAGE                 4  1.957449 80
+       paper_plugin   large_nr     WAGE                 5  1.721936 80
+       paper_plugin   large_nr     WAGE                 6  1.573788 80
+       paper_plugin   large_nr     WAGE                 7  1.352202 80
+       paper_plugin   large_nr     WAGE                 8  1.304764 80

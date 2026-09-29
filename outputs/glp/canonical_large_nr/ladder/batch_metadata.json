@@ -1,0 +1,32 @@
+{
+  "runs": [
+    {
+      "rung": "rmsej_h4_w80",
+      "objective": "rmse_joint",
+      "horizon": 4,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h4_w80"
+    },
+    {
+      "rung": "lsj1_w80",
+      "objective": "logscore_joint_1",
+      "horizon": 1,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/lsj1_w80"
+    },
+    {
+      "rung": "lsj_h4_w80",
+      "objective": "logscore_joint",
+      "horizon": 4,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/lsj_h4_w80"
+    },
+    {
+      "rung": "rmse_h4_w80",
+      "objective": "rmse",
+      "horizon": 4,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h4_w80"
+    }
+  ]
+}
