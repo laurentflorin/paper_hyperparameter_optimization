@@ -111,8 +111,15 @@ def main(argv: list[str] | None = None) -> None:
         ml = hyp[hyp.criterion == "ml"].set_index("forecast_origin")["complete_data_log_ml"]
         hyp["log_ml_gap_to_ml"] = hyp["complete_data_log_ml"] - hyp["forecast_origin"].map(ml)
         cols = ["lambda1_1", "lambda2_1", "lambda4_1", "lambda5_1", "log_ml_gap_to_ml"]
-        med = hyp.groupby("criterion")[cols].median().round(3)
-        (out_dir / "hyperparameters.md").write_text("Median selected hyperparameters across origins.\n\n" + med.to_string() + "\n")
+        cols += [c for c in ("abandoned_share", "stability_rejection_share", "n_valid_draws") if c in hyp]
+        med = hyp.groupby("criterion")[cols].median().round(4)
+        if "error" in hyp:
+            med["n_failed"] = hyp.groupby("criterion")["error"].apply(lambda e: int(e.notna().sum()))
+        (out_dir / "hyperparameters.md").write_text(
+            "Median selected hyperparameters and sampler stability across origins "
+            "(abandoned_share: Gibbs iterations without a stable draw within the redraw cap; "
+            "n_failed: origins where the prior gave too few stable draws to forecast).\n\n" + med.to_string() + "\n"
+        )
     print(summary(rel, "relative_rmse_pct").to_string())
     print(f"Wrote comparison tables to {out_dir}")
 

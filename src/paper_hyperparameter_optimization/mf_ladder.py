@@ -25,6 +25,11 @@ over the draws; forecasts of the quarterly variables are the averages of the
 monthly forecasts over the target quarter, matching the measurement equation.
 Every criterion is optimized by multi-start Nelder-Mead from the ``ml``
 selection (or the published values), so differences reflect the criterion.
+
+Forecasts use the untruncated posterior by default, as the criteria do and as
+the GLP ladder does (covbayesvar never truncates). MBFVAR's stationarity
+truncation (``check_explosive``) is available, but at crisis origins the
+loss-selected priors can leave no stable coefficient draw at all.
 """
 
 from __future__ import annotations
@@ -76,53 +81,6 @@ def _to_bounded(z: np.ndarray) -> np.ndarray:
 
 
 # --------------------------------------------------------------------------- #
-# Fast, exact replacement for MBFVAR's explosive-root check.
-# --------------------------------------------------------------------------- #
-# Grid of points just above one; det(x^p I - sum_i x^(p-i) A_i) is the
-# characteristic polynomial of the companion matrix at x.
-_ROOT_GRID = 1.0 + np.concatenate(([1e-7], np.geomspace(1e-5, 1.0, 40)))
-
-
-def fast_is_explosive(Phi: np.ndarray, n: int, p: int) -> bool:
-    """Same decision as ``MBFVAR.mfbvar_funcs.is_explosive`` (any companion
-    eigenvalue with modulus above one), several times faster.
-
-    The characteristic polynomial ``f(x) = det(x^p I - x^(p-1) A_1 - ... - A_p)``
-    is evaluated on a grid of points above one and at infinity, where its sign
-    is positive. A sign change certifies a real root above one, so the draw is
-    explosive; this settles most candidate draws of a VAR in levels, whose
-    offending root is a real root slightly above one. Only draws without a sign
-    change get the full eigenvalue computation, so the decision is unchanged.
-    """
-    A = np.asarray(Phi[: n * p, :], dtype=float).reshape(p, n, n).transpose(0, 2, 1)
-    powers = _ROOT_GRID[:, None] ** np.arange(p - 1, -1, -1)[None, :]  # x^(p-i), i = 1..p
-    M = (_ROOT_GRID**p)[:, None, None] * np.eye(n) - np.einsum("gi,iab->gab", powers, A)
-    signs = np.append(np.sign(np.linalg.det(M)), 1.0)
-    if np.any(signs[:-1] * signs[1:] < 0):
-        return True
-    import scipy.linalg
-
-    companion = np.zeros((n * p, n * p))
-    companion[:n, :] = Phi[: n * p, :].T
-    if p > 1:
-        companion[n:, :-n] = np.eye(n * (p - 1))
-    return bool(np.any(np.abs(scipy.linalg.eigvals(companion, check_finite=False, overwrite_a=True)) > 1))
-
-
-@contextlib.contextmanager
-def fast_explosive_check():
-    """Use :func:`fast_is_explosive` inside MBFVAR's Gibbs sampler."""
-    import MBFVAR._estimation as est
-
-    original = est.is_explosive
-    est.is_explosive = fast_is_explosive
-    try:
-        yield
-    finally:
-        est.is_explosive = original
-
-
-# --------------------------------------------------------------------------- #
 # Complete (balanced) monthly data captured from the Gibbs sampler.
 # --------------------------------------------------------------------------- #
 @dataclass
@@ -164,15 +122,15 @@ def fit_capturing_complete_data(
     original = {"calc_yyact": est.calc_yyact, "mdd_": est.mdd_}
 
     def recorder(name: str) -> Callable[..., Any]:
-        def wrapped(hyp_, YY, spec):
+        def wrapped(hyp_, YY, spec, *args, **kwargs):
             records.append((np.array(YY, dtype=float), np.array(spec)))
-            return original[name](hyp_, YY, spec)
+            return original[name](hyp_, YY, spec, *args, **kwargs)
 
         return wrapped
 
     est.calc_yyact, est.mdd_ = recorder("calc_yyact"), recorder("mdd_")
     try:
-        with fast_explosive_check(), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             model.fit(data_in, [list(hyp)], **fit_kwargs)
     finally:
         est.calc_yyact, est.mdd_ = original["calc_yyact"], original["mdd_"]
@@ -376,33 +334,6 @@ def select_all(
 # --------------------------------------------------------------------------- #
 # Forecasts with per-draw quarterly metrics (for CRPS and the log score).
 # --------------------------------------------------------------------------- #
-@contextlib.contextmanager
-def _capture_quarterly_draws(sink: list[pd.DataFrame]):
-    """``MBFVAR.aggregate`` builds one quarterly frame per posterior draw and
-    only keeps their quantiles; record the first list it concatenates."""
-    import MBFVAR._estimation as est
-
-    real_pd = est.pd
-
-    class _Proxy:
-        def __getattr__(self, name: str) -> Any:
-            return getattr(real_pd, name)
-
-        def concat(self, objs: Any, *args: Any, **kwargs: Any) -> Any:
-            if not sink and not isinstance(objs, (pd.DataFrame, pd.Series)):
-                items = list(objs)
-                if items and all(isinstance(o, pd.DataFrame) for o in items):
-                    sink.extend(items)
-                return real_pd.concat(items, *args, **kwargs)
-            return real_pd.concat(objs, *args, **kwargs)
-
-    est.pd = _Proxy()
-    try:
-        yield
-    finally:
-        est.pd = real_pd
-
-
 def realtime_quarterly_history(quarterly: pd.DataFrame, monthly: pd.DataFrame) -> pd.DataFrame:
     """Quarterly levels as published in the real-time vintage: the quarterly
     series as observed and the monthly series averaged over complete quarters."""
@@ -421,6 +352,7 @@ def forecast_rows(
     actual_levels: pd.DataFrame,
     history: pd.DataFrame,
     horizon_months: int,
+    seed: int,
 ) -> list[dict[str, Any]]:
     """Quarterly forecasts scored as in the real-time literature: every draw's
     quarterly path is anchored on the published real-time history, so growth
@@ -431,19 +363,18 @@ def forecast_rows(
     from .config import MAX_FORECAST_HORIZON_QUARTERS, origin_group
     from .forecasting import compute_quarterly_metrics
 
-    draws: list[pd.DataFrame] = []
     with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-        model.forecast(horizon_months)
-        with _capture_quarterly_draws(draws):
-            model.aggregate(frequency="Q")
-    if not draws:
-        raise RuntimeError("Could not capture the per-draw quarterly forecasts from MBFVAR.aggregate.")
+        model.forecast(horizon_months, seed=seed)
+        model.aggregate(frequency="Q")
+    if getattr(model, "YY_draws_agg", None) is None:
+        raise RuntimeError("MBFVAR did not retain the per-draw quarterly paths (needs MBFVAR >= 0.9.0).")
 
-    columns = list(draws[0].columns)
-    periods = pd.DatetimeIndex(draws[0].index).to_period("Q")
+    columns = list(model.YY_draws_agg_columns)
+    index = model.YY_draws_agg_index
+    periods = index if isinstance(index, pd.PeriodIndex) else pd.DatetimeIndex(index).to_period("Q")
     hist = history.reindex(index=periods, columns=columns)
     known = hist.notna().to_numpy()
-    stacked = np.stack([np.where(known, hist.to_numpy(), d.to_numpy()) for d in draws])
+    stacked = np.where(known[None], hist.to_numpy()[None], model.YY_draws_agg.astype(float))
     metrics = np.stack([compute_quarterly_metrics(pd.DataFrame(s, index=periods, columns=columns)).to_numpy() for s in stacked])
     actual = compute_quarterly_metrics(actual_levels)
     position = {p: i for i, p in enumerate(periods)}
@@ -490,6 +421,16 @@ def forecast_rows(
 # --------------------------------------------------------------------------- #
 # One forecast origin: capture, select, forecast under every criterion.
 # --------------------------------------------------------------------------- #
+def _stability_record(model: Any, nsim: int) -> dict[str, float]:
+    """Share of Gibbs iterations abandoned because no stable coefficient draw
+    was found within the redraw cap, and the share of candidates rejected."""
+    return {
+        "abandoned_share": float(getattr(model, "explosive_counter", np.nan)) / nsim,
+        "stability_rejection_share": float(getattr(model, "stability_rejection_share", np.nan)),
+        "n_valid_draws": len(getattr(model, "valid_draws", [])),
+    }
+
+
 def run_origin(task: dict[str, Any]) -> dict[str, Any]:
     import MBFVAR
 
@@ -504,36 +445,52 @@ def run_origin(task: dict[str, Any]) -> dict[str, Any]:
     data_in = make_data_in(quarterly, monthly)
     history = realtime_quarterly_history(quarterly, monthly)
     seed = int(task["seed_base"]) + origin.year * 12 + origin.month
-    fit_kwargs = {"temp_agg": task["temp_agg"], "check_explosive": task["check_explosive"]}
+    nsim = int(task["fit_nsim"])
+    min_valid = max(10, int(0.1 * nsim * (1 - task["nburn_perc"])))
+    # fit() and forecast() reseed NumPy, so the same seed gives common random
+    # numbers across criteria. The redraw cap applies to every prior alike.
+    fit_kwargs = {
+        "temp_agg": task["temp_agg"],
+        "check_explosive": task["check_explosive"],
+        "max_it_stable": task["max_it_stable"],
+        "seed": seed,
+    }
 
     def new_model() -> Any:
-        np.random.seed(seed)  # common random numbers across criteria
-        return MBFVAR.MixedFrequencyBVAR(task["fit_nsim"], task["nburn_perc"], task["nlags"], task["thining"])
+        return MBFVAR.MixedFrequencyBVAR(nsim, task["nburn_perc"], task["nlags"], task["thining"])
 
     model = new_model()
     data = fit_capturing_complete_data(
         model, data_in, PAPER_HYPERPARAMETERS, keep=task["keep_draws"], last_observed_quarter=quarterly.index[-1], **fit_kwargs
     )
-    rows = forecast_rows("paper", origin, model, actual, history, task["forecast_horizon_months"])
     base_record = {"forecast_origin": origin.strftime("%Y-%m-%d"), "n_complete_draws": int(data.draws.shape[0])}
-    records = [{**base_record, "criterion": "paper", **dict(zip(HYPER_NAMES, from_mbfvar(PAPER_HYPERPARAMETERS)))}]
+    paper_stability = _stability_record(model, nsim)
+    if paper_stability["n_valid_draws"] < min_valid:
+        raise RuntimeError(f"only {paper_stability['n_valid_draws']} stable draws at the published hyperparameters")
+    rows = forecast_rows("paper", origin, model, actual, history, task["forecast_horizon_months"], seed)
+    records = [
+        {**base_record, "criterion": "paper", **dict(zip(HYPER_NAMES, from_mbfvar(PAPER_HYPERPARAMETERS))), **paper_stability}
+    ]
 
     criteria = tuple(MFCriterion(**c) for c in task["criteria"])
     selections = select_all(data, criteria, n_starts=task["n_starts"], maxfev=task["maxfev"], seed=seed)
     records[0]["complete_data_log_ml"] = selections.pop("_paper_complete_data_log_ml")["value"]
     for label, res in selections.items():
+        record = {
+            **base_record,
+            "criterion": label,
+            **dict(zip(HYPER_NAMES, res["free"])),
+            **{k: res[k] for k in ("value", "value_at_start", "value_at_paper", "complete_data_log_ml", "nfev", "n_cuts") if k in res},
+        }
         model = new_model()
-        with fast_explosive_check(), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             model.fit(data_in, [to_mbfvar(res["free"])], **fit_kwargs)
-        rows += forecast_rows(label, origin, model, actual, history, task["forecast_horizon_months"])
-        records.append(
-            {
-                **base_record,
-                "criterion": label,
-                **dict(zip(HYPER_NAMES, res["free"])),
-                **{k: res[k] for k in ("value", "value_at_start", "value_at_paper", "complete_data_log_ml", "nfev", "n_cuts") if k in res},
-            }
-        )
+        record.update(_stability_record(model, nsim))
+        if record["n_valid_draws"] < min_valid:
+            record["error"] = f"only {record['n_valid_draws']} stable draws (need {min_valid})"
+        else:
+            rows += forecast_rows(label, origin, model, actual, history, task["forecast_horizon_months"], seed)
+        records.append(record)
     return {"forecast_rows": rows, "hyperparameters": records}
 
 
@@ -559,7 +516,8 @@ def run_mf_ladder(
     nlags: list[int] | None = None,
     thining: int = 1,
     temp_agg: str = "mean",
-    check_explosive: bool = True,
+    check_explosive: bool = False,
+    max_it_stable: int = 5000,
     keep_draws: int = 50,
     n_starts: int = 4,
     maxfev: int = 400,
@@ -568,6 +526,7 @@ def run_mf_ladder(
     n_workers: int = 1,
 ) -> None:
     import hashlib
+    import importlib.metadata
     import json
     import pickle
     from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -586,12 +545,14 @@ def run_mf_ladder(
         "thining": thining,
         "temp_agg": temp_agg,
         "check_explosive": check_explosive,
+        "max_it_stable": max_it_stable,
         "keep_draws": keep_draws,
         "n_starts": n_starts,
         "maxfev": maxfev,
         "seed_base": seed_base,
         "forecast_horizon_months": forecast_horizon_months,
         "actual_vintage": str(pd.Timestamp(actual_vintage).date()),
+        "mbfvar_version": importlib.metadata.version("MBFVAR"),
     }
     key = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()[:16]
     ckpt_dir = output_dir / "_checkpoints" / key

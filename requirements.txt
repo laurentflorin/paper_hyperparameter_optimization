@@ -14,4 +14,4 @@ arm-mango
 pybind11
 seaborn
 covbayesvar
-MBFVAR @ git+https://github.com/laurentflorin/MBFVAR.git
+MBFVAR @ git+https://github.com/laurentflorin/MBFVAR.git@aab9c0fc51c309d061997ecf570212dc9a0822a3

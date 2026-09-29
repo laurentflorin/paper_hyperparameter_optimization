@@ -91,24 +91,3 @@ def test_realtime_quarterly_history_uses_complete_quarters_only():
     assert np.isnan(hist.loc[pd.Period("2005Q2"), "CPI"])  # only two months observed
     assert hist.loc[pd.Period("2005Q2"), "GDP"] == 101.0
 
-
-def test_fast_is_explosive_matches_mbfvar_check():
-    from MBFVAR.mfbvar_funcs import is_explosive
-
-    rng = np.random.default_rng(7)
-    n, p = 4, 3
-    cases = []
-    for scale in (0.0005, 0.002, 0.01, 0.05, 0.3):
-        for _ in range(60):
-            phi = rng.normal(0, scale, (n * p + 1, n))
-            phi[:n, :] += np.eye(n)  # unit roots perturbed in both directions
-            cases.append(phi)
-    rot = np.zeros((n * p + 1, n))  # complex pair just outside the unit circle
-    theta, r = 0.4, 1.001
-    rot[:2, :2] = r * np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
-    rot[2, 2] = rot[3, 3] = 0.5
-    cases.append(rot)
-    decisions = [(bool(is_explosive(c, n, p)), L.fast_is_explosive(c, n, p)) for c in cases]
-    assert all(a == b for a, b in decisions)
-    assert 0 < sum(a for a, _ in decisions) < len(decisions)  # both outcomes covered
-    assert L.fast_is_explosive(rot, n, p)

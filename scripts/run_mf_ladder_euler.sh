@@ -4,6 +4,8 @@
 # priors per origin (published values, marginal likelihood, GDP RMSE over 12
 # quarters, joint RMSE over 60 quarters). Resumes from per-origin checkpoints,
 # so a resubmission after the time limit continues where it stopped.
+# Needs the MBFVAR version pinned in requirements.txt (>= 0.9.1):
+#   pip install -r requirements.txt
 
 #SBATCH --nodes=1
 #SBATCH -n 48

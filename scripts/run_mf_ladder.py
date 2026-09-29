@@ -63,7 +63,18 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--criteria", default="ml,rmse:h4:w12,rmsej:h4:w60")
     p.add_argument("--fit-nsim", type=int, default=4000)
     p.add_argument("--keep-draws", type=int, default=50, help="Draws of the balanced monthly data kept for selection.")
-    p.add_argument("--no-explosive-check", action="store_true", help="Skip MBFVAR's rejection of explosive draws (7x faster).")
+    p.add_argument(
+        "--explosive-check",
+        action="store_true",
+        help="Truncate the posterior to stable VARs (MBFVAR's check_explosive). Off by default: the criteria and the "
+        "GLP ladder use the untruncated posterior, and loss-selected priors can leave no stable draw at crisis origins.",
+    )
+    p.add_argument(
+        "--max-it-stable",
+        type=int,
+        default=5000,
+        help="With --explosive-check: redraws per Gibbs iteration before MBFVAR abandons it (MBFVAR default 1000).",
+    )
     p.add_argument("--n-starts", type=int, default=4)
     p.add_argument("--maxfev", type=int, default=400)
     p.add_argument("--seed-base", type=int, default=2015)
@@ -71,9 +82,9 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
-def check_mbfvar_version(minimum: tuple[int, ...] = (0, 5, 4)) -> None:
-    """The selection step reads the balanced data from MBFVAR internals that
-    exist from version 0.5.4 on; fail early on an older installation."""
+def check_mbfvar_version(minimum: tuple[int, ...] = (0, 9, 1)) -> None:
+    """Needs MBFVAR >= 0.9.1: seeded fit()/forecast(), retained per-draw
+    aggregated paths (0.9.0) and the screened explosive-root check (0.9.1)."""
     import importlib.metadata
 
     version = importlib.metadata.version("MBFVAR")
@@ -96,7 +107,8 @@ def main(argv: list[str] | None = None) -> None:
         actual_vintage=pd.Timestamp(args.actual_vintage),
         criteria=parse_criteria(args.criteria),
         fit_nsim=args.fit_nsim,
-        check_explosive=not args.no_explosive_check,
+        check_explosive=args.explosive_check,
+        max_it_stable=args.max_it_stable,
         keep_draws=args.keep_draws,
         n_starts=args.n_starts,
         maxfev=args.maxfev,
