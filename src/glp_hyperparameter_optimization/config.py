@@ -59,6 +59,11 @@ class GLPSeriesSpec:
         matching ``covbayesvar.large_bvar.transform_data``); ``"lin"`` keeps the
         series in levels (used for variables already expressed in annualized
         rates such as interest rates and the unemployment rate).
+    continuation_id:
+        Optional successor series used for a vintage in which ``series_id`` has
+        been discontinued (its last observation is stale). The successor's
+        vintage is stored under ``series_id`` so the rest of the pipeline is
+        unaffected; the substitution is recorded in the download metadata.
     """
 
     series_id: str
@@ -66,6 +71,7 @@ class GLPSeriesSpec:
     label: str
     frequency: str
     transform: str
+    continuation_id: str | None = None
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
@@ -155,7 +161,9 @@ SERIES_SPECS: tuple[GLPSeriesSpec, ...] = (
     GLPSeriesSpec("UNRATE", "UNR", "Unemployment Rate", "M", "lin"),
     GLPSeriesSpec("AHETPI", "AHE", "Average Hourly Earnings (Production Workers)", "M", "log"),
     GLPSeriesSpec("CPIAUCSL", "CPI", "Consumer Price Index (All Urban)", "M", "log"),
-    GLPSeriesSpec("PPIFGS", "PPI", "Producer Price Index (Finished Goods)", "M", "log"),
+    # PPIFGS was discontinued in Dec 2015; its BLS continuation (same 1982=100
+    # base) is the final-demand finished-goods index WPSFD49207.
+    GLPSeriesSpec("PPIFGS", "PPI", "Producer Price Index (Finished Goods)", "M", "log", "WPSFD49207"),
     GLPSeriesSpec("PPIACO", "COMM", "Producer Price Index (All Commodities)", "M", "log"),
     GLPSeriesSpec("M1SL", "M1", "M1 Money Stock", "M", "log"),
     GLPSeriesSpec("M2SL", "M2", "M2 Money Stock", "M", "log"),
@@ -192,18 +200,29 @@ LARGE_CODES: tuple[str, ...] = MEDIUM_CODES + (
     "REER",
 )
 
+# The large model without the reserve and monetary-base series. After 2008 these
+# series jump by an order of magnitude (quantitative easing, borrowed reserves
+# turning non-borrowed reserves negative), which produces explosive VAR roots
+# (max |root| up to 1.49) at the 2008-2010 forecast origins.
+RESERVE_CODES: tuple[str, ...] = ("MBASE", "TOTRES", "NBRES")
+LARGE_NR_CODES: tuple[str, ...] = tuple(code for code in LARGE_CODES if code not in RESERVE_CODES)
+
 MODEL_SIZE_CODES: dict[str, tuple[str, ...]] = {
     "small": SMALL_CODES,
     "medium": MEDIUM_CODES,
     "large": LARGE_CODES,
+    "large_nr": LARGE_NR_CODES,
 }
 
 SERIES_BY_CODE: dict[str, GLPSeriesSpec] = {spec.code: spec for spec in SERIES_SPECS}
 SERIES_BY_ID: dict[str, GLPSeriesSpec] = {spec.series_id: spec for spec in SERIES_SPECS}
 
 
+MODEL_SIZES: tuple[str, ...] = tuple(MODEL_SIZE_CODES)
+
+
 def model_series(size: str) -> tuple[GLPSeriesSpec, ...]:
-    """Return the ordered series specs for a model size (small/medium/large)."""
+    """Return the ordered series specs for a model size (see ``MODEL_SIZES``)."""
     if size not in MODEL_SIZE_CODES:
         raise ValueError(f"Unknown model size {size!r}. Choose from {sorted(MODEL_SIZE_CODES)}.")
     codes = MODEL_SIZE_CODES[size]

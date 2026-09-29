@@ -11,6 +11,16 @@ Predictive densities:
   beta/sigma drawn from the conditional posterior.
 * ``mango_rmse``       -- hyperparameters fixed at the rolling-RMSE optimum.
 * ``mango_rmse_random``-- hyperparameters fixed at the random-origin RMSE optimum.
+* ``paper_plugin``     -- hyperparameters fixed at the GLP marginal-likelihood
+  mode (isolates integrating out the hyperparameters from the ``paper`` density).
+* ``ladder``           -- hyperparameters fixed at the optimum of one of the
+  forecast-based "ladder" objectives in :mod:`objectives`.
+
+Every fixed-hyperparameter density is simulated with the vectorized conjugate
+posterior of :mod:`objectives` (same distribution as the covbayesvar draws).
+Each forecast row stores the real-time jump-off and the evaluation-vintage
+value of the jump-off quarter, so scores can be computed on changes from the
+jump-off (see :mod:`scoring`), plus draw-based CRPS / log score.
 
 The recursive origins are processed in parallel with a process pool, mirroring the
 Slurm-aware parallelization of the Schorfheide-Song workflow.
@@ -19,8 +29,10 @@ Slurm-aware parallelization of the Schorfheide-Song workflow.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import pickle
 import re
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -40,8 +52,10 @@ from .config import (
     GLP_MCMC_CONST,
     GLP_REALTIME_PANEL_PATH,
     MAX_FORECAST_HORIZON_QUARTERS,
+    MODEL_SIZES,
     forecast_origin_dates,
     model_codes,
+    model_series,
     resolve_project_path,
 )
 from .data_utils import (
@@ -51,7 +65,6 @@ from .data_utils import (
 )
 from .glp_model import (
     glp_find_mode,
-    glp_fixed_hyperparameter_forecast_draws,
     glp_metropolis_forecast_draws,
     hyper_to_natural_vector,
     prepare_glp_context,
@@ -59,9 +72,19 @@ from .glp_model import (
     update_hyperparameters_mango_rmse,
     update_hyperparameters_mango_rmse_random,
 )
+from .objectives import (
+    LadderSpec,
+    fast_forecast_draws,
+    glp_log_posterior_unbounded,
+    select_ladder_hyperparameters,
+)
+from .scoring import adjusted_actual, crps_sample, log_score_gaussian
 
-STRATEGIES = ("paper", "mango_mdd", "mango_rmse", "mango_rmse_random")
+STRATEGIES = ("paper", "mango_mdd", "mango_rmse", "mango_rmse_random", "paper_plugin", "ladder")
 ONE_TIME_OPTIMIZATION_STRATEGIES = {"mango_rmse", "mango_rmse_random"}
+# Strategies whose selection is an optimization that may be re-run only every
+# ``reselect_every`` origins (paper-type strategies always re-select).
+RESELECTABLE_STRATEGIES = {"mango_mdd", "mango_rmse", "mango_rmse_random", "ladder"}
 
 # Default modest MCMC size for the recursive experiment (raise via CLI toward the
 # paper's 20,000 draws for fully paper-faithful densities).
@@ -170,13 +193,45 @@ def _iter_with_progress(
 # --------------------------------------------------------------------------- #
 # Hyperparameter selection and predictive densities.
 # --------------------------------------------------------------------------- #
-def select_hyperparameters(strategy: str, y: np.ndarray, codes: list[str], task: dict[str, Any]) -> dict[str, float]:
+def _optimizer_seed(task: dict[str, Any], origin_date: pd.Timestamp | str | None) -> int | None:
+    """Per-origin optimizer seed derived from ``optimization_seed`` (None = unseeded)."""
+    base = task.get("optimization_seed")
+    if base is None:
+        return None
+    offset = 0 if origin_date is None else int(pd.Timestamp(origin_date).strftime("%Y%m%d"))
+    return (int(base) * 1_000_003 + offset) % (2**31 - 1)
+
+
+def select_hyperparameters(
+    strategy: str, y: np.ndarray, codes: list[str], task: dict[str, Any], origin_date: pd.Timestamp | str | None = None
+) -> dict[str, float]:
     lags = task["lags"]
     prior_kwargs = dict(sur=task["sur"], noc=task["noc"], mnpsi=task["mnpsi"], mnalpha=task["mnalpha"], vc=task["vc"])
-    if strategy == "paper":
+    opt_seed = _optimizer_seed(task, origin_date)
+    if strategy in ("paper", "paper_plugin"):
         ctx = prepare_glp_context(y, lags, hyperpriors=task["hyperpriors"], **prior_kwargs)
         mode = glp_find_mode(ctx)
         return {"lambda": mode["lambda"], "theta": mode["theta"], "miu": mode["miu"], "psi": mode.get("psi")}
+    if strategy == "ladder":
+        ladder = dict(task["ladder"])
+        spec = LadderSpec(
+            objective=ladder["objective"],
+            horizon=int(ladder.get("horizon", 1)),
+            window=ladder.get("window"),
+            target_indices=tuple(codes.index(v) for v in task["variables"]),
+            n_draws=int(ladder.get("n_draws", 200)),
+            seed=int(opt_seed or 0),
+            min_t=task.get("min_t"),
+        )
+        return select_ladder_hyperparameters(
+            y,
+            lags,
+            spec,
+            n_starts=int(ladder.get("n_starts", 4)),
+            maxfev=ladder.get("maxfev"),
+            hyperpriors=task["hyperpriors"],
+            **prior_kwargs,
+        )
     if strategy == "mango_mdd":
         return update_hyperparameters_mango(
             y,
@@ -185,6 +240,8 @@ def select_hyperparameters(strategy: str, y: np.ndarray, codes: list[str], task:
             n_iter=task["n_iter"],
             njobs=task["optimization_njobs"],
             hyperpriors=task["hyperpriors"],
+            opt_seed=opt_seed,
+            local_polish=bool(task.get("local_polish", False)),
             **prior_kwargs,
         )
     if strategy == "mango_rmse":
@@ -202,6 +259,7 @@ def select_hyperparameters(strategy: str, y: np.ndarray, codes: list[str], task:
             n_iter=task["n_iter"],
             njobs=task["optimization_njobs"],
             hyperpriors=task["hyperpriors"],
+            opt_seed=opt_seed,
             **prior_kwargs,
         )
     if strategy == "mango_rmse_random":
@@ -220,13 +278,19 @@ def select_hyperparameters(strategy: str, y: np.ndarray, codes: list[str], task:
             n_iter=task["n_iter"],
             njobs=task["optimization_njobs"],
             hyperpriors=task["hyperpriors"],
+            opt_seed=opt_seed,
             **prior_kwargs,
         )
     raise ValueError(f"Unsupported strategy: {strategy}")
 
 
-def predictive_draws(strategy: str, ctx, hyper: dict[str, Any], task: dict[str, Any], seed: int | None) -> np.ndarray:
-    """Return an ``(n_draws, H, n)`` array of simulated forecast levels."""
+def predictive_draws(
+    strategy: str, ctx, hyper: dict[str, Any], task: dict[str, Any], seed: int | None, y: np.ndarray | None = None
+) -> np.ndarray:
+    """Return an ``(n_draws, H, n)`` array of simulated forecast levels.
+
+    ``y`` is the raw estimation matrix behind ``ctx`` (required for the
+    fixed-hyperparameter strategies, which use the fast conjugate sampler)."""
     horizon = MAX_FORECAST_HORIZON_QUARTERS
     hyper_vector = hyper_to_natural_vector(hyper, ctx)
     if strategy == "paper":
@@ -240,7 +304,8 @@ def predictive_draws(strategy: str, ctx, hyper: dict[str, Any], task: dict[str, 
             seed=seed,
         )
         return draws
-    return glp_fixed_hyperparameter_forecast_draws(
+    return fast_forecast_draws(
+        y,
         ctx,
         hyper_vector,
         max_horizon=horizon,
@@ -257,16 +322,37 @@ def _forecast_rows(
     codes: list[str],
     draws: np.ndarray,
     actual_frame: pd.DataFrame,
+    jumpoff: np.ndarray | None = None,
 ) -> list[dict[str, Any]]:
+    """One row per horizon/variable with the density summary and its scores.
+
+    Scores (``error_adj``, ``crps``, ``logscore``) compare the forecast with the
+    evaluation-vintage outcome re-expressed in the forecast vintage's units
+    (:func:`scoring.adjusted_actual`); ``error`` keeps the raw level error.
+    """
     rows: list[dict[str, Any]] = []
     quantiles = {"p05": 5, "p16": 16, "median": 50, "p84": 84, "p95": 95}
+    is_log = {spec.code: spec.transform == "log" for spec in model_series(size)}
+    has_last = last_quarter in actual_frame.index
     for h in range(1, MAX_FORECAST_HORIZON_QUARTERS + 1):
         target_quarter = last_quarter + h
         layer = draws[:, h - 1, :]  # (n_draws, n)
         mean = layer.mean(axis=0)
+        std = layer.std(axis=0, ddof=1)
         qvals = {name: np.percentile(layer, pct, axis=0) for name, pct in quantiles.items()}
+        actual_vec = np.array(
+            [float(actual_frame.at[target_quarter, c]) if target_quarter in actual_frame.index else np.nan for c in codes]
+        )
+        actual_jump = np.array([float(actual_frame.at[last_quarter, c]) if has_last else np.nan for c in codes])
+        jump = np.full(len(codes), np.nan) if jumpoff is None else np.asarray(jumpoff, dtype=float)
+        adj = adjusted_actual(actual_vec, actual_jump, jump, [is_log[c] for c in codes])
+        finite = np.isfinite(adj)
+        crps = np.full(len(codes), np.nan)
+        if finite.any():
+            crps[finite] = crps_sample(layer[:, finite], adj[finite])
+        logscore = log_score_gaussian(mean, std, adj)
         for vi, code in enumerate(codes):
-            actual = float(actual_frame.at[target_quarter, code]) if target_quarter in actual_frame.index else np.nan
+            actual = actual_vec[vi]
             row = {
                 "strategy": strategy,
                 "model_size": size,
@@ -277,11 +363,77 @@ def _forecast_rows(
                 "mean": float(mean[vi]),
                 "actual": actual,
                 "error": float(mean[vi] - actual) if np.isfinite(actual) else np.nan,
+                "transform": "log" if is_log[code] else "lin",
+                "jumpoff": float(jump[vi]),
+                "actual_jumpoff": float(actual_jump[vi]),
+                "actual_adj": float(adj[vi]),
+                "error_adj": float(mean[vi] - adj[vi]),
+                "std": float(std[vi]),
+                "crps": float(crps[vi]),
+                "logscore": float(logscore[vi]),
             }
             for name in quantiles:
                 row[name] = float(qvals[name][vi])
             rows.append(row)
     return rows
+
+
+def _run_selection_task(task: dict[str, Any]) -> dict[str, Any]:
+    """Select hyperparameters on one origin's real-time sample (no forecasting)."""
+    try:
+        origin_date = pd.Timestamp(task["origin_date"])
+        panel = load_glp_realtime_panel(Path(task["panel_path"]))
+        y, codes, _ = build_glp_estimation_matrix(panel, origin_date, task["size"])
+        hyper = select_hyperparameters(task["strategy"], y, codes, task, origin_date)
+        hyper["selection_origin"] = origin_date.strftime("%Y-%m-%d")
+        return {"hyperparameters": hyper, "error": None}
+    except Exception as exc:  # pragma: no cover - logged by the caller
+        return {"hyperparameters": None, "error": f"{type(exc).__name__}: {exc}"}
+
+
+class _Checkpoints:
+    """Per-origin results saved as soon as they finish, so an interrupted run
+    resumes where it stopped instead of losing the whole stage.
+
+    Files live under ``<output_dir>/_checkpoints/<config hash>/<kind>/<origin>.pkl``;
+    the hash covers every setting that changes results (not the worker count),
+    so a run with different settings never picks up stale checkpoints. They are
+    kept after completion, which makes re-running a finished stage instant.
+    """
+
+    def __init__(self, output_dir: Path, config: dict[str, Any]):
+        digest = hashlib.sha256(json.dumps(config, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
+        self.root = output_dir / "_checkpoints" / digest
+
+    def load(self, kind: str, label: str) -> Any | None:
+        path = self.root / kind / f"{label}.pkl"
+        if not path.exists():
+            return None
+        try:
+            with path.open("rb") as handle:
+                return pickle.load(handle)
+        except (OSError, pickle.UnpicklingError, EOFError):
+            return None
+
+    def save(self, kind: str, label: str, value: Any) -> None:
+        folder = self.root / kind
+        folder.mkdir(parents=True, exist_ok=True)
+        tmp = folder / f".{label}.pkl.tmp"
+        with tmp.open("wb") as handle:
+            pickle.dump(value, handle)
+        tmp.replace(folder / f"{label}.pkl")
+
+
+def _map_tasks(function, tasks: list[dict[str, Any]], n_workers: int) -> Iterator[tuple[dict[str, Any], dict[str, Any]]]:
+    """Yield ``(task, result)`` pairs, in a process pool when ``n_workers > 1``."""
+    if n_workers == 1:
+        for task in tasks:
+            yield task, function(task)
+        return
+    with ProcessPoolExecutor(max_workers=n_workers) as executor:
+        futures = {executor.submit(function, task): task for task in tasks}
+        for future in as_completed(futures):
+            yield futures[future], future.result()
 
 
 def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
@@ -291,7 +443,9 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
         actual_frame = build_glp_actual_frame(panel, pd.Timestamp(task["actual_vintage"]), task["size"])
         y, codes, qidx = build_glp_estimation_matrix(panel, origin_date, task["size"])
 
-        hyper = task.get("fixed_hyperparameters") or select_hyperparameters(task["strategy"], y, codes, task)
+        hyper = task.get("fixed_hyperparameters") or select_hyperparameters(
+            task["strategy"], y, codes, task, origin_date
+        )
         ctx = prepare_glp_context(
             y,
             task["lags"],
@@ -304,8 +458,10 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
         )
         seed = task.get("seed_base")
         seed = None if seed is None else int(seed) + int(pd.Timestamp(origin_date).value % 100000)
-        draws = predictive_draws(task["strategy"], ctx, hyper, task, seed)
-        rows = _forecast_rows(task["strategy"], task["size"], origin_date, qidx[-1], codes, draws, actual_frame)
+        draws = predictive_draws(task["strategy"], ctx, hyper, task, seed, y)
+        rows = _forecast_rows(
+            task["strategy"], task["size"], origin_date, qidx[-1], codes, draws, actual_frame, jumpoff=y[-1]
+        )
 
         hyper_record = {
             "forecast_origin": pd.Timestamp(origin_date).strftime("%Y-%m-%d"),
@@ -320,6 +476,12 @@ def _run_origin_task(task: dict[str, Any]) -> dict[str, Any]:
         psi_values = hyper.get("psi")
         if psi_values is not None:
             hyper_record["psi"] = json.dumps([float(v) for v in psi_values])
+        # Achieved GLP log posterior (log MDD + hyperprior) at the selected
+        # hyperparameters on this origin's sample, comparable across strategies.
+        hyper_record["log_mdd"] = glp_log_posterior_unbounded(y, ctx, hyper_to_natural_vector(hyper, ctx))
+        for key in ("log_mdd_mango", "objective_value", "objective_at_mdd_mode", "objective_nfev", "selection_origin"):
+            if hyper.get(key) is not None:
+                hyper_record[key] = hyper[key]
         return {"forecast_rows": rows, "hyperparameters": hyper_record, "error": None}
     except Exception as exc:  # pragma: no cover - per-origin failures are logged
         return {"forecast_rows": [], "hyperparameters": {}, "error": f"{type(exc).__name__}: {exc}"}
@@ -361,6 +523,10 @@ def run_glp_experiment(
     seed_base: int | None = None,
     n_workers: int | None = None,
     show_progress: bool = True,
+    optimization_seed: int | None = None,
+    local_polish: bool = False,
+    ladder: dict[str, Any] | None = None,
+    reselect_every: int = 1,
 ) -> Path:
     output_dir = resolve_project_path(output_dir)
     panel_path = resolve_project_path(panel_path)
@@ -404,7 +570,12 @@ def run_glp_experiment(
         "random_seed": random_seed,
         "variables": resolved_variables,
         "seed_base": seed_base,
+        "optimization_seed": optimization_seed,
+        "local_polish": local_polish,
+        "ladder": ladder,
     }
+    if strategy == "ladder" and not ladder:
+        raise ValueError("The 'ladder' strategy needs a ladder specification (objective, horizon, window, ...).")
 
     # One-time (shared) hyperparameter selection for the RMSE strategies, using
     # the earliest origin's real-time sample (unless per-origin was requested).
@@ -425,8 +596,56 @@ def run_glp_experiment(
                 f"miu={shared_hyperparameters['miu']:.4g}."
             )
 
+    checkpoint_config = {
+        key: value for key, value in task_template.items() if key not in ("optimization_njobs", "panel_path")
+    }
+    checkpoint_config.update(
+        {"per_origin_selection": per_origin_selection, "reselect_every": int(reselect_every), "shared": shared_hyperparameters}
+    )
+    checkpoints = _Checkpoints(output_dir, checkpoint_config)
+
+    # Periodic re-selection: optimize only every ``reselect_every`` origins and
+    # reuse the latest selection (made with data available at that earlier
+    # origin, so there is no look-ahead) for the origins in between.
+    fixed_by_origin: dict[str, dict[str, Any]] = {}
+    periodic = (
+        shared_hyperparameters is None
+        and strategy in RESELECTABLE_STRATEGIES
+        and int(reselect_every) > 1
+        and len(origins) > 0
+    )
+    if periodic:
+        selection_origins = list(origins[:: int(reselect_every)])
+        selection_tasks = [{**task_template, "origin_date": o.strftime("%Y-%m-%d")} for o in selection_origins]
+        if show_progress:
+            _log_progress(f"Selecting {strategy} hyperparameters at {len(selection_tasks)} origins (every {reselect_every}).")
+        selected: dict[str, dict[str, Any]] = {}
+        pending_selections = []
+        for task in selection_tasks:
+            cached = checkpoints.load("selection", task["origin_date"])
+            if cached is not None:
+                selected[task["origin_date"]] = cached
+            else:
+                pending_selections.append(task)
+        if show_progress and len(pending_selections) < len(selection_tasks):
+            _log_progress(f"Resuming: {len(selection_tasks) - len(pending_selections)} selections loaded from checkpoints.")
+        for task, result in _map_tasks(_run_selection_task, pending_selections, n_workers_resolved):
+            if result["error"]:
+                raise RuntimeError(f"Hyperparameter selection failed at {task['origin_date']}: {result['error']}")
+            selected[task["origin_date"]] = result["hyperparameters"]
+            checkpoints.save("selection", task["origin_date"], result["hyperparameters"])
+        current: dict[str, Any] | None = None
+        for origin in origins:
+            label = origin.strftime("%Y-%m-%d")
+            current = selected.get(label, current)
+            fixed_by_origin[label] = current  # type: ignore[assignment]
+
     tasks = [
-        {**task_template, "origin_date": origin.strftime("%Y-%m-%d"), "fixed_hyperparameters": shared_hyperparameters}
+        {
+            **task_template,
+            "origin_date": origin.strftime("%Y-%m-%d"),
+            "fixed_hyperparameters": fixed_by_origin.get(origin.strftime("%Y-%m-%d"), shared_hyperparameters),
+        }
         for origin in origins
     ]
 
@@ -434,20 +653,21 @@ def run_glp_experiment(
     hyper_rows: list[dict[str, Any]] = []
     errors: list[dict[str, str]] = []
 
-    if n_workers_resolved == 1:
-        iterator = ((task["origin_date"], _run_origin_task(task)) for task in tasks)
-    else:
-        executor = ProcessPoolExecutor(max_workers=n_workers_resolved)
-        futures = {executor.submit(_run_origin_task, task): task for task in tasks}
+    pending_tasks = []
+    for task in tasks:
+        cached = checkpoints.load("origin", task["origin_date"])
+        if cached is not None:
+            forecast_rows.extend(cached["forecast_rows"])
+            hyper_rows.append(cached["hyperparameters"])
+        else:
+            pending_tasks.append(task)
+    if show_progress and len(pending_tasks) < len(tasks):
+        _log_progress(f"Resuming: {len(tasks) - len(pending_tasks)} of {len(tasks)} origins loaded from checkpoints.")
+    tasks = pending_tasks
 
-        def _iterator():
-            try:
-                for future in as_completed(futures):
-                    yield futures[future]["origin_date"], future.result()
-            finally:
-                executor.shutdown(wait=True)
-
-        iterator = _iterator()
+    iterator = (
+        (task["origin_date"], result) for task, result in _map_tasks(_run_origin_task, tasks, n_workers_resolved)
+    )
 
     if show_progress:
         _log_progress(
@@ -464,6 +684,7 @@ def run_glp_experiment(
             continue
         forecast_rows.extend(result["forecast_rows"])
         hyper_rows.append(result["hyperparameters"])
+        checkpoints.save("origin", origin_label, result)
 
     forecasts = pd.DataFrame(forecast_rows)
     if not forecasts.empty:
@@ -500,6 +721,11 @@ def run_glp_experiment(
         "n_obj_draws": n_obj_draws,
         "min_t": min_t,
         "random_seed": random_seed,
+        "optimization_seed": optimization_seed,
+        "local_polish": local_polish,
+        "ladder": ladder,
+        "reselect_every": int(reselect_every) if periodic else 1,
+        "fixed_draw_sampler": "objectives.fast_forecast_draws",
         "hyperparameters_selected_once": strategy in ONE_TIME_OPTIMIZATION_STRATEGIES and not per_origin_selection,
         "hyperparameter_selection_origin": selection_origin,
         "n_workers": n_workers_resolved,
@@ -523,7 +749,7 @@ def build_common_parser(description: str) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("--panel-path", type=Path, default=GLP_REALTIME_PANEL_PATH)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--model-size", choices=("small", "medium", "large"), default="medium")
+    parser.add_argument("--model-size", choices=MODEL_SIZES, default="medium")
     parser.add_argument("--start", type=str, default=None)
     parser.add_argument("--end", type=str, default=None)
     parser.add_argument("--actual-vintage", type=str, default=GLP_ACTUAL_VINTAGE.strftime("%Y-%m-%d"))
@@ -563,7 +789,29 @@ def build_optimizer_parser(description: str) -> argparse.ArgumentParser:
         action="store_true",
         help="Re-select the RMSE hyperparameters at every origin instead of once on the first origin.",
     )
+    add_selection_arguments(parser)
     return parser
+
+
+def add_selection_arguments(parser: argparse.ArgumentParser) -> None:
+    """Optimizer reproducibility / precision flags shared by every optimizing script."""
+    parser.add_argument(
+        "--optimization-seed",
+        type=int,
+        default=None,
+        help="Base seed for the hyperparameter optimizers (offset per origin); unseeded when omitted.",
+    )
+    parser.add_argument(
+        "--local-polish",
+        action="store_true",
+        help="Refine the Mango MDD optimum with Nelder-Mead on the same closed-form objective.",
+    )
+    parser.add_argument(
+        "--reselect-every",
+        type=int,
+        default=1,
+        help="Re-run the hyperparameter optimization only every N origins (reusing the latest selection).",
+    )
 
 
 def parse_dates(start: str | None, end: str | None) -> tuple[pd.Timestamp | None, pd.Timestamp | None]:
@@ -602,6 +850,9 @@ def run_from_namespace(strategy: str, namespace: argparse.Namespace) -> Path:
                 "random_seed": getattr(namespace, "optimization_random_seed", None),
                 "variables": parse_csv_list(namespace.variables, []),
                 "per_origin_selection": getattr(namespace, "per_origin_selection", False),
+                "optimization_seed": getattr(namespace, "optimization_seed", None),
+                "local_polish": getattr(namespace, "local_polish", False),
+                "reselect_every": getattr(namespace, "reselect_every", 1),
             }
         )
     return run_glp_experiment(**kwargs)

@@ -55,3 +55,12 @@ def test_forecast_origins_are_quarter_ends():
         pd.Timestamp("2001-09-30"),
         pd.Timestamp("2001-12-31"),
     ]
+
+
+def test_large_nr_drops_only_the_reserve_series():
+    large = config.MODEL_SIZE_CODES["large"]
+    large_nr = config.MODEL_SIZE_CODES["large_nr"]
+    assert set(large) - set(large_nr) == {"MBASE", "TOTRES", "NBRES"}
+    assert list(large_nr) == [c for c in large if c not in {"MBASE", "TOTRES", "NBRES"}]
+    assert set(config.MODEL_SIZE_CODES["medium"]) < set(large_nr)
+    assert "large_nr" in config.MODEL_SIZES

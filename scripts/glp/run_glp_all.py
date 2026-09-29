@@ -9,6 +9,16 @@ By default this runs the four forecast scripts
 
 with one shared CLI surface. The optional ``compare`` stage reproduces
 ``compare_glp_forecasts.py`` after the forecast runs finish.
+
+Two further stages are available:
+
+* ``paper_plugin`` -- the GLP marginal-likelihood mode with the hyperparameters
+  held fixed (no integration over them); isolates the effect of integrating out
+  the hyperparameters in ``paper``.
+* ``ladder`` -- one run per rung in ``--ladder-rungs`` (see
+  :mod:`glp_hyperparameter_optimization.objectives`); each rung writes to
+  ``<output-root>/ladder/<rung label>``. Rung syntax: ``OBJ[:hH][:wW|:wall]`` with
+  ``OBJ`` in ``mdd, lsj1, lsj, lsm, rmse, rmsej`` (e.g. ``lsj1:w12,lsm:h4:w12,rmse:h4:wall``).
 """
 
 from __future__ import annotations
@@ -31,19 +41,29 @@ from glp_hyperparameter_optimization.config import (  # noqa: E402
     GLP_MCMC_CONST,
     GLP_REALTIME_PANEL_PATH,
     MAX_FORECAST_HORIZON_QUARTERS,
+    MODEL_SIZES,
     resolve_project_path,
 )
 from glp_hyperparameter_optimization.forecasting import (  # noqa: E402
     DEFAULT_MCMC_DISCARD,
     DEFAULT_MCMC_DRAWS,
+    add_selection_arguments,
     parse_csv_int_list,
     parse_csv_list,
     run_glp_experiment,
 )
 from glp_hyperparameter_optimization.reporting import create_glp_comparison_report  # noqa: E402
 
-VALID_STAGES = ("paper", "mango_mdd", "mango_rmse", "mango_rmse_random", "compare")
-DEFAULT_STAGES = VALID_STAGES[:-1]
+VALID_STAGES = ("paper", "mango_mdd", "mango_rmse", "mango_rmse_random", "paper_plugin", "ladder", "compare")
+DEFAULT_STAGES = ("paper", "mango_mdd", "mango_rmse", "mango_rmse_random")
+LADDER_SHORT_NAMES = {
+    "mdd": "mdd",
+    "lsj1": "logscore_joint_1",
+    "lsj": "logscore_joint",
+    "lsm": "logscore_marginal",
+    "rmse": "rmse",
+    "rmsej": "rmse_joint",
+}
 
 
 def _log(message: str) -> None:
@@ -76,6 +96,36 @@ def validate_eval_horizons(horizons: list[int]) -> list[int]:
         if horizon not in unique:
             unique.append(horizon)
     return unique
+
+
+def parse_ladder_rungs(value: str | None) -> list[dict[str, object]]:
+    """Parse ``OBJ[:hH][:wW|:wall]`` rung specs into ladder dicts (see module doc)."""
+    rungs: list[dict[str, object]] = []
+    for item in (value or "").split(","):
+        item = item.strip()
+        if not item:
+            continue
+        parts = item.split(":")
+        if parts[0] not in LADDER_SHORT_NAMES:
+            raise ValueError(f"Unknown ladder objective {parts[0]!r}; choose from {', '.join(LADDER_SHORT_NAMES)}.")
+        rung: dict[str, object] = {"objective": LADDER_SHORT_NAMES[parts[0]], "horizon": 1, "window": 12}
+        for part in parts[1:]:
+            if part.startswith("h"):
+                rung["horizon"] = validate_eval_horizons([int(part[1:])])[0]
+            elif part == "wall":
+                rung["window"] = None
+            elif part.startswith("w"):
+                rung["window"] = int(part[1:])
+            else:
+                raise ValueError(f"Cannot parse ladder rung component {part!r} in {item!r}.")
+        rungs.append(rung)
+    return rungs
+
+
+def ladder_label(rung: dict[str, object]) -> str:
+    from glp_hyperparameter_optimization.objectives import LadderSpec
+
+    return LadderSpec(str(rung["objective"]), int(rung["horizon"]), rung["window"]).label()  # type: ignore[arg-type]
 
 
 def resolve_stage_output_dir(output_root: Path, explicit: Path | None, leaf: str) -> Path:
@@ -119,7 +169,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--comparison-dir", type=Path, default=None)
 
     parser.add_argument("--panel-path", type=Path, default=GLP_REALTIME_PANEL_PATH)
-    parser.add_argument("--model-size", choices=("small", "medium", "large"), default="medium")
+    parser.add_argument("--model-size", choices=MODEL_SIZES, default="medium")
     parser.add_argument("--start", type=str, default=None)
     parser.add_argument("--end", type=str, default=None)
     parser.add_argument("--actual-vintage", type=str, default=GLP_ACTUAL_VINTAGE.strftime("%Y-%m-%d"))
@@ -184,6 +234,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Re-select the RMSE hyperparameters at every origin instead of once on the first origin.",
     )
+    add_selection_arguments(parser)
+    parser.add_argument(
+        "--ladder-rungs",
+        type=str,
+        default="mdd,lsj1:w12,lsj:h4:w12,lsm:h4:w12,rmse:h4:w12",
+        help="Comma-separated ladder rungs OBJ[:hH][:wW|:wall] for the 'ladder' stage.",
+    )
+    parser.add_argument("--ladder-draws", type=int, default=200, help="Posterior draws per origin in the ladder objectives.")
+    parser.add_argument("--ladder-starts", type=int, default=4, help="Nelder-Mead starts per ladder selection.")
+    parser.add_argument("--ladder-maxfev", type=int, default=None, help="Max objective evaluations per Nelder-Mead start.")
     return parser
 
 
@@ -216,6 +276,9 @@ def common_run_kwargs(args: argparse.Namespace) -> dict[str, object]:
         "seed_base": args.seed_base,
         "n_workers": args.n_workers,
         "show_progress": not args.quiet,
+        "optimization_seed": args.optimization_seed,
+        "local_polish": args.local_polish,
+        "reselect_every": args.reselect_every,
     }
 
 
@@ -249,6 +312,20 @@ def run_rmse_stage(strategy: str, base_output_dir: Path, args: argparse.Namespac
     return base_output_dir
 
 
+def run_ladder_stage(base_output_dir: Path, args: argparse.Namespace) -> Path:
+    kwargs = common_run_kwargs(args)
+    manifest: list[dict[str, object]] = []
+    for rung in parse_ladder_rungs(args.ladder_rungs):
+        label = ladder_label(rung)
+        output_dir = base_output_dir / label
+        ladder = {**rung, "n_draws": args.ladder_draws, "n_starts": args.ladder_starts, "maxfev": args.ladder_maxfev}
+        _log(f"Running GLP ladder rung {label} -> {output_dir}")
+        run_glp_experiment(**kwargs, strategy="ladder", output_dir=output_dir, ladder=ladder)
+        manifest.append({"rung": label, **rung, "output_dir": str(output_dir)})
+    write_batch_metadata(base_output_dir, manifest)
+    return base_output_dir
+
+
 def run_compare(args: argparse.Namespace, output_root: Path) -> Path:
     paper_dir = resolve_stage_output_dir(output_root, args.paper_dir, "paper")
     mango_mdd_dir = resolve_stage_output_dir(output_root, args.mango_mdd_dir, "mango_mdd")
@@ -261,10 +338,16 @@ def run_compare(args: argparse.Namespace, output_root: Path) -> Path:
         "mango_rmse": _existing(mango_rmse_dir),
         "mango_rmse_random": _existing(mango_rmse_random_dir),
     }
+    experiment_dirs["paper_plugin"] = _existing(output_root / "paper_plugin")
+    ladder_root = output_root / "ladder"
+    if ladder_root.exists():
+        for child in sorted(ladder_root.iterdir()):
+            if child.is_dir() and (child / "forecast_panel.csv").exists():
+                experiment_dirs[f"ladder_{child.name}"] = child
     if not any(experiment_dirs.values()):
         raise FileNotFoundError("No GLP forecast outputs were found for comparison.")
     _log(f"Creating GLP comparison report -> {comparison_dir}")
-    return create_glp_comparison_report(experiment_dirs, comparison_dir)
+    return create_glp_comparison_report(experiment_dirs, comparison_dir, panel_path=resolve_project_path(args.panel_path))
 
 
 def main() -> int:
@@ -295,6 +378,13 @@ def main() -> int:
 
     if "mango_rmse_random" in stages:
         run_rmse_stage("mango_rmse_random", stage_dirs["mango_rmse_random"], args)
+
+    if "paper_plugin" in stages:
+        _log(f"Running GLP paper_plugin strategy -> {output_root / 'paper_plugin'}")
+        run_simple_stage("paper_plugin", output_root / "paper_plugin", args)
+
+    if "ladder" in stages:
+        run_ladder_stage(output_root / "ladder", args)
 
     if "compare" in stages:
         run_compare(args, output_root)

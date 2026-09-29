@@ -11,7 +11,7 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from glp_hyperparameter_optimization.config import resolve_project_path
+from glp_hyperparameter_optimization.config import MODEL_SIZES, resolve_project_path
 from glp_hyperparameter_optimization.reporting import create_glp_comparison_report
 
 STRATEGY_ARG_NAMES = {
@@ -32,7 +32,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--model-size",
-        choices=("small", "medium", "large"),
+        choices=MODEL_SIZES,
         default=None,
         help="Optional model-size filter used during auto-discovery (recommended if multiple sizes exist).",
     )
@@ -40,8 +40,36 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--mango-mdd-dir", type=Path, default=None)
     parser.add_argument("--mango-rmse-dir", type=Path, default=None)
     parser.add_argument("--mango-rmse-random-dir", type=Path, default=None)
+    parser.add_argument(
+        "--extra-dir",
+        action="append",
+        default=[],
+        metavar="NAME=PATH",
+        help="Additional forecast set(s) to compare, e.g. paper_plugin=outputs/glp/x/paper_plugin (repeatable).",
+    )
+    parser.add_argument(
+        "--panel-path",
+        type=Path,
+        default=None,
+        help="Real-time panel used to backfill jump-offs for forecast panels written before they were stored "
+        "(defaults to the processed GLP panel).",
+    )
+    parser.add_argument("--baseline", type=str, default="paper", help="Forecast set used as the relative-score baseline.")
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/glp/comparison"))
     return parser
+
+
+def parse_extra_dirs(items: list[str]) -> dict[str, Path]:
+    extra: dict[str, Path] = {}
+    for item in items:
+        name, sep, path = item.partition("=")
+        if not sep or not name or not path:
+            raise ValueError(f"--extra-dir expects NAME=PATH, got {item!r}.")
+        resolved = _existing(Path(path))
+        if resolved is None:
+            raise FileNotFoundError(f"--extra-dir path does not exist: {path}")
+        extra[name] = resolved
+    return extra
 
 
 def _existing(path: Path | None) -> Path | None:
@@ -130,13 +158,19 @@ def main() -> int:
             model_size=args.model_size,
         ),
     }
+    experiment_dirs.update(parse_extra_dirs(args.extra_dir))
     if not any(experiment_dirs.values()):
         raise FileNotFoundError(
             "No GLP forecast outputs were found. "
             f"Scanned {root_dir} for strategy directories via run_metadata.json. "
             "Pass --model-size or the explicit --paper-dir / --mango-*-dir flags."
         )
-    create_glp_comparison_report(experiment_dirs, resolve_project_path(args.output_dir))
+    create_glp_comparison_report(
+        experiment_dirs,
+        resolve_project_path(args.output_dir),
+        panel_path=resolve_project_path(args.panel_path) if args.panel_path else None,
+        baseline_model=args.baseline,
+    )
     return 0
 
 

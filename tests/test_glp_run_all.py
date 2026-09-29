@@ -41,3 +41,17 @@ def test_build_parser_accepts_optimization_n_obj_draws():
     parser = run_all.build_parser()
     args = parser.parse_args(["--optimization-n-obj-draws", "48"])
     assert args.optimization_n_obj_draws == 48
+
+
+def test_parse_ladder_rungs_and_labels():
+    rungs = run_all.parse_ladder_rungs("mdd,lsj1:w12,lsm:h4:w12,rmse:h8:wall")
+    assert [r["objective"] for r in rungs] == ["mdd", "logscore_joint_1", "logscore_marginal", "rmse"]
+    assert rungs[3]["window"] is None and rungs[3]["horizon"] == 8
+    assert [run_all.ladder_label(r) for r in rungs] == ["mdd", "lsj1_w12", "lsm_h4_w12", "rmse_h8_all"]
+    with pytest.raises(ValueError):
+        run_all.parse_ladder_rungs("crps:h4")
+
+
+def test_build_parser_accepts_selection_flags():
+    args = run_all.build_parser().parse_args(["--optimization-seed", "5", "--local-polish", "--reselect-every", "4"])
+    assert args.optimization_seed == 5 and args.local_polish and args.reselect_every == 4

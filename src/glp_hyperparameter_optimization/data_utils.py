@@ -41,6 +41,12 @@ from .config import (
 ALFRED_GRAPH_URL = "https://alfred.stlouisfed.org/graph/alfredgraph.csv"
 FRED_GRAPH_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv"
 STOOQ_SP500_MONTHLY_URL = "https://stooq.com/q/d/l/?s=%5Espx&i=m"
+# Bump when the assembled panel changes for the same download request, so a
+# cached processed panel is rebuilt (from the raw caches) rather than reused.
+PANEL_SCHEMA_VERSION = 2
+# A vintage whose last observation is older than this is treated as discontinued.
+STALE_OBSERVATION_DAYS = 185
+
 REQUEST_TIMEOUT_SECONDS = 120
 MAX_REQUEST_ATTEMPTS = 4
 RETRY_BACKOFF_SECONDS = 2.0
@@ -176,6 +182,9 @@ def download_series_vintage(
     else:
         try:
             frame = _read_csv_from_url(alfred_vintage_url(series_id, vintage_date))
+            # ALFRED occasionally returns the full current history for a vintage
+            # date (seen for TWEXMMTH); never keep observations after the vintage.
+            frame = frame.loc[frame["observation_date"] <= pd.Timestamp(vintage_date)].copy()
         except EmptyRemoteDataError:
             # Some ALFRED vintages return a zero-byte body for valid historical
             # series rather than an HTTP error. When that happens, fall back to
@@ -220,6 +229,42 @@ def _load_or_download_latest_series(series_id: str, *, force: bool = False):
     return frame, False
 
 
+def _is_stale(frame: pd.DataFrame, vintage_date: pd.Timestamp) -> bool:
+    if frame.empty:
+        return True
+    last = pd.Timestamp(frame["observation_date"].max())
+    return (pd.Timestamp(vintage_date) - last).days > STALE_OBSERVATION_DAYS
+
+
+def _resolve_vintage_frame(spec, vintage_date: pd.Timestamp, *, force: bool = False) -> tuple[pd.DataFrame, str | None]:
+    """Vintage of ``spec`` at ``vintage_date``, repaired when the series is stale.
+
+    A series whose last observation is more than ``STALE_OBSERVATION_DAYS`` old
+    at the vintage date would truncate the model's complete estimation window.
+    It is replaced (and relabelled with ``spec.series_id``) by, in order: the
+    same vintage of ``spec.continuation_id`` (discontinued series), or the
+    latest FRED history truncated at the vintage date. Returns the frame and a
+    note describing the substitution, or ``None`` when no repair was needed.
+    """
+    vintage_date = pd.Timestamp(vintage_date)
+    frame, _ = _load_or_download_realtime_vintage(spec.series_id, vintage_date, force=force)
+    frame = frame.loc[frame["observation_date"] <= vintage_date].copy()
+    if not _is_stale(frame, vintage_date):
+        return frame, None
+    if spec.continuation_id:
+        successor, _ = _load_or_download_realtime_vintage(spec.continuation_id, vintage_date, force=force)
+        successor = successor.loc[successor["observation_date"] <= vintage_date].copy()
+        if not _is_stale(successor, vintage_date):
+            successor["series_id"] = spec.series_id
+            return successor, f"continuation:{spec.continuation_id}"
+    latest, _ = _load_or_download_latest_series(spec.series_id, force=force)
+    latest = latest.loc[latest["observation_date"] <= vintage_date].copy()
+    if not _is_stale(latest, vintage_date):
+        latest["vintage_date"] = vintage_date
+        return latest[["series_id", "vintage_date", "observation_date", "value"]], "latest_truncated"
+    return frame, None
+
+
 # --------------------------------------------------------------------------- #
 # Panel download orchestration.
 # --------------------------------------------------------------------------- #
@@ -243,6 +288,7 @@ def _existing_outputs_match(
         and metadata.get("actual_vintage") == pd.Timestamp(actual_vintage).strftime("%Y-%m-%d")
         and metadata.get("n_forecast_origins") == len(origins)
         and set(metadata.get("series_ids", [])) == set(series_ids)
+        and metadata.get("panel_schema_version") == PANEL_SCHEMA_VERSION
     )
 
 
@@ -278,17 +324,22 @@ def download_glp_realtime_panel(
 
     report(f"Downloading {len(specs)} series across {len(vintage_dates)} vintages (resumable).")
     frames: list[pd.DataFrame] = []
+    substitutions: list[dict[str, str]] = []
     for series_index, spec in enumerate(specs, start=1):
         cached = 0 if force else sum(realtime_cache_path(spec.series_id, v).exists() for v in vintage_dates)
         report(f"Series {series_index}/{len(specs)} {spec.series_id}: {cached}/{len(vintage_dates)} vintages cached.")
         for vintage_date in vintage_dates:
             try:
-                frame, _ = _load_or_download_realtime_vintage(spec.series_id, vintage_date, force=force)
+                frame, note = _resolve_vintage_frame(spec, vintage_date, force=force)
             except DataDownloadError as exc:
                 raise RuntimeError(
                     f"Failed to download {spec.series_id} for vintage {vintage_date:%Y-%m-%d}. "
                     "Rerun to resume from the cached vintages."
                 ) from exc
+            if note:
+                substitutions.append(
+                    {"series_id": spec.series_id, "vintage_date": vintage_date.strftime("%Y-%m-%d"), "source": note}
+                )
             frames.append(frame)
 
     realtime_panel = pd.concat(frames, ignore_index=True).sort_values(["series_id", "vintage_date", "observation_date"])
@@ -315,6 +366,9 @@ def download_glp_realtime_panel(
         "series_ids": resolved_ids,
         "series": serialise_series_specs(),
         "force_refresh": force,
+        "panel_schema_version": PANEL_SCHEMA_VERSION,
+        "stale_observation_days": STALE_OBSERVATION_DAYS,
+        "substitutions": substitutions,
     }
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     report("GLP download pipeline finished.")
@@ -347,7 +401,10 @@ def build_quarterly_levels(panel: pd.DataFrame, vintage_date: pd.Timestamp, size
     """
     vintage_date = pd.Timestamp(vintage_date)
     specs = model_series(size)
-    subset = panel.loc[panel["vintage_date"] == vintage_date, ["series_id", "observation_date", "value"]]
+    subset = panel.loc[
+        (panel["vintage_date"] == vintage_date) & (panel["observation_date"] <= vintage_date),
+        ["series_id", "observation_date", "value"],
+    ]
     columns: dict[str, pd.Series] = {}
     for spec in specs:
         series = subset.loc[subset["series_id"] == spec.series_id, ["observation_date", "value"]]

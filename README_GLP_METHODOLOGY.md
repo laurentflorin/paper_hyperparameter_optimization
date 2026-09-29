@@ -405,16 +405,65 @@ horse‑races:
 - **Horizons.** Forecasts are made $1$ to $8$ quarters ahead.
 - **Scoring vintage.** Realized values are taken from a single, fixed later
   vintage, so all strategies are graded against the same "truth".
-- **Loss.** Accuracy is summarized by **RMSE** per variable and horizon, and by
-  **relative RMSE** against the `paper` (GLP marginal‑likelihood) baseline; a
-  value below $100\%$ means the alternative beats GLP.
-- **Transform space.** Errors are computed on the model's transformed space
-  ($100\times\log$ levels for log variables; levels for rates), matching the
-  space in which the BVAR is estimated.
+- **Vintage‑consistent targets.** The real‑time vintages and the scoring
+  vintage differ by large *level* shifts in $100\times\log$ series (NIPA
+  base‑year and unit changes: on average ≈20 log points for GDP between the
+  2000–2012 vintages and the 2023 vintage). Scoring log **levels** against the
+  later vintage therefore measures vintage differences, not forecast accuracy.
+  Log series are scored on the **change from the forecast jump‑off**: forecast
+  change $\hat y_{T+h}-y_T$ (real‑time vintage) against realised change
+  $a_{T+h}-a_T$ (scoring vintage), reported as annualised average growth
+  ($\times 4/h$). Rate series are scored in levels. See `scoring.py`.
+- **Loss.** RMSE, CRPS (from the predictive draws), Gaussian log score and
+  68/90% interval coverage per variable and horizon, and relative scores
+  against the `paper` baseline (negative relative RMSE = better than GLP).
+- **Inference.** Diebold–Mariano tests (Newey–West, $h-1$ lags, HLN
+  small‑sample correction) against `paper`, Holm‑adjusted within each
+  model size × variable × metric family, and the Model Confidence Set
+  (Hansen, Lunde and Nason, 2011; $T_{\max}$, block bootstrap) across all
+  strategies per variable and horizon. With 80 overlapping origins the power is
+  modest; unadjusted DM p‑values should not be read one at a time.
 
-Density‑forecast objects (predictive quantiles) are also stored, so the study can
-compare not just point accuracy but calibration — the dimension on which the
-`paper` strategy's integrate‑out step is expected to matter most.
+### 6.1 The objective ladder
+
+The log marginal likelihood is itself an out‑of‑sample criterion:
+$\log p(y_{1:T}\mid\gamma)=\sum_t \log p(y_t\mid y_{1:t-1},\gamma)$, the
+joint, one‑step‑ahead log predictive score over the full sample. A targeted RMSE
+objective departs from it in four ways — **window** (a few recent origins
+instead of the full sample), **horizon** ($h$ instead of 1), **variables** (GDP
+instead of the joint system) and **target** (a point forecast instead of the
+density). The `ladder` strategy (`objectives.py`) relaxes one departure at a
+time, so the forecast consequences of each departure can be read off directly:
+
+| rung | window | horizon | variables | target | computation |
+|---|---|---|---|---|---|
+| `mdd` | full | 1 | joint | density | closed form (= `paper_plugin`) |
+| `lsj1_wW` | last $W$ | 1 | joint | density | exact: $\log ML(y_{1:T})-\log ML(y_{1:T-W})$ |
+| `lsj_hH_wW` | last $W$ | $h$ | joint | density | Rao–Blackwellised Gaussian mixture |
+| `lsm_hH_wW` | last $W$ | $h$ | GDP | density | Rao–Blackwellised Gaussian mixture |
+| `rmse_hH_wW` | last $W$ | $h$ | GDP | point | predictive mean over draws |
+
+Implementation notes. A numpy re‑implementation of the conjugate GLP posterior
+with prefix‑sum sufficient statistics (validated against `covbayesvar` to
+$10^{-6}$ in `tests/test_glp_objectives.py`) makes every pseudo‑out‑of‑sample
+origin cheap. Posterior draws use common random numbers per origin, so every
+objective is a smooth deterministic function of the hyperparameters. Every rung
+is optimised with the same multi‑start Nelder–Mead started at the
+marginal‑likelihood mode, and all rungs forecast with the plug‑in density, so
+rung differences reflect the objective only. Each selection records the
+in‑window objective at the optimum and at the MDD mode (in‑window gain) and the
+achieved log posterior (`log_mdd`).
+
+### 6.2 Data repairs (panel schema v2)
+
+- Observations dated after a vintage date are dropped (ALFRED returned the full
+  current history of `TWEXMMTH` for some 2005–2013 vintages).
+- A series whose last observation is more than 185 days old at a vintage is
+  repaired: `PPIFGS` (discontinued Dec 2015) continues as `WPSFD49207` (same
+  1982=100 base) from the 2016Q2 vintage on; the stale 2014Q2/Q3 vintages of
+  the OECD share‑price index use the latest history truncated at the vintage.
+  Without this the large model's window ended in 2015Q4 for every 2016–2019
+  origin. Small/medium estimation data are unchanged by the repair.
 
 ---
 

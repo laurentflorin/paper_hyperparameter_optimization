@@ -1,2 +1,6 @@
 *.out
 .venv/
+# Per-origin restart checkpoints and run logs (large, machine-specific)
+_checkpoints/
+logs/*.log
+logs/*.pid

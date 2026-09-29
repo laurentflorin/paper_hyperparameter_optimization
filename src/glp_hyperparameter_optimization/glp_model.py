@@ -637,6 +637,27 @@ def _best_hyperparameters(best_params: dict[str, float], ctx: GLPContext) -> dic
     return natural_vector_to_hyper(_params_to_natural(best_params, ctx), ctx)
 
 
+def _run_tuner(param_space: dict[str, Any], objective: Callable[..., float], conf: dict[str, Any], *, maximize: bool, opt_seed: int | None):
+    """Run a Mango ``Tuner``; when ``opt_seed`` is given, seed the global numpy and
+    ``random`` streams Mango samples from, restoring them afterwards."""
+    import random
+
+    from mango import Tuner
+
+    np_state = np.random.get_state() if opt_seed is not None else None
+    py_state = random.getstate() if opt_seed is not None else None
+    try:
+        if opt_seed is not None:
+            np.random.seed(int(opt_seed) % (2**32 - 1))
+            random.seed(int(opt_seed))
+        tuner = Tuner(param_space, objective, conf)
+        return tuner.maximize() if maximize else tuner.minimize()
+    finally:
+        if np_state is not None:
+            np.random.set_state(np_state)
+            random.setstate(py_state)
+
+
 # --------------------------------------------------------------------------- #
 # The three Mango optimizers ported from MBFVAR, adapted to the GLP BVAR.
 # --------------------------------------------------------------------------- #
@@ -650,6 +671,8 @@ def update_hyperparameters_mango(
     njobs: int = 1,
     hyperpriors: int = GLP_HYPERPRIORS,
     context: GLPContext | None = None,
+    opt_seed: int | None = None,
+    local_polish: bool = False,
     **prior_kwargs: Any,
 ) -> dict[str, float]:
     """Select ``[lambda, theta, miu]`` by MAXIMIZING the GLP (log) posterior /
@@ -658,9 +681,11 @@ def update_hyperparameters_mango(
     This is the direct analogue of ``MBFVAR.update_hyperparameters_mango`` but on
     the single-frequency GLP BVAR: the objective is ``logMLVAR_formcmc(draw=0)``,
     i.e. the same quantity ``bvarGLP`` maximizes with ``csminwel`` -- only the
-    optimizer differs.
+    optimizer differs. With ``local_polish`` Mango's best point is refined by
+    Nelder-Mead on the same closed-form objective (the higher of the two is
+    kept). The returned dict carries the achieved value under ``log_mdd``.
     """
-    from mango import Tuner, scheduler
+    from mango import scheduler
 
     ctx = context if context is not None else prepare_glp_context(y, lags, hyperpriors=hyperpriors, **prior_kwargs)
     if param_space is None:
@@ -674,8 +699,19 @@ def update_hyperparameters_mango(
             return -1.0e15
 
     conf = dict(num_iteration=n_iter, initial_random=init_points)
-    results = Tuner(param_space, objective, conf).maximize()
-    return _best_hyperparameters(results["best_params"], ctx)
+    results = _run_tuner(param_space, objective, conf, maximize=True, opt_seed=opt_seed)
+    best_vec = _params_to_natural(results["best_params"], ctx)
+    best_value = glp_logposterior(ctx, best_vec)
+    mango_value = best_value
+    if local_polish:
+        polished = glp_find_mode(ctx, start_natural=best_vec)
+        if polished["log_posterior"] > best_value:
+            best_vec = hyper_to_natural_vector(polished, ctx)
+            best_value = glp_logposterior(ctx, best_vec)
+    hyper = natural_vector_to_hyper(best_vec, ctx)
+    hyper["log_mdd"] = float(best_value)
+    hyper["log_mdd_mango"] = float(mango_value)
+    return hyper
 
 
 def _rmse_eval_origins(
@@ -818,6 +854,7 @@ def update_hyperparameters_mango_rmse(
     min_t: int | None = None,
     n_obj_draws: int = 200,
     hyperpriors: int = GLP_HYPERPRIORS,
+    opt_seed: int | None = None,
     **prior_kwargs: Any,
 ) -> dict[str, float]:
     """Select ``[lambda, theta, miu]`` by MINIMIZING the rolling out-of-sample
@@ -828,7 +865,7 @@ def update_hyperparameters_mango_rmse(
     averaged over ``n_obj_draws`` posterior draws of beta -- to match how the
     recursive forecasts are aggregated. Set ``n_obj_draws <= 1`` to fall back to
     the deterministic posterior-mode point forecast."""
-    from mango import Tuner, scheduler
+    from mango import scheduler
 
     prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
     var_indices = _resolve_var_indices(model_codes, var_of_interest)
@@ -845,7 +882,7 @@ def update_hyperparameters_mango_rmse(
 
     parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
     conf = dict(num_iteration=n_iter, initial_random=init_points)
-    results = Tuner(param_space, parallel_objective, conf).minimize()
+    results = _run_tuner(param_space, parallel_objective, conf, maximize=False, opt_seed=opt_seed)
     return _best_hyperparameters(results["best_params"], ctx_ref)
 
 
@@ -866,6 +903,7 @@ def update_hyperparameters_mango_rmse_random(
     random_seed: int | None = None,
     n_obj_draws: int = 200,
     hyperpriors: int = GLP_HYPERPRIORS,
+    opt_seed: int | None = None,
     **prior_kwargs: Any,
 ) -> dict[str, float]:
     """Like :func:`update_hyperparameters_mango_rmse` but the ``n_eval`` origins
@@ -875,7 +913,7 @@ def update_hyperparameters_mango_rmse_random(
     As in the rolling variant, the objective scores the predictive-mean forecast
     over ``n_obj_draws`` posterior draws of beta (``n_obj_draws <= 1`` restores
     the deterministic posterior-mode forecast)."""
-    from mango import Tuner, scheduler
+    from mango import scheduler
 
     prior_kwargs = {"hyperpriors": hyperpriors, **prior_kwargs}
     var_indices = _resolve_var_indices(model_codes, var_of_interest)
@@ -893,7 +931,7 @@ def update_hyperparameters_mango_rmse_random(
 
     parallel_objective = scheduler.parallel(n_jobs=njobs)(calc_rmse)
     conf = dict(num_iteration=n_iter, initial_random=init_points)
-    results = Tuner(param_space, parallel_objective, conf).minimize()
+    results = _run_tuner(param_space, parallel_objective, conf, maximize=False, opt_seed=opt_seed)
     return _best_hyperparameters(results["best_params"], ctx_ref)
 
 

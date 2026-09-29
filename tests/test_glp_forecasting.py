@@ -37,7 +37,7 @@ def test_resolve_parallel_settings_splits_slurm_allocation(monkeypatch):
 
 def test_one_time_strategies_declared():
     assert F.ONE_TIME_OPTIMIZATION_STRATEGIES == {"mango_rmse", "mango_rmse_random"}
-    assert set(F.STRATEGIES) == {"paper", "mango_mdd", "mango_rmse", "mango_rmse_random"}
+    assert set(F.STRATEGIES) == {"paper", "mango_mdd", "mango_rmse", "mango_rmse_random", "paper_plugin", "ladder"}
 
 
 def _forecast_frame() -> pd.DataFrame:
@@ -192,3 +192,25 @@ def test_plot_hyperparameter_paths_separates_optimization_horizons(tmp_path):
 
 def test_ordered_models_puts_paper_first():
     assert R.ordered_models(["mango_rmse", "paper", "zzz"]) == ["paper", "mango_rmse", "zzz"]
+
+
+def test_run_glp_experiment_resumes_from_checkpoints(monkeypatch, tmp_path):
+    origins = pd.date_range("2000-03-31", periods=3, freq="QE")
+    monkeypatch.setattr(F, "forecast_origin_dates", lambda *args: origins)
+    calls = []
+
+    def fake_task(task):
+        calls.append(task["origin_date"])
+        row = {"strategy": task["strategy"], "model_size": task["size"], "forecast_origin": task["origin_date"],
+               "variable": "GDP", "horizon_quarters": 1, "error": 0.0}
+        return {"forecast_rows": [row], "hyperparameters": {"forecast_origin": task["origin_date"], "lambda": 0.2}, "error": None}
+
+    monkeypatch.setattr(F, "_run_origin_task", fake_task)
+    kwargs = dict(strategy="paper", size="small", output_dir=tmp_path / "run", n_workers=1, show_progress=False)
+    F.run_glp_experiment(**kwargs)
+    assert len(calls) == 3
+    F.run_glp_experiment(**kwargs)  # same settings: everything comes from checkpoints
+    assert len(calls) == 3
+    assert len(pd.read_csv(tmp_path / "run" / "forecast_panel.csv")) == 3
+    F.run_glp_experiment(**kwargs, mcmc_draws=10)  # different settings: recomputed
+    assert len(calls) == 6

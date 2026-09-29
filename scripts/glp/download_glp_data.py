@@ -19,6 +19,7 @@ from glp_hyperparameter_optimization.config import (
     GLP_FORECAST_START,
     GLP_LATEST_PANEL_PATH,
     GLP_REALTIME_PANEL_PATH,
+    MODEL_SIZES,
     forecast_origin_dates,
     model_series,
     resolve_project_path,
@@ -28,7 +29,7 @@ from glp_hyperparameter_optimization.data_utils import download_glp_realtime_pan
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Download ALFRED/FRED data for the GLP (2015) replication.")
-    parser.add_argument("--model-size", choices=("small", "medium", "large"), default="large",
+    parser.add_argument("--model-size", choices=MODEL_SIZES, default="large",
                         help="Which variable universe to download. 'large' (default) covers every model size.")
     parser.add_argument("--output-panel", type=Path, default=GLP_REALTIME_PANEL_PATH)
     parser.add_argument("--output-latest", type=Path, default=GLP_LATEST_PANEL_PATH)
