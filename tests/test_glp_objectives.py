@@ -108,6 +108,36 @@ def test_evaluation_cuts_window_and_all():
         O.evaluation_cuts(20, 5, 8, 3)
 
 
+def test_evaluation_cuts_random_subset():
+    last12 = O.evaluation_cuts(200, 5, 4, 12)
+    pool = O.evaluation_cuts(200, 5, 4, 80)
+    cuts = O.evaluation_cuts(200, 5, 4, 12, random_origins=True, pool=80)
+    assert len(cuts) == 12 and set(cuts) <= set(pool) and cuts == sorted(cuts, reverse=True)
+    assert cuts != last12 and max(cuts) - min(cuts) > 12
+    assert cuts == O.evaluation_cuts(200, 5, 4, 12, random_origins=True, pool=80)
+    assert cuts != O.evaluation_cuts(200, 5, 4, 12, random_origins=True, pool=80, subset_seed=1)
+    # One more quarter of data changes the subset by at most one origin in, one out.
+    later = O.evaluation_cuts(201, 5, 4, 12, random_origins=True, pool=80)
+    assert len(set(cuts) & set(later)) >= 10
+    # Without a pool the draw ranges over the whole history.
+    full = O.evaluation_cuts(200, 5, 4, 12, random_origins=True)
+    assert min(full) < min(pool)
+    with pytest.raises(ValueError):
+        O.evaluation_cuts(200, 5, 4, None, random_origins=True)
+
+
+def test_logscore_joint_1_on_random_origins_sums_one_step_ratios(sample):
+    y, ctx, vec = sample
+    fast = O.FastGLP.from_context(y, ctx)
+    spec = O.LadderSpec("logscore_joint_1", window=6, random_origins=True, pool=30, subset_seed=2)
+    cuts = spec.cuts(y.shape[0], fast.lags, 1)
+    assert len(cuts) == 6 and max(cuts) - min(cuts) + 1 > 6
+    expected = sum(fast.log_ml(vec, c + 1) - fast.log_ml(vec, c) for c in cuts)
+    assert O.build_loss(fast, spec)(vec) == pytest.approx(-expected, abs=1e-8)
+    assert spec.label() == "lsj1_r6p30s2"
+    assert O.LadderSpec("rmse", 4, 12, random_origins=True).label() == "rmse_h4_r12"
+
+
 def test_rmse_joint_weights_every_variable_by_its_ar1_scale(sample):
     y, ctx, vec = sample
     fast = O.FastGLP.from_context(y, ctx)

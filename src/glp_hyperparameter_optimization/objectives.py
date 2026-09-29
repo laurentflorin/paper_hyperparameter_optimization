@@ -310,18 +310,42 @@ def mixture_log_density(obs: np.ndarray, means: np.ndarray, covs: np.ndarray) ->
 # --------------------------------------------------------------------------- #
 # Evaluation origins and objective construction.
 # --------------------------------------------------------------------------- #
-def evaluation_cuts(T_raw: int, lags: int, horizon: int, window: int | None, min_t: int | None = None) -> list[int]:
+def evaluation_cuts(
+    T_raw: int,
+    lags: int,
+    horizon: int,
+    window: int | None,
+    min_t: int | None = None,
+    *,
+    random_origins: bool = False,
+    pool: int | None = None,
+    subset_seed: int = 0,
+) -> list[int]:
     """Training-sample ends ``cut`` (raw rows ``y[:cut]``) whose ``horizon``-step
     target ``y[cut + horizon - 1]`` is observed, most recent first.
 
     ``window=None`` uses every valid origin (expanding-window / prequential).
+    With ``random_origins`` the ``window`` origins are drawn at random from the
+    ``pool`` most recent valid origins (all of them when ``pool`` is None). Each
+    origin gets a fixed random priority keyed on ``subset_seed`` and its row, so
+    the subset changes little from one forecast origin to the next.
     """
     min_t = min_t if min_t is not None else max(4 * 5, horizon + 5) + lags
     last = T_raw - horizon
     cuts = list(range(last, min_t - 1, -1))
     if not cuts:
         raise ValueError(f"No valid evaluation origin: T={T_raw}, horizon={horizon}, min_t={min_t}.")
-    return cuts if window is None else cuts[: int(window)]
+    if not random_origins:
+        return cuts if window is None else cuts[: int(window)]
+    if window is None:
+        raise ValueError("Random evaluation origins need a count (window).")
+    if pool is not None:
+        cuts = cuts[: int(pool)]
+    if int(window) >= len(cuts):
+        return cuts
+    keys = np.array([np.random.default_rng([int(subset_seed), cut]).random() for cut in cuts])
+    chosen = np.sort(np.argsort(keys, kind="stable")[: int(window)])
+    return [cuts[i] for i in chosen]
 
 
 @dataclass
@@ -333,9 +357,26 @@ class LadderSpec:
     n_draws: int = 200
     seed: int = 0
     min_t: int | None = None
+    random_origins: bool = False  # draw `window` origins at random instead of the last `window`
+    pool: int | None = None  # random draws come from the `pool` most recent origins (None = all)
+    subset_seed: int = 0
+
+    def cuts(self, T_raw: int, lags: int, horizon: int) -> list[int]:
+        return evaluation_cuts(
+            T_raw,
+            lags,
+            horizon,
+            self.window,
+            self.min_t,
+            random_origins=self.random_origins,
+            pool=self.pool,
+            subset_seed=self.subset_seed,
+        )
 
     def label(self) -> str:
         win = "all" if self.window is None else f"w{self.window}"
+        if self.random_origins:
+            win = f"r{self.window}" + (f"p{self.pool}" if self.pool else "") + (f"s{self.subset_seed}" if self.subset_seed else "")
         if self.objective == "mdd":
             return "mdd"
         if self.objective == "logscore_joint_1":
@@ -357,16 +398,22 @@ def build_loss(fast: FastGLP, spec: LadderSpec, hyperpriors_ctx: GLPContext | No
         return lambda vec: -glp_logposterior(hyperpriors_ctx, vec)
 
     if spec.objective == "logscore_joint_1":
-        cuts = evaluation_cuts(T_raw, fast.lags, 1, spec.window, spec.min_t)
-        first, last = min(cuts), max(cuts) + 1  # telescoping ML ratio
+        cuts = spec.cuts(T_raw, fast.lags, 1)
+        first, last = min(cuts), max(cuts) + 1
+        if len(cuts) == last - first:  # contiguous: telescoping ML ratio
 
-        def loss(vec: np.ndarray) -> float:
-            return -(fast.log_ml(vec, last) - fast.log_ml(vec, first))
+            def loss(vec: np.ndarray) -> float:
+                return -(fast.log_ml(vec, last) - fast.log_ml(vec, first))
+
+        else:  # scattered origins: sum of one-step ML ratios
+
+            def loss(vec: np.ndarray) -> float:
+                return -sum(fast.log_ml(vec, cut + 1) - fast.log_ml(vec, cut) for cut in cuts)
 
         return loss
 
     h = int(spec.horizon)
-    cuts = evaluation_cuts(T_raw, fast.lags, h, spec.window, spec.min_t)
+    cuts = spec.cuts(T_raw, fast.lags, h)
     targets = list(spec.target_indices)
     noises = [
         DrawNoise.generate(spec.n_draws, fast.k, fast.n, (cut - fast.lags) + _n_dummy(fast) + fast.n + 2, spec.seed + cut)

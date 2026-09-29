@@ -52,6 +52,16 @@ def test_parse_ladder_rungs_and_labels():
         run_all.parse_ladder_rungs("crps:h4")
 
 
+def test_parse_random_origin_rungs_keeps_window_rungs_unchanged():
+    rungs = run_all.parse_ladder_rungs("rmse:h4:w12,rmse:h4:r12:p80:s1,rmsej:h4:r40")
+    # Window rungs carry no extra keys, so their checkpoint config hashes are unchanged.
+    assert rungs[0] == {"objective": "rmse", "horizon": 4, "window": 12}
+    assert rungs[1] == {"objective": "rmse", "horizon": 4, "window": 12, "random_origins": True, "pool": 80, "subset_seed": 1}
+    assert [run_all.ladder_label(r) for r in rungs] == ["rmse_h4_w12", "rmse_h4_r12p80s1", "rmsej_h4_r40"]
+    with pytest.raises(ValueError):
+        run_all.parse_ladder_rungs("rmse:h4:w12:p80")
+
+
 def test_build_parser_accepts_selection_flags():
     args = run_all.build_parser().parse_args(["--optimization-seed", "5", "--local-polish", "--reselect-every", "4"])
     assert args.optimization_seed == 5 and args.local_polish and args.reselect_every == 4

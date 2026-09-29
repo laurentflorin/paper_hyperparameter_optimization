@@ -222,6 +222,9 @@ def select_hyperparameters(
             n_draws=int(ladder.get("n_draws", 200)),
             seed=int(opt_seed or 0),
             min_t=task.get("min_t"),
+            random_origins=bool(ladder.get("random_origins", False)),
+            pool=ladder.get("pool"),
+            subset_seed=int(ladder.get("subset_seed", 0)),
         )
         return select_ladder_hyperparameters(
             y,

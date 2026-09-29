@@ -17,8 +17,10 @@ Two further stages are available:
   the hyperparameters in ``paper``.
 * ``ladder`` -- one run per rung in ``--ladder-rungs`` (see
   :mod:`glp_hyperparameter_optimization.objectives`); each rung writes to
-  ``<output-root>/ladder/<rung label>``. Rung syntax: ``OBJ[:hH][:wW|:wall]`` with
-  ``OBJ`` in ``mdd, lsj1, lsj, lsm, rmse, rmsej`` (e.g. ``lsj1:w12,lsm:h4:w12,rmse:h4:wall``).
+  ``<output-root>/ladder/<rung label>``. Rung syntax: ``OBJ[:hH][:wW|:wall|:rN[:pP][:sS]]``
+  with ``OBJ`` in ``mdd, lsj1, lsj, lsm, rmse, rmsej`` (e.g. ``lsj1:w12,lsm:h4:w12,rmse:h4:wall``).
+  ``rN`` scores ``N`` origins drawn at random from the ``P`` most recent (default: all)
+  instead of the last ``N``; ``sS`` picks the random subset (e.g. ``rmse:h4:r12:p80:s1``).
 """
 
 from __future__ import annotations
@@ -116,8 +118,17 @@ def parse_ladder_rungs(value: str | None) -> list[dict[str, object]]:
                 rung["window"] = None
             elif part.startswith("w"):
                 rung["window"] = int(part[1:])
+            elif part.startswith("r"):
+                rung["window"] = int(part[1:])
+                rung["random_origins"] = True
+            elif part.startswith("p"):
+                rung["pool"] = int(part[1:])
+            elif part.startswith("s"):
+                rung["subset_seed"] = int(part[1:])
             else:
                 raise ValueError(f"Cannot parse ladder rung component {part!r} in {item!r}.")
+        if ("pool" in rung or "subset_seed" in rung) and not rung.get("random_origins"):
+            raise ValueError(f"Pool (pP) and subset seed (sS) need random origins (rN) in {item!r}.")
         rungs.append(rung)
     return rungs
 
@@ -125,7 +136,14 @@ def parse_ladder_rungs(value: str | None) -> list[dict[str, object]]:
 def ladder_label(rung: dict[str, object]) -> str:
     from glp_hyperparameter_optimization.objectives import LadderSpec
 
-    return LadderSpec(str(rung["objective"]), int(rung["horizon"]), rung["window"]).label()  # type: ignore[arg-type]
+    return LadderSpec(
+        str(rung["objective"]),
+        int(rung["horizon"]),  # type: ignore[arg-type]
+        rung["window"],  # type: ignore[arg-type]
+        random_origins=bool(rung.get("random_origins", False)),
+        pool=rung.get("pool"),  # type: ignore[arg-type]
+        subset_seed=int(rung.get("subset_seed", 0)),  # type: ignore[arg-type]
+    ).label()
 
 
 def resolve_stage_output_dir(output_root: Path, explicit: Path | None, leaf: str) -> Path:
@@ -239,7 +257,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--ladder-rungs",
         type=str,
         default="mdd,lsj1:w12,lsj:h4:w12,lsm:h4:w12,rmse:h4:w12",
-        help="Comma-separated ladder rungs OBJ[:hH][:wW|:wall] for the 'ladder' stage.",
+        help="Comma-separated ladder rungs OBJ[:hH][:wW|:wall|:rN[:pP][:sS]] for the 'ladder' stage.",
     )
     parser.add_argument("--ladder-draws", type=int, default=200, help="Posterior draws per origin in the ladder objectives.")
     parser.add_argument("--ladder-starts", type=int, default=4, help="Nelder-Mead starts per ladder selection.")
