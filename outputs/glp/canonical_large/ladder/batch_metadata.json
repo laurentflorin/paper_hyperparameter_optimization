@@ -1,0 +1,18 @@
+{
+  "runs": [
+    {
+      "rung": "lsj1_w80",
+      "objective": "logscore_joint_1",
+      "horizon": 1,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large/ladder/lsj1_w80"
+    },
+    {
+      "rung": "rmsej_h4_w80",
+      "objective": "rmse_joint",
+      "horizon": 4,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large/ladder/rmsej_h4_w80"
+    }
+  ]
+}

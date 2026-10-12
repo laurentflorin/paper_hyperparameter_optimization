@@ -1,0 +1,129 @@
+              model model_size variable  horizon_quarters      rmse  n
+    ladder_lsj1_w80      large      CPI                 1  4.738522 80
+ladder_rmsej_h4_w80      large      CPI                 1  2.869268 80
+              paper      large      CPI                 1  4.169838 80
+       paper_plugin      large      CPI                 1  4.152713 80
+    ladder_lsj1_w80      large      CPI                 2  5.043141 80
+ladder_rmsej_h4_w80      large      CPI                 2  2.873150 80
+              paper      large      CPI                 2  4.638630 80
+       paper_plugin      large      CPI                 2  4.684689 80
+    ladder_lsj1_w80      large      CPI                 3  4.996100 80
+ladder_rmsej_h4_w80      large      CPI                 3  2.770379 80
+              paper      large      CPI                 3  4.562216 80
+       paper_plugin      large      CPI                 3  4.496655 80
+    ladder_lsj1_w80      large      CPI                 4  4.580525 80
+ladder_rmsej_h4_w80      large      CPI                 4  2.497124 80
+              paper      large      CPI                 4  4.238096 80
+       paper_plugin      large      CPI                 4  4.114583 80
+    ladder_lsj1_w80      large      CPI                 5  4.503185 80
+ladder_rmsej_h4_w80      large      CPI                 5  2.101236 80
+              paper      large      CPI                 5  4.607903 80
+       paper_plugin      large      CPI                 5  4.530765 80
+    ladder_lsj1_w80      large      CPI                 6  4.678096 80
+ladder_rmsej_h4_w80      large      CPI                 6  1.607856 80
+              paper      large      CPI                 6  4.843497 80
+       paper_plugin      large      CPI                 6  4.789319 80
+    ladder_lsj1_w80      large      CPI                 7  4.559184 80
+ladder_rmsej_h4_w80      large      CPI                 7  1.426535 80
+              paper      large      CPI                 7  4.074916 80
+       paper_plugin      large      CPI                 7  3.779573 80
+    ladder_lsj1_w80      large      CPI                 8  6.045754 80
+ladder_rmsej_h4_w80      large      CPI                 8  2.021662 80
+              paper      large      CPI                 8  5.427238 80
+       paper_plugin      large      CPI                 8  5.195356 80
+    ladder_lsj1_w80      large     DEFL                 1  1.887187 80
+ladder_rmsej_h4_w80      large     DEFL                 1  1.130793 80
+              paper      large     DEFL                 1  1.414827 80
+       paper_plugin      large     DEFL                 1  1.416739 80
+    ladder_lsj1_w80      large     DEFL                 2  1.989883 80
+ladder_rmsej_h4_w80      large     DEFL                 2  1.156542 80
+              paper      large     DEFL                 2  1.582967 80
+       paper_plugin      large     DEFL                 2  1.577219 80
+    ladder_lsj1_w80      large     DEFL                 3  2.193083 80
+ladder_rmsej_h4_w80      large     DEFL                 3  1.195327 80
+              paper      large     DEFL                 3  1.819938 80
+       paper_plugin      large     DEFL                 3  1.789287 80
+    ladder_lsj1_w80      large     DEFL                 4  2.193254 80
+ladder_rmsej_h4_w80      large     DEFL                 4  1.141416 80
+              paper      large     DEFL                 4  1.837446 80
+       paper_plugin      large     DEFL                 4  1.803026 80
+    ladder_lsj1_w80      large     DEFL                 5  2.051227 80
+ladder_rmsej_h4_w80      large     DEFL                 5  1.010478 80
+              paper      large     DEFL                 5  1.727298 80
+       paper_plugin      large     DEFL                 5  1.634774 80
+    ladder_lsj1_w80      large     DEFL                 6  2.399143 80
+ladder_rmsej_h4_w80      large     DEFL                 6  0.919787 80
+              paper      large     DEFL                 6  1.806993 80
+       paper_plugin      large     DEFL                 6  1.677161 80
+    ladder_lsj1_w80      large     DEFL                 7  3.293249 80
+ladder_rmsej_h4_w80      large     DEFL                 7  0.890830 80
+              paper      large     DEFL                 7  2.082013 80
+       paper_plugin      large     DEFL                 7  1.955870 80
+    ladder_lsj1_w80      large     DEFL                 8  4.637733 80
+ladder_rmsej_h4_w80      large     DEFL                 8  0.884073 80
+              paper      large     DEFL                 8  2.212792 80
+       paper_plugin      large     DEFL                 8  2.024995 80
+    ladder_lsj1_w80      large      FFR                 1  0.868725 80
+ladder_rmsej_h4_w80      large      FFR                 1  0.481380 80
+              paper      large      FFR                 1  0.806598 80
+       paper_plugin      large      FFR                 1  0.814164 80
+    ladder_lsj1_w80      large      FFR                 2  2.020964 80
+ladder_rmsej_h4_w80      large      FFR                 2  0.888597 80
+              paper      large      FFR                 2  1.839376 80
+       paper_plugin      large      FFR                 2  1.831195 80
+    ladder_lsj1_w80      large      FFR                 3  3.162048 80
+ladder_rmsej_h4_w80      large      FFR                 3  1.265204 80
+              paper      large      FFR                 3  2.681375 80
+       paper_plugin      large      FFR                 3  2.622477 80
+    ladder_lsj1_w80      large      FFR                 4  4.239500 80
+ladder_rmsej_h4_w80      large      FFR                 4  1.596532 80
+              paper      large      FFR                 4  2.869901 80
+       paper_plugin      large      FFR                 4  2.767083 80
+    ladder_lsj1_w80      large      FFR                 5  6.292660 80
+ladder_rmsej_h4_w80      large      FFR                 5  1.796572 80
+              paper      large      FFR                 5  2.747445 80
+       paper_plugin      large      FFR                 5  2.654760 80
+    ladder_lsj1_w80      large      FFR                 6 10.690581 80
+ladder_rmsej_h4_w80      large      FFR                 6  1.896944 80
+              paper      large      FFR                 6  3.754987 80
+       paper_plugin      large      FFR                 6  3.610182 80
+    ladder_lsj1_w80      large      FFR                 7 18.321061 80
+ladder_rmsej_h4_w80      large      FFR                 7  2.208273 80
+              paper      large      FFR                 7  6.095342 80
+       paper_plugin      large      FFR                 7  5.890982 80
+    ladder_lsj1_w80      large      FFR                 8 30.718303 80
+ladder_rmsej_h4_w80      large      FFR                 8  2.741057 80
+              paper      large      FFR                 8  8.051952 80
+       paper_plugin      large      FFR                 8  8.004166 80
+    ladder_lsj1_w80      large      GDP                 1  3.122077 80
+ladder_rmsej_h4_w80      large      GDP                 1  2.367487 80
+              paper      large      GDP                 1  3.249711 80
+       paper_plugin      large      GDP                 1  3.291504 80
+    ladder_lsj1_w80      large      GDP                 2  3.670863 80
+ladder_rmsej_h4_w80      large      GDP                 2  2.394166 80
+              paper      large      GDP                 2  3.784984 80
+       paper_plugin      large      GDP                 2  3.764493 80
+    ladder_lsj1_w80      large      GDP                 3  4.395588 80
+ladder_rmsej_h4_w80      large      GDP                 3  2.994603 80
+              paper      large      GDP                 3  4.468394 80
+       paper_plugin      large      GDP                 3  4.423211 80
+    ladder_lsj1_w80      large      GDP                 4  4.572234 80
+ladder_rmsej_h4_w80      large      GDP                 4  2.806753 80
+              paper      large      GDP                 4  4.612280 80
+       paper_plugin      large      GDP                 4  4.591144 80
+    ladder_lsj1_w80      large      GDP                 5  4.969340 80
+ladder_rmsej_h4_w80      large      GDP                 5  2.548913 80
+              paper      large      GDP                 5  4.996254 80
+       paper_plugin      large      GDP                 5  5.072188 80
+    ladder_lsj1_w80      large      GDP                 6  5.186946 80
+ladder_rmsej_h4_w80      large      GDP                 6  2.138205 80
+              paper      large      GDP                 6  4.959101 80
+       paper_plugin      large      GDP                 6  5.020965 80
+    ladder_lsj1_w80      large      GDP                 7  5.570261 80
+ladder_rmsej_h4_w80      large      GDP                 7  2.029119 80
+              paper      large      GDP                 7  4.841613 80
+       paper_plugin      large      GDP                 7  4.792789 80
+    ladder_lsj1_w80      large      GDP                 8  6.905235 80
+ladder_rmsej_h4_w80      large      GDP                 8  2.490635 80
+              paper      large      GDP                 8  6.289277 80
+       paper_plugin      large      GDP                 8  6.473676 80

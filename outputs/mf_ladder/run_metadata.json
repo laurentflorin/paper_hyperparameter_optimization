@@ -1,0 +1,37 @@
+{
+  "criteria": [
+    {
+      "name": "ml",
+      "horizon_q": 4,
+      "window": 12
+    },
+    {
+      "name": "rmse",
+      "horizon_q": 4,
+      "window": 12
+    },
+    {
+      "name": "rmsej",
+      "horizon_q": 4,
+      "window": 60
+    }
+  ],
+  "fit_nsim": 4000,
+  "nburn_perc": 0.5,
+  "nlags": [
+    6
+  ],
+  "thining": 1,
+  "temp_agg": "mean",
+  "check_explosive": false,
+  "max_it_stable": 5000,
+  "keep_draws": 50,
+  "n_starts": 4,
+  "maxfev": 400,
+  "seed_base": 2015,
+  "forecast_horizon_months": 24,
+  "actual_vintage": "2012-01-31",
+  "mbfvar_version": "0.9.1",
+  "checkpoint_key": "12517e89b60059fb",
+  "n_origins": 151
+}

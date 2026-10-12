@@ -1,32 +1,102 @@
 {
   "runs": [
     {
-      "rung": "rmsej_h4_w80",
+      "rung": "rmsej_h1_w60",
       "objective": "rmse_joint",
-      "horizon": 4,
-      "window": 80,
-      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h4_w80"
+      "horizon": 1,
+      "window": 60,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h1_w60"
     },
     {
-      "rung": "lsj1_w80",
-      "objective": "logscore_joint_1",
+      "rung": "rmse_h1_w60",
+      "objective": "rmse",
+      "horizon": 1,
+      "window": 60,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h1_w60"
+    },
+    {
+      "rung": "rmsej_h1_w80",
+      "objective": "rmse_joint",
       "horizon": 1,
       "window": 80,
-      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/lsj1_w80"
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h1_w80"
     },
     {
-      "rung": "lsj_h4_w80",
-      "objective": "logscore_joint",
-      "horizon": 4,
-      "window": 80,
-      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/lsj_h4_w80"
-    },
-    {
-      "rung": "rmse_h4_w80",
+      "rung": "rmse_h1_w80",
       "objective": "rmse",
-      "horizon": 4,
+      "horizon": 1,
       "window": 80,
-      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h4_w80"
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h1_w80"
+    },
+    {
+      "rung": "rmsej_h2_w60",
+      "objective": "rmse_joint",
+      "horizon": 2,
+      "window": 60,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h2_w60"
+    },
+    {
+      "rung": "rmse_h2_w60",
+      "objective": "rmse",
+      "horizon": 2,
+      "window": 60,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h2_w60"
+    },
+    {
+      "rung": "rmsej_h2_w80",
+      "objective": "rmse_joint",
+      "horizon": 2,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h2_w80"
+    },
+    {
+      "rung": "rmse_h2_w80",
+      "objective": "rmse",
+      "horizon": 2,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h2_w80"
+    },
+    {
+      "rung": "lsj_h2_w80",
+      "objective": "logscore_joint",
+      "horizon": 2,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/lsj_h2_w80"
+    },
+    {
+      "rung": "rmsej_h8_w60",
+      "objective": "rmse_joint",
+      "horizon": 8,
+      "window": 60,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h8_w60"
+    },
+    {
+      "rung": "rmse_h8_w60",
+      "objective": "rmse",
+      "horizon": 8,
+      "window": 60,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h8_w60"
+    },
+    {
+      "rung": "rmsej_h8_w80",
+      "objective": "rmse_joint",
+      "horizon": 8,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmsej_h8_w80"
+    },
+    {
+      "rung": "rmse_h8_w80",
+      "objective": "rmse",
+      "horizon": 8,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/rmse_h8_w80"
+    },
+    {
+      "rung": "lsj_h8_w80",
+      "objective": "logscore_joint",
+      "horizon": 8,
+      "window": 80,
+      "output_dir": "/run/media/system/Data/Repositories/paper_hyperparameter_optimization/outputs/glp/canonical_large_nr/ladder/lsj_h8_w80"
     }
   ]
 }

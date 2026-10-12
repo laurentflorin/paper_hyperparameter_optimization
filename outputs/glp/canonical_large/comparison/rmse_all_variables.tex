@@ -1,0 +1,673 @@
+              model model_size variable  horizon_quarters         rmse  n
+    ladder_lsj1_w80      large      AHE                 1 7.871423e-01 80
+    ladder_lsj1_w80      large      AHE                 2 7.933691e-01 80
+    ladder_lsj1_w80      large      AHE                 3 9.685830e-01 80
+    ladder_lsj1_w80      large      AHE                 4 9.785989e-01 80
+    ladder_lsj1_w80      large      AHE                 5 1.010405e+00 80
+    ladder_lsj1_w80      large      AHE                 6 1.071384e+00 80
+    ladder_lsj1_w80      large      AHE                 7 1.231805e+00 80
+    ladder_lsj1_w80      large      AHE                 8 1.500707e+00 80
+    ladder_lsj1_w80      large     COMM                 1 2.049957e+01 80
+    ladder_lsj1_w80      large     COMM                 2 2.138808e+01 80
+    ladder_lsj1_w80      large     COMM                 3 2.039504e+01 80
+    ladder_lsj1_w80      large     COMM                 4 1.939880e+01 80
+    ladder_lsj1_w80      large     COMM                 5 2.237085e+01 80
+    ladder_lsj1_w80      large     COMM                 6 2.684427e+01 80
+    ladder_lsj1_w80      large     COMM                 7 3.235731e+01 80
+    ladder_lsj1_w80      large     COMM                 8 4.787683e+01 80
+    ladder_lsj1_w80      large     CONS                 1 2.577898e+00 80
+    ladder_lsj1_w80      large     CONS                 2 3.141187e+00 80
+    ladder_lsj1_w80      large     CONS                 3 4.185166e+00 80
+    ladder_lsj1_w80      large     CONS                 4 4.188858e+00 80
+    ladder_lsj1_w80      large     CONS                 5 3.852317e+00 80
+    ladder_lsj1_w80      large     CONS                 6 3.880631e+00 80
+    ladder_lsj1_w80      large     CONS                 7 4.797785e+00 80
+    ladder_lsj1_w80      large     CONS                 8 5.227130e+00 80
+    ladder_lsj1_w80      large      CPI                 1 4.738522e+00 80
+    ladder_lsj1_w80      large      CPI                 2 5.043141e+00 80
+    ladder_lsj1_w80      large      CPI                 3 4.996100e+00 80
+    ladder_lsj1_w80      large      CPI                 4 4.580525e+00 80
+    ladder_lsj1_w80      large      CPI                 5 4.503185e+00 80
+    ladder_lsj1_w80      large      CPI                 6 4.678096e+00 80
+    ladder_lsj1_w80      large      CPI                 7 4.559184e+00 80
+    ladder_lsj1_w80      large      CPI                 8 6.045754e+00 80
+    ladder_lsj1_w80      large     DEFL                 1 1.887187e+00 80
+    ladder_lsj1_w80      large     DEFL                 2 1.989883e+00 80
+    ladder_lsj1_w80      large     DEFL                 3 2.193083e+00 80
+    ladder_lsj1_w80      large     DEFL                 4 2.193254e+00 80
+    ladder_lsj1_w80      large     DEFL                 5 2.051227e+00 80
+    ladder_lsj1_w80      large     DEFL                 6 2.399143e+00 80
+    ladder_lsj1_w80      large     DEFL                 7 3.293249e+00 80
+    ladder_lsj1_w80      large     DEFL                 8 4.637733e+00 80
+    ladder_lsj1_w80      large      EMP                 1 9.565099e-01 80
+    ladder_lsj1_w80      large      EMP                 2 1.434302e+00 80
+    ladder_lsj1_w80      large      EMP                 3 2.850647e+00 80
+    ladder_lsj1_w80      large      EMP                 4 3.180421e+00 80
+    ladder_lsj1_w80      large      EMP                 5 3.418814e+00 80
+    ladder_lsj1_w80      large      EMP                 6 3.602480e+00 80
+    ladder_lsj1_w80      large      EMP                 7 3.974587e+00 80
+    ladder_lsj1_w80      large      EMP                 8 4.888200e+00 80
+    ladder_lsj1_w80      large      FFR                 1 8.687251e-01 80
+    ladder_lsj1_w80      large      FFR                 2 2.020964e+00 80
+    ladder_lsj1_w80      large      FFR                 3 3.162048e+00 80
+    ladder_lsj1_w80      large      FFR                 4 4.239500e+00 80
+    ladder_lsj1_w80      large      FFR                 5 6.292660e+00 80
+    ladder_lsj1_w80      large      FFR                 6 1.069058e+01 80
+    ladder_lsj1_w80      large      FFR                 7 1.832106e+01 80
+    ladder_lsj1_w80      large      FFR                 8 3.071830e+01 80
+    ladder_lsj1_w80      large      GDP                 1 3.122077e+00 80
+    ladder_lsj1_w80      large      GDP                 2 3.670863e+00 80
+    ladder_lsj1_w80      large      GDP                 3 4.395588e+00 80
+    ladder_lsj1_w80      large      GDP                 4 4.572234e+00 80
+    ladder_lsj1_w80      large      GDP                 5 4.969340e+00 80
+    ladder_lsj1_w80      large      GDP                 6 5.186946e+00 80
+    ladder_lsj1_w80      large      GDP                 7 5.570261e+00 80
+    ladder_lsj1_w80      large      GDP                 8 6.905235e+00 80
+    ladder_lsj1_w80      large    HOURS                 1 2.392667e+00 80
+    ladder_lsj1_w80      large    HOURS                 2 3.160984e+00 80
+    ladder_lsj1_w80      large    HOURS                 3 4.700567e+00 80
+    ladder_lsj1_w80      large    HOURS                 4 5.023634e+00 80
+    ladder_lsj1_w80      large    HOURS                 5 5.207374e+00 80
+    ladder_lsj1_w80      large    HOURS                 6 5.301291e+00 80
+    ladder_lsj1_w80      large    HOURS                 7 5.661107e+00 80
+    ladder_lsj1_w80      large    HOURS                 8 6.630097e+00 80
+    ladder_lsj1_w80      large      INV                 1 1.275868e+01 80
+    ladder_lsj1_w80      large      INV                 2 1.612224e+01 80
+    ladder_lsj1_w80      large      INV                 3 2.052897e+01 80
+    ladder_lsj1_w80      large      INV                 4 2.311307e+01 80
+    ladder_lsj1_w80      large      INV                 5 2.423122e+01 80
+    ladder_lsj1_w80      large      INV                 6 2.517411e+01 80
+    ladder_lsj1_w80      large      INV                 7 2.639166e+01 80
+    ladder_lsj1_w80      large      INV                 8 3.137265e+01 80
+    ladder_lsj1_w80      large       M1                 1 1.120987e+01 80
+    ladder_lsj1_w80      large       M1                 2 1.172860e+01 80
+    ladder_lsj1_w80      large       M1                 3 2.083479e+01 80
+    ladder_lsj1_w80      large       M1                 4 2.350185e+01 80
+    ladder_lsj1_w80      large       M1                 5 2.376794e+01 80
+    ladder_lsj1_w80      large       M1                 6 2.394962e+01 80
+    ladder_lsj1_w80      large       M1                 7 2.485262e+01 80
+    ladder_lsj1_w80      large       M1                 8 2.636524e+01 80
+    ladder_lsj1_w80      large       M2                 1 4.434089e+00 80
+    ladder_lsj1_w80      large       M2                 2 4.857084e+00 80
+    ladder_lsj1_w80      large       M2                 3 4.857103e+00 80
+    ladder_lsj1_w80      large       M2                 4 4.602850e+00 80
+    ladder_lsj1_w80      large       M2                 5 4.974859e+00 80
+    ladder_lsj1_w80      large       M2                 6 5.457980e+00 80
+    ladder_lsj1_w80      large       M2                 7 5.172317e+00 80
+    ladder_lsj1_w80      large       M2                 8 5.923289e+00 80
+    ladder_lsj1_w80      large    MBASE                 1 6.459205e+01 80
+    ladder_lsj1_w80      large    MBASE                 2 6.279053e+01 80
+    ladder_lsj1_w80      large    MBASE                 3 6.107161e+01 80
+    ladder_lsj1_w80      large    MBASE                 4 5.531742e+01 80
+    ladder_lsj1_w80      large    MBASE                 5 5.298191e+01 80
+    ladder_lsj1_w80      large    MBASE                 6 5.218707e+01 80
+    ladder_lsj1_w80      large    MBASE                 7 5.593263e+01 80
+    ladder_lsj1_w80      large    MBASE                 8 7.833387e+01 80
+    ladder_lsj1_w80      large    NBRES                 1 6.312971e+05 80
+    ladder_lsj1_w80      large    NBRES                 2 6.860561e+05 80
+    ladder_lsj1_w80      large    NBRES                 3 7.647039e+05 80
+    ladder_lsj1_w80      large    NBRES                 4 8.358465e+05 80
+    ladder_lsj1_w80      large    NBRES                 5 9.054822e+05 80
+    ladder_lsj1_w80      large    NBRES                 6 9.783103e+05 80
+    ladder_lsj1_w80      large    NBRES                 7 1.050770e+06 80
+    ladder_lsj1_w80      large    NBRES                 8 1.122143e+06 80
+    ladder_lsj1_w80      large      PPI                 1 9.882548e+00 80
+    ladder_lsj1_w80      large      PPI                 2 1.038601e+01 80
+    ladder_lsj1_w80      large      PPI                 3 1.010809e+01 80
+    ladder_lsj1_w80      large      PPI                 4 9.345439e+00 80
+    ladder_lsj1_w80      large      PPI                 5 9.667114e+00 80
+    ladder_lsj1_w80      large      PPI                 6 1.074185e+01 80
+    ladder_lsj1_w80      large      PPI                 7 1.176115e+01 80
+    ladder_lsj1_w80      large      PPI                 8 1.660211e+01 80
+    ladder_lsj1_w80      large     REER                 1 2.391799e+01 80
+    ladder_lsj1_w80      large     REER                 2 2.453937e+01 79
+    ladder_lsj1_w80      large     REER                 3 2.399256e+01 78
+    ladder_lsj1_w80      large     REER                 4 2.226032e+01 77
+    ladder_lsj1_w80      large     REER                 5 2.178891e+01 76
+    ladder_lsj1_w80      large     REER                 6 2.362370e+01 75
+    ladder_lsj1_w80      large     REER                 7 2.814321e+01 74
+    ladder_lsj1_w80      large     REER                 8 3.505919e+01 73
+    ladder_lsj1_w80      large    SP500                 1 4.775393e+01 80
+    ladder_lsj1_w80      large    SP500                 2 5.268937e+01 80
+    ladder_lsj1_w80      large    SP500                 3 5.495548e+01 80
+    ladder_lsj1_w80      large    SP500                 4 5.528533e+01 80
+    ladder_lsj1_w80      large    SP500                 5 5.568824e+01 80
+    ladder_lsj1_w80      large    SP500                 6 5.591053e+01 80
+    ladder_lsj1_w80      large    SP500                 7 6.465641e+01 80
+    ladder_lsj1_w80      large    SP500                 8 7.963552e+01 80
+    ladder_lsj1_w80      large     TB10                 1 4.458809e-01 80
+    ladder_lsj1_w80      large     TB10                 2 9.428780e-01 80
+    ladder_lsj1_w80      large     TB10                 3 1.296855e+00 80
+    ladder_lsj1_w80      large     TB10                 4 1.560090e+00 80
+    ladder_lsj1_w80      large     TB10                 5 1.943408e+00 80
+    ladder_lsj1_w80      large     TB10                 6 2.307068e+00 80
+    ladder_lsj1_w80      large     TB10                 7 2.524701e+00 80
+    ladder_lsj1_w80      large     TB10                 8 3.816855e+00 80
+    ladder_lsj1_w80      large   TOTRES                 1 3.025167e+02 80
+    ladder_lsj1_w80      large   TOTRES                 2 2.857505e+02 80
+    ladder_lsj1_w80      large   TOTRES                 3 2.779934e+02 80
+    ladder_lsj1_w80      large   TOTRES                 4 2.493183e+02 80
+    ladder_lsj1_w80      large   TOTRES                 5 2.337709e+02 80
+    ladder_lsj1_w80      large   TOTRES                 6 2.407645e+02 80
+    ladder_lsj1_w80      large   TOTRES                 7 2.881835e+02 80
+    ladder_lsj1_w80      large   TOTRES                 8 3.722458e+02 80
+    ladder_lsj1_w80      large      UNR                 1 2.497894e-01 80
+    ladder_lsj1_w80      large      UNR                 2 6.608928e-01 80
+    ladder_lsj1_w80      large      UNR                 3 1.717662e+00 80
+    ladder_lsj1_w80      large      UNR                 4 2.344827e+00 80
+    ladder_lsj1_w80      large      UNR                 5 2.768553e+00 80
+    ladder_lsj1_w80      large      UNR                 6 3.388059e+00 80
+    ladder_lsj1_w80      large      UNR                 7 5.065374e+00 80
+    ladder_lsj1_w80      large      UNR                 8 7.859280e+00 80
+    ladder_lsj1_w80      large     WAGE                 1 6.844685e+00 80
+    ladder_lsj1_w80      large     WAGE                 2 5.092285e+00 80
+    ladder_lsj1_w80      large     WAGE                 3 4.549052e+00 80
+    ladder_lsj1_w80      large     WAGE                 4 4.225784e+00 80
+    ladder_lsj1_w80      large     WAGE                 5 4.572845e+00 80
+    ladder_lsj1_w80      large     WAGE                 6 4.551986e+00 80
+    ladder_lsj1_w80      large     WAGE                 7 4.525453e+00 80
+    ladder_lsj1_w80      large     WAGE                 8 7.299931e+00 80
+ladder_rmsej_h4_w80      large      AHE                 1 7.071931e-01 80
+ladder_rmsej_h4_w80      large      AHE                 2 7.017889e-01 80
+ladder_rmsej_h4_w80      large      AHE                 3 8.309097e-01 80
+ladder_rmsej_h4_w80      large      AHE                 4 7.540581e-01 80
+ladder_rmsej_h4_w80      large      AHE                 5 7.252738e-01 80
+ladder_rmsej_h4_w80      large      AHE                 6 7.605782e-01 80
+ladder_rmsej_h4_w80      large      AHE                 7 7.879342e-01 80
+ladder_rmsej_h4_w80      large      AHE                 8 7.571239e-01 80
+ladder_rmsej_h4_w80      large     COMM                 1 1.253933e+01 80
+ladder_rmsej_h4_w80      large     COMM                 2 1.224153e+01 80
+ladder_rmsej_h4_w80      large     COMM                 3 1.096597e+01 80
+ladder_rmsej_h4_w80      large     COMM                 4 9.649728e+00 80
+ladder_rmsej_h4_w80      large     COMM                 5 8.463016e+00 80
+ladder_rmsej_h4_w80      large     COMM                 6 6.768478e+00 80
+ladder_rmsej_h4_w80      large     COMM                 7 6.567577e+00 80
+ladder_rmsej_h4_w80      large     COMM                 8 9.499269e+00 80
+ladder_rmsej_h4_w80      large     CONS                 1 2.237246e+00 80
+ladder_rmsej_h4_w80      large     CONS                 2 2.509611e+00 80
+ladder_rmsej_h4_w80      large     CONS                 3 3.211740e+00 80
+ladder_rmsej_h4_w80      large     CONS                 4 2.645066e+00 80
+ladder_rmsej_h4_w80      large     CONS                 5 1.996745e+00 80
+ladder_rmsej_h4_w80      large     CONS                 6 2.003359e+00 80
+ladder_rmsej_h4_w80      large     CONS                 7 2.347923e+00 80
+ladder_rmsej_h4_w80      large     CONS                 8 2.062307e+00 80
+ladder_rmsej_h4_w80      large      CPI                 1 2.869268e+00 80
+ladder_rmsej_h4_w80      large      CPI                 2 2.873150e+00 80
+ladder_rmsej_h4_w80      large      CPI                 3 2.770379e+00 80
+ladder_rmsej_h4_w80      large      CPI                 4 2.497124e+00 80
+ladder_rmsej_h4_w80      large      CPI                 5 2.101236e+00 80
+ladder_rmsej_h4_w80      large      CPI                 6 1.607856e+00 80
+ladder_rmsej_h4_w80      large      CPI                 7 1.426535e+00 80
+ladder_rmsej_h4_w80      large      CPI                 8 2.021662e+00 80
+ladder_rmsej_h4_w80      large     DEFL                 1 1.130793e+00 80
+ladder_rmsej_h4_w80      large     DEFL                 2 1.156542e+00 80
+ladder_rmsej_h4_w80      large     DEFL                 3 1.195327e+00 80
+ladder_rmsej_h4_w80      large     DEFL                 4 1.141416e+00 80
+ladder_rmsej_h4_w80      large     DEFL                 5 1.010478e+00 80
+ladder_rmsej_h4_w80      large     DEFL                 6 9.197871e-01 80
+ladder_rmsej_h4_w80      large     DEFL                 7 8.908296e-01 80
+ladder_rmsej_h4_w80      large     DEFL                 8 8.840733e-01 80
+ladder_rmsej_h4_w80      large      EMP                 1 1.128800e+00 80
+ladder_rmsej_h4_w80      large      EMP                 2 1.452746e+00 80
+ladder_rmsej_h4_w80      large      EMP                 3 2.671981e+00 80
+ladder_rmsej_h4_w80      large      EMP                 4 2.686787e+00 80
+ladder_rmsej_h4_w80      large      EMP                 5 2.508150e+00 80
+ladder_rmsej_h4_w80      large      EMP                 6 2.208938e+00 80
+ladder_rmsej_h4_w80      large      EMP                 7 2.004620e+00 80
+ladder_rmsej_h4_w80      large      EMP                 8 2.099744e+00 80
+ladder_rmsej_h4_w80      large      FFR                 1 4.813797e-01 80
+ladder_rmsej_h4_w80      large      FFR                 2 8.885967e-01 80
+ladder_rmsej_h4_w80      large      FFR                 3 1.265204e+00 80
+ladder_rmsej_h4_w80      large      FFR                 4 1.596532e+00 80
+ladder_rmsej_h4_w80      large      FFR                 5 1.796572e+00 80
+ladder_rmsej_h4_w80      large      FFR                 6 1.896944e+00 80
+ladder_rmsej_h4_w80      large      FFR                 7 2.208273e+00 80
+ladder_rmsej_h4_w80      large      FFR                 8 2.741057e+00 80
+ladder_rmsej_h4_w80      large      GDP                 1 2.367487e+00 80
+ladder_rmsej_h4_w80      large      GDP                 2 2.394166e+00 80
+ladder_rmsej_h4_w80      large      GDP                 3 2.994603e+00 80
+ladder_rmsej_h4_w80      large      GDP                 4 2.806753e+00 80
+ladder_rmsej_h4_w80      large      GDP                 5 2.548913e+00 80
+ladder_rmsej_h4_w80      large      GDP                 6 2.138205e+00 80
+ladder_rmsej_h4_w80      large      GDP                 7 2.029119e+00 80
+ladder_rmsej_h4_w80      large      GDP                 8 2.490635e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 1 2.374981e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 2 2.874137e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 3 4.210837e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 4 4.074148e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 5 3.604352e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 6 3.062525e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 7 2.927895e+00 80
+ladder_rmsej_h4_w80      large    HOURS                 8 3.219975e+00 80
+ladder_rmsej_h4_w80      large      INV                 1 1.153613e+01 80
+ladder_rmsej_h4_w80      large      INV                 2 1.168428e+01 80
+ladder_rmsej_h4_w80      large      INV                 3 1.258056e+01 80
+ladder_rmsej_h4_w80      large      INV                 4 1.236342e+01 80
+ladder_rmsej_h4_w80      large      INV                 5 1.254478e+01 80
+ladder_rmsej_h4_w80      large      INV                 6 1.130792e+01 80
+ladder_rmsej_h4_w80      large      INV                 7 9.023346e+00 80
+ladder_rmsej_h4_w80      large      INV                 8 1.191589e+01 80
+ladder_rmsej_h4_w80      large       M1                 1 6.827903e+00 80
+ladder_rmsej_h4_w80      large       M1                 2 7.627128e+00 80
+ladder_rmsej_h4_w80      large       M1                 3 1.863982e+01 80
+ladder_rmsej_h4_w80      large       M1                 4 2.157117e+01 80
+ladder_rmsej_h4_w80      large       M1                 5 2.159189e+01 80
+ladder_rmsej_h4_w80      large       M1                 6 2.117348e+01 80
+ladder_rmsej_h4_w80      large       M1                 7 2.093000e+01 80
+ladder_rmsej_h4_w80      large       M1                 8 2.045518e+01 80
+ladder_rmsej_h4_w80      large       M2                 1 3.487292e+00 80
+ladder_rmsej_h4_w80      large       M2                 2 3.437421e+00 80
+ladder_rmsej_h4_w80      large       M2                 3 3.590025e+00 80
+ladder_rmsej_h4_w80      large       M2                 4 3.474037e+00 80
+ladder_rmsej_h4_w80      large       M2                 5 3.437655e+00 80
+ladder_rmsej_h4_w80      large       M2                 6 3.357403e+00 80
+ladder_rmsej_h4_w80      large       M2                 7 3.300996e+00 80
+ladder_rmsej_h4_w80      large       M2                 8 3.634495e+00 80
+ladder_rmsej_h4_w80      large    MBASE                 1 4.124279e+01 80
+ladder_rmsej_h4_w80      large    MBASE                 2 4.639995e+01 80
+ladder_rmsej_h4_w80      large    MBASE                 3 4.692129e+01 80
+ladder_rmsej_h4_w80      large    MBASE                 4 3.863846e+01 80
+ladder_rmsej_h4_w80      large    MBASE                 5 2.548740e+01 80
+ladder_rmsej_h4_w80      large    MBASE                 6 1.977078e+01 80
+ladder_rmsej_h4_w80      large    MBASE                 7 2.845744e+01 80
+ladder_rmsej_h4_w80      large    MBASE                 8 3.336969e+01 80
+ladder_rmsej_h4_w80      large    NBRES                 1 6.314217e+05 80
+ladder_rmsej_h4_w80      large    NBRES                 2 6.857062e+05 80
+ladder_rmsej_h4_w80      large    NBRES                 3 7.633133e+05 80
+ladder_rmsej_h4_w80      large    NBRES                 4 8.346233e+05 80
+ladder_rmsej_h4_w80      large    NBRES                 5 9.058011e+05 80
+ladder_rmsej_h4_w80      large    NBRES                 6 9.819921e+05 80
+ladder_rmsej_h4_w80      large    NBRES                 7 1.058839e+06 80
+ladder_rmsej_h4_w80      large    NBRES                 8 1.134129e+06 80
+ladder_rmsej_h4_w80      large      PPI                 1 5.909144e+00 80
+ladder_rmsej_h4_w80      large      PPI                 2 5.627948e+00 80
+ladder_rmsej_h4_w80      large      PPI                 3 5.253303e+00 80
+ladder_rmsej_h4_w80      large      PPI                 4 4.771984e+00 80
+ladder_rmsej_h4_w80      large      PPI                 5 4.136528e+00 80
+ladder_rmsej_h4_w80      large      PPI                 6 3.375157e+00 80
+ladder_rmsej_h4_w80      large      PPI                 7 3.339420e+00 80
+ladder_rmsej_h4_w80      large      PPI                 8 4.428953e+00 80
+ladder_rmsej_h4_w80      large     REER                 1 1.489276e+01 80
+ladder_rmsej_h4_w80      large     REER                 2 1.505581e+01 79
+ladder_rmsej_h4_w80      large     REER                 3 1.404812e+01 78
+ladder_rmsej_h4_w80      large     REER                 4 1.134366e+01 77
+ladder_rmsej_h4_w80      large     REER                 5 8.633069e+00 76
+ladder_rmsej_h4_w80      large     REER                 6 9.542575e+00 75
+ladder_rmsej_h4_w80      large     REER                 7 1.231399e+01 74
+ladder_rmsej_h4_w80      large     REER                 8 1.189095e+01 73
+ladder_rmsej_h4_w80      large    SP500                 1 3.302258e+01 80
+ladder_rmsej_h4_w80      large    SP500                 2 3.465745e+01 80
+ladder_rmsej_h4_w80      large    SP500                 3 3.453350e+01 80
+ladder_rmsej_h4_w80      large    SP500                 4 3.016911e+01 80
+ladder_rmsej_h4_w80      large    SP500                 5 2.257338e+01 80
+ladder_rmsej_h4_w80      large    SP500                 6 2.216152e+01 80
+ladder_rmsej_h4_w80      large    SP500                 7 3.121153e+01 80
+ladder_rmsej_h4_w80      large    SP500                 8 3.327300e+01 80
+ladder_rmsej_h4_w80      large     TB10                 1 3.734338e-01 80
+ladder_rmsej_h4_w80      large     TB10                 2 6.237441e-01 80
+ladder_rmsej_h4_w80      large     TB10                 3 7.204089e-01 80
+ladder_rmsej_h4_w80      large     TB10                 4 8.229367e-01 80
+ladder_rmsej_h4_w80      large     TB10                 5 9.959998e-01 80
+ladder_rmsej_h4_w80      large     TB10                 6 1.065581e+00 80
+ladder_rmsej_h4_w80      large     TB10                 7 1.009093e+00 80
+ladder_rmsej_h4_w80      large     TB10                 8 1.517741e+00 80
+ladder_rmsej_h4_w80      large   TOTRES                 1 1.828417e+02 80
+ladder_rmsej_h4_w80      large   TOTRES                 2 2.060101e+02 80
+ladder_rmsej_h4_w80      large   TOTRES                 3 2.051353e+02 80
+ladder_rmsej_h4_w80      large   TOTRES                 4 1.606970e+02 80
+ladder_rmsej_h4_w80      large   TOTRES                 5 9.305609e+01 80
+ladder_rmsej_h4_w80      large   TOTRES                 6 9.016939e+01 80
+ladder_rmsej_h4_w80      large   TOTRES                 7 1.436552e+02 80
+ladder_rmsej_h4_w80      large   TOTRES                 8 1.482864e+02 80
+ladder_rmsej_h4_w80      large      UNR                 1 2.519425e-01 80
+ladder_rmsej_h4_w80      large      UNR                 2 5.806998e-01 80
+ladder_rmsej_h4_w80      large      UNR                 3 1.494009e+00 80
+ladder_rmsej_h4_w80      large      UNR                 4 1.889799e+00 80
+ladder_rmsej_h4_w80      large      UNR                 5 1.978249e+00 80
+ladder_rmsej_h4_w80      large      UNR                 6 1.894782e+00 80
+ladder_rmsej_h4_w80      large      UNR                 7 2.167073e+00 80
+ladder_rmsej_h4_w80      large      UNR                 8 2.739002e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 1 4.819974e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 2 2.870481e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 3 2.754407e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 4 2.585428e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 5 2.394311e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 6 1.789027e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 7 1.618188e+00 80
+ladder_rmsej_h4_w80      large     WAGE                 8 2.274940e+00 80
+              paper      large      AHE                 1 7.782371e-01 80
+              paper      large      AHE                 2 8.003444e-01 80
+              paper      large      AHE                 3 9.914308e-01 80
+              paper      large      AHE                 4 1.021915e+00 80
+              paper      large      AHE                 5 1.059105e+00 80
+              paper      large      AHE                 6 1.094198e+00 80
+              paper      large      AHE                 7 1.196199e+00 80
+              paper      large      AHE                 8 1.303769e+00 80
+              paper      large     COMM                 1 1.976990e+01 80
+              paper      large     COMM                 2 2.087457e+01 80
+              paper      large     COMM                 3 1.924261e+01 80
+              paper      large     COMM                 4 1.740261e+01 80
+              paper      large     COMM                 5 2.058137e+01 80
+              paper      large     COMM                 6 2.213308e+01 80
+              paper      large     COMM                 7 1.880580e+01 80
+              paper      large     COMM                 8 2.858131e+01 80
+              paper      large     CONS                 1 2.493969e+00 80
+              paper      large     CONS                 2 3.298023e+00 80
+              paper      large     CONS                 3 4.419168e+00 80
+              paper      large     CONS                 4 4.402486e+00 80
+              paper      large     CONS                 5 3.857476e+00 80
+              paper      large     CONS                 6 3.745415e+00 80
+              paper      large     CONS                 7 5.165767e+00 80
+              paper      large     CONS                 8 6.179066e+00 80
+              paper      large      CPI                 1 4.169838e+00 80
+              paper      large      CPI                 2 4.638630e+00 80
+              paper      large      CPI                 3 4.562216e+00 80
+              paper      large      CPI                 4 4.238096e+00 80
+              paper      large      CPI                 5 4.607903e+00 80
+              paper      large      CPI                 6 4.843497e+00 80
+              paper      large      CPI                 7 4.074916e+00 80
+              paper      large      CPI                 8 5.427238e+00 80
+              paper      large     DEFL                 1 1.414827e+00 80
+              paper      large     DEFL                 2 1.582967e+00 80
+              paper      large     DEFL                 3 1.819938e+00 80
+              paper      large     DEFL                 4 1.837446e+00 80
+              paper      large     DEFL                 5 1.727298e+00 80
+              paper      large     DEFL                 6 1.806993e+00 80
+              paper      large     DEFL                 7 2.082013e+00 80
+              paper      large     DEFL                 8 2.212792e+00 80
+              paper      large      EMP                 1 8.924843e-01 80
+              paper      large      EMP                 2 1.325094e+00 80
+              paper      large      EMP                 3 2.813320e+00 80
+              paper      large      EMP                 4 3.164564e+00 80
+              paper      large      EMP                 5 3.440437e+00 80
+              paper      large      EMP                 6 3.567831e+00 80
+              paper      large      EMP                 7 3.670231e+00 80
+              paper      large      EMP                 8 4.138764e+00 80
+              paper      large      FFR                 1 8.065984e-01 80
+              paper      large      FFR                 2 1.839376e+00 80
+              paper      large      FFR                 3 2.681375e+00 80
+              paper      large      FFR                 4 2.869901e+00 80
+              paper      large      FFR                 5 2.747445e+00 80
+              paper      large      FFR                 6 3.754987e+00 80
+              paper      large      FFR                 7 6.095342e+00 80
+              paper      large      FFR                 8 8.051952e+00 80
+              paper      large      GDP                 1 3.249711e+00 80
+              paper      large      GDP                 2 3.784984e+00 80
+              paper      large      GDP                 3 4.468394e+00 80
+              paper      large      GDP                 4 4.612280e+00 80
+              paper      large      GDP                 5 4.996254e+00 80
+              paper      large      GDP                 6 4.959101e+00 80
+              paper      large      GDP                 7 4.841613e+00 80
+              paper      large      GDP                 8 6.289277e+00 80
+              paper      large    HOURS                 1 2.259449e+00 80
+              paper      large    HOURS                 2 2.956857e+00 80
+              paper      large    HOURS                 3 4.563887e+00 80
+              paper      large    HOURS                 4 4.949804e+00 80
+              paper      large    HOURS                 5 5.330466e+00 80
+              paper      large    HOURS                 6 5.462799e+00 80
+              paper      large    HOURS                 7 5.569847e+00 80
+              paper      large    HOURS                 8 6.471365e+00 80
+              paper      large      INV                 1 1.135093e+01 80
+              paper      large      INV                 2 1.553581e+01 80
+              paper      large      INV                 3 2.003984e+01 80
+              paper      large      INV                 4 2.288909e+01 80
+              paper      large      INV                 5 2.488644e+01 80
+              paper      large      INV                 6 2.627437e+01 80
+              paper      large      INV                 7 2.512541e+01 80
+              paper      large      INV                 8 2.711049e+01 80
+              paper      large       M1                 1 1.027439e+01 80
+              paper      large       M1                 2 1.104033e+01 80
+              paper      large       M1                 3 2.046334e+01 80
+              paper      large       M1                 4 2.332872e+01 80
+              paper      large       M1                 5 2.388683e+01 80
+              paper      large       M1                 6 2.383703e+01 80
+              paper      large       M1                 7 2.431563e+01 80
+              paper      large       M1                 8 2.616321e+01 80
+              paper      large       M2                 1 3.799112e+00 80
+              paper      large       M2                 2 4.299143e+00 80
+              paper      large       M2                 3 4.302154e+00 80
+              paper      large       M2                 4 4.122744e+00 80
+              paper      large       M2                 5 4.730600e+00 80
+              paper      large       M2                 6 5.153704e+00 80
+              paper      large       M2                 7 4.370991e+00 80
+              paper      large       M2                 8 4.891169e+00 80
+              paper      large    MBASE                 1 5.428461e+01 80
+              paper      large    MBASE                 2 5.821123e+01 80
+              paper      large    MBASE                 3 5.864461e+01 80
+              paper      large    MBASE                 4 5.544113e+01 80
+              paper      large    MBASE                 5 5.734568e+01 80
+              paper      large    MBASE                 6 5.437439e+01 80
+              paper      large    MBASE                 7 5.523997e+01 80
+              paper      large    MBASE                 8 8.738571e+01 80
+              paper      large    NBRES                 1 6.316234e+05 80
+              paper      large    NBRES                 2 6.876293e+05 80
+              paper      large    NBRES                 3 7.715728e+05 80
+              paper      large    NBRES                 4 8.517847e+05 80
+              paper      large    NBRES                 5 9.350378e+05 80
+              paper      large    NBRES                 6 1.024309e+06 80
+              paper      large    NBRES                 7 1.114958e+06 80
+              paper      large    NBRES                 8 1.206934e+06 80
+              paper      large      PPI                 1 8.967623e+00 80
+              paper      large      PPI                 2 9.814367e+00 80
+              paper      large      PPI                 3 9.446088e+00 80
+              paper      large      PPI                 4 8.705441e+00 80
+              paper      large      PPI                 5 9.578665e+00 80
+              paper      large      PPI                 6 1.016779e+01 80
+              paper      large      PPI                 7 8.799516e+00 80
+              paper      large      PPI                 8 1.231457e+01 80
+              paper      large     REER                 1 2.199773e+01 80
+              paper      large     REER                 2 2.288171e+01 79
+              paper      large     REER                 3 2.364412e+01 78
+              paper      large     REER                 4 2.250052e+01 77
+              paper      large     REER                 5 2.162970e+01 76
+              paper      large     REER                 6 1.983043e+01 75
+              paper      large     REER                 7 2.320838e+01 74
+              paper      large     REER                 8 3.338522e+01 73
+              paper      large    SP500                 1 4.743614e+01 80
+              paper      large    SP500                 2 5.321858e+01 80
+              paper      large    SP500                 3 5.650023e+01 80
+              paper      large    SP500                 4 5.773462e+01 80
+              paper      large    SP500                 5 5.812650e+01 80
+              paper      large    SP500                 6 5.586827e+01 80
+              paper      large    SP500                 7 6.730196e+01 80
+              paper      large    SP500                 8 9.125508e+01 80
+              paper      large     TB10                 1 4.272513e-01 80
+              paper      large     TB10                 2 8.751516e-01 80
+              paper      large     TB10                 3 1.166078e+00 80
+              paper      large     TB10                 4 1.400802e+00 80
+              paper      large     TB10                 5 1.824343e+00 80
+              paper      large     TB10                 6 2.190451e+00 80
+              paper      large     TB10                 7 2.065996e+00 80
+              paper      large     TB10                 8 3.126468e+00 80
+              paper      large   TOTRES                 1 2.660135e+02 80
+              paper      large   TOTRES                 2 2.723827e+02 80
+              paper      large   TOTRES                 3 2.736698e+02 80
+              paper      large   TOTRES                 4 2.557613e+02 80
+              paper      large   TOTRES                 5 2.539152e+02 80
+              paper      large   TOTRES                 6 2.452232e+02 80
+              paper      large   TOTRES                 7 2.946269e+02 80
+              paper      large   TOTRES                 8 4.297662e+02 80
+              paper      large      UNR                 1 2.337294e-01 80
+              paper      large      UNR                 2 6.102985e-01 80
+              paper      large      UNR                 3 1.689194e+00 80
+              paper      large      UNR                 4 2.355561e+00 80
+              paper      large      UNR                 5 2.779260e+00 80
+              paper      large      UNR                 6 3.123495e+00 80
+              paper      large      UNR                 7 4.160888e+00 80
+              paper      large      UNR                 8 6.004436e+00 80
+              paper      large     WAGE                 1 6.584332e+00 80
+              paper      large     WAGE                 2 4.831807e+00 80
+              paper      large     WAGE                 3 4.128096e+00 80
+              paper      large     WAGE                 4 3.650693e+00 80
+              paper      large     WAGE                 5 4.318314e+00 80
+              paper      large     WAGE                 6 4.026867e+00 80
+              paper      large     WAGE                 7 2.471323e+00 80
+              paper      large     WAGE                 8 4.775274e+00 80
+       paper_plugin      large      AHE                 1 7.752514e-01 80
+       paper_plugin      large      AHE                 2 7.642883e-01 80
+       paper_plugin      large      AHE                 3 9.253283e-01 80
+       paper_plugin      large      AHE                 4 9.212204e-01 80
+       paper_plugin      large      AHE                 5 9.573451e-01 80
+       paper_plugin      large      AHE                 6 1.015114e+00 80
+       paper_plugin      large      AHE                 7 1.146431e+00 80
+       paper_plugin      large      AHE                 8 1.240816e+00 80
+       paper_plugin      large     COMM                 1 2.013010e+01 80
+       paper_plugin      large     COMM                 2 2.120302e+01 80
+       paper_plugin      large     COMM                 3 1.901172e+01 80
+       paper_plugin      large     COMM                 4 1.688716e+01 80
+       paper_plugin      large     COMM                 5 2.078697e+01 80
+       paper_plugin      large     COMM                 6 2.251910e+01 80
+       paper_plugin      large     COMM                 7 1.763160e+01 80
+       paper_plugin      large     COMM                 8 2.805195e+01 80
+       paper_plugin      large     CONS                 1 2.602045e+00 80
+       paper_plugin      large     CONS                 2 3.447518e+00 80
+       paper_plugin      large     CONS                 3 4.597761e+00 80
+       paper_plugin      large     CONS                 4 4.542080e+00 80
+       paper_plugin      large     CONS                 5 3.889868e+00 80
+       paper_plugin      large     CONS                 6 3.778158e+00 80
+       paper_plugin      large     CONS                 7 5.474145e+00 80
+       paper_plugin      large     CONS                 8 6.582932e+00 80
+       paper_plugin      large      CPI                 1 4.152713e+00 80
+       paper_plugin      large      CPI                 2 4.684689e+00 80
+       paper_plugin      large      CPI                 3 4.496655e+00 80
+       paper_plugin      large      CPI                 4 4.114583e+00 80
+       paper_plugin      large      CPI                 5 4.530765e+00 80
+       paper_plugin      large      CPI                 6 4.789319e+00 80
+       paper_plugin      large      CPI                 7 3.779573e+00 80
+       paper_plugin      large      CPI                 8 5.195356e+00 80
+       paper_plugin      large     DEFL                 1 1.416739e+00 80
+       paper_plugin      large     DEFL                 2 1.577219e+00 80
+       paper_plugin      large     DEFL                 3 1.789287e+00 80
+       paper_plugin      large     DEFL                 4 1.803026e+00 80
+       paper_plugin      large     DEFL                 5 1.634774e+00 80
+       paper_plugin      large     DEFL                 6 1.677161e+00 80
+       paper_plugin      large     DEFL                 7 1.955870e+00 80
+       paper_plugin      large     DEFL                 8 2.024995e+00 80
+       paper_plugin      large      EMP                 1 8.715161e-01 80
+       paper_plugin      large      EMP                 2 1.292627e+00 80
+       paper_plugin      large      EMP                 3 2.786158e+00 80
+       paper_plugin      large      EMP                 4 3.150139e+00 80
+       paper_plugin      large      EMP                 5 3.439757e+00 80
+       paper_plugin      large      EMP                 6 3.555485e+00 80
+       paper_plugin      large      EMP                 7 3.596397e+00 80
+       paper_plugin      large      EMP                 8 4.085695e+00 80
+       paper_plugin      large      FFR                 1 8.141642e-01 80
+       paper_plugin      large      FFR                 2 1.831195e+00 80
+       paper_plugin      large      FFR                 3 2.622477e+00 80
+       paper_plugin      large      FFR                 4 2.767083e+00 80
+       paper_plugin      large      FFR                 5 2.654760e+00 80
+       paper_plugin      large      FFR                 6 3.610182e+00 80
+       paper_plugin      large      FFR                 7 5.890982e+00 80
+       paper_plugin      large      FFR                 8 8.004166e+00 80
+       paper_plugin      large      GDP                 1 3.291504e+00 80
+       paper_plugin      large      GDP                 2 3.764493e+00 80
+       paper_plugin      large      GDP                 3 4.423211e+00 80
+       paper_plugin      large      GDP                 4 4.591144e+00 80
+       paper_plugin      large      GDP                 5 5.072188e+00 80
+       paper_plugin      large      GDP                 6 5.020965e+00 80
+       paper_plugin      large      GDP                 7 4.792789e+00 80
+       paper_plugin      large      GDP                 8 6.473676e+00 80
+       paper_plugin      large    HOURS                 1 2.324905e+00 80
+       paper_plugin      large    HOURS                 2 3.008301e+00 80
+       paper_plugin      large    HOURS                 3 4.597093e+00 80
+       paper_plugin      large    HOURS                 4 4.989032e+00 80
+       paper_plugin      large    HOURS                 5 5.383224e+00 80
+       paper_plugin      large    HOURS                 6 5.476696e+00 80
+       paper_plugin      large    HOURS                 7 5.480844e+00 80
+       paper_plugin      large    HOURS                 8 6.521286e+00 80
+       paper_plugin      large      INV                 1 1.199354e+01 80
+       paper_plugin      large      INV                 2 1.601568e+01 80
+       paper_plugin      large      INV                 3 2.033911e+01 80
+       paper_plugin      large      INV                 4 2.292251e+01 80
+       paper_plugin      large      INV                 5 2.523675e+01 80
+       paper_plugin      large      INV                 6 2.700673e+01 80
+       paper_plugin      large      INV                 7 2.495947e+01 80
+       paper_plugin      large      INV                 8 2.667937e+01 80
+       paper_plugin      large       M1                 1 1.031018e+01 80
+       paper_plugin      large       M1                 2 1.083384e+01 80
+       paper_plugin      large       M1                 3 2.037554e+01 80
+       paper_plugin      large       M1                 4 2.331859e+01 80
+       paper_plugin      large       M1                 5 2.402629e+01 80
+       paper_plugin      large       M1                 6 2.389355e+01 80
+       paper_plugin      large       M1                 7 2.426311e+01 80
+       paper_plugin      large       M1                 8 2.646499e+01 80
+       paper_plugin      large       M2                 1 3.851447e+00 80
+       paper_plugin      large       M2                 2 4.425855e+00 80
+       paper_plugin      large       M2                 3 4.406276e+00 80
+       paper_plugin      large       M2                 4 4.229431e+00 80
+       paper_plugin      large       M2                 5 4.898274e+00 80
+       paper_plugin      large       M2                 6 5.369420e+00 80
+       paper_plugin      large       M2                 7 4.471396e+00 80
+       paper_plugin      large       M2                 8 4.819973e+00 80
+       paper_plugin      large    MBASE                 1 5.415709e+01 80
+       paper_plugin      large    MBASE                 2 5.879456e+01 80
+       paper_plugin      large    MBASE                 3 5.882108e+01 80
+       paper_plugin      large    MBASE                 4 5.591636e+01 80
+       paper_plugin      large    MBASE                 5 5.888849e+01 80
+       paper_plugin      large    MBASE                 6 5.519358e+01 80
+       paper_plugin      large    MBASE                 7 5.526858e+01 80
+       paper_plugin      large    MBASE                 8 9.188209e+01 80
+       paper_plugin      large    NBRES                 1 6.312847e+05 80
+       paper_plugin      large    NBRES                 2 6.853056e+05 80
+       paper_plugin      large    NBRES                 3 7.648921e+05 80
+       paper_plugin      large    NBRES                 4 8.380413e+05 80
+       paper_plugin      large    NBRES                 5 9.109094e+05 80
+       paper_plugin      large    NBRES                 6 9.893159e+05 80
+       paper_plugin      large    NBRES                 7 1.066680e+06 80
+       paper_plugin      large    NBRES                 8 1.140670e+06 80
+       paper_plugin      large      PPI                 1 8.925816e+00 80
+       paper_plugin      large      PPI                 2 9.837318e+00 80
+       paper_plugin      large      PPI                 3 9.204728e+00 80
+       paper_plugin      large      PPI                 4 8.313529e+00 80
+       paper_plugin      large      PPI                 5 9.358870e+00 80
+       paper_plugin      large      PPI                 6 1.003198e+01 80
+       paper_plugin      large      PPI                 7 8.083665e+00 80
+       paper_plugin      large      PPI                 8 1.181361e+01 80
+       paper_plugin      large     REER                 1 2.257317e+01 80
+       paper_plugin      large     REER                 2 2.271572e+01 79
+       paper_plugin      large     REER                 3 2.364997e+01 78
+       paper_plugin      large     REER                 4 2.275070e+01 77
+       paper_plugin      large     REER                 5 2.218324e+01 76
+       paper_plugin      large     REER                 6 1.931353e+01 75
+       paper_plugin      large     REER                 7 2.243025e+01 74
+       paper_plugin      large     REER                 8 3.548626e+01 73
+       paper_plugin      large    SP500                 1 4.792564e+01 80
+       paper_plugin      large    SP500                 2 5.372825e+01 80
+       paper_plugin      large    SP500                 3 5.715520e+01 80
+       paper_plugin      large    SP500                 4 5.860216e+01 80
+       paper_plugin      large    SP500                 5 5.938086e+01 80
+       paper_plugin      large    SP500                 6 5.601418e+01 80
+       paper_plugin      large    SP500                 7 6.909479e+01 80
+       paper_plugin      large    SP500                 8 9.776813e+01 80
+       paper_plugin      large     TB10                 1 4.291414e-01 80
+       paper_plugin      large     TB10                 2 8.671251e-01 80
+       paper_plugin      large     TB10                 3 1.102298e+00 80
+       paper_plugin      large     TB10                 4 1.305227e+00 80
+       paper_plugin      large     TB10                 5 1.739328e+00 80
+       paper_plugin      large     TB10                 6 2.109552e+00 80
+       paper_plugin      large     TB10                 7 1.869609e+00 80
+       paper_plugin      large     TB10                 8 2.942643e+00 80
+       paper_plugin      large   TOTRES                 1 2.675999e+02 80
+       paper_plugin      large   TOTRES                 2 2.748086e+02 80
+       paper_plugin      large   TOTRES                 3 2.755822e+02 80
+       paper_plugin      large   TOTRES                 4 2.595460e+02 80
+       paper_plugin      large   TOTRES                 5 2.626249e+02 80
+       paper_plugin      large   TOTRES                 6 2.478774e+02 80
+       paper_plugin      large   TOTRES                 7 2.995163e+02 80
+       paper_plugin      large   TOTRES                 8 4.576486e+02 80
+       paper_plugin      large      UNR                 1 2.299642e-01 80
+       paper_plugin      large      UNR                 2 6.191891e-01 80
+       paper_plugin      large      UNR                 3 1.705280e+00 80
+       paper_plugin      large      UNR                 4 2.386524e+00 80
+       paper_plugin      large      UNR                 5 2.825689e+00 80
+       paper_plugin      large      UNR                 6 3.151345e+00 80
+       paper_plugin      large      UNR                 7 4.162026e+00 80
+       paper_plugin      large      UNR                 8 6.189205e+00 80
+       paper_plugin      large     WAGE                 1 6.720324e+00 80
+       paper_plugin      large     WAGE                 2 4.962493e+00 80
+       paper_plugin      large     WAGE                 3 4.132985e+00 80
+       paper_plugin      large     WAGE                 4 3.596832e+00 80
+       paper_plugin      large     WAGE                 5 4.440177e+00 80
+       paper_plugin      large     WAGE                 6 4.223966e+00 80
+       paper_plugin      large     WAGE                 7 2.336432e+00 80
+       paper_plugin      large     WAGE                 8 4.882257e+00 80

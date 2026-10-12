@@ -1,0 +1,82 @@
+# Numbers quoted in the paper, by section
+
+- [5.2] small rmse_h4_w12: median in-window loss at the selection / at the ML mode = 0.59
+- [5.2] small rmse_h4_w20: median in-window loss at the selection / at the ML mode = 0.67
+- [5.2] small rmsej_h4_w12: median in-window loss at the selection / at the ML mode = 0.69
+- [5.2] small joint RMSE 40-80q GDP: -11.3 to -9.3; GDP-only 40-80q GDP: -12.2 to -11.3, deflator 4.6 to 21.0
+- [5.2] small mdd: median lambda 0.833, mu 0.115
+- [5.2] small paper: median lambda 0.833, mu 0.115
+- [5.2] small rmsej_h4_w60: median lambda 0.168, mu 0.062
+- [5.3] small rmsej_h1_w60 GDP avg -10.0; lsm_h1_w60 DEFL avg 31.6
+- [5.3] small rmsej_h2_w60 GDP avg -10.8; lsm_h2_w60 DEFL avg 54.5
+- [5.3] small rmsej_h4_w60 GDP avg -11.2; lsm_h4_w60 DEFL avg 61.8
+- [5.3] small rmsej_h8_w60 GDP avg -9.3; lsm_h8_w60 DEFL avg 51.5
+- [5.5] small rmsej_h1_w60 GDP DM p by horizon: 1:0.031, 2:0.050, 3:0.059, 4:0.072, 5:0.084, 6:0.084, 7:0.088, 8:0.096; min Holm 1.000
+- [5.5] small rmsej_h2_w60 GDP DM p by horizon: 1:0.027, 2:0.049, 3:0.063, 4:0.075, 5:0.084, 6:0.080, 7:0.077, 8:0.082; min Holm 1.000
+- [5.5] small rmsej_h4_w60 GDP DM p by horizon: 1:0.014, 2:0.025, 3:0.038, 4:0.048, 5:0.054, 6:0.054, 7:0.051, 8:0.061; min Holm 1.000
+- [5.5] small rmsej_h8_w60 GDP DM p by horizon: 1:0.014, 2:0.022, 3:0.029, 4:0.034, 5:0.035, 6:0.035, 7:0.035, 8:0.034; min Holm 1.000
+- [5.5] small: smallest Holm-adjusted DM p for GDP across all criteria and horizons = 1.000
+- [5.5] small: number of criteria in the all-criteria MCS (excluding GLP) = 76; GLP excluded at GDP horizons []
+- [5.5] small: MCS of GLP + the 53 RMSE criteria excludes GLP for GDP at horizons []
+- [5.5] small: GDP-only criteria with a Holm-significant (5%) deflator CRPS difference: ['ladder_lsm_h1_w12', 'ladder_lsm_h1_w60', 'ladder_lsm_h2_w12', 'ladder_lsm_h2_w60', 'ladder_lsm_h4_all', 'ladder_lsm_h4_w12', 'ladder_lsm_h4_w40', 'ladder_lsm_h4_w60', 'ladder_lsm_h8_w12', 'ladder_lsm_h8_w60', 'ladder_rmse_h1_all', 'ladder_rmse_h1_w12', 'ladder_rmse_h1_w20', 'ladder_rmse_h1_w40', 'ladder_rmse_h1_w60', 'ladder_rmse_h1_w80', 'ladder_rmse_h2_all', 'ladder_rmse_h2_w12', 'ladder_rmse_h2_w20', 'ladder_rmse_h2_w40', 'ladder_rmse_h2_w60', 'ladder_rmse_h2_w80', 'ladder_rmse_h4_all', 'ladder_rmse_h4_r12', 'ladder_rmse_h4_r12p80', 'ladder_rmse_h4_r12p80s1', 'ladder_rmse_h4_r20p80', 'ladder_rmse_h4_r40p80', 'ladder_rmse_h4_w12', 'ladder_rmse_h4_w20', 'ladder_rmse_h4_w40', 'ladder_rmse_h4_w60', 'ladder_rmse_h4_w80', 'ladder_rmse_h8_all', 'ladder_rmse_h8_w12', 'ladder_rmse_h8_w20', 'ladder_rmse_h8_w40', 'ladder_rmse_h8_w60', 'ladder_rmse_h8_w80']
+- [5.5] small pooled, 12 joint 40-80q: GDP -11.3 to -8.3, p 0.040-0.195, Holm (all criteria) min 1.000; Holm within family min 0.481
+- [5.5] medium pooled GDP, three smallest p: ladder_rmsej_h4_r40p80 p=0.011 Holm=0.618; ladder_lsj1_w60 p=0.031 Holm=1.000; ladder_rmse_h4_r40p80 p=0.033 Holm=1.000
+- [5.5/App] pooled tests Holm-significant at 10%: small ladder_lsm_h4_all DEFL 86.1%; small ladder_rmse_h1_all DEFL 92.0%; small ladder_rmse_h2_all DEFL 93.6%; medium ladder_lsm_h1_w12 DEFL 34.9%; medium ladder_lsm_h2_w12 DEFL 38.8%; medium ladder_rmse_h2_w12 DEFL 39.3%; large_nr ladder_rmse_h2_w80 AHE 51.7%; large_nr ladder_rmse_h8_w60 AHE 36.0%; large_nr ladder_rmsej_h4_w80 REER -9.1%
+- [6] small best GDP gain at 40-80q windows: ladder_rmse_h4_w60 -12.2
+- [6] small GDP-only RMSE (all windows/targets): GDP -12.2 to 4.6, deflator 3.2 to 93.6
+- [6] small GDP-only RMSE+density (fixed windows, n=40): GDP -12.2 to 5.3, deflator 3.2 to 93.6, #GDP gains 25
+- [6] medium GDP-only RMSE (all windows/targets): GDP -12.1 to 4.9, deflator -0.1 to 42.3
+- [6] medium GDP-only RMSE+density (fixed windows, n=25): GDP -12.1 to 7.9, deflator -0.1 to 45.7, #GDP gains 14
+- [6] large_nr GDP-only RMSE (all windows/targets): GDP -4.4 to 14.2, deflator -0.3 to 45.3
+- [6] large_nr GDP-only RMSE+density (fixed windows, n=11): GDP -4.4 to 23.0, deflator -0.3 to 45.3, #GDP gains 1
+- [6] medium ladder_rmsej_h1_w60: GDP avg -8.4, by horizon -9.5 to -6.8, CONS -7.6, INV -1.8, DEFL -0.2, FFR -0.9, HOURS -1.7, WAGE -4.3
+- [6] medium ladder_rmsej_h1_w80: GDP avg -8.1, by horizon -9.8 to -5.9, CONS -8.3, INV -0.1, DEFL -2.5, FFR -2.8, HOURS -1.9, WAGE -2.0
+- [6] medium ladder_rmsej_h4_w60: GDP h1 5.6, INV 5.4, HOURS 4.9
+- [6] medium ladder_rmsej_h8_w60: GDP h1 5.3, INV 5.3, HOURS 4.1
+- [6] medium ladder_rmsej_h4_w80: GDP h1 5.8, INV 4.7, HOURS 3.4
+- [6] medium ladder_rmsej_h8_w80: GDP h1 7.8, INV 6.6, HOURS 4.6
+- [6] medium ladder_lsj1_w60: GDP -5.9, worst other 1.3
+- [6] medium ladder_lsj1_w80: GDP -5.5, worst other 2.5
+- [6] medium 80q criteria GDP DM p at h=7-8: 0.0035-0.497
+- [6] medium: GLP excluded from all-criteria MCS for GDP at horizons []; smallest GDP Holm p 1.000
+- [6] medium rmse_h1_w60 GDP -12.1; GDP-only deflator by criterion: rmse_h1_w12 37.3, rmse_h1_w60 14.1, rmse_h1_w80 13.7, rmse_h2_w12 39.3, rmse_h2_w60 26.4, rmse_h2_w80 29.2, rmse_h4_r12p80 16.6, rmse_h4_r40p80 7.8, rmse_h4_w12 24.0, rmse_h4_w40 23.4, rmse_h4_w60 18.9, rmse_h4_w80 -0.1, rmse_h8_w12 42.3, rmse_h8_w60 8.9, rmse_h8_w80 6.1
+- [6] medium GDP-only criteria with Holm-significant deflator CRPS differences: ['ladder_lsm_h1_w12', 'ladder_lsm_h1_w60', 'ladder_lsm_h2_w12', 'ladder_lsm_h2_w60', 'ladder_lsm_h4_w12', 'ladder_lsm_h4_w40', 'ladder_lsm_h4_w60', 'ladder_lsm_h4_w80', 'ladder_lsm_h8_w12', 'ladder_lsm_h8_w60', 'ladder_rmse_h1_w12', 'ladder_rmse_h1_w60', 'ladder_rmse_h1_w80', 'ladder_rmse_h2_w12', 'ladder_rmse_h2_w60', 'ladder_rmse_h2_w80', 'ladder_rmse_h4_r40p80', 'ladder_rmse_h4_w40', 'ladder_rmse_h4_w60', 'ladder_rmse_h4_w80', 'ladder_rmse_h8_w12', 'ladder_rmse_h8_w60', 'ladder_rmse_h8_w80']
+- [6] large_nr lsj1_w12: median log-ML gap to GLP mode -1.68, min -339.69
+- [6] large_nr lsj1_w60: median log-ML gap to GLP mode 1.28, min -32.44
+- [6] large_nr lsj1_w80: median log-ML gap to GLP mode 0.89, min -81.86
+- [6] large_nr ladder_rmsej_h1_w80: mean over 18 variables -1.45, GDP 2.7, EMP 4.6, HOURS 3.0
+- [6] large_nr ladder_rmsej_h2_w80: mean over 18 variables -2.08, GDP -0.6, EMP 7.1, HOURS 5.1
+- [6] large_nr ladder_rmsej_h4_w80: mean over 18 variables -1.73, GDP -2.0, EMP 8.4, HOURS 4.2
+- [6] large_nr ladder_rmsej_h8_w80: mean over 18 variables -2.03, GDP 5.1, EMP 15.0, HOURS 6.8
+- [6] large_nr rmsej_h1_w60 GDP 4.5, by horizon 3.1 to 6.3
+- [6] large_nr GDP-only: variables with a Holm-significant (5%, RMSE or CRPS, some horizon) loss: ['AHE', 'CONS', 'DEFL', 'EMP', 'GDP', 'HOURS', 'INV', 'M2', 'UNR']
+- [6] large_nr: GLP excluded from all-criteria MCS for GDP at horizons []; smallest GDP Holm p 0.549
+- [7] MF rmse_h4_w12: GDP nowcast (h=1) by month +0 months: -10.5, +1 month: 21.2, +2 months: -5.5
+- [7] MF rmse_h4_w12: GDP smallest DM p 0.170 at h=1, smallest Holm 1.000
+- [7] MF rmse_h4_w12 CPI: avg {'+0 months': 13.0, '+1 month': 10.0, '+2 months': 9.6}, Holm RMSE<0.05 at 0 cells, Holm CRPS<0.05 at 10 cells
+- [7] MF rmse_h4_w12 FF: avg {'+0 months': 25.8, '+1 month': 15.8, '+2 months': 18.3}, Holm RMSE<0.05 at 1 cells, Holm CRPS<0.05 at 1 cells
+- [7] MF rmse_h4_w12 UNR: avg {'+0 months': 4.8, '+1 month': 2.3, '+2 months': -2.0}, Holm RMSE<0.05 at 0 cells, Holm CRPS<0.05 at 0 cells
+- [7] MF rmse_h4_w12 HRS: avg {'+0 months': 2.4, '+1 month': 2.0, '+2 months': -0.7}, Holm RMSE<0.05 at 1 cells, Holm CRPS<0.05 at 2 cells
+- [7] MF rmse_h4_w12 TB: avg {'+0 months': 7.8, '+1 month': -3.7, '+2 months': 10.6}, Holm RMSE<0.05 at 0 cells, Holm CRPS<0.05 at 0 cells
+- [7] MF rmsej_h4_w60: GDP nowcast (h=1) by month +0 months: -17.8, +1 month: -1.2, +2 months: -17.4
+- [7] MF rmsej_h4_w60: GDP smallest DM p 0.067 at h=4, smallest Holm 0.534
+- [7] MF rmsej_h4_w60 CPI: avg {'+0 months': 0.9, '+1 month': 9.6, '+2 months': 3.3}, Holm RMSE<0.05 at 0 cells, Holm CRPS<0.05 at 0 cells
+- [7] MF rmsej_h4_w60 FF: avg {'+0 months': 12.5, '+1 month': 20.6, '+2 months': 7.0}, Holm RMSE<0.05 at 2 cells, Holm CRPS<0.05 at 2 cells
+- [7] MF rmsej_h4_w60 UNR: avg {'+0 months': -12.3, '+1 month': -11.7, '+2 months': -11.4}, Holm RMSE<0.05 at 0 cells, Holm CRPS<0.05 at 0 cells
+- [7] MF rmsej_h4_w60 HRS: avg {'+0 months': -9.7, '+1 month': -10.6, '+2 months': -8.8}, Holm RMSE<0.05 at 0 cells, Holm CRPS<0.05 at 2 cells
+- [7] MF rmsej_h4_w60 TB: avg {'+0 months': 4.6, '+1 month': 18.9, '+2 months': 2.6}, Holm RMSE<0.05 at 0 cells, Holm CRPS<0.05 at 0 cells
+- [7] MF: cells where the MCS excludes the published prior for GDP: 0
+- [7] EM check: |t| > 1.96 in 4 of 64; median q_gain by iteration {1: 1.04, 2: 0.86, 3: 0.65, 4: 0.52}; ESS range 1.0-25.9
+- [8] small plug-in vs GLP: -0.5 to 1.7 (averaged over horizons, all variables)
+- [8] medium plug-in vs GLP: -1.0 to 0.4 (averaged over horizons, all variables)
+- [8] large_nr plug-in vs GLP: -2.2 to 5.3 (averaged over horizons, all variables)
+- [8] window selection rows: small selected: GDP -9.0; medium selected: GDP -2.4; large_nr selected: GDP -2.0
+- [8] reserves paper: GDP vs own GLP 0.0, vs same criterion without reserves 143.4; other variables vs own GLP 0.0 to 0.0
+- [8] reserves ladder_lsj1_w80: GDP vs own GLP 2.4, vs same criterion without reserves 153.6; other variables vs own GLP -3.8 to 109.9
+- [8] reserves ladder_rmsej_h4_w80: GDP vs own GLP -45.0, vs same criterion without reserves 28.7; other variables vs own GLP -53.2 to -2.7
+- [8] roots outputs/glp/canonical_large/ladder/lsj1_w80: max 1.656, origins above 1.05: 6 (2008-09-30, 2009-03-31, 2009-06-30, 2009-09-30, 2009-12-31, 2010-03-31)
+- [8] roots outputs/glp/canonical_large/ladder/rmsej_h4_w80: max 1.336, origins above 1.05: 2 (2009-06-30, 2009-09-30)
+- [8] roots outputs/glp/canonical_large/paper: max 1.492, origins above 1.05: 7 (2008-09-30, 2008-12-31, 2009-03-31, 2009-06-30, 2009-09-30, 2009-12-31, 2010-03-31)
+- [8] roots outputs/glp/canonical_large_nr/ladder/rmsej_h4_w80: max 1.008, origins above 1.05: 0 ()
+- [8] roots outputs/glp/canonical_large_nr/paper: max 1.007, origins above 1.05: 0 ()
+- [8] medium rmsej_h4_r40p80: GDP -7.2, CONS -9.0; last 40 GDP -2.0, CONS -3.9
