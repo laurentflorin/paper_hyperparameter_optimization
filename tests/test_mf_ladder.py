@@ -91,3 +91,15 @@ def test_realtime_quarterly_history_uses_complete_quarters_only():
     assert np.isnan(hist.loc[pd.Period("2005Q2"), "CPI"])  # only two months observed
     assert hist.loc[pd.Period("2005Q2"), "GDP"] == 101.0
 
+
+
+def test_log_ml_ratio_is_zero_for_identical_priors_and_full_ess(data):
+    free = L.from_mbfvar(PAPER_HYPERPARAMETERS)
+    gain, ess = L.log_ml_ratio(free, free, data)
+    assert gain == pytest.approx(0.0, abs=1e-10)
+    assert ess == pytest.approx(data.draws.shape[0])
+    # Jensen: the IS log ratio is at least the average complete-data log ratio.
+    other = free * np.array([1.1, 0.9, 1.0, 1.05])
+    gain, _ = L.log_ml_ratio(other, free, data)
+    avg = L.complete_data_log_ml(other, data) - L.complete_data_log_ml(free, data)
+    assert gain >= avg - 1e-9

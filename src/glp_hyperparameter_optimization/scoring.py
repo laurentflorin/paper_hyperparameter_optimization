@@ -112,6 +112,27 @@ def diebold_mariano(loss_model: Sequence[float], loss_baseline: Sequence[float],
     return float(stat), float(2.0 * stats.t.sf(abs(stat), T - 1))
 
 
+def pooled_diebold_mariano(loss_model: np.ndarray, loss_baseline: np.ndarray) -> tuple[float, float]:
+    """DM test of equal loss pooled over horizons.
+
+    ``loss_model`` and ``loss_baseline`` are ``(T, H)`` arrays (origins x
+    horizons 1..H). Each horizon's losses are scaled by the baseline's mean loss
+    at that horizon, so every horizon carries equal weight, and the scaled
+    differential is averaged over horizons; the averaged series overlaps for up
+    to ``H - 1`` origins, which the test's Newey-West lags and HLN correction
+    for horizon ``H`` account for. Origins with a missing horizon are dropped.
+    """
+    a = np.asarray(loss_model, dtype=float)
+    b = np.asarray(loss_baseline, dtype=float)
+    ok = np.isfinite(a).all(axis=1) & np.isfinite(b).all(axis=1)
+    a, b = a[ok], b[ok]
+    if a.shape[0] < 10:
+        return float("nan"), float("nan")
+    scale = b.mean(axis=0)
+    scale[scale <= 0] = 1.0
+    return diebold_mariano((a / scale).mean(axis=1), (b / scale).mean(axis=1), a.shape[1])
+
+
 def holm_adjust(pvalues: Sequence[float]) -> np.ndarray:
     """Holm step-down adjusted p-values (NaNs are passed through)."""
     p = np.asarray(pvalues, dtype=float)

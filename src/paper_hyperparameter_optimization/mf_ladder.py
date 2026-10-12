@@ -115,15 +115,23 @@ def fit_capturing_complete_data(
 ) -> CompleteData:
     """Run ``model.fit`` and record the balanced monthly data of the post-burn-in
     iterations (thinned to ``keep`` draws). MBFVAR builds that dataset at every
-    iteration and passes it to ``calc_yyact`` (or ``mdd_``), which we wrap."""
+    iteration and passes it to ``calc_yyact`` (or ``mdd_``), which we wrap; only
+    the thinned post-burn-in draws are copied, to keep memory flat in ``nsim``."""
     import MBFVAR._estimation as est
 
-    records: list[tuple[np.ndarray, np.ndarray]] = []
+    nsim = max(1, int(getattr(model, "nsim", 1)))
+    start, step = nsim // 2, max(1, (nsim - nsim // 2) // keep)
+    kept: list[np.ndarray] = []
+    state: dict[str, Any] = {"calls": 0, "spec": None, "last": None}
     original = {"calc_yyact": est.calc_yyact, "mdd_": est.mdd_}
 
     def recorder(name: str) -> Callable[..., Any]:
         def wrapped(hyp_, YY, spec, *args, **kwargs):
-            records.append((np.array(YY, dtype=float), np.array(spec)))
+            i = state["calls"]
+            state["calls"] += 1
+            state["spec"], state["last"] = spec, YY
+            if i >= start and (i - start) % step == 0:
+                kept.append(np.array(YY, dtype=float))
             return original[name](hyp_, YY, spec, *args, **kwargs)
 
         return wrapped
@@ -134,13 +142,14 @@ def fit_capturing_complete_data(
             model.fit(data_in, [list(hyp)], **fit_kwargs)
     finally:
         est.calc_yyact, est.mdd_ = original["calc_yyact"], original["mdd_"]
-    if not records:
+    if state["last"] is None:
         raise RuntimeError("MBFVAR did not expose the balanced monthly data.")
+    if not kept:
+        kept.append(np.array(state["last"], dtype=float))
 
-    post = records[len(records) // 2 :]
-    picks = np.unique(np.linspace(0, len(post) - 1, num=min(keep, len(post))).round().astype(int))
-    draws = np.stack([post[i][0] for i in picks])
-    spec = post[-1][1]
+    picks = np.unique(np.linspace(0, len(kept) - 1, num=min(keep, len(kept))).round().astype(int))
+    draws = np.stack([kept[i] for i in picks])
+    spec = np.array(state["spec"])
     dates = pd.DatetimeIndex(model.index_list[-1])[-draws.shape[1] :]
     columns = [str(c) for c in model.varlist_list[-1]]
     n_observed = int((dates <= pd.Timestamp(last_observed_quarter) + pd.offsets.MonthEnd(0)).sum())
@@ -596,3 +605,85 @@ def run_mf_ladder(
     pd.DataFrame(records).to_csv(output_dir / "selected_hyperparameters.csv", index=False)
     missing = len(tasks) - len(results)
     print(f"[mf_ladder] wrote {len(rows)} forecast rows for {len(results)} origins ({missing} missing) to {output_dir}", flush=True)
+
+
+# --------------------------------------------------------------------------- #
+# Checking the EM step against the observed-data marginal likelihood.
+# --------------------------------------------------------------------------- #
+def log_ml_ratio(free_new: np.ndarray, free_old: np.ndarray, data: CompleteData) -> tuple[float, float]:
+    """Importance-sampling estimate of log p(Y | new) - log p(Y | old) from draws
+    Z_k ~ p(Z | Y, old):  p(Y|new)/p(Y|old) = E[p(Y,Z|new) / p(Y,Z|old) | Y, old].
+
+    Returns the estimate and the effective sample size of the weights; the
+    estimate is reliable when the two priors are close (ESS near the number of
+    draws). (Approximate to the extent that the dummy-observation scaling uses
+    pre-sample moments of the completed data.)"""
+    from MBFVAR.mfbvar_funcs import mdd_
+
+    new, old = to_mbfvar(free_new), to_mbfvar(free_old)
+    log_w = np.array([mdd_(new, YY, data.spec)[0] - mdd_(old, YY, data.spec)[0] for YY in data.draws])
+    m = log_w.max()
+    w = np.exp(log_w - m)
+    return float(m + np.log(w.mean())), float(w.sum() ** 2 / (w**2).sum())
+
+
+def observed_score(free: np.ndarray, data: CompleteData, step: float = 1e-3) -> tuple[np.ndarray, np.ndarray]:
+    """Gradient of the observed-data log marginal likelihood with respect to the
+    log hyperparameters, by Fisher's identity: the average over Z_k ~ p(Z|Y, free)
+    of the complete-data gradient. Returns the mean and its Monte Carlo standard
+    error (ignoring autocorrelation between the thinned draws)."""
+    from MBFVAR.mfbvar_funcs import mdd_
+
+    grads = np.empty((data.draws.shape[0], free.size))
+    for j in range(free.size):
+        up, down = free.copy(), free.copy()
+        up[j] *= np.exp(step)
+        down[j] *= np.exp(-step)
+        hu, hd = to_mbfvar(up), to_mbfvar(down)
+        grads[:, j] = [(mdd_(hu, YY, data.spec)[0] - mdd_(hd, YY, data.spec)[0]) / (2 * step) for YY in data.draws]
+    return grads.mean(axis=0), grads.std(axis=0, ddof=1) / np.sqrt(grads.shape[0])
+
+
+def em_check_origin(task: dict[str, Any]) -> dict[str, Any]:
+    """Iterate the Monte Carlo EM for the marginal likelihood at one origin and
+    track the observed-data log marginal likelihood along the path."""
+    import MBFVAR
+
+    from .data_utils import build_model_input_frames, load_realtime_panel
+    from .forecasting import make_data_in
+    from pathlib import Path
+
+    origin = pd.Timestamp(task["origin_date"])
+    quarterly, monthly = build_model_input_frames(load_realtime_panel(Path(task["panel_path"])), origin)
+    data_in = make_data_in(quarterly, monthly)
+    seed = int(task["seed_base"]) + origin.year * 12 + origin.month
+    free = from_mbfvar(PAPER_HYPERPARAMETERS)
+    rows, cumulative = [], 0.0
+    for it in range(int(task["iterations"])):
+        model = MBFVAR.MixedFrequencyBVAR(task["fit_nsim"], 0.5, task["nlags"], 1)
+        data = fit_capturing_complete_data(
+            model, data_in, to_mbfvar(free), keep=task["keep_draws"], last_observed_quarter=quarterly.index[-1],
+            temp_agg="mean", check_explosive=False, seed=seed + it,
+        )
+        step = minimize_criterion(lambda v: -complete_data_log_ml(v, data), free, n_starts=1, maxfev=task["maxfev"], seed=seed)
+        new = step["free"]
+        gain, ess = log_ml_ratio(new, free, data)
+        score, score_se = observed_score(free, data)
+        cumulative += gain
+        rows.append(
+            {
+                "forecast_origin": origin.strftime("%Y-%m-%d"),
+                "iteration": it + 1,
+                **{f"{k}_from": v for k, v in zip(HYPER_NAMES, free)},
+                **{f"{k}_to": v for k, v in zip(HYPER_NAMES, new)},
+                "q_gain": float(-step["value"] + step["value_at_start"]),
+                "log_ml_gain": gain,
+                "log_ml_gain_cumulative": cumulative,
+                "ess": ess,
+                **{f"score_{k}": v for k, v in zip(HYPER_NAMES, score)},
+                **{f"score_se_{k}": v for k, v in zip(HYPER_NAMES, score_se)},
+                "n_draws": int(data.draws.shape[0]),
+            }
+        )
+        free = new
+    return {"rows": rows}

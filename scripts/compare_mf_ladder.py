@@ -32,9 +32,12 @@ KEYS = ["group", "variable", "horizon_quarters"]
 HEADLINE = ["GDP", "CPI", "FF", "UNR", "INVFIX", "PCE", "IP", "HRS", "TB", "GOV", "SP500"]
 
 
-def losses(panel: pd.DataFrame) -> pd.DataFrame:
+def losses(panel: pd.DataFrame, point: str = "median") -> pd.DataFrame:
+    """Squared errors of the point forecast. The median is the default: with the
+    untruncated posterior, a few explosive draws can make the predictive mean
+    diverge at long horizons for the loss-selected priors."""
     panel = panel.copy()
-    panel["sq_error"] = panel["error_metric"] ** 2
+    panel["sq_error"] = (panel[f"{point}_metric"] - panel["actual_metric"]) ** 2
     return panel
 
 
@@ -87,11 +90,12 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--run-dir", type=Path, default=REPO_ROOT / "outputs" / "mf_ladder")
     p.add_argument("--baseline", default="paper")
     p.add_argument("--mcs-alpha", type=float, default=0.10)
+    p.add_argument("--point", choices=("median", "mean"), default="median", help="Point forecast scored by the RMSE.")
     args = p.parse_args(argv)
 
     out_dir = args.run_dir / "comparison"
     out_dir.mkdir(parents=True, exist_ok=True)
-    panel = losses(pd.read_csv(args.run_dir / "forecast_panel.csv"))
+    panel = losses(pd.read_csv(args.run_dir / "forecast_panel.csv"), args.point)
 
     rel = relative_scores(panel, args.baseline)
     rel.to_csv(out_dir / "relative_scores.csv", index=False)

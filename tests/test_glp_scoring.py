@@ -46,3 +46,16 @@ def test_mcs_excludes_clearly_worse_model():
     mcs = S.model_confidence_set(losses, alpha=0.1, n_boot=500)
     assert not mcs.loc["bad", "in_mcs"]
     assert mcs.loc[["a", "b"], "in_mcs"].all()
+
+
+def test_pooled_diebold_mariano_detects_uniform_gain_and_is_antisymmetric():
+    rng = np.random.default_rng(1)
+    T, H = 80, 8
+    base = rng.chisquare(1, (T, H)) * np.arange(1, H + 1)  # losses grow with the horizon
+    better = base * np.exp(rng.normal(-0.2, 0.3, (T, H)))
+    stat, p = S.pooled_diebold_mariano(better, base)
+    assert stat < 0 and p < 0.05
+    # Swapping the models flips the sign; with the baseline's scaling the
+    # statistic is not exactly symmetric, but the conclusion is.
+    stat_rev, p_rev = S.pooled_diebold_mariano(base, better)
+    assert stat_rev > 0 and p_rev < 0.05

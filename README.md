@@ -163,6 +163,14 @@ python scripts/compare_mf_ladder.py --run-dir outputs/mf_ladder
 
 At every origin the Gibbs sampler runs once at the paper hyperparameters and keeps draws of the balanced monthly data (latent monthly values of the quarterly variables included). Conditional on those draws the MF-VAR is a conjugate monthly VAR, so the criteria are cheap: `ml` (one Monte Carlo EM step for the marginal likelihood), `rmse:h4:w12` (GDP RMSE over the last 12 quarters) and `rmsej:h4:w60` (RMSE of all variables over 60 quarters, weighted by AR(1) residual variances). The model is then re-fit with every selected prior and scored on growth rates anchored at the real-time jump-off, with CRPS and log score from the draws, Diebold-Mariano/Holm tests and the Model Confidence Set. Forecasts use the untruncated posterior, like the criteria and the GLP ladder; `--explosive-check` restores MBFVAR's stationarity truncation, under which loss-selected priors can leave no stable draw at crisis origins. It needs MBFVAR >= 0.9.1 (pinned in `requirements.txt`), whose explosive-root check screens candidate draws with the characteristic polynomial and is several times faster with identical draws. See `src/paper_hyperparameter_optimization/mf_ladder.py`; `scripts/run_mf_ladder_euler.sh` runs it on Euler.
 
+To check that one EM step suffices, `scripts/mf_em_check.py` iterates the Monte Carlo EM from the published hyperparameters at a subset of origins and records, at every step, the move in the hyperparameters, the gain in the complete-data objective, the gradient of the observed-data log marginal likelihood by Fisher's identity (with its Monte Carlo standard error) and an importance-sampling estimate of the gain in the observed-data log marginal likelihood (with its effective sample size):
+
+```bash
+python scripts/mf_em_check.py --n-origins 16 --iterations 4 --fit-nsim 4000 --keep-draws 200 --n-workers 6
+```
+
+It writes `outputs/mf_ladder/em_check.csv`.
+
 ## GLP Workflow
 
 This repository also contains a separate quarterly BVAR workflow for Giannone, Lenza and Primiceri (2015) under `src/glp_hyperparameter_optimization` and `scripts/glp`. Those commands are independent of the Schorfheide-Song MF-VAR workflow above and write to `outputs/glp/...` by convention.
@@ -179,6 +187,7 @@ The model sizes are nested:
 - `small`: `GDP, DEFL, FFR`
 - `medium`: `small` plus `CONS, INV, HOURS, WAGE`
 - `large`: `medium` plus `EMP, UNR, AHE, CPI, PPI, COMM, M1, M2, MBASE, TOTRES, NBRES, SP500, TB10, REER`
+- `large_nr`: `large` without the reserve and monetary-base series `MBASE, TOTRES, NBRES` (the paper's 18-variable model; with them the VAR has explosive roots at the 2008-2010 origins)
 
 Practical rule:
 
@@ -329,6 +338,22 @@ present, pass `--model-size small|medium|large` to disambiguate, or keep using
 the explicit `--paper-dir`, `--mango-mdd-dir`, `--mango-rmse-dir`, and
 `--mango-rmse-random-dir` flags.
 
+### 8. Diagnostics and paper tables
+
+These scripts read the objective-ladder runs in `outputs/glp/canonical_{small,medium,large_nr}` (and `canonical_large` for the model with reserves) and the mixed-frequency run in `outputs/mf_ladder`; none of them re-estimates a model except `explosive_roots.py`, which recomputes the posterior mode at each origin.
+
+```bash
+python scripts/glp/pooled_tests.py        # Diebold-Mariano tests pooled over horizons 1-8, Holm-adjusted across criteria
+python scripts/glp/window_selection.py    # real-time choice of the evaluation window from past relative MSE
+python scripts/glp/explosive_roots.py outputs/glp/canonical_large/paper outputs/glp/canonical_large_nr/paper
+python scripts/paper_tables.py            # every table, figure and quoted number of the paper
+```
+
+- `pooled_tests.py` scales each horizon's squared-error differential to GLP by GLP's mean squared error, averages over horizons 1-8 and tests the average once (Newey-West with 7 lags, HLN correction for an 8-quarter overlap); it writes `outputs/glp/pooled_tests.csv` and, for the MF-VAR, `outputs/mf_ladder/comparison/pooled_tests.csv`.
+- `window_selection.py` picks, at each origin, the window of the joint RMSE criterion whose forecasts have had the lowest MSE relative to GLP so far (only targets that ended before the origin; the longest window until enough are available); it writes `outputs/glp/window_selection.csv` and `window_selection_scores.csv`.
+- `explosive_roots.py` reports the largest modulus of the companion-matrix eigenvalues at the posterior mode for each origin of the given runs; it writes `outputs/glp/explosive_roots.csv`.
+- `paper_tables.py` writes to `outputs/paper` the body rows of every results table (`tab_*.tex`), the pgfplots figures the paper inputs (`fig_*.tex`) and `numbers.md`, the numbers quoted in the text by section. Rerun it after any change to the runs and compare with the paper; `--skip-mcs-subsets` skips the slower Model Confidence Set among a subset of criteria. Run the three scripts above first.
+
 ## Parallelization
 
 The recursive forecast scripts in both workflows support process-level parallelization across forecast origins:
@@ -381,4 +406,4 @@ Each forecast script writes:
 
 - The repository implements the paper's MF-VAR setup, not the paper's quarterly-frequency VAR or MIDAS benchmark models.
 - The comparison script evaluates quarterly averages. For `GDP`, `INVFIX`, `GOV`, `HRS`, `CPI`, `IP`, `PCE`, and `SP500`, forecast errors are computed on quarter-on-quarter log growth rates in percent. For `UNR`, `FF`, and `TB`, they are computed on quarterly-average levels.
-- `MBFVAR` currently uses `numpy.random.default_rng()` internally without a user-exposed seed path in the package API, so exact bit-for-bit replication across runs may require patching the upstream package.
+- Since 0.9.1, `MBFVAR`'s `fit()` and `forecast()` take a `seed`, which the MF-VAR ladder passes at every origin, so its runs are reproducible; the older Mango-based MF-VAR scripts (sections 2-5) do not seed MBFVAR.

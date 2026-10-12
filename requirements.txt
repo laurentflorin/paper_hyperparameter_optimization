@@ -14,4 +14,5 @@ arm-mango
 pybind11
 seaborn
 covbayesvar
-MBFVAR @ git+https://github.com/laurentflorin/MBFVAR.git@aab9c0fc51c309d061997ecf570212dc9a0822a3
+# MBFVAR 0.9.1 as merged into master (PR #25); the mixed-frequency results were produced with it.
+MBFVAR @ git+https://github.com/laurentflorin/MBFVAR.git@47657c9c80887fa853335dd5789b1dba5987c96b
