@@ -4,3 +4,6 @@
 _checkpoints/
 logs/*.log
 logs/*.pid
+# Compiled Python
+__pycache__/
+*.pyc
