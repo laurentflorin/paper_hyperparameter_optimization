@@ -11,10 +11,11 @@ Writes to ``outputs/paper``:
 
 Inputs: ``outputs/glp/canonical_{small,medium,large_nr,large}`` (ladder runs and
 their ``comparison``), ``outputs/glp/pooled_tests.csv``,
+``outputs/glp/spa_tests.csv``, ``outputs/glp/spa_family.csv``,
 ``outputs/glp/window_selection_scores.csv``, ``outputs/glp/explosive_roots.csv``,
 ``outputs/mf_ladder`` (``comparison`` and ``em_check.csv``). Run
-``scripts/glp/pooled_tests.py``, ``scripts/glp/window_selection.py`` and
-``scripts/glp/explosive_roots.py`` first.
+``scripts/glp/pooled_tests.py``, ``scripts/glp/spa_tests.py``,
+``scripts/glp/window_selection.py`` and ``scripts/glp/explosive_roots.py`` first.
 """
 
 from __future__ import annotations
@@ -215,8 +216,9 @@ def tab_random_origins(s: Size) -> str:
     return rows(out)
 
 
-def tab_appendix(s: Size, pooled: pd.DataFrame) -> str:
-    p = pooled[pooled.model_size == s.size].set_index(["variant", "variable"])["pooled_p_holm"]
+def tab_appendix(s: Size, spa: pd.DataFrame) -> str:
+    """Star: gain over GLP significant at 10% by the Romano-Wolf step-down test across all criteria."""
+    p = spa[spa.model_size == s.size].set_index(["variant", "target"])["p_stepm"]
     out = []
     for v in [v for v in LABELS if v in s.variables()]:
         out.append([LABELS[v]] + [app(s.avg(m, v), bool(p.get((m, v), 1.0) < 0.10)) for _, m in APPENDIX_COLUMNS])
@@ -425,8 +427,22 @@ def numbers(sizes: dict[str, Size], pooled: pd.DataFrame, with_mcs_subsets: bool
     fam = pooled[(pooled.model_size == "small") & (pooled.variable == "GDP") & pooled.variant.str.match(r"ladder_rmsej_h\d_w(40|60|80)$")]
     add("5.5", f"small pooled, 12 joint 40-80q: GDP {rng(fam.rel_rmse_pct)}, p {fam.pooled_p.min():.3f}-{fam.pooled_p.max():.3f}, "
         f"Holm (all criteria) min {fam.pooled_p_holm.min():.3f}; Holm within family min {holm_adjust(fam.pooled_p.to_numpy()).min():.3f}")
-    pm_ = pooled[(pooled.model_size == "medium") & (pooled.variable == "GDP")].nsmallest(3, "pooled_p")
-    add("5.5", "medium pooled GDP, three smallest p: " + "; ".join(f"{r.variant} p={r.pooled_p:.3f} Holm={r.pooled_p_holm:.3f}" for r in pm_.itertuples()))
+    add("5.5", f"small pooled EWC, 12 joint 40-80q: p {fam.pooled_p_ewc.min():.3f}-{fam.pooled_p_ewc.max():.3f}; WPE {fam.pooled_p_wpe.min():.3f}-{fam.pooled_p_wpe.max():.3f}")
+    for size in ("medium", "large_nr"):
+        pm_ = pooled[(pooled.model_size == size) & (pooled.variable == "GDP")].nsmallest(3, "pooled_p_ewc")
+        add("5.5", f"{size} pooled GDP, three smallest EWC p: " + "; ".join(
+            f"{r.variant} {r.rel_rmse_pct:.1f}% EWC={r.pooled_p_ewc:.3f} NW={r.pooled_p:.3f}" for r in pm_.itertuples()))
+    spa_family = pd.read_csv(GLP / "spa_family.csv")
+    spa = pd.read_csv(GLP / "spa_tests.csv")
+    for target in ("GDP", "joint"):
+        f = spa_family[spa_family.target == target].pivot(index="model_size", columns="block", values="p_spa")
+        add("5.5", f"SPA p ({target}) by size x block: " + "; ".join(f"{s} " + "/".join(f"{v:.2f}" for v in f.loc[s]) for s in f.index))
+        sm = spa[spa.target == target].groupby("model_size").p_stepm.min()
+        add("5.5", f"StepM smallest p ({target}): " + ", ".join(f"{s} {v:.3f}" for s, v in sm.items()))
+    sig = spa[spa.p_stepm < 0.10]
+    add("5.5", "StepM < 0.10 (any target): " + "; ".join(f"{r.model_size} {r.target} {r.variant} {r.rel_rmse_pct:.1f}% p={r.p_stepm:.3f}" for r in sig.itertuples()))
+    u = spa[(spa.model_size == "medium") & (spa.target == "GDP") & spa.variant.isin(["ladder_rmsej_h1_w60", "ladder_rmsej_h1_w80"])]
+    add("5.5", "medium joint h=1 GDP uniform-test p: " + ", ".join(f"{r.variant} {r.p_uniform:.3f}" for r in u.itertuples()))
     sig_any = pooled[pooled.pooled_p_holm < 0.10]
     add("5.5/App", "pooled tests Holm-significant at 10%: " + "; ".join(f"{r.model_size} {r.variant} {r.variable} {r.rel_rmse_pct:.1f}%" for r in sig_any.itertuples()))
 
@@ -486,6 +502,11 @@ def numbers(sizes: dict[str, Size], pooled: pd.DataFrame, with_mcs_subsets: bool
             xv = x[x.variable == v]
             add("7", f"MF {strategy} {v}: avg {xv.groupby('group').relative_rmse_pct.mean().round(1).to_dict()}, "
                 f"Holm RMSE<0.05 at {int((xv.holm_p_sq_error < 0.05).sum())} cells, Holm CRPS<0.05 at {int((xv.holm_p_crps < 0.05).sum())} cells")
+    mf_spa = pd.read_csv(MF / "comparison" / "spa_tests.csv")
+    for r in mf_spa[mf_spa.p_stepm < 0.10].itertuples():
+        add("7", f"MF StepM<0.10: {r.group} {r.target} {r.variant} {r.rel_rmse_pct:.1f}% p_stepm={r.p_stepm:.3f} p_uniform={r.p_uniform:.3f}")
+    g = mf_spa[(mf_spa.target == "GDP") & (mf_spa.variant == "rmsej_h4_w60")]
+    add("7", "MF joint GDP StepM p by month: " + ", ".join(f"{r.group} {r.p_stepm:.3f}" for r in g.itertuples()))
     mcs = pd.read_csv(MF / "comparison" / "mcs.csv")
     out_paper = mcs[(mcs.strategy == "paper") & (mcs.variable == "GDP") & (mcs.metric == "sq_error") & ~mcs.in_mcs]
     add("7", f"MF: cells where the MCS excludes the published prior for GDP: {len(out_paper)}")
@@ -517,6 +538,7 @@ def main(argv: list[str] | None = None) -> None:
 
     sizes = {k: Size(k) for k in SIZES}
     pooled = pd.read_csv(GLP / "pooled_tests.csv")
+    spa = pd.read_csv(GLP / "spa_tests.csv")
     files = {
         "tab_ladder_results.tex": tab_ladder_results(sizes["small"]),
         "tab_windows.tex": tab_windows(sizes["small"]),
@@ -525,8 +547,8 @@ def main(argv: list[str] | None = None) -> None:
         "tab_size.tex": tab_size(sizes),
         "tab_mf_results.tex": tab_mf_results(),
         "tab_random_origins.tex": tab_random_origins(sizes["small"]),
-        "tab_app_medium.tex": tab_appendix(sizes["medium"], pooled),
-        "tab_app_large_nr.tex": tab_appendix(sizes["large_nr"], pooled),
+        "tab_app_medium.tex": tab_appendix(sizes["medium"], spa),
+        "tab_app_large_nr.tex": tab_appendix(sizes["large_nr"], spa),
         "fig_windows.tex": fig_windows(sizes),
         "fig_crosshorizon.tex": fig_crosshorizon(sizes),
         "fig_lambda.tex": fig_lambda(sizes["small"]),

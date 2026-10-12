@@ -344,15 +344,20 @@ These scripts read the objective-ladder runs in `outputs/glp/canonical_{small,me
 
 ```bash
 python scripts/glp/pooled_tests.py        # Diebold-Mariano tests pooled over horizons 1-8, Holm-adjusted across criteria
+python scripts/glp/spa_tests.py           # SPA and step-down tests against GLP across criteria, multi-horizon tests
+python scripts/glp/size_simulation.py     # size of the tests in samples like ours
 python scripts/glp/window_selection.py    # real-time choice of the evaluation window from past relative MSE
 python scripts/glp/explosive_roots.py outputs/glp/canonical_large/paper outputs/glp/canonical_large_nr/paper
 python scripts/paper_tables.py            # every table, figure and quoted number of the paper
 ```
 
 - `pooled_tests.py` scales each horizon's squared-error differential to GLP by GLP's mean squared error, averages over horizons 1-8 and tests the average once (Newey-West with 7 lags, HLN correction for an 8-quarter overlap); it writes `outputs/glp/pooled_tests.csv` and, for the MF-VAR, `outputs/mf_ladder/comparison/pooled_tests.csv`.
+- `pooled_tests.py` also reports the pooled test with fixed-smoothing long-run variances (`pooled_p_ewc`, equal-weighted cosine with Student-t critical values; `pooled_p_wpe`, Daniell periodogram), which keep much closer to their nominal size than Newey-West with 80 overlapping forecast errors.
+- `spa_tests.py` tests every criterion against GLP while accounting for the search over criteria: Hansen's consistent SPA test (does any criterion beat GLP?) and Romano-Wolf step-down p-values (which ones?), on the squared-error differential averaged over horizons 1-8, plus Quaedvlieg's average and uniform multi-horizon tests per criterion (the uniform one as an intersection-union test). Targets are each variable and a joint loss that averages the variables' squared errors relative to GLP. The moving-block bootstrap (blocks of 8; 4 and 12 in `spa_family.csv`) recomputes the EWC variance in every replication; bootstrapping the means with a fixed standard error rejects far too often in samples this small. It writes `outputs/glp/spa_tests.csv`, `outputs/glp/spa_family.csv` and the MF-VAR counterparts in `outputs/mf_ladder/comparison`.
+- `size_simulation.py` simulates differentials that overlap like eight-quarter forecast errors and reports how often each test rejects a true null at 10% (`outputs/glp/size_simulation.csv`).
 - `window_selection.py` picks, at each origin, the window of the joint RMSE criterion whose forecasts have had the lowest MSE relative to GLP so far (only targets that ended before the origin; the longest window until enough are available); it writes `outputs/glp/window_selection.csv` and `window_selection_scores.csv`.
 - `explosive_roots.py` reports the largest modulus of the companion-matrix eigenvalues at the posterior mode for each origin of the given runs; it writes `outputs/glp/explosive_roots.csv`.
-- `paper_tables.py` writes to `outputs/paper` the body rows of every results table (`tab_*.tex`), the pgfplots figures the paper inputs (`fig_*.tex`) and `numbers.md`, the numbers quoted in the text by section. Rerun it after any change to the runs and compare with the paper; `--skip-mcs-subsets` skips the slower Model Confidence Set among a subset of criteria. Run the three scripts above first.
+- `paper_tables.py` writes to `outputs/paper` the body rows of every results table (`tab_*.tex`), the pgfplots figures the paper inputs (`fig_*.tex`) and `numbers.md`, the numbers quoted in the text by section. Rerun it after any change to the runs and compare with the paper; `--skip-mcs-subsets` skips the slower Model Confidence Set among a subset of criteria. Run the other scripts above first.
 
 ## Parallelization
 

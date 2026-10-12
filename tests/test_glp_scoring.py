@@ -59,3 +59,42 @@ def test_pooled_diebold_mariano_detects_uniform_gain_and_is_antisymmetric():
     # statistic is not exactly symmetric, but the conclusion is.
     stat_rev, p_rev = S.pooled_diebold_mariano(base, better)
     assert stat_rev > 0 and p_rev < 0.05
+
+
+def test_fixed_smoothing_dm_has_reasonable_size_and_detects_a_gain():
+    rng = np.random.default_rng(3)
+    for method in ("ewc", "wpe"):
+        p = [S.fixed_smoothing_dm(rng.normal(size=80), rng.normal(size=80), method)[1] for _ in range(400)]
+        assert 0.02 <= np.mean(np.array(p) < 0.05) <= 0.09
+        stat, pval = S.fixed_smoothing_dm(rng.normal(size=80) - 1.0, rng.normal(size=80), method)
+        assert stat < 0 and pval < 0.01
+    assert np.isnan(S.fixed_smoothing_dm(np.ones(80), np.ones(80))[1])
+
+
+def test_benchmark_tests_find_the_better_criterion_and_adjust_upwards():
+    rng = np.random.default_rng(5)
+    T = 80
+    diff = rng.normal(size=(T, 6))
+    diff[:, 0] += 1.0  # criterion 0 beats the benchmark
+    diff[:, 5] = 0.0  # criterion 5 is the benchmark itself
+    res = S.benchmark_tests(diff, block=4, n_boot=2000, seed=0)
+    assert res["p_spa"] < 0.01
+    assert res["p_stepm"][0] < 0.01 and np.all(res["p_stepm"][1:5] > 0.05)
+    assert np.all(res["p_stepm"] >= res["p_single"] - 1e-12)
+    assert res["t"][5] == 0.0 and res["p_stepm"][5] == 1.0
+    order = np.argsort(-res["t"][:5])
+    assert np.all(np.diff(res["p_stepm"][order]) >= -1e-12)  # adjusted p-values follow the ranking
+    null = S.benchmark_tests(rng.normal(size=(T, 6)) - 0.2, block=4, n_boot=2000, seed=0)
+    assert null["p_spa"] > 0.1
+
+
+def test_multi_horizon_tests_separate_average_and_uniform_gains():
+    rng = np.random.default_rng(7)
+    T, H = 80, 4
+    everywhere = rng.normal(size=(T, H)) + 0.8
+    p_avg, p_unif = S.multi_horizon_tests(everywhere, block=4, n_boot=2000)
+    assert p_avg < 0.01 and p_unif < 0.01
+    one_bad = everywhere.copy()
+    one_bad[:, 0] -= 1.6  # worse than the benchmark at the first horizon
+    p_avg, p_unif = S.multi_horizon_tests(one_bad, block=4, n_boot=2000)
+    assert p_avg < 0.05 and p_unif > 0.5

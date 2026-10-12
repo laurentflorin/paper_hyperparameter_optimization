@@ -3,7 +3,9 @@
 For every criterion (ladder run) and variable, the squared-error differential
 to GLP is scaled by GLP's mean squared error at each horizon, averaged over
 horizons and tested once (``scoring.pooled_diebold_mariano``); p-values are
-Holm-adjusted across criteria within each model size and variable. The same is
+Holm-adjusted across criteria within each model size and variable. The same
+averaged differential is also tested with fixed-smoothing long-run variances
+(``pooled_p_ewc``, ``pooled_p_wpe``; ``scoring.fixed_smoothing_dm``). The same is
 done for the mixed-frequency VAR (median forecasts, by month within the quarter,
 against the published hyperparameters). Writes ``outputs/glp/pooled_tests.csv``
 and ``outputs/mf_ladder/comparison/pooled_tests.csv``.
@@ -20,7 +22,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
-from glp_hyperparameter_optimization.scoring import holm_adjust, pooled_diebold_mariano  # noqa: E402
+from glp_hyperparameter_optimization.scoring import fixed_smoothing_dm, holm_adjust, pooled_diebold_mariano, pooled_losses  # noqa: E402
 
 SIZES = {"small": "canonical_small", "medium": "canonical_medium", "large_nr": "canonical_large_nr"}
 
@@ -39,16 +41,19 @@ def pooled(base: pd.DataFrame, model: pd.DataFrame) -> list[dict]:
             continue
         joint = b.join(m, lsuffix="_b", rsuffix="_m", how="inner")
         H = b.shape[1]
-        stat, p = pooled_diebold_mariano(joint.iloc[:, H:].to_numpy(), joint.iloc[:, :H].to_numpy())
-        rel = 100 * (np.sqrt(joint.iloc[:, H:].mean().to_numpy()) / np.sqrt(joint.iloc[:, :H].mean().to_numpy()) - 1)
-        rows.append({"variable": variable, "rel_rmse_pct": float(rel.mean()), "pooled_stat": stat, "pooled_p": p, "n_origins": len(joint)})
+        a, b_ = joint.iloc[:, H:].to_numpy(), joint.iloc[:, :H].to_numpy()
+        stat, p = pooled_diebold_mariano(a, b_)
+        fixed = {f"pooled_p_{m}": fixed_smoothing_dm(*pooled_losses(a, b_), method=m)[1] for m in ("ewc", "wpe")}
+        rel = 100 * (np.sqrt(np.nanmean(a, axis=0)) / np.sqrt(np.nanmean(b_, axis=0)) - 1)
+        rows.append({"variable": variable, "rel_rmse_pct": float(rel.mean()), "pooled_stat": stat, "pooled_p": p, **fixed, "n_origins": len(joint)})
     return rows
 
 
 def holm(frame: pd.DataFrame, keys: list[str]) -> pd.DataFrame:
-    frame["pooled_p_holm"] = np.nan
-    for _, idx in frame.groupby(keys).groups.items():
-        frame.loc[idx, "pooled_p_holm"] = holm_adjust(frame.loc[idx, "pooled_p"].to_numpy())
+    for column in ("pooled_p", "pooled_p_ewc"):
+        frame[f"{column}_holm"] = np.nan
+        for _, idx in frame.groupby(keys).groups.items():
+            frame.loc[idx, f"{column}_holm"] = holm_adjust(frame.loc[idx, column].to_numpy())
     return frame
 
 

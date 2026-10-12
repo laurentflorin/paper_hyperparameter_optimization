@@ -5,7 +5,8 @@ Writes to ``<run-dir>/comparison``:
 * ``relative_scores.csv``: RMSE and mean CRPS of every criterion relative to the
   baseline (the published Schorfheide-Song hyperparameters by default), by
   variable, horizon and month within the quarter, with Diebold-Mariano
-  (Newey-West, HLN) p-values, Holm-adjusted within variable x metric x group;
+  (Newey-West, HLN) p-values, Holm-adjusted within variable x metric x group
+  across criteria and horizons;
 * ``summary_rmse.md`` / ``summary_crps.md``: relative scores averaged over
   horizons 1-8;
 * ``mcs.csv``: Model Confidence Set (T_max, block bootstrap) on squared errors
@@ -64,7 +65,8 @@ def relative_scores(panel: pd.DataFrame, baseline: str) -> pd.DataFrame:
     out = pd.DataFrame(rows)
     for metric in ("sq_error", "crps"):
         out[f"holm_p_{metric}"] = np.nan
-        for _, idx in out.groupby(["variable", "group", "strategy"]).groups.items():
+        # One family per variable, month and metric, across criteria and horizons, as for the GLP models.
+        for _, idx in out.groupby(["variable", "group"]).groups.items():
             out.loc[idx, f"holm_p_{metric}"] = holm_adjust(out.loc[idx, f"dm_p_{metric}"].to_numpy())
     return out
 
