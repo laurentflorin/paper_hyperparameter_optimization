@@ -135,11 +135,11 @@ def dm_p(size: Size, model: str, variable: str, column: str = "dm_sq_error_p") -
 def tab_ladder_results(s: Size) -> str:
     spec = [
         ("GLP mode, plug-in", "paper_plugin", None),
-        ("Joint 1-step score, full sample", "ladder_lsj1_all", "lsj1_all"),
+        ("Joint one-step score, full sample", "ladder_lsj1_all", "lsj1_all"),
         (r"\quad + window (last 12 quarters)", "ladder_lsj1_w12", "lsj1_w12"),
         (r"\quad + horizon (4 quarters)", "ladder_lsj_h4_w12", "lsj_h4_w12"),
         (r"\quad + GDP only (density)", "ladder_lsm_h4_w12", "lsm_h4_w12"),
-        (r"\quad + point forecast (GDP RMSE)", "ladder_rmse_h4_w12", "rmse_h4_w12"),
+        (r"\quad + point forecast (GDP-only RMSE)", "ladder_rmse_h4_w12", "rmse_h4_w12"),
     ]
     out = []
     for label, model, rung in spec:
@@ -164,7 +164,7 @@ def tab_crps(s: Size) -> str:
     out = [["GLP (marginal likelihood)", "$0$", "$0$", "$0$", f"{paper['lambda'].median():.2f}", f"{paper['miu'].median():.2f}", "$0$"]]
     for label, rung in [("GDP-only RMSE, 60q", "rmse_h4_w60"), ("Joint RMSE, 40q", "rmsej_h4_w40"),
                         ("Joint RMSE, 60q", "rmsej_h4_w60"), ("Joint RMSE, 80q", "rmsej_h4_w80"),
-                        ("Joint log score, 60q", "lsj_h4_w60")]:
+                        ("Joint four-step score, 60q", "lsj_h4_w60")]:
         h = s.hyper(rung)
         out.append([label] + [pm(s.crps_avg(f"ladder_{rung}", v)) for v in ("GDP", "DEFL", "FFR")]
                    + [f"{h['lambda'].median():.2f}", f"{h['miu'].median():.2f}", f"${h['log_ml_gap'].median():.0f}$"])
@@ -195,7 +195,7 @@ def tab_mf_results() -> str:
     t = pd.read_csv(MF / "comparison" / "summary_rmse.csv").set_index(["strategy", "group"])
     groups = ["+0 months", "+1 month", "+2 months"]
     out = []
-    for label, strategy in [("Marginal likelihood (one EM step)", "ml"), ("GDP RMSE, 12 quarters", "rmse_h4_w12"),
+    for label, strategy in [("Marginal likelihood (one EM step)", "ml"), ("GDP-only RMSE, 12 quarters", "rmse_h4_w12"),
                             ("Joint RMSE, 60 quarters", "rmsej_h4_w60")]:
         for i, g in enumerate(groups):
             r = t.loc[(strategy, g)]
@@ -203,17 +203,22 @@ def tab_mf_results() -> str:
     return rows(out)
 
 
-def tab_random_origins(s: Size) -> str:
-    spec = [
+def tab_random_origins(small: Size, medium: Size) -> str:
+    def panel(s: Size, spec: list[tuple[str, str]]) -> list[list[str]]:
+        return [[label] + [pm(s.avg(f"ladder_{k}_h4_{tag}", v)) for k in ("rmsej", "rmse") for v in ("GDP", "DEFL")]
+                for label, tag in spec]
+    a = panel(small, [
         ("Last 12 quarters", "w12"), ("12 drawn from the last 80, draw 1", "r12p80"),
         (r"\phantom{12 drawn from the last 80,} draw 2", "r12p80s1"), (r"\phantom{12 drawn from the last 80,} draw 3", "r12p80s2"),
         ("Last 20 quarters", "w20"), ("20 drawn from the last 80", "r20p80"), ("40 drawn from the last 80", "r40p80"),
         ("Last 40 quarters", "w40"), ("Last 80 quarters", "w80"), ("12 drawn from the whole history", "r12"),
-    ]
-    out = []
-    for label, tag in spec:
-        out.append([label] + [pm(s.avg(f"ladder_{k}_h4_{tag}", v)) for k in ("rmsej", "rmse") for v in ("GDP", "DEFL")])
-    return rows(out)
+    ])
+    b = panel(medium, [
+        ("Last 12 quarters", "w12"), ("12 drawn from the last 80", "r12p80"), ("40 drawn from the last 80", "r40p80"),
+        ("Last 40 quarters", "w40"), ("Last 80 quarters", "w80"),
+    ])
+    return (r"\multicolumn{5}{l}{\emph{A. 3 variables}} \\" + "\n" + rows(a) + "\\midrule\n"
+            + r"\multicolumn{5}{l}{\emph{B. 7 variables}} \\" + "\n" + rows(b))
 
 
 def tab_appendix(s: Size, spa: pd.DataFrame) -> str:
@@ -387,6 +392,40 @@ def reserves(add) -> None:
             add("8", f"roots {run}: max {g.max_root.max():.3f}, origins above 1.05: {len(big)} ({', '.join(big.forecast_origin)})")
 
 
+def pandemic(add, sizes: dict[str, Size]) -> None:
+    """Section 8: forecasts whose target quarter is in 2020 or later (the last
+    origins' longer horizons reach 2021Q3) against the rest."""
+    def rel(root: Path, run: str, base: pd.DataFrame, keep_pandemic: bool) -> pd.Series:
+        p = pd.read_csv(root / run / "forecast_panel.csv")
+        out = {}
+        for frame, key in ((p, "model"), (base, "glp")):
+            f = frame[keep_pandemic | (pd.PeriodIndex(frame.target_quarter, freq="Q") < pd.Period("2020Q1"))]
+            out[key] = f.groupby(["variable", "horizon_quarters"]).error_adj.apply(lambda e: np.sqrt(np.mean(e**2)))
+        return (out["model"] / out["glp"] - 1).mul(100).groupby(level="variable").mean()
+
+    for size, s in sizes.items():
+        base = pd.read_csv(s.root / "paper" / "forecast_panel.csv")
+        late = pd.PeriodIndex(base.target_quarter, freq="Q") >= pd.Period("2020Q1")
+        gdp = base.variable == "GDP"
+        sq = base.error_adj**2
+        share = sq[gdp & late].sum() / sq[gdp].sum()
+        by_h = (sq[gdp & late].groupby(base.horizon_quarters[gdp & late]).sum() / sq[gdp].groupby(base.horizon_quarters[gdp]).sum()).max()
+        add("8", f"{size} pandemic targets: {int((gdp & late).sum())} of {int(gdp.sum())} GDP forecasts, "
+            f"{100 * share:.0f}% of GLP's squared GDP error (up to {100 * by_h:.0f}% at one horizon), last target {base.target_quarter.max()}")
+        changes = []
+        for m in s.models():
+            run = "paper_plugin" if m == "paper_plugin" else f"ladder/{m.removeprefix('ladder_')}"
+            a, b = rel(s.root, run, base, True), rel(s.root, run, base, False)
+            changes.append({"model": m, "gdp_all": a["GDP"], "gdp_pre": b["GDP"], "mean_all": a.mean(), "mean_pre": b.mean()})
+        c = pd.DataFrame(changes).set_index("model")
+        joint = c[c.index.str.match(r"ladder_rmsej_h\d_w(40|60|80)$")]
+        flips = c[np.sign(c.gdp_all.round(1)) != np.sign(c.gdp_pre.round(1))]
+        add("8", f"{size} without pandemic targets: GDP change for joint 40-80q {rng(joint.gdp_pre - joint.gdp_all)} pts "
+            f"(e.g. rmsej_h4_w60 {c.loc['ladder_rmsej_h4_w60', 'gdp_all']:.1f} -> {c.loc['ladder_rmsej_h4_w60', 'gdp_pre']:.1f}); "
+            f"all criteria GDP change {rng(c.gdp_pre - c.gdp_all)} pts, all-variable mean change {rng(c.mean_pre - c.mean_all)} pts; "
+            f"GDP sign flips: {', '.join(f'{i} {r.gdp_all:.1f}->{r.gdp_pre:.1f}' for i, r in flips.iterrows()) or 'none'}")
+
+
 def numbers(sizes: dict[str, Size], pooled: pd.DataFrame, with_mcs_subsets: bool) -> str:
     s, m, l = sizes["small"], sizes["medium"], sizes["large_nr"]
     L = []
@@ -523,6 +562,7 @@ def numbers(sizes: dict[str, Size], pooled: pd.DataFrame, with_mcs_subsets: bool
     ws = pd.read_csv(GLP / "window_selection_scores.csv")
     add("8", "window selection rows: " + "; ".join(f"{r['model_size']} {r.iloc[0]}: GDP {r['GDP']:.1f}" for _, r in ws.iterrows() if str(r.iloc[0]).startswith(("real", "select", "rule"))))
     reserves(add)
+    pandemic(add, sizes)
     m40 = m.avg("ladder_rmsej_h4_r40p80", "GDP"), m.avg("ladder_rmsej_h4_r40p80", "CONS")
     add("8", f"medium rmsej_h4_r40p80: GDP {m40[0]:.1f}, CONS {m40[1]:.1f}; last 40 GDP {m.avg('ladder_rmsej_h4_w40', 'GDP'):.1f}, CONS {m.avg('ladder_rmsej_h4_w40', 'CONS'):.1f}")
     return "\n".join(L) + "\n"
@@ -546,7 +586,7 @@ def main(argv: list[str] | None = None) -> None:
         "tab_medium_horizons.tex": tab_medium_horizons(sizes["medium"]),
         "tab_size.tex": tab_size(sizes),
         "tab_mf_results.tex": tab_mf_results(),
-        "tab_random_origins.tex": tab_random_origins(sizes["small"]),
+        "tab_random_origins.tex": tab_random_origins(sizes["small"], sizes["medium"]),
         "tab_app_medium.tex": tab_appendix(sizes["medium"], spa),
         "tab_app_large_nr.tex": tab_appendix(sizes["large_nr"], spa),
         "fig_windows.tex": fig_windows(sizes),

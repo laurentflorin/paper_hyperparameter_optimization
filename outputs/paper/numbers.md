@@ -101,4 +101,10 @@
 - [8] roots outputs/glp/canonical_large/paper: max 1.492, origins above 1.05: 7 (2008-09-30, 2008-12-31, 2009-03-31, 2009-06-30, 2009-09-30, 2009-12-31, 2010-03-31)
 - [8] roots outputs/glp/canonical_large_nr/ladder/rmsej_h4_w80: max 1.008, origins above 1.05: 0 ()
 - [8] roots outputs/glp/canonical_large_nr/paper: max 1.007, origins above 1.05: 0 ()
+- [8] small pandemic targets: 28 of 640 GDP forecasts, 22% of GLP's squared GDP error (up to 37% at one horizon), last target 2021Q3
+- [8] small without pandemic targets: GDP change for joint 40-80q -1.4 to 0.9 pts (e.g. rmsej_h4_w60 -11.2 -> -12.5); all criteria GDP change -1.9 to 2.7 pts, all-variable mean change -1.2 to 2.0 pts; GDP sign flips: ladder_lsj1_w12 -0.3->1.3, ladder_lsj1_w60 -0.4->0.6, ladder_lsj_h2_w12 -1.4->0.4, ladder_lsj_h4_w12 -1.3->-0.0, ladder_lsj_h8_w12 -0.2->1.3
+- [8] medium pandemic targets: 28 of 640 GDP forecasts, 24% of GLP's squared GDP error (up to 44% at one horizon), last target 2021Q3
+- [8] medium without pandemic targets: GDP change for joint 40-80q -0.3 to 0.9 pts (e.g. rmsej_h4_w60 -3.6 -> -3.3); all criteria GDP change -2.4 to 4.0 pts, all-variable mean change -1.1 to 1.7 pts; GDP sign flips: ladder_lsj1_w12 -3.2->0.8, ladder_lsj_h4_w40 -0.1->2.4, ladder_lsj_h8_w12 -2.1->0.8, ladder_lsj_h8_w60 -0.0->1.6, ladder_lsm_h1_w60 -0.4->0.7, ladder_lsm_h2_w60 -0.6->0.6, ladder_lsm_h4_w40 -0.4->1.3, ladder_lsm_h4_w60 0.0->0.5, ladder_rmsej_h8_w12 -0.1->0.3
+- [8] large_nr pandemic targets: 28 of 640 GDP forecasts, 25% of GLP's squared GDP error (up to 51% at one horizon), last target 2021Q3
+- [8] large_nr without pandemic targets: GDP change for joint 40-80q -1.2 to 3.0 pts (e.g. rmsej_h4_w60 4.5 -> 6.3); all criteria GDP change -1.6 to 7.0 pts, all-variable mean change -0.7 to 4.6 pts; GDP sign flips: none
 - [8] medium rmsej_h4_r40p80: GDP -7.2, CONS -9.0; last 40 GDP -2.0, CONS -3.9
